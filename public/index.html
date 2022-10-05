@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <link rel="stylesheet" href="https://www.gouvernement.fr/sites/all/themes/custom/gouvernement/css/all.css?qncfw4s">
-
+    <link rel="stylesheet" href="<%= BASE_URL %>dsfr.min.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>utility/icons/icons-system/icons-system.min.css">
 
     <title><%= htmlWebpackPlugin.options.title %></title>
     <style>
@@ -45,7 +45,9 @@
                 <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]' showline = true></scatter-chart>
               </div> 
               <div class="chart_container"> 
-                <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' horizontal = true></bar-chart>
+                <bar-chart x='[["4", "2", "3", "5", "8"], ["4", "2", "3", "5", "8"], ["4", "2", "3", "5", "8"]]' 
+                y='[[40, 50, 10, 5, 8], [10, 20, 30, 12, 8], [12, 12, 20, 23, 8]]' 
+                horizontal = true stacked = false></bar-chart>
               </div>
               <div class="chart_container"> 
                 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]',
@@ -70,7 +72,7 @@
                 vlineName = '["debut"]'></multiline-chart>
               </div>        
               <div class="chart_container"> 
-                <bar-line-chart x='[1, 2, 3]', y='[30, 10, 20]' ybar = '[20, 15, 12]' colorbar = 'red' namebar = 'Custom'></bar-line-chart>
+                <bar-line-chart x='[1, 2, 3]', y='[30, 10, 20]' ybar = '[20, 15, 12]' namebar = 'Custom'></bar-line-chart>
               </div>    
               <div class="chart_container"> 
                 <map-chart data = '{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
@@ -83,7 +85,21 @@
                 "78": 48, "79": 72, "80": 52, "81": 48, "82": 57, "83": 38, "84": 23, "85": 46, "86": 37, "87": 64, "88": 78,
                 "89": 100, "90": 85, "91": 87, "92": 46, "93": 89, "94": 18, "95": 72, "971": 48, "972": 28, "973": 35,
                 "974": 70, "976": 38, "2A": 63, "2B": "16"}' name = 'Test'></map-chart>
-              </div>  
+              </div>
+              <div class="fr-tabs">
+                <div id="tabpanel-0-1-panel" class="fr-tabs__panel fr-tabs__panel--selected fr-p-3w" role="tabpanel" aria-labelledby="tabpanel-0-1" tabindex="0">
+                  <map-chart data = '{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
+                  "12": 33, "13": 89, "14": 24, "15": 52, "16": 41, "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,
+                  "23": 37, "24": 65, "25": 88, "26": 48, "27": 61, "28": 80, "29": 12, "30": 6, "31": 5, "32": 22, "33": 40,
+                  "34": 19, "35": 13, "36": 32, "37": 0, "38": 82, "39": 13, "40": 78, "41": 92, "42": 10, "43": 22, "44": 70,
+                  "45": 85, "46": 58, "47": 72, "48": 61, "49": 27, "50": 47, "51": 41, "52": 44, "53": 29, "54": 22, "55": 4,
+                  "56": 57, "57": 94, "58": 46, "59": 33, "60": 0, "61": 15, "62": 60, "63": 71, "64": 0, "65": 91, "66": 51,
+                  "67": 56, "68": 19, "69": 44, "70": 92, "71": 96, "72": 51, "73": 32, "74": 19, "75": 96, "76": 91, "77": 21,
+                  "78": 48, "79": 72, "80": 52, "81": 48, "82": 57, "83": 38, "84": 23, "85": 46, "86": 37, "87": 64, "88": 78,
+                  "89": 100, "90": 85, "91": 87, "92": 46, "93": 89, "94": 18, "95": 72, "971": 48, "972": 28, "973": 35,
+                  "974": 70, "976": 38, "2A": 63, "2B": "16"}' name = 'Test'></map-chart>
+                </div>
+              </div> 
             </div>
           </section>
         </div>

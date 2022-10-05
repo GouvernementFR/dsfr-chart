@@ -1,12 +1,23 @@
 {
-  "name": "widget-demo",
+  "name": "dsfr-chart",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --target lib --dest ./Charts --inline-vue --name dsfr-chart src/main.js",
+    "build-bar": "vue-cli-service build --target lib --dest ./BarChart --inline-vue --name bar-chart src/BarChart.js",
+    "build-barline": "vue-cli-service build --target lib --dest ./BarLineChart --inline-vue --name barline-chart src/BarLineChart.js",
+    "build-line": "vue-cli-service build --target lib --dest ./LineChart --inline-vue --name line-chart src/LineChart.js",
+    "build-map": "vue-cli-service build --target lib --dest ./MapChart --inline-vue --name map-chart src/MapChart.js",
+    "build-multiline": "vue-cli-service build --target lib --dest ./MultiLineChart --inline-vue --name multiline-chart src/MultiLineChart.js",
+    "build-pie": "vue-cli-service build --target lib --dest ./PieChart --inline-vue --name pie-chart src/PieChart.js",
+    "build-scatter": "vue-cli-service build --target lib --dest ./ScatterChart --inline-vue --name scatter-chart src/ScatterChart.js",
     "lint": "vue-cli-service lint"
   },
+  "files": [
+    "/dist",
+    "README.json"
+  ],
   "dependencies": {
     "chart.js": "^2.9.4",
     "chartjs-plugin-annotation": "^0.5.7",

@@ -3,8 +3,11 @@
   <div class="widget_container fr-grid-row" :id="widgetId">
     <LeftCol :props="leftColProps"></LeftCol>
     <div class="r_col fr-col-12 fr-col-lg-9">
+      <button class="fr-btn fr-btn--sm fr-icon-arrow-go-back-fill fr-btn--icon-left fr-btn--secondary" @click="resetGeoFilters" v-if="zoomDep !== undefined" >
+        Retour
+      </button>
       <div class="map m-lg">
-          <div ref="mapTooltip" class="map_tooltip" :style="{top:tooltip.top,left:tooltip.left,display:tooltip.display,visibility:tooltip.visibility}">
+          <div ref="mapTooltip" class="map_tooltip" :style="{top:tooltip.top,left:tooltip.left,visibility:tooltip.visibility}">
           <div class="tooltip_header">{{tooltip.place}}</div>
           <div class="tooltip_body">
             <div class="tooltip_value">{{convertStringToLocaleNumber(tooltip.value)}}</div>
@@ -79,7 +82,6 @@ export default {
       tooltip: {
         top: '0px',
         left: '0px',
-        display: 'none',
         visibility: 'hidden',
         value: 0,
         place: ''
@@ -222,29 +224,45 @@ export default {
     },
     displayTooltip (e) {
       if (isMobile) return
+      const parentWidget = document.getElementById(this.widgetId)
       const hoverdep = e.target.className.baseVal.replace(/FR-/g, '')
-
+      const elCol = parentWidget.getElementsByClassName('FR-' + hoverdep)
+      // console.log(elCol.getAttribute())
+      // elCol.length !== 0 && elCol[0].setAttribute('fill', 'red')
+      elCol[0].style.opacity = '0.72'
       this.tooltip.value = this.dataParse[hoverdep]
       this.tooltip.place = this.getDep(hoverdep).label
 
-      this.tooltip.display = 'block'
+      const elem = parentWidget.getElementsByClassName('map_tooltip')[0]
+      const tooltipRect = elem.getBoundingClientRect()
+      const tooltipWidth = tooltipRect.width
+      const tooltipHeight = tooltipRect.height
+      const { x: transformX, y: transformY } = this.getTransformCoordinates()
+
       const containerRect = e.target.getBoundingClientRect()
-      let tooltipX = (containerRect.left + containerRect.right) / 2 - 165 / 2
-      let tooltipY = containerRect.top - 70
-      if ((tooltipX + 165 / 2) > window.innerWidth) {
-        tooltipX = containerRect.right - 165
+      let tooltipX = transformX + containerRect.left + ((containerRect.width - tooltipWidth) / 2)
+      let tooltipY = transformY + containerRect.top - tooltipHeight
+
+      const limitsRect = parentWidget.getBoundingClientRect()
+      if (tooltipY - transformY < limitsRect.top) {
+        tooltipY = transformY + containerRect.bottom
       }
-      if (tooltipY + 70 > window.innerHeight) {
-        tooltipY = containerRect.bottom
+      if (tooltipX - transformX + tooltipWidth > limitsRect.right) {
+        tooltipX = transformX + containerRect.right - tooltipWidth - 10
+        tooltipY = transformY + containerRect.top - tooltipHeight / 2
       }
+
       this.tooltip.top = tooltipY + 'px'
       this.tooltip.left = tooltipX + 'px'
       this.tooltip.visibility = 'visible'
     },
-    hideTooltip () {
+    hideTooltip (e) {
       if (isMobile) return
       this.tooltip.visibility = 'hidden'
-      this.tooltip.display = 'none'
+      const parentWidget = document.getElementById(this.widgetId)
+      const hoverdep = e.target.className.baseVal.replace(/FR-/g, '')
+      const elCol = parentWidget.getElementsByClassName('FR-' + hoverdep)
+      elCol[0].style.opacity = '1'
     },
     changeGeoLevel (e) {
       // Get clicked departement
@@ -276,6 +294,17 @@ export default {
     resetGeoFilters () {
       this.zoomDep = undefined
       this.createChart()
+    },
+    getTransformCoordinates () {
+      const coordinates = { x: 0, y: 0 }
+      const tab = this.$el.closest('.fr-tabs__panel')
+      // .fr-tabs__panel are transformed in DSFR 1.7 with transform: translate(-100%).
+      if (tab && window.getComputedStyle(tab).getPropertyValue('transform')) {
+        const tabs = tab.closest('.fr-tabs')
+        coordinates.x = tabs.getBoundingClientRect().left * -1
+        coordinates.y = tab.getBoundingClientRect().top * -1
+      }
+      return coordinates
     }
   },
   created () {
@@ -291,7 +320,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
   .no_select {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -317,8 +345,7 @@ export default {
         background-color: white;
         position: fixed;
         z-index: 999;
-        border-radius: 4px;
-        box-shadow: 0 8px 16px 0 rgba(22, 22, 22, 0.12), 0 8px 16px -16px rgba(22, 22, 22, 0.32);
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 18, 0.16);
         text-align: left;
         pointer-events: none;
         font-size: 0.75rem;

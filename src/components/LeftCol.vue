@@ -64,8 +64,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  @import "../../css/overload-fonts.css";
-  @import "../../css/dsfr.min.css";
+  // @import "../../css/overload-fonts.css";
+  // @import "../../dsfr.min.css";
+  // @import "../../utility/icons/icons-system/icons-system.min.css";
   .l_col{
 
     .sep, .sep-viz {
@@ -87,7 +88,6 @@ export default {
         min-width: 0.7rem;
         width: 0.7rem;
         height: 0.7rem;
-        border-radius: 50%;
         display: inline-block;
         margin-top: 0.4rem;
         align-items: left;

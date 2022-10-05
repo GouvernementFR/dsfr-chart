@@ -1,6 +1,14 @@
 .DS_Store
 node_modules
-/dist
+/BarChart
+/BarLineChart
+/Charts
+/LineChart
+/MapChart
+/MultiLineChart
+/PieChart
+/ScatterChart
+roadmap.md
 
 
 # local env files

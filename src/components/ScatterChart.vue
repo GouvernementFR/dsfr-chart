@@ -241,13 +241,17 @@ export default {
           borderColor: self.colorParse[j],
           backgroundColor: self.colorParse[j],
           type: 'scatter',
+          pointStyle: 'rect',
           pointRadius: self.pointradius,
           pointHoverRadius: self.pointradius + 2,
+          pointHoverBackgroundColor: 'red',
+          pointHoverBorderColor: 'red',
           showLine: self.showline
         })
       })
     },
     createChart () {
+      Chart.defaults.global.defaultFontFamily = 'Marianne'
       this.getData()
       const self = this
       const ctx = document.getElementById(self.chartId).getContext('2d')
@@ -498,11 +502,10 @@ export default {
     .flex {
       display: flex;
       .legende_dot {
-        min-width: 1rem;
-        width: 1rem;
-        height: 1rem;
-        min-width: 1rem;
-        border-radius: 50%;
+        min-width: 0.8rem;
+        width: 0.8rem;
+        height: 0.8rem;
+        min-width: 0.8rem;
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
@@ -536,8 +539,7 @@ export default {
     background-color: white;
     position: fixed;
     z-index: 999;
-    border-radius: 4px;
-    box-shadow: 0 8px 16px 0 rgba(22, 22, 22, 0.12), 0 8px 16px -16px rgba(22, 22, 22, 0.32);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 18, 0.16);
     text-align: left;
     pointer-events: none;
     font-size: 0.75rem;
@@ -559,7 +561,6 @@ export default {
         min-width: 0.7rem;
         width: 0.7rem;
         height: 0.7rem;
-        border-radius: 50%;
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
