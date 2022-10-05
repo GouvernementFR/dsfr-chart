@@ -95,7 +95,7 @@ Les paramètres obligatoires sont :
 <line-chart x = '[1, 2, 3]' y = '[10, 20, 30]'></line-chart>
 ```
 
-![LineChart](.\Pictures\LineChart.png)
+![LineChart](./Pictures/LineChart.png)
 
 #### LineChart Multiple
 
@@ -133,7 +133,7 @@ Les paramètres obligatoires sont :
 <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]'></scatter-chart>
 ```
 
-![ScatterChart](.\Pictures\ScatterChart.png)
+![ScatterChart](./Pictures/ScatterChart.png)
 
 
 
@@ -153,7 +153,7 @@ Les paramètres obligatoires sont :
 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]'></bar-chart>
 ```
 
-![BarChart](.\Pictures\BarChart.png)
+![BarChart](./Pictures/BarChart.png)
 
 
 
@@ -175,7 +175,7 @@ Les paramètres obligatoires sont :
 <bar-line-chart x='[1, 2, 3]' y='[30, 10, 20]' ybar = '[20, 15, 12]'></bar-line-chart>
 ```
 
-![BarLineChart](.\Pictures\BarLineChart.png)
+![BarLineChart](./Pictures/BarLineChart.png)
 
 
 
@@ -195,7 +195,7 @@ Les paramètres obligatoires sont :
 <pie-chart x = '[1, 2, 3]', y = '[10, 20, 30]'></pie-chart>
 ```
 
-![PieChart](.\Pictures\PieChart.png)
+![PieChart](./Pictures/PieChart.png)
 
 
 
@@ -213,7 +213,7 @@ Les paramètres obligatoires sont :
 <map-chart data = '{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,"12": 33, "13": 89, "14": 24, "15": 52, "16": 41, "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,"23": 37, "24": 65, "25": 88, "26": 48, "27": 61, "28": 80, "29": 12, "30": 6, "31": 5, "32": 22, "33": 40,"34": 19, "35": 13, "36": 32, "37": 0, "38": 82, "39": 13, "40": 78, "41": 92, "42": 10, "43": 22, "44": 70,"45": 85, "46": 58, "47": 72, "48": 61, "49": 27, "50": 47, "51": 41, "52": 44, "53": 29, "54": 22, "55": 4,"56": 57, "57": 94, "58": 46, "59": 33, "60": 0, "61": 15, "62": 60, "63": 71, "64": 0, "65": 91, "66": 51,"67": 56, "68": 19, "69": 44, "70": 92, "71": 96, "72": 51, "73": 32, "74": 19, "75": 96, "76": 91, "77": 21,"78": 48, "79": 72, "80": 52, "81": 48, "82": 57, "83": 38, "84": 23, "85": 46, "86": 37, "87": 64, "88": 78,"89": 100, "90": 85, "91": 87, "92": 46, 93": 89, "94": 18, "95": 72, "971": 48, "972": 28, "973": 35,"974": 70, "976": 38, "2A": 63, "2B": "16"}' name = 'Test'></map-chart>
 ```
 
-![MapChart](.\Pictures\MapChart.png)
+![MapChart](./Pictures/MapChart.png)
 
 
 
@@ -229,7 +229,7 @@ Par défaut les noms des indicateurs sont : Série1, Série2, … et les couleur
 <line-chart x = '[1, 2, 3]' y = '[10, 20, 30]' color = 'red' name = 'Custom'></line-chart>
 ```
 
-![ColorName](.\Pictures\ColorName.png)
+![ColorName](./Pictures/ColorName.png)
 
 
 
@@ -239,7 +239,7 @@ Pour les graphiques avec plusieurs séries (barchart, piechart, multilinechart, 
  <multiline-chart x='[[1, 2, 3], [1, 2, 3]]', y='[[30, 10, 20], [10, 20, 30]]' color = '["blue", "orange"]' name = '["A", "B"]'></multiline-chart>
 ```
 
-![MultiColorName](.\Pictures\MultiColorName.png)
+![MultiColorName](./Pictures/MultiColorName.png)
 
 
 
@@ -251,7 +251,7 @@ Pour le cas du **BarLineChart,** les paramètres **color** et **name** sont asso
 <bar-line-chart x='[1, 2, 3]', y='[30, 10, 20]' ybar = '[20, 15, 12]' colorbar = 'red' namebar = 'Custom'></bar-line-chart>
 ```
 
-![ColorNameBar](.\Pictures\ColorNameBar.png)
+![ColorNameBar](./Pictures/ColorNameBar.png)
 
 
 
@@ -263,7 +263,7 @@ Enfin dans le cas de **MapChart**, la modification du nom se fait également par
  <map-chart data = '{...}' name = 'Test' colmin = 'yellow', colmax = 'red'></map-chart>
 ```
 
-![ColorMap](.\Pictures\ColorMap.png)
+![ColorMap](./Pictures/ColorMap.png)
 
 
 
@@ -285,7 +285,7 @@ Par défaut la couleur de la ligne sera #161616 et son nom V1, V2, … Cela peut
 <line-chart x = '[1, 2, 3]' y = '[10, 20, 30]' vline = '[1.5, 2.5]' vlinename = '["min", "max"]' vlinecolor = '["green", "orange"]'></line-chart>
 ```
 
-![vline](.\Pictures\vline.png)
+![vline](./Pictures/vline.png)
 
 
 
@@ -307,7 +307,7 @@ Par défaut la couleur de la ligne sera #009081 et son nom H1, H2, … Cela peut
 <line-chart x = '[1, 2, 3]' y = '[10, 20, 30]' hline = '[15, 25]' hlinename = '["min", "max"]' hlinecolor = '["green", "orange"]'></line-chart>
 ```
 
-![hline](.\Pictures\hline.png)
+![hline](./Pictures/hline.png)
 
 
 
@@ -321,7 +321,7 @@ On peut choisir de relier les points d’un ScatterChart avec l’option **showl
 <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]' showline = true></scatter-chart>
 ```
 
-![OptionsScatter](.\Pictures\OptionScatter.png)
+![OptionsScatter](./Pictures/OptionScatter.png)
 
 
 
@@ -335,7 +335,7 @@ On peut choisir de relier les points d’un ScatterChart avec l’option **showl
 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' stacked = true></bar-chart>
 ```
 
-![OptionsBar](.\Pictures\OptionsBar.png)
+![OptionsBar](./Pictures/OptionsBar.png)
 
 
 
@@ -347,7 +347,7 @@ On peut choisir de relier les points d’un ScatterChart avec l’option **showl
 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' stacked = true></bar-chart>
 ```
 
-![BarChartHorizontal](.\Pictures\BarChartHorizontal.png)
+![BarChartHorizontal](./Pictures/BarChartHorizontal.png)
 
 
 
@@ -361,7 +361,7 @@ L’option **fill = True**, permet de remplir l’intérieur du graphique.
 <pie-chart x = '[1, 2, 3]', y = '[10, 20, 30]' fill = true></pie-chart>
 ```
 
-![OptionsPieChart](.\Pictures\OptionPieChart.png)
+![OptionsPieChart](./Pictures/OptionPieChart.png)
 
 ## Contribution
 
