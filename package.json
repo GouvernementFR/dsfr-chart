@@ -1,6 +1,9 @@
 {
   "name": "dsfr-chart",
   "version": "0.1.0",
+  "description": "Système de Design de l'Etat - Visualisation graphique",
+  "repository": "git@github.com:GouvernementFR/dsfr-chart.git",
+  "author": "Seenovate <tristan.conti@seenovate.com>",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
