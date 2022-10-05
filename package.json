@@ -23,7 +23,8 @@
     "/MultiLineChart",
     "/PieChart",
     "/ScatterChart",
-    "README.md"
+    "README.md",
+    "CONTRIBUTING.md"
   ],
   "dependencies": {
     "chart.js": "^2.9.4",
