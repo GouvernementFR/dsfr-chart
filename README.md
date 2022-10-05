@@ -113,7 +113,7 @@ Les paramètres obligatoires sont :
 <multiline-chart x='[[1, 2, 3], [1, 2, 3]]' y='[[30, 10, 20], [10, 20, 30]]'></multiline-chart>
 ```
 
-![MultiLineChart](.\Pictures\MultiLineChart.png)
+![MultiLineChart](./Pictures/MultiLineChart.png)
 
 
 
