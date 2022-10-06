@@ -1,6 +1,6 @@
 {
   "name": "dsfr-chart",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Système de Design de l'Etat - Visualisation graphique",
   "repository": "git@github.com:GouvernementFR/dsfr-chart.git",
   "author": "Seenovate <tristan.conti@seenovate.com>",
@@ -27,7 +27,8 @@
     "/PieChart",
     "/ScatterChart",
     "README.md",
-    "CONTRIBUTING.md"
+    "CONTRIBUTING.md",
+    "/Pictures"
   ],
   "dependencies": {
     "chart.js": "^2.9.4",
