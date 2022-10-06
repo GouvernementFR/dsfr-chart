@@ -292,6 +292,42 @@ export default {
               })
             }
           }
+        },
+        {
+          afterDraw: function (chart, args, options) {
+            if (chart.tooltip._active !== undefined) {
+              if (chart.tooltip._active.length !== 0) {
+                const x = chart.tooltip._active[0]._model.x
+                let y
+                const index = chart.tooltip._active[0]._index
+                const yAxis = chart.scales['y-axis-0']
+                const xAxis = chart.scales['x-axis-0']
+                const ctx = chart.ctx
+                ctx.save()
+                ctx.beginPath()
+                ctx.moveTo(x, yAxis.top)
+                ctx.lineTo(x, yAxis.bottom)
+                ctx.lineWidth = '1'
+                ctx.strokeStyle = '#161616'
+                ctx.setLineDash([10, 5])
+                ctx.stroke()
+                ctx.restore()
+
+                self.yparse.forEach(function (yj, j) {
+                  y = yAxis.getPixelForValue(yj[index])
+                  ctx.save()
+                  ctx.beginPath()
+                  ctx.moveTo(xAxis.left, y)
+                  ctx.lineTo(xAxis.right, y)
+                  ctx.lineWidth = '1'
+                  ctx.strokeStyle = '#161616'
+                  ctx.setLineDash([10, 5])
+                  ctx.stroke()
+                  ctx.restore()
+                })
+              }
+            }
+          }
         }],
         options: {
           animation: {

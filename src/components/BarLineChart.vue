@@ -283,6 +283,53 @@ export default {
               })
             }
           }
+        },
+        {
+          afterDraw: function (chart, args, options) {
+            if (chart.tooltip._active !== undefined) {
+              if (chart.tooltip._active.length !== 0) {
+                const x = chart.tooltip._active[0]._model.x
+                const index = chart.tooltip._active[0]._index
+                const yAxisR = chart.scales.yAxisR
+                const yAxisL = chart.scales.yAxisL
+                const xAxis = chart.scales['x-axis-0']
+
+                const y = yAxisR.getPixelForValue(self.yparse[index])
+                const ybar = yAxisL.getPixelForValue(self.ybarparse[index])
+
+                const ctx = chart.ctx
+                ctx.save()
+                ctx.beginPath()
+                ctx.moveTo(x, yAxisL.top)
+                ctx.lineTo(x, yAxisL.bottom)
+                ctx.lineWidth = '1'
+                ctx.strokeStyle = '#161616'
+                ctx.setLineDash([10, 5])
+                ctx.stroke()
+                ctx.restore()
+
+                ctx.save()
+                ctx.beginPath()
+                ctx.moveTo(x, y)
+                ctx.lineTo(xAxis.right, y)
+                ctx.lineWidth = '1'
+                ctx.strokeStyle = '#161616'
+                ctx.setLineDash([10, 5])
+                ctx.stroke()
+                ctx.restore()
+
+                ctx.save()
+                ctx.beginPath()
+                ctx.moveTo(xAxis.left, ybar)
+                ctx.lineTo(x, ybar)
+                ctx.lineWidth = '1'
+                ctx.strokeStyle = '#161616'
+                ctx.setLineDash([10, 5])
+                ctx.stroke()
+                ctx.restore()
+              }
+            }
+          }
         }],
         options: {
           animation: {

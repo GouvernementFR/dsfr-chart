@@ -3,7 +3,7 @@
   <div class="widget_container fr-grid-row" :id="widgetId">
     <LeftCol :props="leftColProps"></LeftCol>
     <div class="r_col fr-col-12 fr-col-lg-9">
-      <button class="fr-btn fr-btn--sm fr-icon-arrow-go-back-fill fr-btn--icon-left fr-btn--secondary" @click="resetGeoFilters" v-if="zoomDep !== undefined" >
+      <button class="fr-btn fr-btn--sm fr-icon-arrow-go-back-fill fr-btn--icon-left fr-btn--secondary fr-ml-4w" @click="resetGeoFilters" v-if="zoomDep !== undefined" >
         Retour
       </button>
       <div class="map m-lg">
@@ -73,7 +73,9 @@ export default {
         max: 0,
         colMin: '',
         colMax: '',
-        value: 0
+        value: 0,
+        valueNat: 0,
+        levelNat: false
       },
       FranceProps: {
         viewBox: '0 0 262 262',
@@ -98,6 +100,10 @@ export default {
     data: {
       type: String,
       required: true
+    },
+    valuenat: {
+      type: Number,
+      default: undefined
     },
     name: {
       type: String,
@@ -175,6 +181,9 @@ export default {
       if (this.zoomDep !== undefined) {
         this.leftColProps.localisation = this.getDep(this.zoomDep).label
         this.leftColProps.value = this.dataParse[this.zoomDep]
+        this.leftColProps.levelNat = (this.valuenat !== undefined)
+        console.log(this.valuenat)
+        this.leftColProps.valueNat = this.valuenat
         xmin = Math.min.apply(null, xmin)
         ymin = Math.min.apply(null, ymin)
         xmax = Math.max.apply(null, xmax)
@@ -205,7 +214,8 @@ export default {
         }
       } else {
         this.leftColProps.localisation = 'France'
-        this.leftColProps.value = '3'
+        this.leftColProps.value = this.valuenat
+        this.leftColProps.levelNat = false
         this.FranceProps.viewBox = '0 0 262 262'
         this.displayFrance = ''
         this.displayGuadeloupe = ''
@@ -216,7 +226,7 @@ export default {
       }
 
       // Fill leftCol
-      this.leftColProps.names = [this.name]
+      this.leftColProps.names = this.name
       this.leftColProps.min = this.scaleMin
       this.leftColProps.max = this.scaleMax
       this.leftColProps.colMin = this.colmin

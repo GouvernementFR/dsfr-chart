@@ -1,7 +1,17 @@
 <template>
 
   <div class="l_col fr-col-12 fr-col-lg-3">
-
+        <div v-if="props['levelNat']" data-box="number">
+          <div class="indicateur_info">
+            <div class="flex" >
+              <p class="l_box_title fr-text--xs fr-text--bold fr-mb-1w">{{props['names']}}, En France</p>
+            </div>
+            <div class="l_box_number_container">
+              <p class="l_box_title fr-text--xs fr-text--bold fr-mb-1w">{{convertFloatToHuman(props['valueNat'])}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="sep fr-my-2w fr-my-md-2w"></div>
         <div data-box="loc">
           <p class="l_box_title fr-text--xs fr-mb-1w">Localisation</p>
           <p class="flex fr-text--sm fr-text--bold fr-my-0">
@@ -9,21 +19,13 @@
             <span class="fr-ml-1v">{{props['localisation']}}</span>
           </p>
         </div>
-        <div class="sep fr-my-4w fr-my-md-3w"></div>
         <div data-box="number">
-          <div class="indicateur_info" :class="i>0 ? 'fr-mt-2w' : ''" v-for="(n,i) in props['names']" :key="n">
+          <div class="indicateur_info">
             <div class="flex" >
-              <p class="fr-text--sm fr-text--bold fr-mt-0 fr-mb-1w">{{props['names'][i]}}</p>
+              <p class="fr-text--sm fr-text--bold fr-mt-2w fr-mb-1w">{{props['names']}}</p>
             </div>
             <div class="l_box_number_container">
               <p class="fr-text--lg fr-text--bold fr-mb-1v">{{convertFloatToHuman(props['value'])}}</p>
-              <!-- <p class="l_box_trend flex fr-mb-0 fr-text--xs fr-text--bold fr-px-1w fr-py-1v" v-bind:class="{'down':isDown[i], 'horizontal':isHorizontal[i], 'green':isGreen[i],'red':isRed[i],'blue':isBlue[i]}">
-                <svg class="trend_ico" width="16" height="16" viewBox="0 0 24 24">
-                  <path v-if="!isBlue[i]" d="M19.071 4.929c3.903 3.903 3.903 10.239 0 14.142-3.903 3.903-10.239 3.903-14.142 0-3.903-3.903-3.903-10.239 0-14.142 3.903-3.903 10.239-3.903 14.142 0zm-2.828 2.828H7.757l3.182 3.182-4.242 4.243 2.121 2.121 4.243-4.242 3.182 3.182V7.757z" transform="translate(-902 -5664) translate(902 5664)"/>
-                  <path v-if="isBlue[i]" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm4 11H8v2h8v-2zm0-4H8v2h8V9z" transform="translate(-1366 -5645) translate(1366 5645)"/>
-                </svg>
-                <span class="fr-ml-1v">{{convertFloatToHuman(props['evolvalues'][i])}} % en 7j</span>
-              </p> -->
             </div>
           </div>
         </div>
@@ -64,9 +66,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  // @import "../../css/overload-fonts.css";
-  // @import "../../dsfr.min.css";
-  // @import "../../utility/icons/icons-system/icons-system.min.css";
   .l_col{
 
     .sep, .sep-viz {
