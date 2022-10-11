@@ -182,7 +182,6 @@ export default {
         this.leftColProps.localisation = this.getDep(this.zoomDep).label
         this.leftColProps.value = this.dataParse[this.zoomDep]
         this.leftColProps.levelNat = (this.valuenat !== undefined)
-        console.log(this.valuenat)
         this.leftColProps.valueNat = this.valuenat
         xmin = Math.min.apply(null, xmin)
         ymin = Math.min.apply(null, ymin)
@@ -237,7 +236,6 @@ export default {
       const parentWidget = document.getElementById(this.widgetId)
       const hoverdep = e.target.className.baseVal.replace(/FR-/g, '')
       const elCol = parentWidget.getElementsByClassName('FR-' + hoverdep)
-      // console.log(elCol.getAttribute())
       // elCol.length !== 0 && elCol[0].setAttribute('fill', 'red')
       elCol[0].style.opacity = '0.72'
       this.tooltip.value = this.dataParse[hoverdep]
