@@ -10,6 +10,9 @@ import ScatterChart from './components/ScatterChart'
 
 import vueCustomElement from 'vue-custom-element'
 
+require('../node_modules/@gouvfr/dsfr/dist/dsfr.min.css')
+require('../node_modules/@gouvfr/dsfr/dist/utility/icons/icons-system/icons-system.min.css')
+
 Vue.config.productionTip = false
 
 Vue.use(vueCustomElement)

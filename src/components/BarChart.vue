@@ -208,7 +208,6 @@ export default {
       }
 
       // Formatage des données
-      // const ctx = document.getElementById(self.chartId).getContext('2d')
       let data = []
 
       // Cas ou x est non numérique
@@ -356,7 +355,7 @@ export default {
             duration: 0
           },
           annotation: {
-            drawTime: 'beforeDatasetsDraw', // (default)
+            drawTime: 'beforeDatasetsDraw',
             annotations: self.annotations
           },
           scales: {

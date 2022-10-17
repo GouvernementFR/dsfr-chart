@@ -193,7 +193,6 @@ export default {
       }
 
       // Formatage des données
-      // const ctx = document.getElementById(self.chartId).getContext('2d')
       let data = []
       // Cas ou x est numérique
       if (typeof self.xparse[0][0] === 'number') {
@@ -227,13 +226,9 @@ export default {
 
       // Tracé de la courbe
       data.forEach(function (dj, j) {
-        // let gradientFill
-        // self.display === 'big' ? gradientFill = ctx.createLinearGradient(0, 0, 0, 500) : gradientFill = ctx.createLinearGradient(0, 0, 0, 250)
-        // gradientFill.addColorStop(0, chroma(self.colorParse[j]).alpha(0.05).hex())
         self.datasets.push({
           data: dj,
           fill: false,
-          // backgroundColor: gradientFill,
           borderColor: self.colorParse[j],
           type: 'line',
           pointRadius: 8,
@@ -339,13 +334,7 @@ export default {
               type: self.xAxisType,
               gridLines: {
                 color: 'rgba(0, 0, 0, 0)'
-              }// ,
-              // ticks: {
-              //   autoSkip: true,
-              //   maxTicksLimit: xTickLimit,
-              //   maxRotation: 0,
-              //   minRotation: 0
-              // }
+              }
             }],
             yAxes: [{
               gridLines: {

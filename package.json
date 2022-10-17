@@ -39,7 +39,6 @@
     "core-js": "^3.6.5",
     "d3-scale": "^3.3.0",
     "mobile-device-detect": "^0.4.3",
-    "path": "^0.12.7",
     "sass": "^1.32.5",
     "sass-loader": "^10.1.1",
     "vue": "^2.6.11",
@@ -60,8 +59,7 @@
     "eslint-plugin-vue": "^7.10.0",
     "standard": "^16.0.3",
     "vue-template-compiler": "^2.6.11",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^4.10.0"
+    "webpack": "^4.46.0"
   },
   "eslintConfig": {
     "root": true,

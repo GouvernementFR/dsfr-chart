@@ -201,7 +201,6 @@ export default {
       }
 
       // Formatage des données
-      // const ctx = document.getElementById(self.chartId).getContext('2d')
       let data = []
       // Cas ou x est numérique
       if (typeof self.xparse[0][0] === 'number') {
@@ -339,13 +338,7 @@ export default {
               type: self.xAxisType,
               gridLines: {
                 color: 'rgba(0, 0, 0, 0)'
-              }// ,
-              // ticks: {
-              //   autoSkip: true,
-              //   maxTicksLimit: xTickLimit,
-              //   maxRotation: 0,
-              //   minRotation: 0
-              // }
+              }
             }],
             yAxes: [{
               gridLines: {

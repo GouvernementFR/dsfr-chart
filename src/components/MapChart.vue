@@ -236,7 +236,6 @@ export default {
       const parentWidget = document.getElementById(this.widgetId)
       const hoverdep = e.target.className.baseVal.replace(/FR-/g, '')
       const elCol = parentWidget.getElementsByClassName('FR-' + hoverdep)
-      // elCol.length !== 0 && elCol[0].setAttribute('fill', 'red')
       elCol[0].style.opacity = '0.72'
       this.tooltip.value = this.dataParse[hoverdep]
       this.tooltip.place = this.getDep(hoverdep).label
@@ -318,7 +317,6 @@ export default {
   created () {
     this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
     this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
-    // this.getData()
   },
   mounted () {
     this.createChart()

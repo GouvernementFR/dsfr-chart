@@ -341,13 +341,7 @@ export default {
               type: self.xAxisType,
               gridLines: {
                 color: 'rgba(0, 0, 0, 0)'
-              }// ,
-              // ticks: {
-              //   autoSkip: true,
-              //   maxTicksLimit: xTickLimit,
-              //   maxRotation: 0,
-              //   minRotation: 0
-              // }
+              }
             }],
             yAxes: [{
               position: 'left',
