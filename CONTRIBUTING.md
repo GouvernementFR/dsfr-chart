@@ -63,12 +63,12 @@ Finalement il faut créer la commande "build" du composants dans le fichier ``pa
 ``"build-new": "vue-cli-service build --target lib --dest ./NewChart --inline-vue --name new-chart src/NewChart.js"``
 
 * **--dest** permet de choisir le dossier de destination des fichiers compilés
-
 * **name** permet de choisir le nom du web-component
-
 * **src/NewChart.js** correspond au fichier js à exécuter
 
-  
+Il est également nécessaire de rajouter la commande nouvellement créée dans la commande `build-all` de la manière suivante :
+
+`"build all": npm run build-bar & ... & npm run build-new`
 
 ## Compilation
 
@@ -76,13 +76,17 @@ Compiler le fichier permettant d'obtenir le distribuable comportant tous les gra
 
 ``npm run build``
 
-Compiler les fichiers permettant d'obtenir un distribuable par graphique :
+Compiler les fichiers permettant d'obtenir un distribuable par graphique soit en exécutant les commandes une par une :
 
 ``npm run build-line``
 
 ``npm run build-map``
 
 etc...
+
+soit en utilisant la commande :
+
+`npm run build-all`
 
 
 

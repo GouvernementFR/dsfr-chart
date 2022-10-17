@@ -46,7 +46,7 @@ La structure mise à disposition, sur le zip ou npm est la suivante :
 
 #### Prérequis
 
-**DSFR Chart** doit être utilisé dans un projet utilisant le **DSFR**. Le projet doit à minima importer les feuilles css : 
+**DSFR Chart** doit être utilisé dans un projet utilisant le [DSFR](https://www.systeme-de-design.gouv.fr/comment-utiliser-le-dsfr/developpeurs/prise-en-main-du-dsfr/). Le projet doit à minima importer les feuilles css : 
 
 * dsfr.min.css
 * icons-system.min.css (dans *utility/icons/icons-system*)
