@@ -11,10 +11,10 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div v-for="index in nameParse.length" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
-          <span class="legende_dot" v-bind:style="{'background-color': colorParse[index - 1]}"></span>
+        <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
+          <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
           <p class='fr-text--sm fr-text--bold fr-ml-1v fr-mb-0'>
-            {{capitalize(nameParse[index - 1])}}
+            {{capitalize(nameParse[index])}}
           </p>
         </div>
       </div>

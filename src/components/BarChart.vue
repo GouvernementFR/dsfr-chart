@@ -11,21 +11,21 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div v-for="index in nameParse.length" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
-          <span class="legende_dot" v-bind:style="{'background-color': colorParse[index - 1]}"></span>
+        <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
+          <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
           <p class='fr-text--sm fr-text--bold fr-ml-1v fr-mb-0'>
-            {{capitalize(nameParse[index - 1])}}
+            {{capitalize(nameParse[index])}}
           </p>
         </div>
-        <div v-for="index in hlineNameParse.length" :key="index" class="flex fr-mt-3v" :style="{'margin-left': style}">
-          <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index - 1]}"></span>
-          <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index - 1]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(hlineNameParse[index - 1]) }}</p>
+        <div v-for="(item2, index2) in hlineNameParse" :key="item2" class="flex fr-mt-3v" :style="{'margin-left': style}">
+          <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index2]}"></span>
+          <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index2]}"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(hlineNameParse[index2]) }}</p>
         </div>
-        <div v-for="index in vlineNameParse.length" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
-          <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index - 1]}"></span>
-          <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index - 1]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(vlineNameParse[index - 1]) }}</p>
+        <div v-for="(item3, index3) in vlineNameParse" :key="item3" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
+          <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index3]}"></span>
+          <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index3]}"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(vlineNameParse[index3]) }}</p>
         </div>
       </div>
     </div>
