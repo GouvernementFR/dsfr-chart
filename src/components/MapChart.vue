@@ -13,8 +13,11 @@
             <div class="tooltip_value">{{convertStringToLocaleNumber(tooltip.value)}}</div>
           </div>
         </div>
-        <div class="france_container no_select" :style="{display:displayFrance}">
+        <div class="france_container no_select" :style="{display:displayFrance}" v-if="isDep">
           <france :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></france>
+        </div>
+        <div class="france_container no_select" :style="{display:displayFrance}" v-if="isReg">
+          <france-reg :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></france-reg>
         </div>
         <div class="om_container fr-grid-row no_select">
           <div class="om fr-col-4 fr-col-sm" :style="{display:displayGuadeloupe}">
@@ -65,7 +68,10 @@ export default {
       chartId: '',
       scaleMin: 0,
       scaleMax: 0,
+      isDep: true,
+      isReg: false,
       zoomDep: undefined,
+      posQuerySelector: 0,
       leftColProps: {
         localisation: '',
         names: [],
@@ -105,6 +111,10 @@ export default {
       type: Number,
       default: undefined
     },
+    level: {
+      type: String,
+      default: 'dep'
+    },
     name: {
       type: String,
       default: 'Data'
@@ -131,11 +141,18 @@ export default {
       let listDep = []
       self.FranceProps.displayDep = {}
       if (this.zoomDep !== undefined) {
-        const a = this.getDep(this.zoomDep).region_value
-        listDep = this.getDepsFromReg(a)
-        listDep.forEach(function (key, j) {
-          values.push(self.dataParse[key])
-        })
+        if (this.level === 'dep') {
+          const a = this.getDep(this.zoomDep).region_value
+          listDep = this.getDepsFromReg(a)
+          listDep.forEach(function (key, j) {
+            values.push(self.dataParse[key])
+          })
+        } else {
+          listDep = this.getReg(this.zoomDep).value
+          for (const key in self.dataParse) {
+            values.push(self.dataParse[key])
+          }
+        }
       } else {
         for (const key in self.dataParse) {
           values.push(self.dataParse[key])
@@ -156,7 +173,7 @@ export default {
           elCol.length !== 0 && elCol[0].setAttribute('fill', x(self.dataParse[key]))
           self.FranceProps.displayDep['FR-' + key] = ''
         } else {
-          const polygon = document.querySelector('.FR-' + key).getBBox()
+          const polygon = document.querySelectorAll('.FR-' + key)[this.posQuerySelector].getBBox()
           if (self.zoomDep === key) {
             elCol.length !== 0 && elCol[0].setAttribute('fill', x(self.dataParse[key]))
             self.FranceProps.displayDep['FR-' + key] = ''
@@ -179,7 +196,11 @@ export default {
       }
 
       if (this.zoomDep !== undefined) {
-        this.leftColProps.localisation = this.getDep(this.zoomDep).label
+        if (this.level === 'dep') {
+          this.leftColProps.localisation = this.getDep(this.zoomDep).label
+        } else {
+          this.leftColProps.localisation = this.getReg(this.zoomDep).label
+        }
         this.leftColProps.value = this.dataParse[this.zoomDep]
         this.leftColProps.levelNat = (this.valuenat !== undefined)
         this.leftColProps.valueNat = this.valuenat
@@ -215,7 +236,11 @@ export default {
         this.leftColProps.localisation = 'France'
         this.leftColProps.value = this.valuenat
         this.leftColProps.levelNat = false
-        this.FranceProps.viewBox = '0 0 262 262'
+        if (this.level === 'dep') {
+          this.FranceProps.viewBox = '0 0 262 262'
+        } else {
+          this.FranceProps.viewBox = '0 0 800 800'
+        }
         this.displayFrance = ''
         this.displayGuadeloupe = ''
         this.displayMartinique = ''
@@ -238,7 +263,11 @@ export default {
       const elCol = parentWidget.getElementsByClassName('FR-' + hoverdep)
       elCol[0].style.opacity = '0.72'
       this.tooltip.value = this.dataParse[hoverdep]
-      this.tooltip.place = this.getDep(hoverdep).label
+      if (this.level === 'dep') {
+        this.tooltip.place = this.getDep(hoverdep).label
+      } else {
+        this.tooltip.place = this.getReg(hoverdep).label
+      }
 
       const elem = parentWidget.getElementsByClassName('map_tooltip')[0]
       const tooltipRect = elem.getBoundingClientRect()
@@ -292,7 +321,7 @@ export default {
       if (clickdep === 'France') {
         clickdep = e.target._prevClass.replace(/FR-/, '')
       } else {
-        clickdep = clickdep.replace(/FR-/g, '')
+        clickdep = e.target.className.baseVal.replace(/FR-/g, '')
       }
 
       this.zoomDep = clickdep
@@ -317,6 +346,13 @@ export default {
   created () {
     this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
     this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
+    this.isDep = (this.level === 'dep')
+    this.isReg = (this.level === 'reg')
+    if (this.level === 'dep') {
+      this.posQuerySelector = 0
+    } else {
+      this.posQuerySelector = 1
+    }
   },
   mounted () {
     this.createChart()

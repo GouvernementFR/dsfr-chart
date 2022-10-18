@@ -634,81 +634,80 @@ const dep = [
   }
 ]
 
-// const reg = [
-//   {
-//     value: '84',
-//     label: 'Auvergne-Rhône-Alpes',
-//     viewBox: '120 100 100 80'
-//   },
-//   {
-//     value: '32',
-//     label: 'Hauts-de-France'
-//   },
-//   {
-//     value: '93',
-//     label: "Provence-Alpes-Côte d'Azur"
-//   },
-//   {
-//     value: '44',
-//     label: 'Grand Est'
-//   },
-//   {
-//     value: '76',
-//     label: 'Occitanie'
-//   },
-//   {
-//     value: '28',
-//     label: 'Normandie'
-//   },
-//   {
-//     value: '75',
-//     label: 'Nouvelle-Aquitaine'
-//   },
-//   {
-//     value: '24',
-//     label: 'Centre-Val de Loire'
-//   },
-//   {
-//     value: '27',
-//     label: 'Bourgogne-Franche-Comté'
-//   },
-//   {
-//     value: '53',
-//     label: 'Bretagne'
-//   },
-//   {
-//     value: '94',
-//     label: 'Corse'
-//   },
-//   {
-//     value: '52',
-//     label: 'Pays de la Loire'
-//   },
-//   {
-//     value: '11',
-//     label: 'Île-de-France'
-//   },
-//   {
-//     value: '01',
-//     label: 'Guadeloupe'
-//   },
-//   {
-//     value: '02',
-//     label: 'Martinique'
-//   },
-//   {
-//     value: '03',
-//     label: 'Guyane'
-//   },
-//   {
-//     value: '04',
-//     label: 'La Réunion'
-//   },
-//   {
-//     value: '06',
-//     label: 'Mayotte'
-//   }
-// ]
+const reg = [
+  {
+    value: '84',
+    label: 'Auvergne-Rhône-Alpes'
+  },
+  {
+    value: '32',
+    label: 'Hauts-de-France'
+  },
+  {
+    value: '93',
+    label: "Provence-Alpes-Côte d'Azur"
+  },
+  {
+    value: '44',
+    label: 'Grand Est'
+  },
+  {
+    value: '76',
+    label: 'Occitanie'
+  },
+  {
+    value: '28',
+    label: 'Normandie'
+  },
+  {
+    value: '75',
+    label: 'Nouvelle-Aquitaine'
+  },
+  {
+    value: '24',
+    label: 'Centre-Val de Loire'
+  },
+  {
+    value: '27',
+    label: 'Bourgogne-Franche-Comté'
+  },
+  {
+    value: '53',
+    label: 'Bretagne'
+  },
+  {
+    value: '94',
+    label: 'Corse'
+  },
+  {
+    value: '52',
+    label: 'Pays de la Loire'
+  },
+  {
+    value: '11',
+    label: 'Île-de-France'
+  },
+  {
+    value: '971',
+    label: 'Guadeloupe'
+  },
+  {
+    value: '972',
+    label: 'Martinique'
+  },
+  {
+    value: '973',
+    label: 'Guyane'
+  },
+  {
+    value: '974',
+    label: 'La Réunion'
+  },
+  {
+    value: '976',
+    label: 'Mayotte'
+  }
+]
 
 export const getDep = function (code) {
   const depObj = dep.find(obj => {
@@ -716,6 +715,14 @@ export const getDep = function (code) {
   })
 
   return depObj
+}
+
+export const getReg = function (code) {
+  const regObj = reg.find(obj => {
+    return obj.value === code
+  })
+
+  return regObj
 }
 
 export const getDepsFromReg = function (code) {
@@ -738,6 +745,7 @@ export const mixin = {
     convertDateToHuman,
     testIfNaN,
     getDep,
+    getReg,
     getDepsFromReg
   }
 }
