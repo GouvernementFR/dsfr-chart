@@ -1,5 +1,6 @@
 import France from './France'
 import FranceReg from './FranceReg'
+import FranceAcad from './FranceAcad'
 import Guadeloupe from './Guadeloupe'
 import Martinique from './Martinique'
 import Guyane from './Guyane'
@@ -9,6 +10,7 @@ import Mayotte from './Mayotte'
 export default {
   France,
   FranceReg,
+  FranceAcad,
   Guadeloupe,
   Martinique,
   Guyane,

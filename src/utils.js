@@ -709,6 +709,129 @@ const reg = [
   }
 ]
 
+const acad = [
+  {
+    value: '01',
+    label: 'Académie de Clermont-Ferrand'
+  },
+  {
+    value: '02',
+    label: 'Académie de Grenoble'
+  },
+  {
+    value: '03',
+    label: 'Académie de Lyon'
+  },
+  {
+    value: '04',
+    label: 'Académie de Besançon'
+  },
+  {
+    value: '05',
+    label: 'Académie de Dijon'
+  },
+  {
+    value: '06',
+    label: 'Académie de Rennes'
+  },
+  {
+    value: '07',
+    label: "Académie d'Orléans-Tours"
+  },
+  {
+    value: '08',
+    label: 'Académie de Corse'
+  },
+  {
+    value: '09',
+    label: 'Académie de Nancy-Metz'
+  },
+  {
+    value: '10',
+    label: 'Académie de Reims'
+  },
+  {
+    value: '11',
+    label: 'Académie de Strasbourg'
+  },
+  {
+    value: '14',
+    label: "Académie d'Amiens"
+  },
+  {
+    value: '15',
+    label: 'Académie de Lille'
+  },
+  {
+    value: '16',
+    label: 'Académie de Créteil'
+  },
+  {
+    value: '17',
+    label: 'Académie de Paris'
+  },
+  {
+    value: '18',
+    label: 'Académie de Versailles'
+  },
+  {
+    value: '20',
+    label: 'Académie de Normandie'
+  },
+  {
+    value: '21',
+    label: 'Académie de Bordeaux'
+  },
+  {
+    value: '22',
+    label: 'Académie de Limoges'
+  },
+  {
+    value: '23',
+    label: 'Académie de Poitiers'
+  },
+  {
+    value: '24',
+    label: 'Académie de Montpellier'
+  },
+  {
+    value: '25',
+    label: 'Académie de Toulouse'
+  },
+  {
+    value: '26',
+    label: 'Académie de Nantes'
+  },
+  {
+    value: '27',
+    label: "Académie d'Aix-Marseille"
+  },
+  {
+    value: '28',
+    label: 'Académie de Nice'
+  },
+  {
+    value: '971',
+    label: 'Académie de Guadeloupe'
+  },
+  {
+    value: '972',
+    label: 'Académie de Martinique'
+  },
+  {
+    value: '973',
+    label: 'Académie de Guyane'
+  },
+  {
+    value: '974',
+    label: 'Académie de La Réunion'
+  },
+  {
+    value: '976',
+    label: 'Académie de Mayotte'
+  }
+]
+
 export const getDep = function (code) {
   const depObj = dep.find(obj => {
     return obj.value === code
@@ -723,6 +846,14 @@ export const getReg = function (code) {
   })
 
   return regObj
+}
+
+export const getAcad = function (code) {
+  const acadObj = acad.find(obj => {
+    return obj.value === code
+  })
+
+  return acadObj
 }
 
 export const getDepsFromReg = function (code) {
@@ -746,6 +877,7 @@ export const mixin = {
     testIfNaN,
     getDep,
     getReg,
+    getAcad,
     getDepsFromReg
   }
 }

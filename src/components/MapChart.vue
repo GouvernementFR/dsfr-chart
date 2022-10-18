@@ -19,6 +19,9 @@
         <div class="france_container no_select" :style="{display:displayFrance}" v-if="isReg">
           <france-reg :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></france-reg>
         </div>
+        <div class="france_container no_select" :style="{display:displayFrance}" v-if="isAcad">
+          <france-acad :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></france-acad>
+        </div>
         <div class="om_container fr-grid-row no_select">
           <div class="om fr-col-4 fr-col-sm" :style="{display:displayGuadeloupe}">
             <span class="fr-text--xs fr-my-1w">Guadeloupe</span>
@@ -70,6 +73,7 @@ export default {
       scaleMax: 0,
       isDep: true,
       isReg: false,
+      isAcad: false,
       zoomDep: undefined,
       posQuerySelector: 0,
       leftColProps: {
@@ -144,15 +148,14 @@ export default {
         if (this.level === 'dep') {
           const a = this.getDep(this.zoomDep).region_value
           listDep = this.getDepsFromReg(a)
-          listDep.forEach(function (key, j) {
-            values.push(self.dataParse[key])
-          })
+        } else if (this.level === 'reg') {
+          listDep = [this.getReg(this.zoomDep).value]
         } else {
-          listDep = this.getReg(this.zoomDep).value
-          for (const key in self.dataParse) {
-            values.push(self.dataParse[key])
-          }
+          listDep = [this.getAcad(this.zoomDep).value]
         }
+        listDep.forEach(function (key, j) {
+          values.push(self.dataParse[key])
+        })
       } else {
         for (const key in self.dataParse) {
           values.push(self.dataParse[key])
@@ -173,6 +176,7 @@ export default {
           elCol.length !== 0 && elCol[0].setAttribute('fill', x(self.dataParse[key]))
           self.FranceProps.displayDep['FR-' + key] = ''
         } else {
+          console.log(document.querySelectorAll('.FR-' + key))
           const polygon = document.querySelectorAll('.FR-' + key)[this.posQuerySelector].getBBox()
           if (self.zoomDep === key) {
             elCol.length !== 0 && elCol[0].setAttribute('fill', x(self.dataParse[key]))
@@ -238,6 +242,8 @@ export default {
         this.leftColProps.levelNat = false
         if (this.level === 'dep') {
           this.FranceProps.viewBox = '0 0 262 262'
+        } else if (this.level === 'reg') {
+          this.FranceProps.viewBox = '0 0 800 800'
         } else {
           this.FranceProps.viewBox = '0 0 800 800'
         }
@@ -265,8 +271,10 @@ export default {
       this.tooltip.value = this.dataParse[hoverdep]
       if (this.level === 'dep') {
         this.tooltip.place = this.getDep(hoverdep).label
-      } else {
+      } else if (this.level === 'reg') {
         this.tooltip.place = this.getReg(hoverdep).label
+      } else {
+        this.tooltip.place = this.getAcad(hoverdep).label
       }
 
       const elem = parentWidget.getElementsByClassName('map_tooltip')[0]
@@ -348,10 +356,13 @@ export default {
     this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
     this.isDep = (this.level === 'dep')
     this.isReg = (this.level === 'reg')
+    this.isAcad = (this.level === 'acad')
     if (this.level === 'dep') {
       this.posQuerySelector = 0
-    } else {
+    } else if (this.level === 'reg') {
       this.posQuerySelector = 1
+    } else {
+      this.posQuerySelector = 2
     }
   },
   mounted () {
