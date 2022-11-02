@@ -75,7 +75,7 @@ export default {
       isReg: false,
       isAcad: false,
       zoomDep: undefined,
-      posQuerySelector: 0,
+      prefixClass: 'FR-',
       leftColProps: {
         localisation: '',
         names: [],
@@ -144,6 +144,7 @@ export default {
       // Fill Map
       let listDep = []
       self.FranceProps.displayDep = {}
+
       if (this.zoomDep !== undefined) {
         if (this.level === 'dep') {
           const a = this.getDep(this.zoomDep).region_value
@@ -170,31 +171,37 @@ export default {
       let xmax = []
       let ymin = []
       let ymax = []
+
       for (const key in self.dataParse) {
-        const elCol = parentWidget.getElementsByClassName('FR-' + key)
+        let className
+        if (key.length === 3) {
+          className = 'FR-' + key
+        } else {
+          className = this.prefixClass + key
+        }
+        const elCol = parentWidget.getElementsByClassName(className)
         if (self.zoomDep === undefined) {
           elCol.length !== 0 && elCol[0].setAttribute('fill', x(self.dataParse[key]))
-          self.FranceProps.displayDep['FR-' + key] = ''
+          self.FranceProps.displayDep[className] = ''
         } else {
-          console.log(document.querySelectorAll('.FR-' + key))
-          const polygon = document.querySelectorAll('.FR-' + key)[this.posQuerySelector].getBBox()
+          const polygon = document.querySelector('.' + className).getBBox()
           if (self.zoomDep === key) {
             elCol.length !== 0 && elCol[0].setAttribute('fill', x(self.dataParse[key]))
-            self.FranceProps.displayDep['FR-' + key] = ''
+            self.FranceProps.displayDep[className] = ''
             xmin.push(polygon.x)
             ymin.push(polygon.y)
             xmax.push(polygon.x + polygon.width)
             ymax.push(polygon.y + polygon.height)
           } else if (listDep.includes(key)) {
             elCol.length !== 0 && elCol[0].setAttribute('fill', 'rgba(247, 237, 211, 0.72)')
-            self.FranceProps.displayDep['FR-' + key] = ''
+            self.FranceProps.displayDep[className] = ''
             xmin.push(polygon.x)
             ymin.push(polygon.y)
             xmax.push(polygon.x + polygon.width)
             ymax.push(polygon.y + polygon.height)
           } else {
             elCol.length !== 0 && elCol[0].setAttribute('fill', 'rgba(255, 255, 255, 0)')
-            self.FranceProps.displayDep['FR-' + key] = 'none'
+            self.FranceProps.displayDep[className] = 'none'
           }
         }
       }
@@ -202,8 +209,10 @@ export default {
       if (this.zoomDep !== undefined) {
         if (this.level === 'dep') {
           this.leftColProps.localisation = this.getDep(this.zoomDep).label
-        } else {
+        } else if (this.level === 'reg') {
           this.leftColProps.localisation = this.getReg(this.zoomDep).label
+        } else {
+          this.leftColProps.localisation = this.getAcad(this.zoomDep).label
         }
         this.leftColProps.value = this.dataParse[this.zoomDep]
         this.leftColProps.levelNat = (this.valuenat !== undefined)
@@ -245,7 +254,7 @@ export default {
         } else if (this.level === 'reg') {
           this.FranceProps.viewBox = '0 0 800 800'
         } else {
-          this.FranceProps.viewBox = '0 0 800 800'
+          this.FranceProps.viewBox = '0 0 700 700'
         }
         this.displayFrance = ''
         this.displayGuadeloupe = ''
@@ -265,8 +274,14 @@ export default {
     displayTooltip (e) {
       if (isMobile) return
       const parentWidget = document.getElementById(this.widgetId)
-      const hoverdep = e.target.className.baseVal.replace(/FR-/g, '')
-      const elCol = parentWidget.getElementsByClassName('FR-' + hoverdep)
+      const hoverdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
+      let className
+      if (hoverdep.length === 3) {
+        className = 'FR-' + hoverdep
+      } else {
+        className = this.prefixClass + hoverdep
+      }
+      const elCol = parentWidget.getElementsByClassName(className)
       elCol[0].style.opacity = '0.72'
       this.tooltip.value = this.dataParse[hoverdep]
       if (this.level === 'dep') {
@@ -304,8 +319,14 @@ export default {
       if (isMobile) return
       this.tooltip.visibility = 'hidden'
       const parentWidget = document.getElementById(this.widgetId)
-      const hoverdep = e.target.className.baseVal.replace(/FR-/g, '')
-      const elCol = parentWidget.getElementsByClassName('FR-' + hoverdep)
+      const hoverdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
+      let className
+      if (hoverdep.length === 3) {
+        className = 'FR-' + hoverdep
+      } else {
+        className = this.prefixClass + hoverdep
+      }
+      const elCol = parentWidget.getElementsByClassName(className)
       elCol[0].style.opacity = '1'
     },
     changeGeoLevel (e) {
@@ -327,9 +348,9 @@ export default {
         }
       }
       if (clickdep === 'France') {
-        clickdep = e.target._prevClass.replace(/FR-/, '')
+        clickdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
       } else {
-        clickdep = e.target.className.baseVal.replace(/FR-/g, '')
+        clickdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
       }
 
       this.zoomDep = clickdep
@@ -357,13 +378,7 @@ export default {
     this.isDep = (this.level === 'dep')
     this.isReg = (this.level === 'reg')
     this.isAcad = (this.level === 'acad')
-    if (this.level === 'dep') {
-      this.posQuerySelector = 0
-    } else if (this.level === 'reg') {
-      this.posQuerySelector = 1
-    } else {
-      this.posQuerySelector = 2
-    }
+    this.prefixClass = 'FR-' + this.level + '-'
   },
   mounted () {
     this.createChart()
