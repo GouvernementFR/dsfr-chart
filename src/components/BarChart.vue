@@ -66,7 +66,8 @@ export default {
       typeGraph: '',
       ymax: 0,
       annotations: [],
-      ColorPrecisionBar: '#161616'
+      colorPrecisionBar: '#161616',
+      colorBox: '#2f2f2f'
     }
   },
   props: {
@@ -234,7 +235,8 @@ export default {
             xMax: 2 * sumY,
             yMax: j + 0.5,
             yMin: j - 0.5,
-            backgroundColor: '#eeeeee'
+            backgroundColor: self.colorBox,
+            borderColor: self.colorBox
           }
 
           j = j + 2
@@ -317,7 +319,7 @@ export default {
                   ctx.moveTo(x, yAxis.top)
                   ctx.lineTo(x, yAxis.bottom)
                   ctx.lineWidth = '1'
-                  ctx.strokeStyle = self.ColorPrecisionBar
+                  ctx.strokeStyle = self.colorPrecisionBar
                   ctx.setLineDash([10, 5])
                   ctx.stroke()
                   ctx.restore()
@@ -327,7 +329,7 @@ export default {
                   ctx.moveTo(xAxis.left, y)
                   ctx.lineTo(xAxis.right, y)
                   ctx.lineWidth = '1'
-                  ctx.strokeStyle = self.ColorPrecisionBar
+                  ctx.strokeStyle = self.colorPrecisionBar
                   ctx.setLineDash([10, 5])
                   ctx.stroke()
                   ctx.restore()
@@ -505,13 +507,21 @@ export default {
     changeColors (theme) {
       this.loadColors()
       if (theme === 'light') {
-        this.ColorPrecisionBar = '#161616'
+        this.colorPrecisionBar = '#161616'
+        this.colorBox = '#eeeeee'
       } else {
-        this.ColorPrecisionBar = '#FFFFFF'
+        this.colorPrecisionBar = '#FFFFFF'
+        this.colorBox = '#2f2f2f'
       }
       for (let i = 0; i < this.yparse.length; i++) {
         this.chart.data.datasets[i].borderColor = this.colorParse[i]
         this.chart.data.datasets[i].backgroundColor = this.colorParse[i]
+      }
+
+      for (const box of Object.entries(this.chart.annotation.elements)) {
+        const key = box[0]
+        this.chart.annotation.elements[key].options.backgroundColor = this.colorBox
+        this.chart.annotation.elements[key].options.borderColor = this.colorBox
       }
       this.chart.update()
     }

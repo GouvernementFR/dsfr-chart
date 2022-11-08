@@ -44,17 +44,13 @@
           <section class="fr-grid-row fr-mt-10w">
             <div class="fr-col-12 fr-col-offset-md-1 fr-mb-6w">
               <div class="chart_container"> 
-                <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]' showline = true hline="[15]" vline="[5]"></scatter-chart>
+                <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]'></scatter-chart>
               </div> 
               <div class="chart_container"> 
-                <bar-chart x='[["4", "2", "3", "5", "8"], ["4", "2", "3", "5", "8"], ["4", "2", "3", "5", "8"]]' 
-                y='[[40, 50, 10, 5, 8], [10, 20, 30, 12, 8], [12, 12, 20, 23, 8]]' 
-                horizontal = true stacked = false vline = '[15, 45]'></bar-chart>
+                <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]'></bar-chart>
               </div>
               <div class="chart_container"> 
-                <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]',
-                 y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]'
-                 stacked = false hline = '[35]' horizontal = false></bar-chart>
+                <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' horizontal = true></bar-chart>
               </div>
               <div class="chart_container"> 
                 <pie-chart x = '[1, 2, 3]', y = '[10, 20, 30]' fill = true></pie-chart>
@@ -63,10 +59,9 @@
                 <pie-chart x = '[1, 2, 3]', y = '[10, 20, 30]'></pie-chart>
               </div>        
               <div class="chart_container"> 
-                <line-chart x = '[1, 2, 3]' y = '[10, 20, 30]' hline = '[15, 25]' vline = '[1.5]' color = 'green-bourgeon' hlinename = '["min", "max"]' hlinecolor = '["blue-france", "blue-france"]' vlinecolor = '["blue-france"]'></line-chart>
-              </div>   
+                <line-chart x = '[1, 2, 3]' y = '[10, 20, 30]' hline = '[15, 25]' hlinename = '["min", "max"]' hlinecolor = '["green-archipel", "orange-terre-battue"]'></line-chart>              </div>   
               <div class="chart_container"> 
-                <multiline-chart x='[[1, 2, 3], [1, 2, 3]]', y='[[30, 10, 20], [10, 20, 30]]' vline=[1.5] hline='[15, 20]' hlinecolor='["blue-france", "blue-france"]'></multiline-chart>
+                <multiline-chart x='[[1, 2, 3], [1, 2, 3]]' y='[[30, 10, 20], [10, 20, 30]]'></multiline-chart>
               </div>     
               <div class="chart_container"> 
                 <multiline-chart x='[[1, 2, 3], [1, 2, 3], [1, 2, 3]]' y='[[30, 10, 20], [10, 20, 30], [25, 15, 5]]' vline=[1.5]
@@ -74,8 +69,7 @@
                 vlineName = '["debut"]'></multiline-chart>
               </div>        
               <div class="chart_container"> 
-                <bar-line-chart x='[1, 2, 3]', y='[30, 10, 20]' ybar = '[20, 15, 12]' namebar = 'Custom' vline = '[1, 2]' hline = '[15, 20]'></bar-line-chart>
-              </div>    
+                <bar-line-chart x='[1, 2, 3]' y='[30, 10, 20]' ybar = '[20, 15, 12]'></bar-line-chart>
               <div class="chart_container"> 
                 <map-chart data = '{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
                 "12": 33, "13": 89, "14": 24, "15": 52, "16": 41, "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,

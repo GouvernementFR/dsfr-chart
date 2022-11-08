@@ -6,7 +6,7 @@
           <div class="tooltip_header"></div>
           <div class="tooltip_body">
             <div class="tooltip_value">
-              <span class="tooltip_dot" v-bind:style="{'background-color': color}"></span>
+              <span class="tooltip_dot" v-bind:style="{'background-color': colorBarParse}"></span>
             </div>
           </div>
         </div>
@@ -317,7 +317,7 @@ export default {
                 ctx.moveTo(xAxis.left, ybar)
                 ctx.lineTo(x, ybar)
                 ctx.lineWidth = '1'
-                ctx.strokeStyle = '#161616'
+                ctx.strokeStyle = self.ColorPrecisionBar
                 ctx.setLineDash([10, 5])
                 ctx.stroke()
                 ctx.restore()
@@ -438,7 +438,7 @@ export default {
                 const divDate = self.$el.querySelector('.tooltip_header')
                 divDate.innerHTML = titleLines[0]
 
-                const color = [self.colorbar, self.color]
+                const color = [self.colorBarParse, self.colorParse]
                 const divValue = self.$el.querySelector('.tooltip_value')
 
                 const nodeName = self.$el.querySelector('.tooltip_dot').attributes[0].nodeName
