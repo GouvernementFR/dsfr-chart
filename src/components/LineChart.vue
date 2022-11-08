@@ -58,7 +58,7 @@ export default {
       hlineNameParse: [],
       ymax: 0,
       colorParse: undefined,
-      ColorPrecisionBar: '#161616'
+      colorPrecisionBar: '#161616'
     }
   },
   props: {
@@ -264,7 +264,7 @@ export default {
                 ctx.moveTo(x, yAxis.top)
                 ctx.lineTo(x, yAxis.bottom)
                 ctx.lineWidth = '1'
-                ctx.strokeStyle = self.ColorPrecisionBar
+                ctx.strokeStyle = self.colorPrecisionBar
                 ctx.setLineDash([10, 5])
                 ctx.stroke()
                 ctx.restore()
@@ -274,7 +274,7 @@ export default {
                 ctx.moveTo(xAxis.left, y)
                 ctx.lineTo(xAxis.right, y)
                 ctx.lineWidth = '1'
-                ctx.strokeStyle = self.ColorPrecisionBar
+                ctx.strokeStyle = self.colorPrecisionBar
                 ctx.setLineDash([10, 5])
                 ctx.stroke()
                 ctx.restore()
@@ -416,9 +416,9 @@ export default {
     changeColors (theme) {
       this.loadColors()
       if (theme === 'light') {
-        this.ColorPrecisionBar = '#161616'
+        this.colorPrecisionBar = '#161616'
       } else {
-        this.ColorPrecisionBar = '#FFFFFF'
+        this.colorPrecisionBar = '#FFFFFF'
       }
       this.chart.data.datasets[0].borderColor = this.colorParse
       this.chart.update()
