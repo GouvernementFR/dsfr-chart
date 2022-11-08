@@ -32,7 +32,6 @@
   </div>
 </template>
 <script>
-import chroma from 'chroma-js'
 import { Chart } from 'chart.js'
 import { mixin } from '@/utils.js'
 import annotationPlugin from 'chartjs-plugin-annotation'
@@ -53,16 +52,21 @@ export default {
       xparse: [],
       yparse: [],
       nameParse: [],
+      tmpColorParse: [],
       colorParse: [],
+      listColors: [],
       vlineParse: [],
       vlineColorParse: [],
+      tmpVlineColorParse: [],
       vlineNameParse: [],
       hlineParse: [],
       hlineColorParse: [],
+      tmpHlineColorParse: [],
       hlineNameParse: [],
       typeGraph: '',
       ymax: 0,
-      annotations: []
+      annotations: [],
+      ColorPrecisionBar: '#161616'
     }
   },
   props: {
@@ -129,7 +133,7 @@ export default {
       } else {
         this.typeGraph = 'bar'
       }
-      const listColors = ['#000091', '#007c3a', '#A558A0'].concat(chroma.brewer.Set2.reverse())
+      this.listColors = this.getAllColors()
       this.xparse = JSON.parse(this.x)
       this.yparse = JSON.parse(this.y)
 
@@ -137,21 +141,16 @@ export default {
       if (this.name !== undefined) {
         tmpNameParse = JSON.parse(self.name)
       }
-      let tmpColorParse = []
       if (this.color !== undefined) {
-        tmpColorParse = JSON.parse(self.color)
+        this.tmpColorParse = JSON.parse(self.color)
       }
 
+      this.loadColors()
       for (let i = 0; i < this.yparse.length; i++) {
         if (tmpNameParse[i] !== undefined) {
           self.nameParse.push(tmpNameParse[i])
         } else {
           self.nameParse.push('Serie' + (i + 1))
-        }
-        if (tmpColorParse[i] !== undefined) {
-          self.colorParse.push(tmpColorParse[i])
-        } else {
-          self.colorParse.push(listColors[i])
         }
       }
 
@@ -162,9 +161,8 @@ export default {
         if (this.vlinename !== undefined) {
           tmpVlineNameParse = JSON.parse(self.vlinename)
         }
-        let tmpVlineColorParse = []
         if (this.vlinecolor !== undefined) {
-          tmpVlineColorParse = JSON.parse(self.vlinecolor)
+          this.tmpVlineColorParse = JSON.parse(self.vlinecolor)
         }
 
         for (let i = 0; i < this.vlineParse.length; i++) {
@@ -172,11 +170,6 @@ export default {
             self.vlineNameParse.push(tmpVlineNameParse[i])
           } else {
             self.vlineNameParse.push('V' + (i + 1))
-          }
-          if (tmpVlineColorParse[i] !== undefined) {
-            self.vlineColorParse.push(tmpVlineColorParse[i])
-          } else {
-            self.vlineColorParse.push('#161616')
           }
         }
       }
@@ -188,9 +181,8 @@ export default {
         if (this.hlinename !== undefined) {
           tmpHlineNameParse = JSON.parse(self.hlinename)
         }
-        let tmpHlineColorParse = []
         if (this.hlinecolor !== undefined) {
-          tmpHlineColorParse = JSON.parse(self.hlinecolor)
+          this.tmpHlineColorParse = JSON.parse(self.hlinecolor)
         }
 
         for (let i = 0; i < this.hlineParse.length; i++) {
@@ -198,11 +190,6 @@ export default {
             self.hlineNameParse.push(tmpHlineNameParse[i])
           } else {
             self.hlineNameParse.push('H' + (i + 1))
-          }
-          if (tmpHlineColorParse[i] !== undefined) {
-            self.hlineColorParse.push(tmpHlineColorParse[i])
-          } else {
-            self.hlineColorParse.push('#009081')
           }
         }
       }
@@ -330,7 +317,7 @@ export default {
                   ctx.moveTo(x, yAxis.top)
                   ctx.lineTo(x, yAxis.bottom)
                   ctx.lineWidth = '1'
-                  ctx.strokeStyle = '#161616'
+                  ctx.strokeStyle = self.ColorPrecisionBar
                   ctx.setLineDash([10, 5])
                   ctx.stroke()
                   ctx.restore()
@@ -340,7 +327,7 @@ export default {
                   ctx.moveTo(xAxis.left, y)
                   ctx.lineTo(xAxis.right, y)
                   ctx.lineWidth = '1'
-                  ctx.strokeStyle = '#161616'
+                  ctx.strokeStyle = self.ColorPrecisionBar
                   ctx.setLineDash([10, 5])
                   ctx.stroke()
                   ctx.restore()
@@ -486,6 +473,47 @@ export default {
           }
         }
       })
+    },
+    loadColors () {
+      this.colorParse = []
+      for (let i = 0; i < this.yparse.length; i++) {
+        if (this.tmpColorParse[i] !== undefined) {
+          this.colorParse.push(this.getHexaFromName(this.tmpColorParse[i]))
+        } else {
+          this.colorParse.push(this.getHexaFromName(this.listColors[i]))
+        }
+      }
+
+      this.vlineColorParse = []
+      for (let i = 0; i < this.vlineParse.length; i++) {
+        if (this.tmpVlineColorParse[i] !== undefined) {
+          this.vlineColorParse.push(this.getHexaFromName(this.tmpVlineColorParse[i]))
+        } else {
+          this.vlineColorParse.push(this.getHexaFromName('brown-cafe-creme'))
+        }
+      }
+
+      this.hlineColorParse = []
+      for (let i = 0; i < this.hlineParse.length; i++) {
+        if (this.tmpHlineColorParse[i] !== undefined) {
+          this.hlineColorParse.push(this.getHexaFromName(this.tmpHlineColorParse[i]))
+        } else {
+          this.hlineColorParse.push(this.getHexaFromName('beige-gris-galet'))
+        }
+      }
+    },
+    changeColors (theme) {
+      this.loadColors()
+      if (theme === 'light') {
+        this.ColorPrecisionBar = '#161616'
+      } else {
+        this.ColorPrecisionBar = '#FFFFFF'
+      }
+      for (let i = 0; i < this.yparse.length; i++) {
+        this.chart.data.datasets[i].borderColor = this.colorParse[i]
+        this.chart.data.datasets[i].backgroundColor = this.colorParse[i]
+      }
+      this.chart.update()
     }
   },
   created () {
@@ -495,6 +523,10 @@ export default {
   mounted () {
     document.getElementById(this.widgetId).offsetWidth > 486 ? this.display = 'big' : this.display = 'small'
     this.createChart()
+    const element = document.documentElement // Reference à l'element <html> du DOM
+    element.addEventListener('dsfr.theme', (e) => {
+      this.changeColors(e.detail)
+    })
   }
 }
 </script>

@@ -25,6 +25,28 @@ export const testIfNaN = function (float) {
   return isNaN(parseFloat(float))
 }
 
+const colorsDSFR = [
+  'blue-france',
+  'red-marianne',
+  'green-tilleul-verveine',
+  'green-bourgeon',
+  'green-emeraude',
+  'green-menthe',
+  'green-archipel',
+  'blue-ecume',
+  'blue-cumulus',
+  'purple-glycine',
+  'pink-macaron',
+  'pink-tuile',
+  'yellow-tournesol',
+  'yellow-moutarde',
+  'orange-terre-battue',
+  'brown-cafe-creme',
+  'brown-caramel',
+  'brown-opera',
+  'beige-gris-galet'
+]
+
 const dep = [
   {
     value: '01',
@@ -710,6 +732,14 @@ const dep = [
 //   }
 // ]
 
+export const getAllColors = function () {
+  return colorsDSFR
+}
+
+export const getHexaFromName = function (colorName) {
+  return window.dsfr.colors.getColors('artwork', 'major', colorName)
+}
+
 export const getDep = function (code) {
   const depObj = dep.find(obj => {
     return obj.value === code
@@ -738,6 +768,8 @@ export const mixin = {
     convertDateToHuman,
     testIfNaN,
     getDep,
-    getDepsFromReg
+    getDepsFromReg,
+    getAllColors,
+    getHexaFromName
   }
 }

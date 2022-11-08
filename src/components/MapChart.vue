@@ -244,19 +244,19 @@ export default {
       const tooltipRect = elem.getBoundingClientRect()
       const tooltipWidth = tooltipRect.width
       const tooltipHeight = tooltipRect.height
-      const { x: transformX, y: transformY } = this.getTransformCoordinates()
+      // const { x: transformX, y: transformY } = this.getTransformCoordinates()
 
       const containerRect = e.target.getBoundingClientRect()
-      let tooltipX = transformX + containerRect.left + ((containerRect.width - tooltipWidth) / 2)
-      let tooltipY = transformY + containerRect.top - tooltipHeight
+      let tooltipX = containerRect.left + ((containerRect.width - tooltipWidth) / 2)
+      let tooltipY = containerRect.top - tooltipHeight
 
       const limitsRect = parentWidget.getBoundingClientRect()
-      if (tooltipY - transformY < limitsRect.top) {
-        tooltipY = transformY + containerRect.bottom
+      if (tooltipY < limitsRect.top) {
+        tooltipY = containerRect.bottom
       }
-      if (tooltipX - transformX + tooltipWidth > limitsRect.right) {
-        tooltipX = transformX + containerRect.right - tooltipWidth - 10
-        tooltipY = transformY + containerRect.top - tooltipHeight / 2
+      if (tooltipX + tooltipWidth > limitsRect.right) {
+        tooltipX = containerRect.right - tooltipWidth - 10
+        tooltipY = containerRect.top - tooltipHeight / 2
       }
 
       this.tooltip.top = tooltipY + 'px'
@@ -301,18 +301,19 @@ export default {
     resetGeoFilters () {
       this.zoomDep = undefined
       this.createChart()
-    },
-    getTransformCoordinates () {
-      const coordinates = { x: 0, y: 0 }
-      const tab = this.$el.closest('.fr-tabs__panel')
-      // .fr-tabs__panel are transformed in DSFR 1.7 with transform: translate(-100%).
-      if (tab && window.getComputedStyle(tab).getPropertyValue('transform')) {
-        const tabs = tab.closest('.fr-tabs')
-        coordinates.x = tabs.getBoundingClientRect().left * -1
-        coordinates.y = tab.getBoundingClientRect().top * -1
-      }
-      return coordinates
-    }
+    }//,
+    // getTransformCoordinates () {
+    //   const coordinates = { x: 0, y: 0 }
+    //   // const tab = this.$el.closest('.fr-tabs__panel')
+    //   // // .fr-tabs__panel are transformed in DSFR 1.7 with transform: translate(-100%).
+    //   // if (tab && window.getComputedStyle(tab).getPropertyValue('transform')) {
+    //   //   const tabs = tab.closest('.fr-tabs')
+    //   //   coordinates.x = tabs.getBoundingClientRect().left * -1
+    //   //   coordinates.y = tab.getBoundingClientRect().top * -1
+    //   // }
+    //   // console.log(coordinates)
+    //   return coordinates
+    // }
   },
   created () {
     this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
