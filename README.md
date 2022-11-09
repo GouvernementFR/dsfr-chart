@@ -51,6 +51,7 @@ La structure mise à disposition, sur le zip ou npm est la suivante :
 * dsfr.min.css
 * icons-system.min.css (dans *utility/icons/icons-system*)
 
+Il est également nécessaire de charger [l'API Javascript](https://www.systeme-de-design.gouv.fr/comment-utiliser-le-dsfr/developpeurs/api-javascript/) : dsfr.module.min.js
 
 
 #### Importation des web-components
