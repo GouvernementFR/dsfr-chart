@@ -63,7 +63,8 @@ export default {
       hlineNameParse: [],
       ymax: 0,
       listColors: [],
-      colorPrecisionBar: '#161616'
+      colorPrecisionBar: '#161616',
+      colorHover: []
     }
   },
   props: {
@@ -230,8 +231,8 @@ export default {
           pointStyle: 'rect',
           pointRadius: self.pointradius,
           pointHoverRadius: self.pointradius + 2,
-          pointHoverBackgroundColor: 'red',
-          pointHoverBorderColor: 'red',
+          pointHoverBackgroundColor: self.colorHover[j],
+          pointHoverBorderColor: self.colorHover[j],
           showLine: self.showline
         })
       })
@@ -485,14 +486,16 @@ export default {
     },
     loadColors () {
       this.colorParse = []
+      this.colorHover = []
       for (let i = 0; i < this.yparse.length; i++) {
         if (this.tmpColorParse[i] !== undefined) {
           this.colorParse.push(this.getHexaFromName(this.tmpColorParse[i]))
+          this.colorHover.push(this.getHexaFromName(this.tmpColorParse[i], { hover: true }))
         } else {
           this.colorParse.push(this.getHexaFromName(this.listColors[i]))
+          this.colorHover.push(this.getHexaFromName(this.listColors[i], { hover: true }))
         }
       }
-
       this.vlineColorParse = []
       for (let i = 0; i < this.vlineParse.length; i++) {
         if (this.tmpVlineColorParse[i] !== undefined) {
@@ -521,6 +524,8 @@ export default {
       for (let i = 0; i < this.yparse.length; i++) {
         this.chart.data.datasets[i].borderColor = this.colorParse[i]
         this.chart.data.datasets[i].backgroundColor = this.colorParse[i]
+        this.chart.data.datasets[i].pointHoverBackgroundColor = this.colorHover[i]
+        this.chart.data.datasets[i].pointHoverBorderColor = this.colorHover[i]
       }
       this.chart.update()
     }
@@ -534,7 +539,7 @@ export default {
     this.createChart()
     const element = document.documentElement // Reference à l'element <html> du DOM
     element.addEventListener('dsfr.theme', (e) => {
-      this.changeColors(e.detail)
+      this.changeColors(e.detail.theme)
     })
   }
 }

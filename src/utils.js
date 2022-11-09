@@ -736,8 +736,8 @@ export const getAllColors = function () {
   return colorsDSFR
 }
 
-export const getHexaFromName = function (colorName) {
-  return window.dsfr.colors.getColors('artwork', 'major', colorName)
+export const getHexaFromName = function (colorName, options = undefined) {
+  return window.dsfr.colors.getColor('artwork', 'major', colorName, options)
 }
 
 export const getDep = function (code) {

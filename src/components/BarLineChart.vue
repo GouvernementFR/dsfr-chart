@@ -62,7 +62,9 @@ export default {
       ymax: 0,
       colorParse: undefined,
       colorBarParse: undefined,
-      colorPrecisionBar: '#161616'
+      colorPrecisionBar: '#161616',
+      colorHover: undefined,
+      colorbarHover: undefined
     }
   },
   props: {
@@ -208,8 +210,8 @@ export default {
           data: dataBar,
           backgroundColor: this.colorBarParse,
           borderColor: this.colorBarParse,
-          hoverBorderColor: 'red',
-          hoverBackgroundColor: 'red',
+          hoverBorderColor: self.colorbarHover,
+          hoverBackgroundColor: self.colorbarHover,
           type: 'bar',
           barPercentage: 0.5,
           yAxisID: 'yAxisL',
@@ -224,8 +226,8 @@ export default {
           pointStyle: 'rect',
           pointBackgroundColor: 'rgba(0, 0, 0, 0)',
           pointBorderColor: 'rgba(0, 0, 0, 0)',
-          pointHoverBackgroundColor: 'red',
-          pointHoverBorderColor: 'red',
+          pointHoverBackgroundColor: self.colorHover,
+          pointHoverBorderColor: self.colorHover,
           pointHoverRadius: 6,
           yAxisID: 'yAxisR',
           order: 1
@@ -483,6 +485,8 @@ export default {
     loadColors () {
       this.colorParse = this.getHexaFromName(this.color)
       this.colorBarParse = this.getHexaFromName(this.colorbar)
+      this.colorHover = this.getHexaFromName(this.color, { hover: true })
+      this.colorbarHover = this.getHexaFromName(this.colorbar, { hover: true })
 
       this.vlineColorParse = []
       for (let i = 0; i < this.vlineParse.length; i++) {
@@ -512,6 +516,12 @@ export default {
       this.chart.data.datasets[0].backgroundColor = this.colorBarParse
       this.chart.data.datasets[0].borderColor = this.colorBarParse
       this.chart.data.datasets[1].borderColor = this.colorParse
+
+      this.chart.data.datasets[0].hoverBackgroundColor = this.colorbarHover
+      this.chart.data.datasets[0].hoverBorderColor = this.colorbarHover
+      this.chart.data.datasets[1].pointHoverBackgroundColor = this.colorHover
+      this.chart.data.datasets[1].pointHoverBorderColor = this.colorHover
+
       this.chart.update()
     }
   },
@@ -524,7 +534,7 @@ export default {
     this.createChart()
     const element = document.documentElement // Reference à l'element <html> du DOM
     element.addEventListener('dsfr.theme', (e) => {
-      this.changeColors(e.detail)
+      this.changeColors(e.detail.theme)
     })
   }
 }

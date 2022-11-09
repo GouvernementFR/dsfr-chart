@@ -67,7 +67,8 @@ export default {
       ymax: 0,
       annotations: [],
       colorPrecisionBar: '#161616',
-      colorBox: '#2f2f2f'
+      colorBox: '#2f2f2f',
+      colorHover: []
     }
   },
   props: {
@@ -250,8 +251,8 @@ export default {
           data: dj,
           borderColor: self.colorParse[j],
           backgroundColor: self.colorParse[j],
-          hoverBorderColor: 'red',
-          hoverBackgroundColor: 'red'
+          hoverBorderColor: self.colorHover[j],
+          hoverBackgroundColor: self.colorHover[j]
         })
       })
     },
@@ -478,11 +479,14 @@ export default {
     },
     loadColors () {
       this.colorParse = []
+      this.colorHover = []
       for (let i = 0; i < this.yparse.length; i++) {
         if (this.tmpColorParse[i] !== undefined) {
           this.colorParse.push(this.getHexaFromName(this.tmpColorParse[i]))
+          this.colorHover.push(this.getHexaFromName(this.tmpColorParse[i], { hover: true }))
         } else {
           this.colorParse.push(this.getHexaFromName(this.listColors[i]))
+          this.colorHover.push(this.getHexaFromName(this.listColors[i], { hover: true }))
         }
       }
 
@@ -516,8 +520,9 @@ export default {
       for (let i = 0; i < this.yparse.length; i++) {
         this.chart.data.datasets[i].borderColor = this.colorParse[i]
         this.chart.data.datasets[i].backgroundColor = this.colorParse[i]
+        this.chart.data.datasets[i].hoverBorderColor = this.colorHover[i]
+        this.chart.data.datasets[i].hoverBackgroundColor = this.colorHover[i]
       }
-
       for (const box of Object.entries(this.chart.annotation.elements)) {
         const key = box[0]
         this.chart.annotation.elements[key].options.backgroundColor = this.colorBox
@@ -535,7 +540,7 @@ export default {
     this.createChart()
     const element = document.documentElement // Reference à l'element <html> du DOM
     element.addEventListener('dsfr.theme', (e) => {
-      this.changeColors(e.detail)
+      this.changeColors(e.detail.theme)
     })
   }
 }

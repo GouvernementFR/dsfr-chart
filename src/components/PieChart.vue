@@ -42,7 +42,8 @@ export default {
       tmpColorParse: [],
       colorParse: [],
       listColors: [],
-      typeGraph: 'doughnut'
+      typeGraph: 'doughnut',
+      colorHover: []
     }
   },
   props: {
@@ -108,8 +109,8 @@ export default {
         data: self.yparse,
         borderColor: self.colorParse,
         backgroundColor: self.colorParse,
-        hoverBackgroundColor: 'red',
-        hoverBorderColor: 'red'
+        hoverBackgroundColor: self.colorHover,
+        hoverBorderColor: self.colorHover
       }]
     },
     createChart () {
@@ -215,11 +216,14 @@ export default {
     },
     loadColors () {
       this.colorParse = []
+      this.colorHover = []
       for (let i = 0; i < this.yparse.length; i++) {
         if (this.tmpColorParse[i] !== undefined) {
           this.colorParse.push(this.getHexaFromName(this.tmpColorParse[i]))
+          this.colorHover.push(this.getHexaFromName(this.tmpColorParse[i], { hover: true }))
         } else {
           this.colorParse.push(this.getHexaFromName(this.listColors[i]))
+          this.colorHover.push(this.getHexaFromName(this.listColors[i], { hover: true }))
         }
       }
     },
@@ -227,6 +231,8 @@ export default {
       this.loadColors()
       this.chart.data.datasets[0].borderColor = this.colorParse
       this.chart.data.datasets[0].backgroundColor = this.colorParse
+      this.chart.data.datasets[0].hoverBackgroundColor = this.colorHover
+      this.chart.data.datasets[0].hoverBorderColor = this.colorHover
       this.chart.update()
     }
   },
