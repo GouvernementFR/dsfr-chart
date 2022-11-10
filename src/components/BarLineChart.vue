@@ -181,21 +181,21 @@ export default {
       // this.display === 'big' ? gradientFill = ctx.createLinearGradient(0, 0, 0, 500) : gradientFill = ctx.createLinearGradient(0, 0, 0, 250)
       // gradientFill.addColorStop(0, chroma(borderColor).alpha(0.05).hex())
       this.loadColors()
-      let data = []
+      let dataLine = []
       let dataBar = []
       // Cas ou x est numérique
       if (typeof self.xparse[0] === 'number') {
         const xsort = self.xparse.map((a) => a).sort((a, b) => a - b)
         xsort.forEach(function (k) {
           const index = self.xparse.findIndex((element) => element === k)
-          data.push(self.yparse[index])
+          dataLine.push(self.yparse[index])
           dataBar.push(self.ybarparse[index])
         })
         self.labels = xsort
         self.xAxisType = 'category'
       } else {
         // Cas ou x est non numérique
-        data = self.yparse
+        dataLine = self.yparse
         dataBar = self.ybarparse
         self.labels = self.xparse
         self.xAxisType = 'category'
@@ -218,7 +218,7 @@ export default {
           order: 2
         },
         {
-          data: data,
+          data: dataLine,
           // backgroundColor: gradientFill,
           borderColor: this.colorParse,
           type: 'line',
