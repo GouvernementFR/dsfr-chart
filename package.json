@@ -8,7 +8,7 @@
   "scripts": {
     "serve": "vue-cli-service serve ./src/mainDev.js",
     "build": "vue-cli-service build --target lib --dest ./Charts --inline-vue --name dsfr-chart src/main.js",
-    "build-rec": "vue-cli-service build ./src/mainDev.js",
+    "build-rec": "vue-cli-service build --dest ./docs ./src/mainDev.js",
     "build-bar": "vue-cli-service build --target lib --dest ./BarChart --inline-vue --name bar-chart src/BarChart.js",
     "build-barline": "vue-cli-service build --target lib --dest ./BarLineChart --inline-vue --name barline-chart src/BarLineChart.js",
     "build-line": "vue-cli-service build --target lib --dest ./LineChart --inline-vue --name line-chart src/LineChart.js",
