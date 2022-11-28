@@ -315,7 +315,7 @@ export default {
         options: {
           animation: {
             easing: 'easeInOutBack',
-            duration: 0
+            duration: 1000
           },
           scales: {
             xAxes: [{
