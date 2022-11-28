@@ -26,25 +26,23 @@ export const testIfNaN = function (float) {
 }
 
 const colorsDSFR = [
-  'blue-france',
-  'red-marianne',
-  'green-tilleul-verveine',
   'green-bourgeon',
-  'green-emeraude',
-  'green-menthe',
-  'green-archipel',
   'blue-ecume',
-  'blue-cumulus',
   'purple-glycine',
   'pink-macaron',
-  'pink-tuile',
   'yellow-tournesol',
-  'yellow-moutarde',
   'orange-terre-battue',
   'brown-cafe-creme',
+  'beige-gris-galet',
+  'green-emeraude',
+  'blue-cumulus',
+  'pink-tuile',
+  'yellow-moutarde',
   'brown-caramel',
+  'green-menthe',
   'brown-opera',
-  'beige-gris-galet'
+  'green-archipel',
+  'green-tilleul-verveine'
 ]
 
 const dep = [

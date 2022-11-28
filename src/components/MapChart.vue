@@ -19,23 +19,23 @@
         <div class="om_container fr-grid-row no_select">
           <div class="om fr-col-4 fr-col-sm" :style="{display:displayGuadeloupe}">
             <span class="fr-text--xs fr-my-1w">Guadeloupe</span>
-            <guadeloupe :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guadeloupe>
+            <guadeloupe :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guadeloupe>
           </div>
           <div class="om fr-col-4 fr-col-sm" :style="{display:displayMartinique}">
             <span class="fr-text--xs fr-my-1w">Martinique</span>
-            <martinique :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></martinique>
+            <martinique :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></martinique>
           </div>
           <div class="om fr-col-4 fr-col-sm" :style="{display:displayGuyanne}">
             <span class="fr-text--xs fr-my-1w">Guyane</span>
-            <guyane :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guyane>
+            <guyane :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guyane>
           </div>
           <div class="om fr-col-4 fr-col-sm" :style="{display:displayReunion}">
             <span class="fr-text--xs fr-my-1w">La Réunion</span>
-            <reunion :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></reunion>
+            <reunion :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></reunion>
           </div>
           <div class="om fr-col-4 fr-col-sm" :style="{display:displayMayotte}">
             <span class="fr-text--xs fr-my-1w">Mayotte</span>
-            <mayotte :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></mayotte>
+            <mayotte :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></mayotte>
           </div>
         </div>
       </div>
@@ -65,6 +65,8 @@ export default {
       chartId: '',
       scaleMin: 0,
       scaleMax: 0,
+      colLeft: '',
+      colRight: '',
       zoomDep: undefined,
       leftColProps: {
         localisation: '',
@@ -75,11 +77,13 @@ export default {
         colMax: '',
         value: 0,
         valueNat: 0,
-        levelNat: false
+        levelNat: false,
+        colorFillIcon: ''
       },
       FranceProps: {
         viewBox: '0 0 262 262',
-        displayDep: {}
+        displayDep: {},
+        colorStroke: '#FFFFFF'
       },
       tooltip: {
         top: '0px',
@@ -93,7 +97,8 @@ export default {
       displayMartinique: '',
       displayMayotte: '',
       displayReunion: '',
-      displayGuyanne: ''
+      displayGuyanne: '',
+      colorStrokeDOM: '#FFFFFF'
     }
   },
   props: {
@@ -109,13 +114,9 @@ export default {
       type: String,
       default: 'Data'
     },
-    colmin: {
+    color: {
       type: String,
-      default: '#ffc700'
-    },
-    colmax: {
-      type: String,
-      default: '#715845'
+      default: 'green-bourgeon'
     }
   },
   methods: {
@@ -144,7 +145,7 @@ export default {
 
       this.scaleMin = Math.min.apply(null, values)
       this.scaleMax = Math.max.apply(null, values)
-      const x = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colmin, this.colmax])
+      const x = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colLeft, this.colRight])
 
       let xmin = []
       let xmax = []
@@ -228,8 +229,8 @@ export default {
       this.leftColProps.names = this.name
       this.leftColProps.min = this.scaleMin
       this.leftColProps.max = this.scaleMax
-      this.leftColProps.colMin = this.colmin
-      this.leftColProps.colMax = this.colmax
+      this.leftColProps.colMin = this.colLeft
+      this.leftColProps.colMax = this.colRight
     },
     displayTooltip (e) {
       if (isMobile) return
@@ -301,7 +302,7 @@ export default {
     resetGeoFilters () {
       this.zoomDep = undefined
       this.createChart()
-    }//,
+    },
     // getTransformCoordinates () {
     //   const coordinates = { x: 0, y: 0 }
     //   // const tab = this.$el.closest('.fr-tabs__panel')
@@ -314,13 +315,34 @@ export default {
     //   // console.log(coordinates)
     //   return coordinates
     // }
+    changeTheme (theme) {
+      console.log(theme)
+      if (theme === 'light') {
+        this.colLeft = '#eeeeee'
+        this.colRight = this.getHexaFromName(this.color)
+        this.FranceProps.colorStroke = '#FFFFFF'
+        this.colorStrokeDOM = '#FFFFFF'
+        this.leftColProps.colorFillIcon = '#161616'
+      } else {
+        this.colLeft = this.getHexaFromName(this.color)
+        this.colRight = '#eeeeee'
+        this.FranceProps.colorStroke = '#161616'
+        this.colorStrokeDOM = '#161616'
+        this.leftColProps.colorFillIcon = '#FFFFFF'
+      }
+      this.createChart()
+    }
   },
   created () {
     this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
     this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
   },
   mounted () {
-    this.createChart()
+    // this.createChart()
+    const element = document.documentElement // Reference à l'element <html> du DOM
+    element.addEventListener('dsfr.theme', (e) => {
+      this.changeTheme(e.detail.theme)
+    })
   }
 }
 

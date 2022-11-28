@@ -77,7 +77,7 @@ export default {
     },
     color: {
       type: String,
-      default: 'blue-france'
+      default: 'green-bourgeon'
     },
     vline: {
       type: String,

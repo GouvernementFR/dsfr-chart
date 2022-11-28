@@ -82,7 +82,7 @@ export default {
     },
     colorbar: {
       type: String,
-      default: 'blue-france'
+      default: 'green-bourgeon'
     },
     y: {
       type: String,
@@ -94,7 +94,7 @@ export default {
     },
     color: {
       type: String,
-      default: 'red-marianne'
+      default: 'blue-ecume'
     },
     vline: {
       type: String,
