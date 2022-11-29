@@ -3,7 +3,6 @@ export const capitalize = function (string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
 }
-
 export const convertStringToLocaleNumber = function (string) {
   return parseInt(string).toLocaleString()
 }
@@ -729,12 +728,40 @@ const reg = [
   }
 ]
 
+export const getHexaFromName = function (colorName, options = undefined) {
+  return window.dsfr.colors.getColor('artwork', 'major', colorName, options)
+}
+
+const patternDraw = [
+  'plus',
+  'cross',
+  'dash',
+  'cross-dash',
+  'dot',
+  'dot-dash',
+  'disc',
+  'ring',
+  'line',
+  'line-vertical',
+  'weave',
+  'zigzag',
+  'zigzag-vertical',
+  'diagonal',
+  'diagonal-right-left',
+  'square',
+  'box',
+  'triangle',
+  'triangle-inverted',
+  'diamond',
+  'diamond-box'
+]
+
 export const getAllColors = function () {
   return colorsDSFR
 }
 
-export const getHexaFromName = function (colorName, options = undefined) {
-  return window.dsfr.colors.getColor('artwork', 'major', colorName, options)
+export const getAllPattern = function () {
+  return patternDraw
 }
 
 const acad = [
@@ -908,6 +935,7 @@ export const mixin = {
     getAcad,
     getDepsFromReg,
     getAllColors,
-    getHexaFromName
+    getHexaFromName,
+    getAllPattern
   }
 }

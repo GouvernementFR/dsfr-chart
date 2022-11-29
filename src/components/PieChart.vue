@@ -24,6 +24,7 @@
 <script>
 import { Chart } from 'chart.js'
 import { mixin } from '@/utils.js'
+import pattern from 'patternomaly'
 export default {
   name: 'PieChart',
   mixins: [mixin],
@@ -42,6 +43,9 @@ export default {
       tmpColorParse: [],
       colorParse: [],
       listColors: [],
+      listPattern: [],
+      colorPattern: [],
+      colorPatternHover: [],
       typeGraph: 'doughnut',
       colorHover: []
     }
@@ -66,6 +70,10 @@ export default {
     fill: {
       type: Boolean,
       default: false
+    },
+    pattern: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -83,6 +91,7 @@ export default {
         this.typeGraph = 'doughnut'
       }
       this.listColors = this.getAllColors()
+      this.listPattern = this.getAllPattern()
       this.xparse = JSON.parse(this.x)
       this.yparse = JSON.parse(this.y)
 
@@ -217,6 +226,8 @@ export default {
     loadColors () {
       this.colorParse = []
       this.colorHover = []
+      this.colorPattern = []
+      this.colorPatternHover = []
       for (let i = 0; i < this.yparse.length; i++) {
         if (this.tmpColorParse[i] !== undefined) {
           this.colorParse.push(this.getHexaFromName(this.tmpColorParse[i]))
@@ -224,14 +235,21 @@ export default {
         } else {
           this.colorParse.push(this.getHexaFromName(this.listColors[i]))
           this.colorHover.push(this.getHexaFromName(this.listColors[i], { hover: true }))
+          this.colorPattern.push(pattern.draw(this.listPattern[i], this.getHexaFromName(this.listColors[i])))
+          this.colorPatternHover.push(pattern.draw(this.listPattern[i], this.getHexaFromName(this.listColors[i], { hover: true })))
         }
       }
     },
     changeColors () {
       this.loadColors()
       this.chart.data.datasets[0].borderColor = this.colorParse
-      this.chart.data.datasets[0].backgroundColor = this.colorParse
-      this.chart.data.datasets[0].hoverBackgroundColor = this.colorHover
+      if (this.pattern) {
+        this.chart.data.datasets[0].backgroundColor = this.colorPattern
+        this.chart.data.datasets[0].hoverBackgroundColor = this.colorPatternHover
+      } else {
+        this.chart.data.datasets[0].backgroundColor = this.colorParse
+        this.chart.data.datasets[0].hoverBackgroundColor = this.colorHover
+      }
       this.chart.data.datasets[0].hoverBorderColor = this.colorHover
       this.chart.update()
     }
