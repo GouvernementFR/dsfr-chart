@@ -1,6 +1,5 @@
 <script>
 import mixin from './base'
-
 export default {
   mixins: [mixin],
   props: {

@@ -654,81 +654,80 @@ const dep = [
   }
 ]
 
-// const reg = [
-//   {
-//     value: '84',
-//     label: 'Auvergne-Rhône-Alpes',
-//     viewBox: '120 100 100 80'
-//   },
-//   {
-//     value: '32',
-//     label: 'Hauts-de-France'
-//   },
-//   {
-//     value: '93',
-//     label: "Provence-Alpes-Côte d'Azur"
-//   },
-//   {
-//     value: '44',
-//     label: 'Grand Est'
-//   },
-//   {
-//     value: '76',
-//     label: 'Occitanie'
-//   },
-//   {
-//     value: '28',
-//     label: 'Normandie'
-//   },
-//   {
-//     value: '75',
-//     label: 'Nouvelle-Aquitaine'
-//   },
-//   {
-//     value: '24',
-//     label: 'Centre-Val de Loire'
-//   },
-//   {
-//     value: '27',
-//     label: 'Bourgogne-Franche-Comté'
-//   },
-//   {
-//     value: '53',
-//     label: 'Bretagne'
-//   },
-//   {
-//     value: '94',
-//     label: 'Corse'
-//   },
-//   {
-//     value: '52',
-//     label: 'Pays de la Loire'
-//   },
-//   {
-//     value: '11',
-//     label: 'Île-de-France'
-//   },
-//   {
-//     value: '01',
-//     label: 'Guadeloupe'
-//   },
-//   {
-//     value: '02',
-//     label: 'Martinique'
-//   },
-//   {
-//     value: '03',
-//     label: 'Guyane'
-//   },
-//   {
-//     value: '04',
-//     label: 'La Réunion'
-//   },
-//   {
-//     value: '06',
-//     label: 'Mayotte'
-//   }
-// ]
+const reg = [
+  {
+    value: '84',
+    label: 'Auvergne-Rhône-Alpes'
+  },
+  {
+    value: '32',
+    label: 'Hauts-de-France'
+  },
+  {
+    value: '93',
+    label: "Provence-Alpes-Côte d'Azur"
+  },
+  {
+    value: '44',
+    label: 'Grand Est'
+  },
+  {
+    value: '76',
+    label: 'Occitanie'
+  },
+  {
+    value: '28',
+    label: 'Normandie'
+  },
+  {
+    value: '75',
+    label: 'Nouvelle-Aquitaine'
+  },
+  {
+    value: '24',
+    label: 'Centre-Val de Loire'
+  },
+  {
+    value: '27',
+    label: 'Bourgogne-Franche-Comté'
+  },
+  {
+    value: '53',
+    label: 'Bretagne'
+  },
+  {
+    value: '94',
+    label: 'Corse'
+  },
+  {
+    value: '52',
+    label: 'Pays de la Loire'
+  },
+  {
+    value: '11',
+    label: 'Île-de-France'
+  },
+  {
+    value: '971',
+    label: 'Guadeloupe'
+  },
+  {
+    value: '972',
+    label: 'Martinique'
+  },
+  {
+    value: '973',
+    label: 'Guyane'
+  },
+  {
+    value: '974',
+    label: 'La Réunion'
+  },
+  {
+    value: '976',
+    label: 'Mayotte'
+  }
+]
 
 export const getAllColors = function () {
   return colorsDSFR
@@ -738,12 +737,151 @@ export const getHexaFromName = function (colorName, options = undefined) {
   return window.dsfr.colors.getColor('artwork', 'major', colorName, options)
 }
 
+const acad = [
+  {
+    value: '01',
+    label: 'Académie de Clermont-Ferrand'
+  },
+  {
+    value: '02',
+    label: 'Académie de Grenoble'
+  },
+  {
+    value: '03',
+    label: 'Académie de Lyon'
+  },
+  {
+    value: '04',
+    label: 'Académie de Besançon'
+  },
+  {
+    value: '05',
+    label: 'Académie de Dijon'
+  },
+  {
+    value: '06',
+    label: 'Académie de Rennes'
+  },
+  {
+    value: '07',
+    label: "Académie d'Orléans-Tours"
+  },
+  {
+    value: '08',
+    label: 'Académie de Corse'
+  },
+  {
+    value: '09',
+    label: 'Académie de Nancy-Metz'
+  },
+  {
+    value: '10',
+    label: 'Académie de Reims'
+  },
+  {
+    value: '11',
+    label: 'Académie de Strasbourg'
+  },
+  {
+    value: '14',
+    label: "Académie d'Amiens"
+  },
+  {
+    value: '15',
+    label: 'Académie de Lille'
+  },
+  {
+    value: '16',
+    label: 'Académie de Créteil'
+  },
+  {
+    value: '17',
+    label: 'Académie de Paris'
+  },
+  {
+    value: '18',
+    label: 'Académie de Versailles'
+  },
+  {
+    value: '20',
+    label: 'Académie de Normandie'
+  },
+  {
+    value: '21',
+    label: 'Académie de Bordeaux'
+  },
+  {
+    value: '22',
+    label: 'Académie de Limoges'
+  },
+  {
+    value: '23',
+    label: 'Académie de Poitiers'
+  },
+  {
+    value: '24',
+    label: 'Académie de Montpellier'
+  },
+  {
+    value: '25',
+    label: 'Académie de Toulouse'
+  },
+  {
+    value: '26',
+    label: 'Académie de Nantes'
+  },
+  {
+    value: '27',
+    label: "Académie d'Aix-Marseille"
+  },
+  {
+    value: '28',
+    label: 'Académie de Nice'
+  },
+  {
+    value: '971',
+    label: 'Académie de Guadeloupe'
+  },
+  {
+    value: '972',
+    label: 'Académie de Martinique'
+  },
+  {
+    value: '973',
+    label: 'Académie de Guyane'
+  },
+  {
+    value: '974',
+    label: 'Académie de La Réunion'
+  },
+  {
+    value: '976',
+    label: 'Académie de Mayotte'
+  }
+]
+
 export const getDep = function (code) {
   const depObj = dep.find(obj => {
     return obj.value === code
   })
 
   return depObj
+}
+
+export const getReg = function (code) {
+  const regObj = reg.find(obj => {
+    return obj.value === code
+  })
+
+  return regObj
+}
+
+export const getAcad = function (code) {
+  const acadObj = acad.find(obj => {
+    return obj.value === code
+  })
+
+  return acadObj
 }
 
 export const getDepsFromReg = function (code) {
@@ -766,6 +904,8 @@ export const mixin = {
     convertDateToHuman,
     testIfNaN,
     getDep,
+    getReg,
+    getAcad,
     getDepsFromReg,
     getAllColors,
     getHexaFromName
