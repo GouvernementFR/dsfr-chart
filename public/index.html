@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" data-fr-scheme="dark">
+<html lang="fr" data-fr-scheme="light">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,51 +49,59 @@
     </noscript>
 
     <div class="fr-container">
-      <ul class="fr-links-group">
-          <li>
-              <button class="fr-link fr-fi-theme-fill fr-link--icon-left" aria-controls="fr-theme-modal" data-fr-opened="false">Paramètres d'affichage</button>
-          </li>
-      </ul>
+
       <div class="fr-grid-row">  
           <section class="fr-grid-row fr-mt-10w">
             <div class="fr-col-12 fr-col-offset-md-1 fr-mb-6w">
-
+              <div class="chart_container"> 
+                <h1>  DSFR Chart </h1>
+                <div align="justify">
+                  Cette page a pour objectif de présenter l'ensemble des représentations graphiques proposées par le DSFR Chart. Tous les graphiques proposés sont disponibles dans le thème clair et dans le thème sombre.
+                  Il est possible de changer le thème affiché par l'intermédiaire du bouton ci-dessous.
+                </div>
+                <br></br>
+                <ul class="fr-links-group">
+                  <li>
+                      <button class="fr-link fr-fi-theme-fill fr-link--icon-left" aria-controls="fr-theme-modal" data-fr-opened="false">Paramètres d'affichage</button>
+                  </li>
+              </ul>
+              </div>
 
               <!-- SCATTER CHART -->                
               <div class="chart_container"> 
-                <h1>  I. Nuage de points </h1>
+                <h2>  I. Nuage de points </h2>
                 <div align="justify">Le nuage de points est grandement utilisé pour présenter la mesure de deux ou plusieurs variables liées.
                    Le nuage de points est particulièrement utile lorsque les valeurs des variables sur l'axe des y dépendent des
                    valeurs de la variable de l'axe des x.
                 </div>
                 <br></br>
-                <h2>1. Nuage de points simple</h2>
+                <h3>1. Nuage de points simple</h3>
                 <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]'></scatter-chart>
 
                 <br></br>
-                <h2>2. Nuage de points reliés</h2>
+                <h3>2. Nuage de points reliés</h3>
                 <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]' showline=true></scatter-chart>
 
               </div> 
 
               <!-- BAR CHART -->
               <div class="chart_container"> 
-                <h1>  II. Diagramme en barre </h1>   
+                <h2>  II. Diagramme en barre </h2>   
                 <div align="justify"> Un diagramme en barres montre les dénombrements de valeurs pour les niveaux d'une variable catégorielle ou nominale.</div> 
 
                 <br></br>
 
-                <h2> 1.Barres verticales</h2>  
+                <h3> 1.Barres verticales</h3>  
                 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]'></bar-chart>  
 
                 <br></br>
 
-                <h2> 2.Barres horizontales</h2> 
+                <h3> 2.Barres horizontales</h3> 
                 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' horizontal = true></bar-chart>
 
                 <br></br>
 
-                <h2> 3.Barres empilées</h2> 
+                <h3> 3.Barres empilées</h3> 
                 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' stacked = true></bar-chart>
 
               </div>
@@ -101,7 +109,7 @@
 
               <!-- LINE CHART -->                
               <div class="chart_container"> 
-                <h1>III. Graphique en ligne</h1>
+                <h2>III. Graphique en ligne</h2>
                 <div align="justify">Un graphique en ligne est un type de visualisation de données qui affiche des valeurs sous forme de points sur une ligne. Cela peut consister en une seule ligne ou présenter plusieurs lignes à titre de comparaison.</div>
                 <br></br>
                 <line-chart x = '[1, 2, 3, 4]' y = '[10, 20, 30,40]'></line-chart>  
@@ -111,7 +119,7 @@
 
               <!-- MULTILINE CHART 1 -->  
               <div class="chart_container"> 
-                <h1>IV. Graphique multi-lignes</h1>
+                <h2>IV. Graphique multi-lignes</h2>
                 <br></br>
                 <multiline-chart x='[[1, 2, 3], [1, 2, 3]]' y='[[30, 10, 20], [10, 20, 30]]'></multiline-chart>
               </div>
@@ -119,7 +127,7 @@
 
               <!-- BAR-LINE CHART --> 
               <div class="chart_container"> 
-                <h1>V. Diagramme en barre / Graphique en ligne</h1>
+                <h2>V. Diagramme en barre / Graphique en ligne</h2>
                 <div align="justify">Il est également possible d'avoir une superposition d'un diagramme en barre avec un graphique en ligne.</div>
                 <br></br>
                 <bar-line-chart x='[1, 2, 3]' y='[30, 10, 20]' ybar = '[20, 15, 12]'></bar-line-chart>
@@ -129,16 +137,16 @@
 
               <!-- PIE CHART 1 -->             
               <div class="chart_container"> 
-                <h1 >VI. Diagramme circulaire</h1>
+                <h2 >VI. Diagramme circulaire</h2>
                 <div align="justify">Chacune des « parts » représente une catégorie de données qui forment un ensemble. Au total, la somme des parts est égal à 100 pour cent. La taille de chaque « part » est proportionnelle à son poids dans l'ensemble.</div>
                 <br></br>
-                <h2> 1.Diagramme circulaire plein </h2>  
+                <h3> 1.Diagramme circulaire plein </h3>  
                 <pie-chart x = '[1, 2, 3]', y = '[10, 20, 30]' fill = true></pie-chart>
               </div>
 
               <!-- PIE CHART 2 -->                
               <div class="chart_container"> 
-                <h2> 2.Diagramme circulaire creux (donut) </h2>  
+                <h3> 2.Diagramme circulaire creux (donut) </h3>  
                 <br></br>
                 <pie-chart x = '[1, 2, 3]', y = '[10, 20, 30]'></pie-chart>
               </div> 
@@ -146,8 +154,12 @@
 
               <!-- MAP CHART 1 -->  
               <div class="chart_container"> 
-                <h1>VII. Cartes</h1>
+                <h2>VII. Cartes</h2>
+                <div align="justify">
+                  Les cartes sont actuellement disponbiles aux niveaux départemental et régional. Un clic sur un département ou une région permet d'effectuer un zoom.
+                </div>
                 <br></br>
+                <h3> 1. Découpage départemental </h3>  
                 <map-chart data = '{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
                 "12": 33, "13": 89, "14": 24, "15": 52, "16": 41, "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,
                 "23": 37, "24": 65, "25": 88, "26": 48, "27": 61, "28": 80, "29": 12, "30": 6, "31": 5, "32": 22, "33": 40,
@@ -159,6 +171,7 @@
                 "89": 100, "90": 85, "91": 87, "92": 46, "93": 89, "94": 18, "95": 72, "971": 48, "972": 28, "973": 35,
                 "974": 70, "976": 38, "2A": 63, "2B": "16"}' valuenat = 10 name = "Nom de l'indicateur"></map-chart>
                 <br></br>
+                <h3> 2. Découpage régional </h3>  
                 <map-chart data = '{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
                 "12": 33, "13": 89, "14": 24, "15": 52, "16": 41, "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,
                 "23": 37, "24": 65, "25": 88, "26": 48, "27": 61, "28": 80, "29": 12, "30": 6, "31": 5, "32": 22, "33": 40,
@@ -173,114 +186,123 @@
               
               <!-- MULTILINE CHART 2 -->  
               <div class="chart_container"> 
-                <h1>VIII. Options de lignes verticales et horizontales</h1> 
+                <h2>VIII. Options de lignes verticales et horizontales</h2> 
                 <div align="justify"> Il est possible d'ajouter des lignes verticales et horizontales sur les différents graphiques.</div>
 
                 <br></br>
 
-                <h2>1. Graphique avec lignes verticales et horizontales </h2>
+                <h3>1. Graphique avec lignes verticales et horizontales </h3>
                 <line-chart x = '[1, 2, 3]' y = '[10, 20, 30]' hline = '[15, 25]' hlinename = '["hmin", "hmax"]' hlinecolor = '["blue-ecume", "red-marianne"]' vline='[1.6, 2.3]' vlinename='["vmin","vmax"]' vlinecolor = '["green-archipel", "orange-terre-battue"]'></line-chart> 
 
-                <h2>2. Barres horizontales avec ligne vertical </h2> 
+                <h3>2. Barres horizontales avec ligne vertical </h3> 
                 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' horizontal = true vline='[27]' vlinecolor = '["green-emeraude"]'  vlineName = '["seuil"]'></bar-chart>
+              </div>
+              <!-- Couleurs -->  
+              <div class="chart_container"> 
+                <h2>VIII. Les couleurs</h2>
+                <div align="justify">
+                  Les couleurs utilisables sont restreintes aux couleurs illustratives du DSFR. Ces couleurs ont des valeurs différentes
+                  selon si la page est affichée en thème clair ou en thème sombre. Voici la liste des couleurs disponibles avec leurs deux teintes :
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #447049"></span>
+                  <span class="legende_dot" style="background-color: #99C221"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">green-bourgeon</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #2F4077"></span>
+                  <span class="legende_dot" style="background-color: #869ECE"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">blue-ecume</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #6E445A"></span>
+                  <span class="legende_dot" style="background-color: #CE70CC"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">purple-glycine</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #8D533E"></span>
+                  <span class="legende_dot" style="background-color: #FFB7AE"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">pink-macaron</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #716043"></span>
+                  <span class="legende_dot" style="background-color: #FFE552"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">yellow-tournesol</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #755348"></span>
+                  <span class="legende_dot" style="background-color: #FF732C"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">orange-terre-battue</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #685C48"></span>
+                  <span class="legende_dot" style="background-color: #ECD7A2"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">brown-cafe-creme</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #6A6156"></span>
+                  <span class="legende_dot" style="background-color: #D0C3B7"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">beige-gris-galet</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #297254"></span>
+                  <span class="legende_dot" style="background-color: #34CB6A"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">green-emeraude</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #3558A2"></span>
+                  <span class="legende_dot" style="background-color: #7AB1E8"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">blue-cumulus</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #a94645"></span>
+                  <span class="legende_dot" style="background-color: #FF9575"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">pink-tuile</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #695240"></span>
+                  <span class="legende_dot" style="background-color: #FFCA00"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">yellow-moutarde</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #845d48"></span>
+                  <span class="legende_dot" style="background-color: #FBD8AB"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">brown-caramel</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #37635f"></span>
+                  <span class="legende_dot" style="background-color: #21AB8E"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">green-menthe</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #745B47"></span>
+                  <span class="legende_dot" style="background-color: #E6BE92"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">brown-opera</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #006A6F"></span>
+                  <span class="legende_dot" style="background-color: #34BAB5"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">green-archipel</p>
+                </div>
+                <div class="flex fr-mt-3v">
+                  <span class="legende_dot" style="background-color: #66673D"></span>
+                  <span class="legende_dot" style="background-color: #D8C634"></span>
+                  <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">green-tilleul-verveine</p>
+                </div>
+              </div> 
+
+              <!-- Accessibilité -->  
+              <div class="chart_container"> 
+                <h2>IX. Accessibilité</h2>
+                <div align="justify">
+                  Les graphiques proposés ont l'objectif d'être accessibles au plus grand nombre de personnes, notamment à celles pour qui la légende en couleur n'est pas adaptée.
+                  Nous proposons la possibilité d'intégrer une texture à la légende. Voici un exemple sur le graphique circulaire. Cette option est en cours d'implémentation et la légende ne correspond pas encore tout à fait.
+                </div>
+                <br></br>
+                <pie-chart x = '[1, 2, 3]', y = '[10, 20, 30]' fill = true pattern = true></pie-chart>
               </div>
         
             </div>
-
-             <!-- Couleurs -->  
-             <div class="chart_container"> 
-              <h1>VIII. Les couleurs</h1>
-              <div align="justify">
-                Les couleurs utilisables sont restreintes aux couleurs illustratives du DSFR. Ces couleurs ont des valeurs différentes
-                selon si la page est affichée en thème clair ou en thème sombre. Voici la liste des couleurs disponibles avec leurs deux teintes :
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #447049"></span>
-                <span class="legende_dot" style="background-color: #99C221"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">green-bourgeon</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #2F4077"></span>
-                <span class="legende_dot" style="background-color: #869ECE"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">blue-ecume</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #6E445A"></span>
-                <span class="legende_dot" style="background-color: #CE70CC"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">purple-glycine</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #8D533E"></span>
-                <span class="legende_dot" style="background-color: #FFB7AE"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">pink-macaron</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #716043"></span>
-                <span class="legende_dot" style="background-color: #FFE552"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">yellow-tournesol</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #755348"></span>
-                <span class="legende_dot" style="background-color: #FF732C"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">orange-terre-battue</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #685C48"></span>
-                <span class="legende_dot" style="background-color: #ECD7A2"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">brown-cafe-creme</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #6A6156"></span>
-                <span class="legende_dot" style="background-color: #D0C3B7"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">beige-gris-galet</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #297254"></span>
-                <span class="legende_dot" style="background-color: #34CB6A"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">green-emeraude</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #3558A2"></span>
-                <span class="legende_dot" style="background-color: #7AB1E8"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">blue-cumulus</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #a94645"></span>
-                <span class="legende_dot" style="background-color: #FF9575"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">pink-tuile</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #695240"></span>
-                <span class="legende_dot" style="background-color: #FFCA00"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">yellow-moutarde</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #845d48"></span>
-                <span class="legende_dot" style="background-color: #FBD8AB"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">brown-caramel</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #37635f"></span>
-                <span class="legende_dot" style="background-color: #21AB8E"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">green-menthe</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #745B47"></span>
-                <span class="legende_dot" style="background-color: #E6BE92"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">brown-opera</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #006A6F"></span>
-                <span class="legende_dot" style="background-color: #34BAB5"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">green-archipel</p>
-              </div>
-              <div class="flex fr-mt-3v">
-                <span class="legende_dot" style="background-color: #66673D"></span>
-                <span class="legende_dot" style="background-color: #D8C634"></span>
-                <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">green-tilleul-verveine</p>
-              </div>
-            </div> 
-
           </section>
     
       </div>
@@ -296,9 +318,9 @@
                             </button>
                         </div>
                         <div class="fr-modal__content">
-                            <h1 id="fr-theme-modal-title" class="fr-modal__title">
+                            <h2 id="fr-theme-modal-title" class="fr-modal__title">
                                 Paramètres d’affichage
-                            </h1>
+                            </h2>
                             <div id="fr-display" class="fr-display">
                                 <div class="fr-form-group">
                                     <fieldset class="fr-fieldset">
