@@ -1,0 +1,79 @@
+{
+  "name": "dsfr-chart",
+  "version": "0.1.1",
+  "description": "Système de Design de l'Etat - Visualisation graphique",
+  "repository": "git@github.com:GouvernementFR/dsfr-chart.git",
+  "author": "Seenovate <tristan.conti@seenovate.com>",
+  "private": false,
+  "scripts": {
+    "serve": "vue-cli-service serve ./src/mainDev.js",
+    "build": "vue-cli-service build --target lib --dest ./Charts --inline-vue --name dsfr-chart src/main.js",
+    "build-rec": "vue-cli-service build --dest ./docs ./src/mainDev.js",
+    "build-bar": "vue-cli-service build --target lib --dest ./BarChart --inline-vue --name bar-chart src/BarChart.js",
+    "build-barline": "vue-cli-service build --target lib --dest ./BarLineChart --inline-vue --name barline-chart src/BarLineChart.js",
+    "build-line": "vue-cli-service build --target lib --dest ./LineChart --inline-vue --name line-chart src/LineChart.js",
+    "build-map": "vue-cli-service build --target lib --dest ./MapChart --inline-vue --name map-chart src/MapChart.js",
+    "build-multiline": "vue-cli-service build --target lib --dest ./MultiLineChart --inline-vue --name multiline-chart src/MultiLineChart.js",
+    "build-pie": "vue-cli-service build --target lib --dest ./PieChart --inline-vue --name pie-chart src/PieChart.js",
+    "build-scatter": "vue-cli-service build --target lib --dest ./ScatterChart --inline-vue --name scatter-chart src/ScatterChart.js",
+    "build-all": "npm run build-bar & npm run build-barline & npm run build-line & npm run build-map & npm run build-multiline & npm run build-pie & npm run build-scatter",
+    "lint": "vue-cli-service lint"
+  },
+  "files": [
+    "/BarChart",
+    "/BarLineChart",
+    "/Charts",
+    "/LineChart",
+    "/MapChart",
+    "/MultiLineChart",
+    "/PieChart",
+    "/ScatterChart",
+    "README.md",
+    "CONTRIBUTING.md",
+    "/Pictures"
+  ],
+  "dependencies": {
+    "chart.js": "^2.9.4",
+    "chartjs-plugin-annotation": "^0.5.7",
+    "chroma": "^0.0.1",
+    "chroma-js": "2.1.2",
+    "core-js": "^3.6.5",
+    "d3-scale": "^4.0.2",
+    "mobile-device-detect": "^0.4.3",
+    "sass": "^1.32.5",
+    "sass-loader": "^10.1.1",
+    "vue": "^2.7.11",
+    "vue-custom-element": "^3.2.14",
+    "vuex": "^3.6.0"
+  },
+  "devDependencies": {
+    "@gouvfr/dsfr": "^1.8.2",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-service": "^5.0.0",
+    "eslint-plugin-vue": "^9.7.0",
+    "standard": "^17.0.0",
+    "vue-loader": "^17.0.1",
+    "vue-template-compiler": "^2.7.14"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {
+      "no-unused-vars": "off"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
