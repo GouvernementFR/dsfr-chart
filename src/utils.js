@@ -707,23 +707,23 @@ const reg = [
     label: 'Île-de-France'
   },
   {
-    value: '971',
+    value: '01',
     label: 'Guadeloupe'
   },
   {
-    value: '972',
+    value: '02',
     label: 'Martinique'
   },
   {
-    value: '973',
+    value: '03',
     label: 'Guyane'
   },
   {
-    value: '974',
+    value: '04',
     label: 'La Réunion'
   },
   {
-    value: '976',
+    value: '06',
     label: 'Mayotte'
   }
 ]
@@ -896,8 +896,12 @@ export const getDep = function (code) {
 }
 
 export const getReg = function (code) {
+  let codeReg = code
+  if (code.length === 3) {
+    codeReg = getDep(code).value
+  }
   const regObj = reg.find(obj => {
-    return obj.value === code
+    return obj.value === codeReg
   })
 
   return regObj

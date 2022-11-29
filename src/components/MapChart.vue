@@ -148,6 +148,7 @@ export default {
 
       if (this.zoomDep !== undefined) {
         if (this.level === 'dep') {
+          console.log(this.zoomDep)
           const a = this.getDep(this.zoomDep).region_value
           listDep = this.getDepsFromReg(a)
         } else if (this.level === 'reg') {
@@ -353,7 +354,6 @@ export default {
       } else {
         clickdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
       }
-
       this.zoomDep = clickdep
       this.createChart()
     },
