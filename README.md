@@ -51,6 +51,7 @@ La structure mise à disposition, sur le zip ou npm est la suivante :
 * dsfr.min.css
 * icons-system.min.css (dans *utility/icons/icons-system*)
 
+Il est également nécessaire de charger [l'API Javascript](https://www.systeme-de-design.gouv.fr/comment-utiliser-le-dsfr/developpeurs/api-javascript/) : dsfr.module.min.js
 
 
 #### Importation des web-components
@@ -113,7 +114,7 @@ Les paramètres obligatoires sont :
 <multiline-chart x='[[1, 2, 3], [1, 2, 3]]' y='[[30, 10, 20], [10, 20, 30]]'></multiline-chart>
 ```
 
-![MultiLineChart](./Pictures/MultiLineChart.png)
+<img src="./Pictures/MultiLineChart.png" alt="MultiLineChart" style="zoom:60%;" />
 
 
 
@@ -133,7 +134,7 @@ Les paramètres obligatoires sont :
 <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]'></scatter-chart>
 ```
 
-![ScatterChart](./Pictures/ScatterChart.png)
+<img src="./Pictures/ScatterChart.png" alt="ScatterChart" style="zoom:60%;" />
 
 
 
@@ -153,7 +154,7 @@ Les paramètres obligatoires sont :
 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]'></bar-chart>
 ```
 
-![BarChart](./Pictures/BarChart.png)
+<img src="./Pictures/BarChart.png" alt="BarChart" style="zoom:60%;" />
 
 
 
@@ -175,7 +176,7 @@ Les paramètres obligatoires sont :
 <bar-line-chart x='[1, 2, 3]' y='[30, 10, 20]' ybar = '[20, 15, 12]'></bar-line-chart>
 ```
 
-![BarLineChart](./Pictures/BarLineChart.png)
+<img src="./Pictures/BarLineChart.png" alt="BarLineChart" style="zoom:60%;" />
 
 
 
@@ -195,7 +196,7 @@ Les paramètres obligatoires sont :
 <pie-chart x = '[1, 2, 3]', y = '[10, 20, 30]'></pie-chart>
 ```
 
-![PieChart](./Pictures/PieChart.png)
+<img src="./Pictures/PieChart.png" alt="PieChart" style="zoom:60%;" />
 
 
 
@@ -224,23 +225,67 @@ Les paramètres obligatoires sont :
 
 Par défaut les noms des indicateurs sont : Série1, Série2, … et les couleurs associés sont #000091, #007c3a, #A558A0. Ils peuvent être modifiés à la convenance de l’utilisateur par les paramètres **color** et **name.**
 
+Les couleurs choisis doivent impérativement choisis parmi les [couleurs du dsfr](https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-identite-de-l-etat/couleurs-palette) de la liste suivante :
+
+* blue-france
+
+* red-marianne
+
+* artwork-major-green-tilleul-verveine
+
+* green-bourgeon
+
+* green-emeraude
+
+* green-menthe
+
+* green-archipel
+
+* blue-ecume
+
+* blue-cumulus
+
+* purple-glycine
+
+* pink-macaron
+
+* pink-tuile
+
+* yellow-tournesol
+
+* yellow-moutarde
+
+* orange-terre-battue
+
+* brown-cafe-creme
+
+* brown-caramel
+
+* brown-opera
+
+* beige-gris-galet
+
+Les couleurs apparaîtront dans leur variante **sun** en thème claire et dans leur variante **moon** en thème sombre.
+
 **Exemple :** 
 
 ```html
 <line-chart x = '[1, 2, 3]' y = '[10, 20, 30]' color = 'red' name = 'Custom'></line-chart>
 ```
 
-![ColorName](./Pictures/ColorName.png)
+<img src="./Pictures/ColorName.png" alt="ColorName" style="zoom:60%;" />
+
+<img src="./Pictures/ColorNameDark.png" alt="ColorName" style="zoom:60%;" />
 
 
 
 Pour les graphiques avec plusieurs séries (barchart, piechart, multilinechart, scatterchart), **color** et **name** doivent être fournis sous la forme d’une liste entre crochets et non d’une simple chaîne de caractère 
 
 ```html
- <multiline-chart x='[[1, 2, 3], [1, 2, 3]]', y='[[30, 10, 20], [10, 20, 30]]' color = '["blue", "orange"]' name = '["A", "B"]'></multiline-chart>
+ <multiline-chart x='[[1, 2, 3], [1, 2, 3]]', y='[[30, 10, 20], [10, 20, 30]]' color = '["blue-france", "red-marianne"]' name = '["A", "B"]'></multiline-chart>
 ```
 
-![MultiColorName](./Pictures/MultiColorName.png)
+<img src="./Pictures/MultiColorName.png" alt="MultiColorName" style="zoom:60%;" />
 
 
 
@@ -249,10 +294,10 @@ Pour le cas du **BarLineChart,** les paramètres **color** et **name** sont asso
 **Exemple :**
 
 ```html
-<bar-line-chart x='[1, 2, 3]', y='[30, 10, 20]' ybar = '[20, 15, 12]' colorbar = 'red' namebar = 'Custom'></bar-line-chart>
+<bar-line-chart x='[1, 2, 3]', y='[30, 10, 20]' ybar = '[20, 15, 12]' colorbar = 'red-marianne' namebar = 'Custom'></bar-line-chart>
 ```
 
-![ColorNameBar](./Pictures/ColorNameBar.png)
+<img src="./Pictures/ColorNameBar.png" alt="ColorNameBar" style="zoom:60%;" />
 
 
 
@@ -283,10 +328,10 @@ Par défaut la couleur de la ligne sera #161616 et son nom V1, V2, … Cela peut
 **Exemple :**
 
 ```html
-<line-chart x = '[1, 2, 3]' y = '[10, 20, 30]' vline = '[1.5, 2.5]' vlinename = '["min", "max"]' vlinecolor = '["green", "orange"]'></line-chart>
+<line-chart x = '[1, 2, 3]' y = '[10, 20, 30]' vline = '[1.5, 2.5]' vlinename = '["min", "max"]' vlinecolor = '["green-archipel", "orange-terre-battue"]'></line-chart>
 ```
 
-![vline](./Pictures/vline.png)
+<img src="./Pictures/vline.png" alt="vline" style="zoom:60%;" />
 
 
 
@@ -305,10 +350,10 @@ Par défaut la couleur de la ligne sera #009081 et son nom H1, H2, … Cela peut
 **Exemple :**
 
 ```html
-<line-chart x = '[1, 2, 3]' y = '[10, 20, 30]' hline = '[15, 25]' hlinename = '["min", "max"]' hlinecolor = '["green", "orange"]'></line-chart>
+<line-chart x = '[1, 2, 3]' y = '[10, 20, 30]' hline = '[15, 25]' hlinename = '["min", "max"]' hlinecolor = '["green-archipel", "orange-terre-battue"]'></line-chart>
 ```
 
-![hline](./Pictures/hline.png)
+<img src="./Pictures/hline.png" alt="hline" style="zoom:60%;" />
 
 
 
@@ -322,7 +367,7 @@ On peut choisir de relier les points d’un ScatterChart avec l’option **showl
 <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]' showline = true></scatter-chart>
 ```
 
-![OptionsScatter](./Pictures/OptionScatter.png)
+<img src="./Pictures/OptionScatter.png" alt="OptionsScatter" style="zoom:60%;" />
 
 
 
@@ -336,7 +381,7 @@ On peut choisir de relier les points d’un ScatterChart avec l’option **showl
 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' stacked = true></bar-chart>
 ```
 
-![OptionsBar](./Pictures/OptionsBar.png)
+<img src="./Pictures/OptionsBar.png" alt="OptionsBar" style="zoom:60%;" />
 
 
 
@@ -345,10 +390,10 @@ On peut choisir de relier les points d’un ScatterChart avec l’option **showl
 **Exemple** : 
 
 ```html
-<bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' stacked = true></bar-chart>
+<bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' horizontal = true></bar-chart>
 ```
 
-![BarChartHorizontal](./Pictures/BarChartHorizontal.png)
+<img src="./Pictures/BarChartHorizontal.png" alt="BarChartHorizontal" style="zoom:60%;" />
 
 
 
@@ -362,7 +407,7 @@ L’option **fill = True**, permet de remplir l’intérieur du graphique.
 <pie-chart x = '[1, 2, 3]', y = '[10, 20, 30]' fill = true></pie-chart>
 ```
 
-![OptionsPieChart](./Pictures/OptionPieChart.png)
+<img src="./Pictures/OptionPieChart.png" alt="OptionsPieChart" style="zoom:60%;" />
 
 ## Contribution
 

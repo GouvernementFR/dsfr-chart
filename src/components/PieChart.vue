@@ -11,10 +11,10 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div v-for="index in nameParse.length" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
-          <span class="legende_dot" v-bind:style="{'background-color': colorParse[index - 1]}"></span>
+        <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
+          <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
           <p class='fr-text--sm fr-text--bold fr-ml-1v fr-mb-0'>
-            {{capitalize(nameParse[index - 1])}}
+            {{capitalize(nameParse[index])}}
           </p>
         </div>
       </div>
@@ -22,7 +22,6 @@
   </div>
 </template>
 <script>
-import chroma from 'chroma-js'
 import { Chart } from 'chart.js'
 import { mixin } from '@/utils.js'
 export default {
@@ -40,8 +39,11 @@ export default {
       xparse: [],
       yparse: [],
       nameParse: [],
+      tmpColorParse: [],
       colorParse: [],
-      typeGraph: 'doughnut'
+      listColors: [],
+      typeGraph: 'doughnut',
+      colorHover: []
     }
   },
   props: {
@@ -80,7 +82,7 @@ export default {
       } else {
         this.typeGraph = 'doughnut'
       }
-      const listColors = ['#000091', '#007c3a', '#A558A0'].concat(chroma.brewer.Set2.reverse())
+      this.listColors = this.getAllColors()
       this.xparse = JSON.parse(this.x)
       this.yparse = JSON.parse(this.y)
 
@@ -88,21 +90,16 @@ export default {
       if (this.name !== undefined) {
         tmpNameParse = JSON.parse(self.name)
       }
-      let tmpColorParse = []
       if (this.color !== undefined) {
-        tmpColorParse = JSON.parse(self.color)
+        this.tmpColorParse = JSON.parse(self.color)
       }
 
+      this.loadColors()
       for (let i = 0; i < this.yparse.length; i++) {
         if (tmpNameParse[i] !== undefined) {
           self.nameParse.push(tmpNameParse[i])
         } else {
           self.nameParse.push('Serie' + (i + 1))
-        }
-        if (tmpColorParse[i] !== undefined) {
-          self.colorParse.push(tmpColorParse[i])
-        } else {
-          self.colorParse.push(listColors[i])
         }
       }
 
@@ -112,8 +109,8 @@ export default {
         data: self.yparse,
         borderColor: self.colorParse,
         backgroundColor: self.colorParse,
-        hoverBackgroundColor: 'red',
-        hoverBorderColor: 'red'
+        hoverBackgroundColor: self.colorHover,
+        hoverBorderColor: self.colorHover
       }]
     },
     createChart () {
@@ -130,7 +127,7 @@ export default {
         options: {
           animation: {
             easing: 'easeInOutBack',
-            duration: 0
+            duration: 1000
           },
           legend: {
             display: false
@@ -216,6 +213,27 @@ export default {
           }
         }
       })
+    },
+    loadColors () {
+      this.colorParse = []
+      this.colorHover = []
+      for (let i = 0; i < this.yparse.length; i++) {
+        if (this.tmpColorParse[i] !== undefined) {
+          this.colorParse.push(this.getHexaFromName(this.tmpColorParse[i]))
+          this.colorHover.push(this.getHexaFromName(this.tmpColorParse[i], { hover: true }))
+        } else {
+          this.colorParse.push(this.getHexaFromName(this.listColors[i]))
+          this.colorHover.push(this.getHexaFromName(this.listColors[i], { hover: true }))
+        }
+      }
+    },
+    changeColors () {
+      this.loadColors()
+      this.chart.data.datasets[0].borderColor = this.colorParse
+      this.chart.data.datasets[0].backgroundColor = this.colorParse
+      this.chart.data.datasets[0].hoverBackgroundColor = this.colorHover
+      this.chart.data.datasets[0].hoverBorderColor = this.colorHover
+      this.chart.update()
     }
   },
   created () {
@@ -225,6 +243,10 @@ export default {
   mounted () {
     document.getElementById(this.widgetId).offsetWidth > 486 ? this.display = 'big' : this.display = 'small'
     this.createChart()
+    const element = document.documentElement // Reference à l'element <html> du DOM
+    element.addEventListener('dsfr.theme', (e) => {
+      this.changeColors()
+    })
   }
 }
 </script>

@@ -11,28 +11,27 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div v-for="index in nameParse.length" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
-          <span class="legende_dot" v-bind:style="{'background-color': colorParse[index - 1]}"></span>
+        <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
+          <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
           <p class='fr-text--sm fr-text--bold fr-ml-1v fr-mb-0'>
-            {{capitalize(nameParse[index - 1])}}
+            {{capitalize(nameParse[index])}}
           </p>
         </div>
-        <div v-for="index in hlineNameParse.length" :key="index" class="flex fr-mt-3v" :style="{'margin-left': style}">
-          <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index - 1]}"></span>
-          <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index - 1]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(hlineNameParse[index - 1]) }}</p>
+        <div v-for="(item2, index2) in hlineNameParse" :key="item2" class="flex fr-mt-3v" :style="{'margin-left': style}">
+          <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index2]}"></span>
+          <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index2]}"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(hlineNameParse[index2]) }}</p>
         </div>
-        <div v-for="index in vlineNameParse.length" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
-          <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index - 1]}"></span>
-          <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index - 1]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(vlineNameParse[index - 1]) }}</p>
+        <div v-for="(item3, index3) in vlineNameParse" :key="item3" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
+          <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index3]}"></span>
+          <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index3]}"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(vlineNameParse[index3]) }}</p>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import chroma from 'chroma-js'
 import { Chart } from 'chart.js'
 import { mixin } from '@/utils.js'
 import annotationPlugin from 'chartjs-plugin-annotation'
@@ -53,16 +52,23 @@ export default {
       xparse: [],
       yparse: [],
       nameParse: [],
+      tmpColorParse: [],
       colorParse: [],
+      listColors: [],
       vlineParse: [],
       vlineColorParse: [],
+      tmpVlineColorParse: [],
       vlineNameParse: [],
       hlineParse: [],
       hlineColorParse: [],
+      tmpHlineColorParse: [],
       hlineNameParse: [],
       typeGraph: '',
       ymax: 0,
-      annotations: []
+      annotations: [],
+      colorPrecisionBar: '#161616',
+      colorBox: '#2f2f2f',
+      colorHover: []
     }
   },
   props: {
@@ -129,7 +135,7 @@ export default {
       } else {
         this.typeGraph = 'bar'
       }
-      const listColors = ['#000091', '#007c3a', '#A558A0'].concat(chroma.brewer.Set2.reverse())
+      this.listColors = this.getAllColors()
       this.xparse = JSON.parse(this.x)
       this.yparse = JSON.parse(this.y)
 
@@ -137,21 +143,16 @@ export default {
       if (this.name !== undefined) {
         tmpNameParse = JSON.parse(self.name)
       }
-      let tmpColorParse = []
       if (this.color !== undefined) {
-        tmpColorParse = JSON.parse(self.color)
+        this.tmpColorParse = JSON.parse(self.color)
       }
 
+      this.loadColors()
       for (let i = 0; i < this.yparse.length; i++) {
         if (tmpNameParse[i] !== undefined) {
           self.nameParse.push(tmpNameParse[i])
         } else {
           self.nameParse.push('Serie' + (i + 1))
-        }
-        if (tmpColorParse[i] !== undefined) {
-          self.colorParse.push(tmpColorParse[i])
-        } else {
-          self.colorParse.push(listColors[i])
         }
       }
 
@@ -162,9 +163,8 @@ export default {
         if (this.vlinename !== undefined) {
           tmpVlineNameParse = JSON.parse(self.vlinename)
         }
-        let tmpVlineColorParse = []
         if (this.vlinecolor !== undefined) {
-          tmpVlineColorParse = JSON.parse(self.vlinecolor)
+          this.tmpVlineColorParse = JSON.parse(self.vlinecolor)
         }
 
         for (let i = 0; i < this.vlineParse.length; i++) {
@@ -172,11 +172,6 @@ export default {
             self.vlineNameParse.push(tmpVlineNameParse[i])
           } else {
             self.vlineNameParse.push('V' + (i + 1))
-          }
-          if (tmpVlineColorParse[i] !== undefined) {
-            self.vlineColorParse.push(tmpVlineColorParse[i])
-          } else {
-            self.vlineColorParse.push('#161616')
           }
         }
       }
@@ -188,9 +183,8 @@ export default {
         if (this.hlinename !== undefined) {
           tmpHlineNameParse = JSON.parse(self.hlinename)
         }
-        let tmpHlineColorParse = []
         if (this.hlinecolor !== undefined) {
-          tmpHlineColorParse = JSON.parse(self.hlinecolor)
+          this.tmpHlineColorParse = JSON.parse(self.hlinecolor)
         }
 
         for (let i = 0; i < this.hlineParse.length; i++) {
@@ -198,11 +192,6 @@ export default {
             self.hlineNameParse.push(tmpHlineNameParse[i])
           } else {
             self.hlineNameParse.push('H' + (i + 1))
-          }
-          if (tmpHlineColorParse[i] !== undefined) {
-            self.hlineColorParse.push(tmpHlineColorParse[i])
-          } else {
-            self.hlineColorParse.push('#009081')
           }
         }
       }
@@ -247,7 +236,8 @@ export default {
             xMax: 2 * sumY,
             yMax: j + 0.5,
             yMin: j - 0.5,
-            backgroundColor: '#eeeeee'
+            backgroundColor: self.colorBox,
+            borderColor: self.colorBox
           }
 
           j = j + 2
@@ -261,8 +251,8 @@ export default {
           data: dj,
           borderColor: self.colorParse[j],
           backgroundColor: self.colorParse[j],
-          hoverBorderColor: 'red',
-          hoverBackgroundColor: 'red'
+          hoverBorderColor: self.colorHover[j],
+          hoverBackgroundColor: self.colorHover[j]
         })
       })
     },
@@ -330,7 +320,7 @@ export default {
                   ctx.moveTo(x, yAxis.top)
                   ctx.lineTo(x, yAxis.bottom)
                   ctx.lineWidth = '1'
-                  ctx.strokeStyle = '#161616'
+                  ctx.strokeStyle = self.colorPrecisionBar
                   ctx.setLineDash([10, 5])
                   ctx.stroke()
                   ctx.restore()
@@ -340,7 +330,7 @@ export default {
                   ctx.moveTo(xAxis.left, y)
                   ctx.lineTo(xAxis.right, y)
                   ctx.lineWidth = '1'
-                  ctx.strokeStyle = '#161616'
+                  ctx.strokeStyle = self.colorPrecisionBar
                   ctx.setLineDash([10, 5])
                   ctx.stroke()
                   ctx.restore()
@@ -352,7 +342,7 @@ export default {
         options: {
           animation: {
             easing: 'easeInOutBack',
-            duration: 0
+            duration: 1000
           },
           annotation: {
             drawTime: 'beforeDatasetsDraw',
@@ -486,6 +476,59 @@ export default {
           }
         }
       })
+    },
+    loadColors () {
+      this.colorParse = []
+      this.colorHover = []
+      for (let i = 0; i < this.yparse.length; i++) {
+        if (this.tmpColorParse[i] !== undefined) {
+          this.colorParse.push(this.getHexaFromName(this.tmpColorParse[i]))
+          this.colorHover.push(this.getHexaFromName(this.tmpColorParse[i], { hover: true }))
+        } else {
+          this.colorParse.push(this.getHexaFromName(this.listColors[i]))
+          this.colorHover.push(this.getHexaFromName(this.listColors[i], { hover: true }))
+        }
+      }
+
+      this.vlineColorParse = []
+      for (let i = 0; i < this.vlineParse.length; i++) {
+        if (this.tmpVlineColorParse[i] !== undefined) {
+          this.vlineColorParse.push(this.getHexaFromName(this.tmpVlineColorParse[i]))
+        } else {
+          this.vlineColorParse.push(this.getHexaFromName('brown-cafe-creme'))
+        }
+      }
+
+      this.hlineColorParse = []
+      for (let i = 0; i < this.hlineParse.length; i++) {
+        if (this.tmpHlineColorParse[i] !== undefined) {
+          this.hlineColorParse.push(this.getHexaFromName(this.tmpHlineColorParse[i]))
+        } else {
+          this.hlineColorParse.push(this.getHexaFromName('beige-gris-galet'))
+        }
+      }
+    },
+    changeColors (theme) {
+      this.loadColors()
+      if (theme === 'light') {
+        this.colorPrecisionBar = '#161616'
+        this.colorBox = '#eeeeee'
+      } else {
+        this.colorPrecisionBar = '#FFFFFF'
+        this.colorBox = '#2f2f2f'
+      }
+      for (let i = 0; i < this.yparse.length; i++) {
+        this.chart.data.datasets[i].borderColor = this.colorParse[i]
+        this.chart.data.datasets[i].backgroundColor = this.colorParse[i]
+        this.chart.data.datasets[i].hoverBorderColor = this.colorHover[i]
+        this.chart.data.datasets[i].hoverBackgroundColor = this.colorHover[i]
+      }
+      for (const box of Object.entries(this.chart.annotation.elements)) {
+        const key = box[0]
+        this.chart.annotation.elements[key].options.backgroundColor = this.colorBox
+        this.chart.annotation.elements[key].options.borderColor = this.colorBox
+      }
+      this.chart.update()
     }
   },
   created () {
@@ -495,6 +538,10 @@ export default {
   mounted () {
     document.getElementById(this.widgetId).offsetWidth > 486 ? this.display = 'big' : this.display = 'small'
     this.createChart()
+    const element = document.documentElement // Reference à l'element <html> du DOM
+    element.addEventListener('dsfr.theme', (e) => {
+      this.changeColors(e.detail.theme)
+    })
   }
 }
 </script>

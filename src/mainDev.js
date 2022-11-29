@@ -7,6 +7,7 @@ import MultiLineChart from './components/MultiLineChart'
 import BarLineChart from './components/BarLineChart'
 import PieChart from './components/PieChart'
 import ScatterChart from './components/ScatterChart'
+import '../node_modules/@gouvfr/dsfr/dist/dsfr.module.min.js'
 
 import vueCustomElement from 'vue-custom-element'
 
