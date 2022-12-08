@@ -131,6 +131,9 @@ export default {
             duration: 0
           },
           scale: {
+            ticks: {
+              backdropColor: 'transparent'
+            },
             gridLines: {
               color: '#e5e5e5'
             }
