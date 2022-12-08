@@ -17,16 +17,6 @@
             {{capitalize(nameParse[index])}}
           </p>
         </div>
-        <div v-for="(item2, index2) in hlineNameParse" :key="item2" class="flex fr-mt-3v" :style="{'margin-left': style}">
-          <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index2]}"></span>
-          <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index2]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(hlineNameParse[index2]) }}</p>
-        </div>
-        <div v-for="(item3, index3) in vlineNameParse" :key="item3" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
-          <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index3]}"></span>
-          <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index3]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(vlineNameParse[index3]) }}</p>
-        </div>
       </div>
     </div>
   </div>
@@ -56,19 +46,6 @@ export default {
       tmpColorParse: [],
       colorParse: [],
       listColors: [],
-      vlineParse: [],
-      vlineColorParse: [],
-      tmpVlineColorParse: [],
-      vlineNameParse: [],
-      hlineParse: [],
-      hlineColorParse: [],
-      tmpHlineColorParse: [],
-      hlineNameParse: [],
-      typeGraph: '',
-      ymax: 0,
-      annotations: [],
-      colorPrecisionBar: '#161616',
-      colorBox: '#2f2f2f',
       colorHover: []
     }
   },
@@ -99,7 +76,6 @@ export default {
     getData () {
       const self = this
       // Récupération des paramètres
-      this.typeGraph = 'radar'
       this.listColors = this.getAllColors()
       this.xparse = JSON.parse(this.x)
       this.yparse = JSON.parse(this.y)
@@ -126,47 +102,6 @@ export default {
       self.labels = self.xparse[0]
       self.xAxisType = 'category'
 
-      // Set ymax
-      if (!this.horizontal) {
-        self.ymax = Math.max.apply(null, self.hlineParse)
-      }
-
-      // Annotation
-      if (this.horizontal) {
-        const xlenght = self.xparse[0].length
-        let nanno
-        if ((xlenght % 2) === 0) {
-          nanno = xlenght / 2
-        } else {
-          nanno = Math.floor(xlenght / 2) + 1
-        }
-
-        let sumY = 0
-        self.yparse.forEach(function (y, j) {
-          sumY = sumY + Math.abs(y)
-        })
-
-        let j = 0
-        for (let i = 0; i < nanno; i++) {
-          const anno = {
-            type: 'box',
-            drawTime: 'beforeDatasetsDraw',
-            id: 'box' + i,
-            xScaleID: 'x-axis-0',
-            yScaleID: 'y-axis-0',
-            xMin: -2 * sumY,
-            xMax: 2 * sumY,
-            yMax: j + 0.5,
-            yMin: j - 0.5,
-            backgroundColor: self.colorBox,
-            borderColor: self.colorBox
-          }
-
-          j = j + 2
-          self.annotations.push(anno)
-        }
-      }
-
       // Tracé de la courbe
       data.forEach(function (dj, j) {
         self.datasets.push({
@@ -185,126 +120,21 @@ export default {
       const self = this
       const ctx = document.getElementById(self.chartId).getContext('2d')
       this.chart = new Chart(ctx, {
-        type: self.typeGraph,
+        type: 'radar',
         data: {
           labels: self.labels,
           datasets: self.datasets
         },
-        plugins: [{
-          afterDatasetDraw: function (chart, args, options) {
-            if (self.vlineParse !== undefined) {
-              self.vlineParse.forEach(function (line, j) {
-                const ctx = chart.ctx
-                const xAxis = chart.scales['x-axis-0']
-                const yAxis = chart.scales['y-axis-0']
-
-                const x = xAxis.getPixelForValue(line)
-
-                ctx.beginPath()
-                ctx.moveTo(x, yAxis.bottom)
-                ctx.strokeStyle = self.vlineColorParse[j]
-                ctx.lineWidth = '3'
-                ctx.setLineDash([10, 5])
-                ctx.lineTo(x, yAxis.top)
-                ctx.stroke()
-              })
-            }
-            if (self.hlineParse !== undefined) {
-              self.hlineParse.forEach(function (line, j) {
-                const ctx = chart.ctx
-                const xAxis = chart.scales['x-axis-0']
-                const yAxis = chart.scales['y-axis-0']
-                const y = yAxis.getPixelForValue(line)
-
-                ctx.beginPath()
-                ctx.moveTo(xAxis.left, y)
-                ctx.strokeStyle = self.hlineColorParse[j]
-                ctx.lineWidth = '3'
-                ctx.setLineDash([10, 5])
-                ctx.lineTo(xAxis.right, y)
-                ctx.stroke()
-              })
-            }
-          }
-        },
-        {
-          afterDraw: function (chart, args, options) {
-            if (chart.tooltip._active !== undefined) {
-              if (chart.tooltip._active.length !== 0) {
-                const x = chart.tooltip._active[0]._model.x
-                const y = chart.tooltip._active[0]._model.y
-                const yAxis = chart.scales['y-axis-0']
-                const xAxis = chart.scales['x-axis-0']
-                const ctx = chart.ctx
-
-                if (self.horizontal) {
-                  ctx.save()
-                  ctx.beginPath()
-                  ctx.moveTo(x, yAxis.top)
-                  ctx.lineTo(x, yAxis.bottom)
-                  ctx.lineWidth = '1'
-                  ctx.strokeStyle = self.colorPrecisionBar
-                  ctx.setLineDash([10, 5])
-                  ctx.stroke()
-                  ctx.restore()
-                } else {
-                  ctx.save()
-                  ctx.beginPath()
-                  ctx.moveTo(xAxis.left, y)
-                  ctx.lineTo(xAxis.right, y)
-                  ctx.lineWidth = '1'
-                  ctx.strokeStyle = self.colorPrecisionBar
-                  ctx.setLineDash([10, 5])
-                  ctx.stroke()
-                  ctx.restore()
-                }
-              }
-            }
-          }
-        }],
         options: {
           animation: {
             easing: 'easeInOutBack',
             duration: 0
           },
-          annotation: {
-            drawTime: 'beforeDatasetsDraw',
-            annotations: self.annotations
-          },
-          scales: {
-            xAxes: [{
-              stacked: self.stacked,
-              offset: true,
-              gridLines: {
-                color: 'rgba(0, 0, 0, 0)'
-              }
-            }],
-            yAxes: [{
-              stacked: self.stacked,
-              gridLines: {
-                color: '#e5e5e5',
-                borderDash: [3]
-              },
-              ticks: {
-                suggestedMin: 0,
-                suggestedMax: self.ymax,
-                autoSkip: true,
-                maxTicksLimit: 5,
-                callback: function (value, index, values) {
-                  if (value >= 1000000000 || value <= -1000000000) {
-                    return value / 1e9 + 'B'
-                  } else if (value >= 1000000 || value <= -1000000) {
-                    return value / 1e6 + 'M'
-                  } else if (value >= 1000 || value <= -1000) {
-                    return value / 1e3 + 'K'
-                  }
-                  return value
-                }
-              },
-              afterFit: function (axis) {
-                self.legendLeftMargin = axis.width
-              }
-            }]
+          scale: {
+            backgroundColor: 'red',
+            gridLines: {
+              color: '#e5e5e5'
+            }
           },
           legend: {
             display: false
@@ -412,44 +242,19 @@ export default {
           this.colorHover.push(this.getHexaFromName(this.listColors[i], { hover: true }))
         }
       }
-
-      this.vlineColorParse = []
-      for (let i = 0; i < this.vlineParse.length; i++) {
-        if (this.tmpVlineColorParse[i] !== undefined) {
-          this.vlineColorParse.push(this.getHexaFromName(this.tmpVlineColorParse[i]))
-        } else {
-          this.vlineColorParse.push(this.getHexaFromName('brown-cafe-creme'))
-        }
-      }
-
-      this.hlineColorParse = []
-      for (let i = 0; i < this.hlineParse.length; i++) {
-        if (this.tmpHlineColorParse[i] !== undefined) {
-          this.hlineColorParse.push(this.getHexaFromName(this.tmpHlineColorParse[i]))
-        } else {
-          this.hlineColorParse.push(this.getHexaFromName('beige-gris-galet'))
-        }
-      }
     },
     changeColors (theme) {
       this.loadColors()
       if (theme === 'light') {
-        this.colorPrecisionBar = '#161616'
-        this.colorBox = '#eeeeee'
+        this.chart.options.scale.gridLines.color = '#e5e5e5'
       } else {
-        this.colorPrecisionBar = '#FFFFFF'
-        this.colorBox = '#2f2f2f'
+        this.chart.options.scale.gridLines.color = '#2a2a2a'
       }
       for (let i = 0; i < this.yparse.length; i++) {
         this.chart.data.datasets[i].borderColor = this.colorParse[i]
-        this.chart.data.datasets[i].backgroundColor = this.colorParse[i]
+        this.chart.data.datasets[i].backgroundColor = chroma(this.colorParse[i]).alpha(0.3).hex()
         this.chart.data.datasets[i].hoverBorderColor = this.colorHover[i]
         this.chart.data.datasets[i].hoverBackgroundColor = this.colorHover[i]
-      }
-      for (const box of Object.entries(this.chart.annotation.elements)) {
-        const key = box[0]
-        this.chart.annotation.elements[key].options.backgroundColor = this.colorBox
-        this.chart.annotation.elements[key].options.borderColor = this.colorBox
       }
       this.chart.update()
     }
