@@ -131,7 +131,6 @@ export default {
             duration: 0
           },
           scale: {
-            backgroundColor: 'red',
             gridLines: {
               color: '#e5e5e5'
             }
