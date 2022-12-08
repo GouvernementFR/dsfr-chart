@@ -184,7 +184,8 @@ export default {
               }
               // Set Text
               if (tooltipModel.body) {
-                const titleLines = tooltipModel.title || []
+                const titleLines = [self.xparse[0][tooltipModel.dataPoints[0].index]]
+                // const titleLines = tooltipModel.title || []
                 const bodyLines = tooltipModel.body.map(getBody)
 
                 const divDate = self.$el.querySelector('.tooltip_header')
