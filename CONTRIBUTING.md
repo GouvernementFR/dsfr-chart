@@ -52,7 +52,7 @@ Vue.use(vueCustomElement)
 Vue.customElement('new-chart', NewChart)
 ```
 
-Il est également important de rajouter cela dans le fichier ``main.js`` qui permet la compilation de tous les web-components.
+Il est également important de rajouter cela dans le fichier ``main.js`` et ``mainDev.js`` qui permettent la compilation de tous les web-components, respectivement pour la production et le développement.
 
 
 
