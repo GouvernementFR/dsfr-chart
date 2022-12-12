@@ -67,20 +67,10 @@
               </ul>
               </div>
 
-              <!-- GAUGE CHART -->  
-
-              <div class="chart_container"> 
-                <h2>I. Jauge</h2>
-
-                Une jauge est un outils permettant de suivre un état d'avancement d'un projet par exemple.
-
-                <gauge-chart value=16 init=10 target=20 color="blue-france"></gauge-chart>
-              </div>
-
 
               <!-- SCATTER CHART -->                
               <div class="chart_container"> 
-                <h2>  II. Nuage de points </h2>
+                <h2>  I. Nuage de points </h2>
                 <div align="justify">Le nuage de points est grandement utilisé pour présenter la mesure de deux ou plusieurs variables liées.
                    Le nuage de points est particulièrement utile lorsque les valeurs des variables sur l'axe des y dépendent des
                    valeurs de la variable de l'axe des x.
@@ -89,21 +79,74 @@
                 <h3>1. Nuage de points simple</h3>
                 <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]'></scatter-chart>
 
+
+               <div class="fr-mb-13v">
+                  <div class="fr-container">
+                    <section class="fr-accordion">
+
+                        <h3 class="fr-accordion__title">
+                            <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-1">Extrait de code</button>
+                        </h3>
+
+                        <div class="fr-collapse" id="snippet-1">
+                            <pre class=" language-html"><code>&lt;scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]'&gt;&lt;/scatter-chart&gt;
+                             </code></pre>
+                        </div>
+                    </section>
+                  </div>
+                </div>
+
                 <br></br>
                 <h3>2. Nuage de points reliés</h3>
                 <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]' showline=true></scatter-chart>
+
+                <div class="fr-mb-13v">
+                  <div class="fr-container">
+                    <section class="fr-accordion">
+                      
+                        <h3 class="fr-accordion__title">
+                            <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-2">Extrait de code</button>
+                        </h3>
+
+                        <div class="fr-collapse" id="snippet-2">
+                            <pre class=" language-html"><code>&lt;scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]] showline=true'&gt;&lt;/scatter-chart&gt;
+                             </code></pre>
+                        </div>
+                    </section>
+                  </div>
+                </div>
+
+
+
 
               </div> 
 
               <!-- BAR CHART -->
               <div class="chart_container"> 
-                <h2>  III. Diagramme en barre </h2>   
+                <h2>  II. Diagramme en barre </h2>   
                 <div align="justify"> Un diagramme en barres montre les dénombrements de valeurs pour les niveaux d'une variable catégorielle ou nominale.</div> 
 
                 <br></br>
 
                 <h3> 1.Barres verticales</h3>  
                 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]'></bar-chart>  
+
+                <div class="fr-mb-13v">
+                  <div class="fr-container">
+                    <section class="fr-accordion">
+                      
+                        <h3 class="fr-accordion__title">
+                            <button class="fr-accordion__btn" aria-expanded="true" aria-controls="snippet-244">Extrait de code</button>
+                        </h3>
+
+                        <div class="fr-collapse" id="snippet-245">
+                              <pre class=" language-html"><code>&lt;bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]'&gt;&lt;/bar-chart&gt;
+                             </code></pre>
+                        </div>
+                    </section>
+                  </div>
+                </div>
+
 
                 <br></br>
 
@@ -120,7 +163,7 @@
 
               <!-- LINE CHART -->                
               <div class="chart_container"> 
-                <h2>IV. Graphique en ligne</h2>
+                <h2>III. Graphique en ligne</h2>
                 <div align="justify">Un graphique en ligne est un type de visualisation de données qui affiche des valeurs sous forme de points sur une ligne. Cela peut consister en une seule ligne ou présenter plusieurs lignes à titre de comparaison.</div>
                 <br></br>
                 <line-chart x = '[1, 2, 3, 4]' y = '[10, 20, 30,40]'></line-chart>  
@@ -130,7 +173,7 @@
 
               <!-- MULTILINE CHART 1 -->  
               <div class="chart_container"> 
-                <h2>V. Graphique multi-lignes</h2>
+                <h2>IV. Graphique multi-lignes</h2>
                 <br></br>
                 <multiline-chart x='[[1, 2, 3], [1, 2, 3]]' y='[[30, 10, 20], [10, 20, 30]]'></multiline-chart>
               </div>
@@ -138,7 +181,7 @@
 
               <!-- BAR-LINE CHART --> 
               <div class="chart_container"> 
-                <h2>VI. Diagramme en barre / Graphique en ligne</h2>
+                <h2>V. Diagramme en barre / Graphique en ligne</h2>
                 <div align="justify">Il est également possible d'avoir une superposition d'un diagramme en barre avec un graphique en ligne.</div>
                 <br></br>
                 <bar-line-chart x='[1, 2, 3]' y='[30, 10, 20]' ybar = '[20, 15, 12]'></bar-line-chart>
@@ -148,7 +191,7 @@
 
               <!-- PIE CHART 1 -->             
               <div class="chart_container"> 
-                <h2 >VII. Diagramme circulaire</h2>
+                <h2 >VI. Diagramme circulaire</h2>
                 <div align="justify">Chacune des « parts » représente une catégorie de données qui forment un ensemble. Au total, la somme des parts est égal à 100 pour cent. La taille de chaque « part » est proportionnelle à son poids dans l'ensemble.</div>
                 <br></br>
                 <h3> 1.Diagramme circulaire plein </h3>  
@@ -165,7 +208,7 @@
 
               <!-- MAP CHART 1 -->  
               <div class="chart_container"> 
-                <h2>VIII. Cartes</h2>
+                <h2>VII. Cartes</h2>
                 <div align="justify">
                   Les cartes sont actuellement disponibles aux niveaux départemental et régional. Un clic sur un département ou une région permet d'effectuer un zoom.
                 </div>
@@ -206,7 +249,7 @@
               
               <!-- MULTILINE CHART 2 -->  
               <div class="chart_container"> 
-                <h2>IX. Options de lignes verticales et horizontales</h2> 
+                <h2>VIII. Options de lignes verticales et horizontales</h2> 
                 <div align="justify"> Il est possible d'ajouter des lignes verticales et horizontales sur les différents graphiques.</div>
 
                 <br></br>
@@ -217,6 +260,31 @@
                 <h3>2. Barres horizontales avec ligne vertical </h3> 
                 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' horizontal = true vline='[27]' vlinecolor = '["green-emeraude"]'  vlineName = '["seuil"]'></bar-chart>
               </div>
+
+
+              <!-- GAUGE CHART -->  
+
+              <div class="chart_container"> 
+                <h2>IX. Jauge</h2>
+
+                Une jauge est un outils permettant de suivre un état d'avancement d'un projet par exemple.
+
+                <gauge-chart value=16 init=10 target=20 color="blue-france"></gauge-chart>
+              </div>
+
+              <section class="fr-accordion">
+                <h3 class="fr-accordion__title">
+                    <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-106">Code</button>
+                </h3>
+                <div class="fr-collapse" id="accordion-106">
+                <pre class=" language-html"><code>
+                &lt;gauge-chart value=16 init=10 target=20 color="blue-france"&gt;&lt;/gauge-chart&gt;
+                </code></pre>
+                </div>
+             </section>
+             <br></br>
+
+
               <!-- Couleurs -->  
               <div class="chart_container"> 
                 <h2>X. Les couleurs</h2>
