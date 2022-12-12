@@ -8,6 +8,21 @@
 
     <title><%= htmlWebpackPlugin.options.title %></title>
     <style>
+      .code-toolbar {
+      background-color: #f5f2f0;
+     }
+      .attr-name, .builtin, .char, .inserted, .selector, .string {
+          color: #690;
+      }
+      .punctuation {
+          color: #999;
+      }
+     .tag {
+       color: #905;
+      } 
+      .titre_class{
+       color: #000091;
+      }
       .flex {
         display: flex;
         margin-bottom: 1rem;
@@ -80,44 +95,37 @@
                 <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]'></scatter-chart>
 
 
-               <div class="fr-mb-13v">
-                  <div class="fr-container">
-                    <section class="fr-accordion">
-
-                        <h3 class="fr-accordion__title">
-                            <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-1">Extrait de code</button>
-                        </h3>
-
-                        <div class="fr-collapse" id="snippet-1">
-                            <pre class=" language-html"><code>&lt;scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]'&gt;&lt;/scatter-chart&gt;
-                             </code></pre>
-                        </div>
-                    </section>
-                  </div>
-                </div>
+                <div class="chart_container"> 
+                  <section class="fr-accordion">
+                    <h3 class="fr-accordion__title">
+                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-7">Extrait de code Nuage de points simple</button>
+                    </h3>
+                    <div class="fr-collapse" id="accordion-7">
+                      <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scatter-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[1, 5, 8], [1, 2, 15]]
+   </span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[30, 10, 20], [10, 20, 30]]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>scatter-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                    </div>
+                   </section>
+                </div> 
 
                 <br></br>
                 <h3>2. Nuage de points reliés</h3>
                 <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]' showline=true></scatter-chart>
 
-                <div class="fr-mb-13v">
-                  <div class="fr-container">
-                    <section class="fr-accordion">
-                      
-                        <h3 class="fr-accordion__title">
-                            <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-2">Extrait de code</button>
-                        </h3>
-
-                        <div class="fr-collapse" id="snippet-2">
-                            <pre class=" language-html"><code>&lt;scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]] showline=true'&gt;&lt;/scatter-chart&gt;
-                             </code></pre>
-                        </div>
-                    </section>
-                  </div>
-                </div>
-
-
-
+                <div class="chart_container"> 
+                  <section class="fr-accordion">
+                    <h3 class="fr-accordion__title">
+                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-8">Extrait de code Nuage de points simple</button>
+                    </h3>
+                    <div class="fr-collapse" id="accordion-8">
+                      <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scatter-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[1, 5, 8], [1, 2, 15]]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[30, 10, 20], [10, 20, 30]]</span>
+    <span class="token attr-name">showline</span><span class="token punctuation">=</span><span class = "titre_class">true</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>scatter-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                    </div>
+                   </section>
+                </div> 
 
               </div> 
 
@@ -131,33 +139,57 @@
                 <h3> 1.Barres verticales</h3>  
                 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]'></bar-chart>  
 
-                <div class="fr-mb-13v">
-                  <div class="fr-container">
-                    <section class="fr-accordion">
-                      
-                        <h3 class="fr-accordion__title">
-                            <button class="fr-accordion__btn" aria-expanded="true" aria-controls="snippet-244">Extrait de code</button>
-                        </h3>
-
-                        <div class="fr-collapse" id="snippet-245">
-                              <pre class=" language-html"><code>&lt;bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]'&gt;&lt;/bar-chart&gt;
-                             </code></pre>
-                        </div>
-                    </section>
+              <div class="chart_container"> 
+                <section class="fr-accordion">
+                  <h3 class="fr-accordion__title">
+                      <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-3">Extrait de code bar chart</button>
+                  </h3>
+                  <div class="fr-collapse" id="accordion-3">
+                    <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3",
+    "5"]]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
                   </div>
-                </div>
+                 </section>
+              </div> 
 
 
                 <br></br>
 
                 <h3> 2.Barres horizontales</h3> 
                 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' horizontal = true></bar-chart>
-
+                <div class="chart_container"> 
+                  <section class="fr-accordion">
+                    <h3 class="fr-accordion__title">
+                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-4">Extrait de code bar chart horizontale</button>
+                    </h3>
+                    <div class="fr-collapse" id="accordion-4">
+                      <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3",
+      "5"]]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]</span><span class="token punctuation">'</span> 
+      <span class="token attr-name">horizontal</span><span class="token punctuation">=</span><span class = "titre_class">true</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                    </div>
+                   </section>
+                </div> 
                 <br></br>
 
                 <h3> 3.Barres empilées</h3> 
                 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' stacked = true></bar-chart>
-
+                <div class="chart_container"> 
+                  <section class="fr-accordion">
+                    <h3 class="fr-accordion__title">
+                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-5">Extrait de code bar chart empilée</button>
+                    </h3>
+                    <div class="fr-collapse" id="accordion-5">
+                      <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3",
+      "5"]]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]</span><span class="token punctuation">'</span> 
+      <span class="token attr-name">stacked</span><span class="token punctuation">=</span><span class = "titre_class">true</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                    </div>
+                   </section>
+                </div> 
               </div>
 
 
@@ -167,6 +199,18 @@
                 <div align="justify">Un graphique en ligne est un type de visualisation de données qui affiche des valeurs sous forme de points sur une ligne. Cela peut consister en une seule ligne ou présenter plusieurs lignes à titre de comparaison.</div>
                 <br></br>
                 <line-chart x = '[1, 2, 3, 4]' y = '[10, 20, 30,40]'></line-chart>  
+                <div class="chart_container"> 
+                  <section class="fr-accordion">
+                    <h3 class="fr-accordion__title">
+                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-9">Extrait de code graphique en ligne</button>
+                    </h3>
+                    <div class="fr-collapse" id="accordion-9">
+                      <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>line-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[1, 2, 3, 4]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[10, 20, 30,40]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>line-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                    </div>
+                   </section>
+                </div> 
                 <br></br>
    
               </div>   
@@ -177,7 +221,20 @@
                 <br></br>
                 <multiline-chart x='[[1, 2, 3], [1, 2, 3]]' y='[[30, 10, 20], [10, 20, 30]]'></multiline-chart>
               </div>
-
+              
+              <div class="chart_container"> 
+                <section class="fr-accordion">
+                  <h3 class="fr-accordion__title">
+                      <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-10">Extrait de code multi-lignes</button>
+                  </h3>
+                  <div class="fr-collapse" id="accordion-10">
+                    <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>multiline-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[1, 2, 3], [1, 2, 3]]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[30, 10, 20], [10, 20, 30]]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token punctuation">&lt;/</span>multiline-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                  </div>
+                 </section>
+              </div> 
 
               <!-- BAR-LINE CHART --> 
               <div class="chart_container"> 
@@ -187,7 +244,19 @@
                 <bar-line-chart x='[1, 2, 3]' y='[30, 10, 20]' ybar = '[20, 15, 12]'></bar-line-chart>
                 <br></br>
               </div>
-
+              <div class="chart_container"> 
+                <section class="fr-accordion">
+                  <h3 class="fr-accordion__title">
+                      <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-11">Extrait de code Diagramme en barre / Graphique en ligne</button>
+                  </h3>
+                  <div class="fr-collapse" id="accordion-11">
+                    <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-line-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[1, 2, 3]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[30, 10, 20]</span><span class="token punctuation">'</span></span><span class="token attr-name">ybar</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[20, 15, 12]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span>
+<span class="token punctuation">&lt;/</span>bar-line-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                  </div>
+                 </section>
+              </div> 
 
               <!-- PIE CHART 1 -->             
               <div class="chart_container"> 
@@ -198,11 +267,39 @@
                 <pie-chart x = '[1, 2, 3]', y = '[10, 20, 30]' fill = true></pie-chart>
               </div>
 
+              <div class="chart_container"> 
+                <section class="fr-accordion">
+                  <h3 class="fr-accordion__title">
+                      <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-12">Extrait de code circulaire plein</button>
+                  </h3>
+                  <div class="fr-collapse" id="accordion-12">
+                    <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pie-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[1, 2, 3]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[10, 20, 30]</span><span class="token punctuation">'</span></span><span class="token attr-name">fill</span><span class="token punctuation">=</span><span class = "titre_class">true</span></span><span class="token punctuation">&gt;</span></span>
+<span class="token punctuation">&lt;/</span>pie-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                  </div>
+                 </section>
+              </div> 
+
               <!-- PIE CHART 2 -->                
               <div class="chart_container"> 
                 <h3> 2.Diagramme circulaire creux (donut) </h3>  
                 <br></br>
                 <pie-chart x = '[1, 2, 3]', y = '[10, 20, 30]'></pie-chart>
+              </div> 
+
+              <div class="chart_container"> 
+                <section class="fr-accordion">
+                  <h3 class="fr-accordion__title">
+                      <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-13">Extrait de code circulaire creux</button>
+                  </h3>
+                  <div class="fr-collapse" id="accordion-13">
+                    <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pie-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[1, 2, 3]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[10, 20, 30]</span><span class="token punctuation">'</span></span></span><span class="token punctuation">&gt;</span></span>
+<span class="token punctuation">&lt;/</span>pie-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                  </div>
+                 </section>
               </div> 
               
 
@@ -225,11 +322,62 @@
                 "89": 100, "90": 85, "91": 87, "92": 46, "93": 89, "94": 18, "95": 72, "971": 48, "972": 28, "973": 35,
                 "974": 70, "976": 38, "2A": 63, "2B": "16"}' valuenat = 10 name = "Nom de l'indicateur"></map-chart>
                 <br></br>
+                <div class="chart_container"> 
+                  <section class="fr-accordion">
+                    <h3 class="fr-accordion__title">
+                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-15">Extrait de code map découpage départemental</button>
+                    </h3>
+                    <div class="fr-collapse" id="accordion-15">
+                      <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>map-chart</span> <span class="token attr-name">data</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, 
+      "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
+      "12": 33, "13": 89, "14": 24, "15": 52, "16": 41,
+      "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,
+      "23": 37, "24": 65, "25": 88, "26": 48, "27": 61, "28": 80, "29": 12, 
+      "30": 6, "31": 5, "32": 22, "33": 40,"34": 19, "35": 13, "36": 32, 
+      "37": 0, "38": 82, "39": 13, "40": 78, "41": 92, "42": 10, 
+      "43": 22, "44": 70,"45": 85, "46": 58, "47": 72, "48": 61,
+      "49": 27, "50": 47, "51": 41, "52": 44, "53": 29, "54": 22,
+      "55": 4,"56": 57, "57": 94, "58": 46, "59": 33, "60": 0, 
+      "61": 15, "62": 60, "63": 71, "64": 0, "65": 91, "66": 51,
+      "67": 56, "68": 19, "69": 44, "70": 92, "71": 96, "72": 51,
+       "73": 32, "74": 19, "75": 96, "76": 91, "77": 21,
+      "78": 48, "79": 72, "80": 52, "81": 48, "82": 57, "83": 38,
+       "84": 23, "85": 46, "86": 37, "87": 64, "88": 78,
+      "89": 100, "90": 85, "91": 87, "92": 46, "93": 89, "94": 18, 
+      "95": 72, "971": 48, "972": 28, "973": 35,
+      "974": 70, "976": 38, "2A": 63, "2B": "16"}</span><span class="token punctuation">"</span></span><span class="token attr-name">valuenat</span><span class="token attr-value"><span class="token punctuation">=</span><span class = "titre_class">10</span>
+      <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">Nom de l'indicateur</span><span class="token punctuation">"</span></span></span><span class="token punctuation">&gt;</span></span>
+   <span class="token punctuation">&lt;/</span>map-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                    </div>
+                   </section>
+                </div> 
+
                 <h3> 2. Découpage régional </h3>  
                 <map-chart data = '{"84": 1, "32": 10, "93": 20, "44": 30, "76": 40, "28": 50, "75": 60, "24": 70,
                  "53": 80, "94": 90, "52": 100, "01": 95, "02": 85, "03": 75, "04": 65, "06": "55", "27": 100, "11": 35}' 
                  valuenat = 10 name = "Nom de l'indicateur" level="reg">
                 </map-chart>
+
+
+                <div class="chart_container"> 
+                  <section class="fr-accordion">
+                    <h3 class="fr-accordion__title">
+                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-16">Extrait de code map découpage régional</button>
+                    </h3>
+                    <div class="fr-collapse" id="accordion-16">
+                      <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>map-chart</span> <span class="token attr-name">data</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">{"84": 1, "32": 10, "93": 20, "44": 30, "76": 40,
+       "28": 50, "75": 60, "24": 70,"53": 80, 
+       "94": 90, "52": 100, "01": 95, "02": 85,
+        "03": 75, "04": 65, "06": "55", "27": 100, "11": 35}</span><span class="token punctuation">'</span></span><span class="token attr-name">valuenat</span><span class="token attr-value"><span class="token punctuation">=</span><span class = "titre_class">10</span>
+      <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">Nom de l'indicateur</span><span class="token punctuation">"</span><span class="token attr-name">level</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">reg</span><span class="token punctuation">"</span></span></span><span class="token punctuation">&gt;</span></span>
+   <span class="token punctuation">&lt;/</span>map-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                    </div>
+                   </section>
+                </div> 
 
                 <br></br>
                 <h3> 3. Régions </h3>  
@@ -246,6 +394,39 @@
                 valuereg = 10 name = "Nom de l'indicateur" region = '93'>
                </map-chart-reg>
               </div>
+
+              <div class="chart_container"> 
+                <section class="fr-accordion">
+                  <h3 class="fr-accordion__title">
+                      <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-17">Extrait de code map régions</button>
+                  </h3>
+                  <div class="fr-collapse" id="accordion-17">
+                    <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>map-chart-reg</span> <span class="token attr-name">data</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47,
+    "06": 96, "07": 77,"08": 75, "09": 57, "10": 58, "11": 38,
+    "12": 33, "13": 89, "14": 24, "15": 52, "16": 41,
+    "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,
+    "23": 37, "24": 65, "25": 88, "26": 48, "27": 61, 
+    "28": 80, "29": 12, "30": 6, "31": 5, "32": 22, "33": 40,
+    "34": 19, "35": 13, "36": 32, "37": 0, "38": 82,
+    "39": 13, "40": 78, "41": 92, "42": 10, "43": 22, "44": 70,
+    "45": 85, "46": 58, "47": 72, "48": 61, "49": 27,
+    "50": 47, "51": 41, "52": 44, "53": 29, "54": 22, "55": 4,
+    "56": 57, "57": 94, "58": 46, "59": 33, "60": 0,
+    "61": 15, "62": 60, "63": 71, "64": 0, "65": 91, "66": 51,
+    "67": 56, "68": 19, "69": 44, "70": 92, "71": 96,
+    "72": 51, "73": 32, "74": 19, "75": 96, "76": 91, "77": 21,
+    "78": 48, "79": 72, "80": 52, "81": 48, "82": 57, 
+    "83": 38, "84": 23, "85": 46, "86": 37, "87": 64, "88": 78,
+    "89": 100, "90": 85, "91": 87, "92": 46, "93": 89,
+    "94": 18, "95": 72, "971": 48, "972": 28, "973": 35,
+    "974": 70, "976": 38, "2A": 63, "2B": "16"}</span><span class="token punctuation">'</span></span><span class="token attr-name">valuenat</span><span class="token attr-value"><span class="token punctuation">=</span><span class = "titre_class">10</span>
+    <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">Nom de l'indicateur</span><span class="token punctuation">"</span><span class="token attr-name">region</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">93</span><span class="token punctuation">'</span></span></span><span class="token punctuation">&gt;</span></span>
+ <span class="token punctuation">&lt;/</span>map-chart-reg</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                  </div>
+                 </section>
+              </div> 
               
               <!-- MULTILINE CHART 2 -->  
               <div class="chart_container"> 
@@ -256,11 +437,48 @@
 
                 <h3>1. Graphique avec lignes verticales et horizontales </h3>
                 <line-chart x = '[1, 2, 3]' y = '[10, 20, 30]' hline = '[15, 25]' hlinename = '["hmin", "hmax"]' hlinecolor = '["blue-ecume", "red-marianne"]' vline='[1.6, 2.3]' vlinename='["vmin","vmax"]' vlinecolor = '["green-archipel", "orange-terre-battue"]'></line-chart> 
-
+                 
+                <div class="chart_container"> 
+                  <section class="fr-accordion">
+                    <h3 class="fr-accordion__title">
+                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-20">Extrait de code graphique avec lignes verticales et horizontales</button>
+                    </h3>
+                    <div class="fr-collapse" id="accordion-20">
+                      <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>line-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[1, 2, 3]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[10, 20, 30]</span><span class="token punctuation">'</span>
+    <span class="token attr-name">hline</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[15, 25]</span><span class="token punctuation">'</span>
+    <span class="token attr-name">hlinename</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">["hmin", "hmax"]</span><span class="token punctuation">'</span>
+    <span class="token attr-name">vline</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[1.6, 2.3]</span><span class="token punctuation">'</span>
+    <span class="token attr-name">vlinename</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">["vmin","vmax"]</span><span class="token punctuation">'</span>
+    <span class="token attr-name">vlinecolor</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">["green-archipel", "orange-terre-battue"]</span><span class="token punctuation">'</span>
+    <span class="token attr-name">hlinecolor</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">["blue-ecume", "red-marianne"]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>line-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                    </div>
+                   </section>
+                </div> 
                 <h3>2. Barres horizontales avec ligne vertical </h3> 
                 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]' horizontal = true vline='[27]' vlinecolor = '["green-emeraude"]'  vlineName = '["seuil"]'></bar-chart>
-              </div>
 
+                <div class="chart_container"> 
+                  <section class="fr-accordion">
+                    <h3 class="fr-accordion__title">
+                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-21">Extrait de code graphique avec lignes verticales et horizontales</button>
+                    </h3>
+                    <div class="fr-collapse" id="accordion-21">
+                      <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-chart</span> 
+    <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]</span><span class="token punctuation">'</span>
+    </span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]</span><span class="token punctuation">'</span>
+    <span class="token attr-name">horizontal</span><span class="token attr-value"><span class="token punctuation">=</span><span class = "titre_class">true</span>
+    <span class="token attr-name">vline</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[27]</span><span class="token punctuation">'</span>
+    <span class="token attr-name">vlineName</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">["seuil"]</span><span class="token punctuation">'</span>
+    <span class="token attr-name">vlinecolor</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">["green-emeraude"]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                    </div>
+                   </section>
+                </div> 
+              </div>
+            
 
               <!-- GAUGE CHART -->  
 
@@ -272,16 +490,18 @@
                 <gauge-chart value=16 init=10 target=20 color="blue-france"></gauge-chart>
               </div>
 
-              <section class="fr-accordion">
-                <h3 class="fr-accordion__title">
-                    <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-106">Code</button>
-                </h3>
-                <div class="fr-collapse" id="accordion-106">
-                <pre class=" language-html"><code>
-                &lt;gauge-chart value=16 init=10 target=20 color="blue-france"&gt;&lt;/gauge-chart&gt;
-                </code></pre>
-                </div>
-             </section>
+              <div class="chart_container"> 
+                <section class="fr-accordion">
+                  <h3 class="fr-accordion__title">
+                      <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-22">Extrait de code jauge</button>
+                  </h3>
+                  <div class="fr-collapse" id="accordion-22">
+                    <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>gauge-chart</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class = "titre_class">16</span> <span class="token attr-name">init</span><span class="token attr-value"><span class="token punctuation">=</span><span class = "titre_class">10</span> <span class="token attr-name">target</span><span class="token attr-value"><span class="token punctuation">=</span><span class = "titre_class">20</span><span class="token punctuation"></span> <span class="token attr-name">color</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">blue-france</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>gauge-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                  </div>
+                 </section>
+              </div> 
              <br></br>
 
 
@@ -389,7 +609,21 @@
                 </div>
                 <br></br>
                 <pie-chart x = '[1, 2, 3]', y = '[10, 20, 30]' fill = true pattern = true></pie-chart>
-
+                 
+                <div class="chart_container"> 
+                  <section class="fr-accordion">
+                    <h3 class="fr-accordion__title">
+                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-24">Extrait de code circulaire avec textures</button>
+                    </h3>
+                    <div class="fr-collapse" id="accordion-24">
+                      <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pie-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[1, 2, 3]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[10, 20, 30]</span><span class="token punctuation">'</span><span class="token attr-name">pattern</span><span class="token attr-value"><span class="token punctuation">=</span><span class = "titre_class">true</span> <span class="token attr-name">fill</span><span class="token attr-value"><span class="token punctuation">=</span><span class = "titre_class">true</span></span></span><span class="token punctuation">&gt;</span></span>
+   <span class="token punctuation">&lt;/</span>pie-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                    </div>
+                   </section>
+                </div> 
+                
                 <br></br>
                 
                 <h3>2. Tableaux </h3>
@@ -399,6 +633,30 @@
                 <table-chart x='[["A","B","C","D","E","F","G","H","I","J"],["A","B","C","D","E","F","G","H","I","J"]]' 
                 y='[[40, 50,40,39,49,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49]]' 
                 varname = 'Jours'></table-chart>
+
+                <div class="chart_container"> 
+                  <section class="fr-accordion">
+                    <h3 class="fr-accordion__title">
+                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-23">Extrait de code table</button>
+                    </h3>
+                    <div class="fr-collapse" id="accordion-23">
+                      <div class="code-toolbar"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">chart_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table-chart</span> 
+    <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[["A","B","C","D","E","F","G","H","I","J"],
+      ["A","B","C","D","E","F","G","H","I","J"]]</span><span class="token punctuation">'</span>
+    </span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[40, 50,40,39,49,40, 50,40,39,49],
+      [30, 150,340,379,439,40, 50,40,39,49],
+      [30, 150,340,379,439,40, 50,40,39,49],
+      [30, 150,340,379,439,40, 50,40,39,49],
+      [30, 150,340,379,439,40, 50,40,39,49],
+      [30, 150,340,379,439,40, 50,40,39,49],
+      [30, 150,340,379,439,40, 50,40,39,49],
+      [30, 150,340,379,439,40, 50,40,39,49]]</span><span class="token punctuation">'</span>
+    <span class="token attr-name">varname</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">Jours</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>table-chart</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre><div class="toolbar"><div class="toolbar-item"></div></div></div>
+                    </div>
+                   </section>
+                </div> 
               </div>
         
             </div>
