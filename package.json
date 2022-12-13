@@ -16,7 +16,8 @@
     "build-multiline": "vue-cli-service build --target lib --dest ./MultiLineChart --inline-vue --name multiline-chart src/MultiLineChart.js",
     "build-pie": "vue-cli-service build --target lib --dest ./PieChart --inline-vue --name pie-chart src/PieChart.js",
     "build-scatter": "vue-cli-service build --target lib --dest ./ScatterChart --inline-vue --name scatter-chart src/ScatterChart.js",
-    "build-all": "npm run build-bar & npm run build-barline & npm run build-line & npm run build-map & npm run build-multiline & npm run build-pie & npm run build-scatter",
+    "build-mapreg": "vue-cli-service build --target lib --dest ./MapChartReg --inline-vue --name map-chart-reg src/MapChartReg.js",
+    "build-all": "npm run build-bar & npm run build-barline & npm run build-line & npm run build-map & npm run build-multiline & npm run build-pie & npm run build-scatter & npm run build-mapreg",
     "lint": "vue-cli-service lint"
   },
   "files": [
@@ -28,6 +29,7 @@
     "/MultiLineChart",
     "/PieChart",
     "/ScatterChart",
+    "/MapChartReg",
     "README.md",
     "CONTRIBUTING.md",
     "/Pictures"

@@ -4,7 +4,7 @@
         <div v-if="props['levelNat']" data-box="number">
           <div class="indicateur_info">
             <div class="flex" >
-              <p class="l_box_title fr-text--xs fr-text--bold fr-mb-1w">{{props['names']}}, En France</p>
+              <p class="l_box_title fr-text--xs fr-text--bold fr-mb-1w">{{props['names']}}, {{props['locaParent']}}</p>
             </div>
             <div class="l_box_number_container">
               <p class="l_box_title fr-text--xs fr-text--bold fr-mb-1w">{{convertFloatToHuman(props['valueNat'])}}</p>

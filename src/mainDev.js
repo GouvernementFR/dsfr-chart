@@ -7,6 +7,10 @@ import MultiLineChart from './components/MultiLineChart'
 import BarLineChart from './components/BarLineChart'
 import PieChart from './components/PieChart'
 import ScatterChart from './components/ScatterChart'
+import MapChartReg from './components/MapChartReg'
+import GaugeChart from './components/GaugeChart'
+import TableChart from './components/TableChart'
+import RadarChart from './components/RadarChart'
 import '../node_modules/@gouvfr/dsfr/dist/dsfr.module.min.js'
 
 import vueCustomElement from 'vue-custom-element'
@@ -25,3 +29,7 @@ Vue.customElement('multiline-chart', MultiLineChart)
 Vue.customElement('bar-line-chart', BarLineChart)
 Vue.customElement('pie-chart', PieChart)
 Vue.customElement('scatter-chart', ScatterChart)
+Vue.customElement('map-chart-reg', MapChartReg)
+Vue.customElement('gauge-chart', GaugeChart)
+Vue.customElement('table-chart', TableChart)
+Vue.customElement('radar-chart', RadarChart)

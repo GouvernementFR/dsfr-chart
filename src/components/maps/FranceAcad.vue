@@ -11,7 +11,7 @@ export default {
 
 <template>
     <svg version="1.1" :viewBox="props.viewBox" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <g fill-rule="nonzero" stroke="#FFFFFF" stroke-width="4">
+        <g fill-rule="nonzero" stroke="#FFFFFF" stroke-width = "0.2%">
             <path fill="#6b6b6b" class="FR-acad-09" :style="{display:props.displayDep['FR-acad-09']}" @click="onclick($event)" @dblclick="ondblclick()" @mouseenter="onenter($event)" @mouseleave="onleave($event)" d="M529.125,126.425l-9-10.3l-2-6.6l-3.3-2.3l-12.4-2.8l-5,3.9l-3.1,0.1l-5.8-2.6l-0.2-0.1l-0.2-0.1l-3.6-3.1
                 h-7.7l-1.4,3l-6,0.9h-0.3l-3.8-8.1h-0.1l-2,1.4l-2.3,3l-6.4-2.3l-2.1,2.2l0.9,9.8l-3.6,5.7l1.5,2.9l-4.6,4.1l2.4,10.1l-1.1,4.7
                 l2.9,1.4l-0.6,4.4l-3.5,1.2l-1.3,6.6l3.6,5.2l0.6,4.5l3.8,5.9l18.9,11.6l-2.6,2.7l14.3,10.7l-2,9.6l6.2,5.1l0.3,3.6l3-1.2l1.4,2.8
