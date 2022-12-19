@@ -13,21 +13,21 @@
         <canvas :id="chartId"></canvas>
         <div class="flex fr-mt-3v" :style="{'margin-left': style}">
           <span class="legende_dot" v-bind:style="{'background-color': colorBarParse}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(namebar) }}</p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(namebar) }}</p>
         </div>
         <div class="flex fr-mt-3v" :style="{'margin-left': style}">
           <span class="legende_dot" v-bind:style="{'background-color': colorParse}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(name) }}</p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(name) }}</p>
         </div>
         <div v-for="(item, index) in hlineNameParse" :key="item" class="flex fr-mt-3v" :style="{'margin-left': style}">
           <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index]}"></span>
           <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(hlineNameParse[index]) }}</p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(hlineNameParse[index]) }}</p>
         </div>
         <div v-for="(item2, index2) in vlineParse" :key="item2" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
           <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index2]}"></span>
           <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index2]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(vlineNameParse[index2]) }}</p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index2]) }}</p>
         </div>
       </div>
     </div>
@@ -235,6 +235,9 @@ export default {
     },
     createChart () {
       Chart.defaults.global.defaultFontFamily = 'Marianne'
+      Chart.defaults.global.defaultFontSize = 12
+      Chart.defaults.global.defaultLineHeight = 1.66
+
       this.getData()
       const self = this
       const ctx = document.getElementById(self.chartId).getContext('2d')
@@ -338,18 +341,24 @@ export default {
               offset: true,
               type: self.xAxisType,
               gridLines: {
+                zeroLineColor: '#DDDDDD',
                 drawOnChartArea: false,
-                color: '#DDDDDD'
+                color: '#DDDDDD',
+                lineWidth: 1
               }
             }],
             yAxes: [{
               position: 'left',
               id: 'yAxisL',
               gridLines: {
-                color: '#e5e5e5',
-                borderDash: [3]
+                drawTicks: false,
+                zeroLineColor: '#DDDDDD',
+                color: '#DDDDDD',
+                borderDash: [3],
+                lineWidth: 1
               },
               ticks: {
+                padding: 4,
                 suggestedMin: 0,
                 suggestedMax: self.ymax,
                 maxTicksLimit: 5,
@@ -569,23 +578,24 @@ export default {
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-left: 0;
       }
       .legende_dash_line1{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
       }
       .legende_dash_line2{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
-        margin-left: 0.2rem;
+        margin-left: 0.1rem;
       }
     }
   }
@@ -624,6 +634,7 @@ export default {
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-right: 0.25rem;
       }
       .tooltip_place {
         color: #242424;

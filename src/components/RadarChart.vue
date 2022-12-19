@@ -313,23 +313,24 @@ export default {
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-left: 0;
       }
       .legende_dash_line1{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
       }
       .legende_dash_line2{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
-        margin-left: 0.2rem;
+        margin-left: 0.1rem;
       }
     }
   }
