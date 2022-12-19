@@ -350,14 +350,17 @@ export default {
           },
           scales: {
             xAxes: [{
+              barThickness: this.stacked ? 36 : 18,
               stacked: self.stacked,
               offset: true,
               gridLines: {
-                color: 'rgba(0, 0, 0, 0)'
+                drawOnChartArea: false,
+                color: '#DDDDDD'
               }
             }],
             yAxes: [{
               stacked: self.stacked,
+              barThickness: 8,
               gridLines: {
                 color: '#e5e5e5',
                 borderDash: [3]

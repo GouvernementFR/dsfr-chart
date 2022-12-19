@@ -110,7 +110,7 @@ export default {
     },
     pointradius: {
       type: Number,
-      default: 6
+      default: 8
     },
     showline: {
       type: Boolean,
@@ -230,10 +230,11 @@ export default {
           type: 'scatter',
           pointStyle: 'rect',
           pointRadius: self.pointradius,
-          pointHoverRadius: self.pointradius + 2,
+          pointHoverRadius: self.pointradius,
           pointHoverBackgroundColor: self.colorHover[j],
           pointHoverBorderColor: self.colorHover[j],
-          showLine: self.showline
+          showLine: self.showline,
+          borderWidth: 2
         })
       })
     },
@@ -285,7 +286,7 @@ export default {
           }
         },
         {
-          afterDraw: function (chart, args, options) {
+          beforeDatasetsDraw: function (chart, args, options) {
             if (chart.tooltip._active !== undefined) {
               if (chart.tooltip._active.length !== 0) {
                 const x = chart.tooltip._active[0]._model.x

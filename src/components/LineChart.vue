@@ -201,7 +201,8 @@ export default {
         pointBorderColor: 'rgba(0, 0, 0, 0)',
         pointHoverBackgroundColor: self.colorHover,
         pointHoverBorderColor: self.colorHover,
-        pointHoverRadius: 6
+        pointHoverRadius: 6,
+        borderWidth: 2
       }]
     },
     createChart () {
