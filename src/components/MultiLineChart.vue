@@ -225,7 +225,8 @@ export default {
           pointBorderColor: 'rgba(0, 0, 0, 0)',
           pointHoverBackgroundColor: self.colorHover[j],
           pointHoverBorderColor: self.colorHover[j],
-          pointHoverRadius: 6
+          pointHoverRadius: 6,
+          borderWidth: 2
         })
       })
     },

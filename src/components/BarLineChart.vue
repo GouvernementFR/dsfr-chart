@@ -334,10 +334,12 @@ export default {
           },
           scales: {
             xAxes: [{
+              barThickness: 32,
               offset: true,
               type: self.xAxisType,
               gridLines: {
-                color: 'rgba(0, 0, 0, 0)'
+                drawOnChartArea: false,
+                color: '#DDDDDD'
               }
             }],
             yAxes: [{
