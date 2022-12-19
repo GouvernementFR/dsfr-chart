@@ -134,6 +134,7 @@ export default {
           datasets: self.datasets
         },
         options: {
+          cutoutPercentage: 54,
           animation: {
             easing: 'easeInOutBack',
             duration: 1000

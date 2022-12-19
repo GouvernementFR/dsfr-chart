@@ -5,7 +5,7 @@
       <div class="chart ml-lg">
         <div class="gauge-container">
           <div class="rectangle" :style="styleRectangleOver">
-            <p class="fr-text--md fr-mt-1w text-pct">{{Math.round(percentage)}} %</p>
+            <p class="fr-text--md fr-text--bold fr-mt-1w text-pct">{{Math.round(percentage)}} %</p>
           </div>
           <div class="rectangle" :style="styleRectangleUnder"></div>
         </div>
@@ -14,12 +14,12 @@
           <p class="fr-text--xs fr-mt-1w r-align">{{target}}</p>
         </div>
         <div class="flex fr-mt-3v" v-if="legend">
-          <span class="legende_dot"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">Valeur cible</p>
+          <span class="legende_dot" :style="styleLegendUnder"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">Valeur cible</p>
         </div>
         <div class="flex fr-mt-3v" v-if="legend">
-          <span class="legende_dot" :style="styleLegend"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">Valeur actuelle</p>
+          <span class="legende_dot" :style="styleLegendOver"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">Valeur actuelle</p>
         </div>
       </div>
     </div>
@@ -38,8 +38,10 @@ export default {
       percentage: 0,
       styleRectangleOver: '',
       styleRectangleUnder: '',
-      styleLegend: '',
-      colorParse: ''
+      styleLegendOver: '',
+      styleLegendUnder: '',
+      colorOver: '',
+      colorUnder: ''
     }
   },
   props: {
@@ -67,15 +69,18 @@ export default {
   methods: {
     createChart () {
       this.percentage = 100 * (this.value - this.init) / (this.target - this.init)
-      this.colorParse = this.getHexaFromName(this.color)
-      this.styleRectangleOver = 'background-color:' + this.colorParse + '; width:' + this.percentage + '%'
-      this.styleRectangleUnder = 'width:' + (100 - this.percentage) + '%'
-      this.styleLegend = 'background-color:' + this.colorParse
     },
     changeTheme (theme) {
-      this.colorParse = this.getHexaFromName(this.color)
-      this.styleRectangleOver = 'background-color:' + this.colorParse + '; width:' + this.percentage + '%'
-      this.styleLegend = 'background-color:' + this.colorParse
+      this.colorOver = this.getHexaFromName(this.color)
+      if (theme === 'light') {
+        this.colorUnder = '#EEEEEE'
+      } else {
+        this.colorUnder = '#242424'
+      }
+      this.styleRectangleOver = 'background-color:' + this.colorOver + '; width:' + this.percentage + '%'
+      this.styleRectangleUnder = 'background-color:' + this.colorUnder + '; width:' + (100 - this.percentage) + '%'
+      this.styleLegendOver = 'background-color:' + this.colorOver
+      this.styleLegendUnder = 'background-color:' + this.colorUnder
     }
   },
   created () {
@@ -112,7 +117,6 @@ export default {
     margin:auto;
     display: flex;
     .rectangle {
-      background-color: #eee;
       height:40px;
       text-align: center;
     }
