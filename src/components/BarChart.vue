@@ -119,6 +119,11 @@ export default {
     horizontal: {
       type: Boolean,
       default: false
+    },
+    barsize: {
+      type: Number,
+      default: 8,
+      required: false
     }
   },
   computed: {
@@ -253,7 +258,7 @@ export default {
           backgroundColor: self.colorParse[j],
           hoverBorderColor: self.colorHover[j],
           hoverBackgroundColor: self.colorHover[j],
-          barThickness: self.stacked ? 32 : self.horizontal ? 8 : 16
+          barThickness: self.stacked ? self.barsize + 24 : self.horizontal ? self.barsize : self.barsize + 8
         })
       })
     },
