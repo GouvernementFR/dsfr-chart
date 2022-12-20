@@ -252,7 +252,8 @@ export default {
           borderColor: self.colorParse[j],
           backgroundColor: self.colorParse[j],
           hoverBorderColor: self.colorHover[j],
-          hoverBackgroundColor: self.colorHover[j]
+          hoverBackgroundColor: self.colorHover[j],
+          barThickness: self.stacked ? 32 : self.horizontal ? 8 : 16
         })
       })
     },
@@ -353,7 +354,6 @@ export default {
           },
           scales: {
             xAxes: [{
-              barThickness: this.stacked ? 32 : 16,
               stacked: self.stacked,
               offset: true,
               gridLines: {
@@ -365,7 +365,6 @@ export default {
             }],
             yAxes: [{
               stacked: self.stacked,
-              barThickness: 8,
               gridLines: {
                 drawTicks: false,
                 zeroLineColor: '#DDDDDD',

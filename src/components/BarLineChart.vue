@@ -212,6 +212,7 @@ export default {
           borderColor: this.colorBarParse,
           hoverBorderColor: self.colorbarHover,
           hoverBackgroundColor: self.colorbarHover,
+          barThickness: 32,
           type: 'bar',
           barPercentage: 0.5,
           yAxisID: 'yAxisL',
@@ -337,7 +338,6 @@ export default {
           },
           scales: {
             xAxes: [{
-              barThickness: 32,
               offset: true,
               type: self.xAxisType,
               gridLines: {

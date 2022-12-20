@@ -339,6 +339,9 @@ export default {
       elCol[0].style.opacity = '1'
     },
     changeGeoLevel (e) {
+      // const url = new URL(window.location)
+      // url.searchParams.set('foo', 'bar')
+      // window.history.pushState({}, '', url)
       // Get clicked departement
       let clickdep
       try {
