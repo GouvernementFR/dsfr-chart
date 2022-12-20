@@ -359,6 +359,7 @@ export default {
               gridLines: {
                 zeroLineColor: '#DDDDDD',
                 drawOnChartArea: false,
+                // if dark color = xxxx else color = yyyyy
                 color: '#DDDDDD',
                 lineWidth: 1
               }
