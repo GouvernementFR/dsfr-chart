@@ -13,19 +13,19 @@
         <canvas :id="chartId"></canvas>
         <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
           <span class="legende_dot" v-bind:style="{'background-color': colorParse[index], 'opacity': opacity[index]}" @click = "ChangeShowLine(index)"></span>
-          <p class='fr-text--sm fr-text--bold fr-ml-1v fr-mb-0' :style="{'opacity': opacity[index]}" @click = "ChangeShowLine(index)">
+          <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0' :style="{'opacity': opacity[index]}" @click = "ChangeShowLine(index)">
             {{capitalize(nameParse[index])}}
           </p>
         </div>
         <div v-for="(item2, index2) in hlineNameParse" :key="item2" class="flex fr-mt-3v" :style="{'margin-left': style}">
           <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index2]}"></span>
           <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index2]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(hlineNameParse[index2]) }}</p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(hlineNameParse[index2]) }}</p>
         </div>
         <div v-for="(item3, index3) in vlineNameParse" :key="item3" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
           <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index3]}"></span>
           <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index3]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(vlineNameParse[index3]) }}</p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index3]) }}</p>
         </div>
       </div>
     </div>
@@ -232,6 +232,9 @@ export default {
     },
     createChart () {
       Chart.defaults.global.defaultFontFamily = 'Marianne'
+      Chart.defaults.global.defaultFontSize = 12
+      Chart.defaults.global.defaultLineHeight = 1.66
+
       this.getData()
       const self = this
       const ctx = document.getElementById(self.chartId).getContext('2d')
@@ -322,15 +325,22 @@ export default {
             xAxes: [{
               type: self.xAxisType,
               gridLines: {
-                color: 'rgba(0, 0, 0, 0)'
+                zeroLineColor: '#DDDDDD',
+                drawOnChartArea: false,
+                color: '#DDDDDD',
+                lineWidth: 1
               }
             }],
             yAxes: [{
               gridLines: {
-                color: '#e5e5e5',
-                borderDash: [3]
+                drawTicks: false,
+                zeroLineColor: '#DDDDDD',
+                color: '#DDDDDD',
+                borderDash: [3],
+                lineWidth: 1
               },
               ticks: {
+                padding: 4,
                 autoSkip: true,
                 maxTicksLimit: 5,
                 suggestedMax: self.ymax,
@@ -563,23 +573,24 @@ export default {
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-left: 0;
       }
       .legende_dash_line1{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
       }
       .legende_dash_line2{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
-        margin-left: 0.2rem;
+        margin-left: 0.1rem;
       }
     }
   }
@@ -618,6 +629,7 @@ export default {
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-right: 0.25rem;
       }
       .tooltip_place {
         color: #242424;

@@ -2,7 +2,7 @@
 
   <div class="l_col fr-col-12 fr-col-lg-3">
         <div v-if="props['levelNat']" data-box="number">
-          <div class="indicateur_info">
+          <div>
             <div class="flex" >
               <p class="l_box_title fr-text--xs fr-text--bold fr-mb-1w">{{props['names']}}, {{props['locaParent']}}</p>
             </div>
@@ -11,26 +11,21 @@
             </div>
           </div>
         </div>
-        <div class="sep fr-my-2w fr-my-md-2w"></div>
+        <div class="sep fr-my-2w" v-if="props['levelNat']"></div>
         <div data-box="loc">
-          <p class="l_box_title fr-text--xs fr-mb-1w">Localisation</p>
-          <p class="flex fr-text--sm fr-text--bold fr-my-0">
-            <svg width="16" height="16" viewBox="0 0 16 16"><path :fill="props.colorFillIcon" d="M12.243 2.424c2.343 2.343 2.343 6.142 0 8.485L8 15.152l-4.243-4.243c-2.343-2.343-2.343-6.142 0-8.485C6.101.081 9.9.081 12.243 2.424zM4.7 3.367c-1.822 1.822-1.822 4.777 0 6.6l3.3 3.3 3.3-3.3c1.822-1.823 1.822-4.778 0-6.6-1.823-1.822-4.777-1.822-6.6 0zM8 5.333c.736 0 1.333.597 1.333 1.334C9.333 7.403 8.736 8 8 8s-1.333-.597-1.333-1.333c0-.737.597-1.334 1.333-1.334z" transform="translate(-550 -5417) translate(527 5237) translate(0 124) translate(23 56)"/></svg>
-            <span class="fr-ml-1v">{{props['localisation']}}</span>
+          <p class="l_box_title fr-text--xs fr-mb-1v">Localisation</p>
+          <p class="flex fr-text--sm fr-text--bold fr-mb-2w">
+            <span>{{props['localisation']}}</span>
           </p>
         </div>
         <div data-box="number">
-          <div class="indicateur_info">
-            <div class="flex" >
-              <p class="fr-text--sm fr-text--bold fr-mt-2w fr-mb-1w">{{props['names']}}</p>
-            </div>
-            <div class="l_box_number_container">
-              <p class="fr-text--lg fr-text--bold fr-mb-1v">{{convertFloatToHuman(props['value'])}}</p>
-            </div>
+          <div>
+            <p class="fr-text--sm fr-text--bold fr-mb-1v">{{props['names']}}</p>
+            <p class="fr-text--md fr-text--bold fr-my-0">{{convertFloatToHuman(props['value'])}}</p>
           </div>
         </div>
 
-        <div class="sep fr-my-4w fr-my-md-3w"></div>
+        <div class="sep fr-my-4w"></div>
         <!-- <div v-else class="sep-viz fr-my-4w fr-my-md-3w"></div> -->
         <div class="scale">
           <p class="l_box_title fr-text--xs fr-mb-1w">Légende</p>
@@ -79,7 +74,7 @@ export default {
     }
 
     .l_box_title{
-      color: #6b6b6b;
+      color: border-default-blue-france;
     }
     .flex{
       display: inline-flex;

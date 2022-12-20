@@ -89,7 +89,6 @@ export default {
         value: 0,
         valueNat: 0,
         levelNat: false,
-        colorFillIcon: '',
         locaParent: 'en France'
       },
       FranceProps: {
@@ -340,6 +339,9 @@ export default {
       elCol[0].style.opacity = '1'
     },
     changeGeoLevel (e) {
+      // const url = new URL(window.location)
+      // url.searchParams.set('foo', 'bar')
+      // window.history.pushState({}, '', url)
       // Get clicked departement
       let clickdep
       try {
@@ -383,13 +385,11 @@ export default {
         this.colRight = this.getHexaFromName(this.color)
         this.FranceProps.colorStroke = '#FFFFFF'
         this.colorStrokeDOM = '#FFFFFF'
-        this.leftColProps.colorFillIcon = '#161616'
       } else {
         this.colLeft = this.getHexaFromName(this.color)
         this.colRight = '#eeeeee'
         this.FranceProps.colorStroke = '#161616'
         this.colorStrokeDOM = '#161616'
-        this.leftColProps.colorFillIcon = '#FFFFFF'
       }
       this.createChart()
     }

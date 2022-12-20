@@ -13,7 +13,7 @@
         <canvas :id="chartId"></canvas>
         <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
           <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
-          <p class='fr-text--sm fr-text--bold fr-ml-1v fr-mb-0'>
+          <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
             {{capitalize(nameParse[index])}}
           </p>
         </div>
@@ -105,6 +105,9 @@ export default {
       // Tracé de la courbe
       data.forEach(function (dj, j) {
         self.datasets.push({
+          pointStyle: 'rect',
+          pointRadius: 4,
+          pointHoverRadius: 4,
           data: dj,
           borderColor: self.colorParse[j],
           backgroundColor: chroma(self.colorParse[j]).alpha(0.3).hex(),
@@ -116,6 +119,9 @@ export default {
     },
     createChart () {
       Chart.defaults.global.defaultFontFamily = 'Marianne'
+      Chart.defaults.global.defaultFontSize = 12
+      Chart.defaults.global.defaultLineHeight = 1.66
+
       this.getData()
       const self = this
       const ctx = document.getElementById(self.chartId).getContext('2d')
@@ -196,11 +202,13 @@ export default {
 
                 const nodeName = self.$el.querySelector('.tooltip_dot').attributes[0].nodeName
                 divValue.innerHTML = ''
+
                 bodyLines[0].forEach(function (line, i) {
                   if (line !== undefined) {
                     divValue.innerHTML += '<span ' + nodeName + '= "" class="tooltip_dot" style = "background-color:' + color[i] + '"></span>' + ' ' + line + '<br>'
                   }
                 })
+                console.log(divValue.innerHTML)
               }
 
               const {
@@ -249,9 +257,11 @@ export default {
     changeColors (theme) {
       this.loadColors()
       if (theme === 'light') {
+        Chart.defaults.global.defaultFontColor = '#666666'
         this.chart.options.scale.gridLines.color = '#e5e5e5'
       } else {
         this.chart.options.scale.gridLines.color = '#2a2a2a'
+        Chart.defaults.global.defaultFontColor = '#929292'
       }
       for (let i = 0; i < this.yparse.length; i++) {
         this.chart.data.datasets[i].borderColor = this.colorParse[i]
@@ -303,23 +313,24 @@ export default {
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-left: 0;
       }
       .legende_dash_line1{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
       }
       .legende_dash_line2{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
-        margin-left: 0.2rem;
+        margin-left: 0.1rem;
       }
     }
   }
@@ -358,6 +369,7 @@ export default {
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-right: 0.25rem;
       }
       .tooltip_place {
         color: #242424;

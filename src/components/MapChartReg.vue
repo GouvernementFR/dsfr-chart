@@ -57,7 +57,6 @@ export default {
         value: 0,
         valueNat: 0,
         levelNat: false,
-        colorFillIcon: '',
         locaParent: ''
       },
       FranceProps: {
@@ -259,13 +258,11 @@ export default {
         this.colRight = this.getHexaFromName(this.color)
         this.FranceProps.colorStroke = '#FFFFFF'
         this.colorStrokeDOM = '#FFFFFF'
-        this.leftColProps.colorFillIcon = '#161616'
       } else {
         this.colLeft = this.getHexaFromName(this.color)
         this.colRight = '#eeeeee'
         this.FranceProps.colorStroke = '#161616'
         this.colorStrokeDOM = '#161616'
-        this.leftColProps.colorFillIcon = '#FFFFFF'
       }
       this.createChart()
     }
