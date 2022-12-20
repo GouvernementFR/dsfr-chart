@@ -355,6 +355,7 @@ export default {
               offset: true,
               gridLines: {
                 drawOnChartArea: false,
+                // if dark color = xxxx else color = yyyyy
                 color: '#DDDDDD'
               }
             }],
