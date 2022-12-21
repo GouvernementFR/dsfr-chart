@@ -244,7 +244,8 @@ export default {
         }
       }
     },
-    changeColors () {
+    changeColors (theme) {
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
       this.loadColors()
       this.chart.data.datasets[0].borderColor = this.colorParse
       if (this.pattern) {
@@ -255,7 +256,7 @@ export default {
         this.chart.data.datasets[0].hoverBackgroundColor = this.colorHover
       }
       this.chart.data.datasets[0].hoverBorderColor = this.colorHover
-      this.chart.update()
+      this.chart.update(0)
     }
   },
   created () {
@@ -267,7 +268,7 @@ export default {
     this.createChart()
     const element = document.documentElement // Reference à l'element <html> du DOM
     element.addEventListener('dsfr.theme', (e) => {
-      this.changeColors()
+      this.changeColors(e.detail.theme)
     })
   }
 }

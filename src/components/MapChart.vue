@@ -24,23 +24,23 @@
         </div>
         <div class="om_container fr-grid-row no_select">
           <div class="om fr-col-4 fr-col-sm" :style="{display:displayGuadeloupe}">
-            <span class="fr-text--xs fr-my-1w">Guadeloupe</span>
+            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Guadeloupe</span>
             <guadeloupe :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guadeloupe>
           </div>
           <div class="om fr-col-4 fr-col-sm" :style="{display:displayMartinique}">
-            <span class="fr-text--xs fr-my-1w">Martinique</span>
+            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Martinique</span>
             <martinique :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></martinique>
           </div>
           <div class="om fr-col-4 fr-col-sm" :style="{display:displayGuyanne}">
-            <span class="fr-text--xs fr-my-1w">Guyane</span>
+            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Guyane</span>
             <guyane :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guyane>
           </div>
           <div class="om fr-col-4 fr-col-sm" :style="{display:displayReunion}">
-            <span class="fr-text--xs fr-my-1w">La Réunion</span>
+            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">La Réunion</span>
             <reunion :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></reunion>
           </div>
           <div class="om fr-col-4 fr-col-sm" :style="{display:displayMayotte}">
-            <span class="fr-text--xs fr-my-1w">Mayotte</span>
+            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Mayotte</span>
             <mayotte :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></mayotte>
           </div>
         </div>
@@ -89,7 +89,10 @@ export default {
         value: 0,
         valueNat: 0,
         levelNat: false,
-        locaParent: 'en France'
+        locaParent: 'en France',
+        date: '',
+        textMention: '',
+        borderDefault: ''
       },
       FranceProps: {
         viewBox: '0 0 262 262',
@@ -109,7 +112,8 @@ export default {
       displayMayotte: '',
       displayReunion: '',
       displayGuyanne: '',
-      colorStrokeDOM: '#FFFFFF'
+      colorStrokeDOM: '#FFFFFF',
+      textMention: ''
     }
   },
   props: {
@@ -119,6 +123,10 @@ export default {
     },
     valuenat: {
       type: Number,
+      default: undefined
+    },
+    date: {
+      type: String,
       default: undefined
     },
     level: {
@@ -136,6 +144,7 @@ export default {
   },
   methods: {
     createChart () {
+      this.leftColProps.date = this.date
       const parentWidget = document.getElementById(this.widgetId)
       const self = this
 
@@ -380,6 +389,9 @@ export default {
     },
 
     changeTheme (theme) {
+      this.textMention = this.getHexaFromToken('text-mention-grey', theme)
+      this.leftColProps.textMention = this.textMention
+      this.leftColProps.borderDefault = this.getHexaFromToken('border-default-grey', theme)
       if (theme === 'light') {
         this.colLeft = '#eeeeee'
         this.colRight = this.getHexaFromName(this.color)

@@ -15,7 +15,7 @@
         </div>
         <div class="flex fr-mt-3v" v-if="legend">
           <span class="legende_dot" :style="styleLegendUnder"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">Valeur cible</p>
+          <p class="fr-text--sm  fr-text--bold fr-ml-1w fr-mb-0">Valeur cible</p>
         </div>
         <div class="flex fr-mt-3v" v-if="legend">
           <span class="legende_dot" :style="styleLegendOver"></span>
@@ -72,11 +72,7 @@ export default {
     },
     changeTheme (theme) {
       this.colorOver = this.getHexaFromName(this.color)
-      if (theme === 'light') {
-        this.colorUnder = '#EEEEEE'
-      } else {
-        this.colorUnder = '#242424'
-      }
+      this.colorUnder = this.getHexaFromToken('background-contrats-grey', theme)
       this.styleRectangleOver = 'background-color:' + this.colorOver + '; width:' + this.percentage + '%'
       this.styleRectangleUnder = 'background-color:' + this.colorUnder + '; width:' + (100 - this.percentage) + '%'
       this.styleLegendOver = 'background-color:' + this.colorOver

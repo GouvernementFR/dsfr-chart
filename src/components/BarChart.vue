@@ -234,8 +234,8 @@ export default {
             yScaleID: 'y-axis-0',
             xMin: -2 * sumY,
             xMax: 2 * sumY,
-            yMax: j + 0.5,
-            yMin: j - 0.5,
+            yMax: j + 0.48,
+            yMin: j - 0.48,
             backgroundColor: self.colorBox,
             borderColor: self.colorBox
           }
@@ -521,6 +521,13 @@ export default {
       }
     },
     changeColors (theme) {
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
+      this.chart.options.scales.xAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
+      this.chart.options.scales.xAxes[0].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
+
+      this.chart.options.scales.yAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
+      this.chart.options.scales.yAxes[0].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
+
       this.loadColors()
       if (theme === 'light') {
         this.colorPrecisionBar = '#161616'
@@ -540,7 +547,7 @@ export default {
         this.chart.annotation.elements[key].options.backgroundColor = this.colorBox
         this.chart.annotation.elements[key].options.borderColor = this.colorBox
       }
-      this.chart.update()
+      this.chart.update(0)
     }
   },
   created () {

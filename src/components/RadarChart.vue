@@ -110,6 +110,7 @@ export default {
           pointHoverRadius: 4,
           data: dj,
           borderColor: self.colorParse[j],
+          pointBackgroundColor: self.colorParse[j],
           backgroundColor: chroma(self.colorParse[j]).alpha(0.3).hex(),
           fill: true,
           hoverBorderColor: self.colorHover[j],
@@ -139,9 +140,6 @@ export default {
           scale: {
             ticks: {
               backdropColor: 'transparent'
-            },
-            gridLines: {
-              color: '#e5e5e5'
             }
           },
           legend: {
@@ -256,20 +254,16 @@ export default {
     },
     changeColors (theme) {
       this.loadColors()
-      if (theme === 'light') {
-        Chart.defaults.global.defaultFontColor = '#666666'
-        this.chart.options.scale.gridLines.color = '#e5e5e5'
-      } else {
-        this.chart.options.scale.gridLines.color = '#2a2a2a'
-        Chart.defaults.global.defaultFontColor = '#929292'
-      }
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
+      this.chart.options.scale.gridLines.color = this.getHexaFromToken('border-default-grey', theme)
       for (let i = 0; i < this.yparse.length; i++) {
         this.chart.data.datasets[i].borderColor = this.colorParse[i]
+        this.chart.data.datasets[i].pointBackgroundColor = this.colorParse[i]
         this.chart.data.datasets[i].backgroundColor = chroma(this.colorParse[i]).alpha(0.3).hex()
         this.chart.data.datasets[i].hoverBorderColor = this.colorHover[i]
         this.chart.data.datasets[i].hoverBackgroundColor = this.colorHover[i]
       }
-      this.chart.update()
+      this.chart.update(0)
     }
   },
   created () {

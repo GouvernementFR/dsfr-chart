@@ -483,7 +483,7 @@ export default {
           self.opacity.push(0.3)
         }
       })
-      this.chart.update()
+      this.chart.update(0)
     },
     loadColors () {
       this.colorParse = []
@@ -517,6 +517,13 @@ export default {
       }
     },
     changeColors (theme) {
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
+      this.chart.options.scales.xAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
+      this.chart.options.scales.xAxes[0].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
+
+      this.chart.options.scales.yAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
+      this.chart.options.scales.yAxes[0].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
+
       this.loadColors()
       if (theme === 'light') {
         this.colorPrecisionBar = '#161616'
@@ -529,7 +536,7 @@ export default {
         this.chart.data.datasets[i].pointHoverBackgroundColor = this.colorHover[i]
         this.chart.data.datasets[i].pointHoverBorderColor = this.colorHover[i]
       }
-      this.chart.update()
+      this.chart.update(0)
     }
   },
   created () {

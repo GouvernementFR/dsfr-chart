@@ -2,33 +2,23 @@
 
   <div class="l_col fr-col-12 fr-col-lg-3">
         <div v-if="props['levelNat']" data-box="number">
-          <div>
-            <div class="flex" >
-              <p class="l_box_title fr-text--xs fr-text--bold fr-mb-1w">{{props['names']}}, {{props['locaParent']}}</p>
-            </div>
-            <div class="l_box_number_container">
-              <p class="l_box_title fr-text--xs fr-text--bold fr-mb-1w">{{convertFloatToHuman(props['valueNat'])}}</p>
-            </div>
-          </div>
+          <p class="fr-text--xs fr-mb-1v" :style="{color: props['textMention']}">Mise à jour : {{props['date']}}</p>
+          <p class="fr-text--xs fr-text--bold fr-mb-1v" :style="{color: props['textMention']}">{{props['names']}}, {{props['locaParent']}}</p>
+          <p class="fr-text--xs fr-text--bold fr-mb-2w" :style="{color: props['textMention']}">{{convertFloatToHuman(props['valueNat'])}}</p>
+          <div class="sep fr-mb-2w" v-if="props['levelNat']"></div>
         </div>
-        <div class="sep fr-my-2w" v-if="props['levelNat']"></div>
-        <div data-box="loc">
-          <p class="l_box_title fr-text--xs fr-mb-1v">Localisation</p>
+        <div>
+          <p class="fr-text--xs fr-mb-1v" :style="{color: props['textMention']}">Localisation</p>
           <p class="flex fr-text--sm fr-text--bold fr-mb-2w">
             <span>{{props['localisation']}}</span>
           </p>
-        </div>
-        <div data-box="number">
-          <div>
+            <p class="fr-text--xs fr-mb-1v" :style="{color: props['textMention']}">Mise à jour : {{props['date']}}</p>
             <p class="fr-text--sm fr-text--bold fr-mb-1v">{{props['names']}}</p>
             <p class="fr-text--md fr-text--bold fr-my-0">{{convertFloatToHuman(props['value'])}}</p>
-          </div>
         </div>
-
-        <div class="sep fr-my-4w"></div>
-        <!-- <div v-else class="sep-viz fr-my-4w fr-my-md-3w"></div> -->
         <div class="scale">
-          <p class="l_box_title fr-text--xs fr-mb-1w">Légende</p>
+          <div class="sep fr-my-2w"></div>
+          <p class="fr-text--xs fr-mb-1w" :style="{color: props['textMention']}">Légende</p>
           <div class="scale_container" :style="{background:gradient}"></div>
           <div>
             <span class="min fr-text--sm fr-text--bold fr-mb-0">{{convertFloatToHuman(props['min'])}}</span>
@@ -62,7 +52,8 @@ export default {
 
 <style scoped lang="scss">
   .l_col{
-
+    display: flex;
+    flex-direction: column;
     .sep, .sep-viz {
       border-bottom:1px solid #E5E5E5;
     }
@@ -132,9 +123,9 @@ export default {
       }
     }
     .scale{
+      margin-top: auto;
       .scale_container{
         height: 1.5rem;
-        background-color: red;
       }
       div:last-child {
         display:flex;
