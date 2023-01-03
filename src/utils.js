@@ -1060,6 +1060,25 @@ export const getDepsFromReg = function (code) {
   return res
 }
 
+const allToken = {
+  'background-contrats-grey': {
+    light: '#EEEEEE',
+    dark: '#242424'
+  },
+  'text-mention-grey': {
+    light: '#666666',
+    dark: '#929292'
+  },
+  'border-default-grey': {
+    light: '#DDDDDD',
+    dark: '#353535'
+  }
+}
+
+export const getHexaFromToken = function (token, theme) {
+  return allToken[token][theme]
+}
+
 export const mixin = {
   methods: {
     capitalize,
@@ -1075,6 +1094,7 @@ export const mixin = {
     getHexaFromName,
     getAllPattern,
     getClassMap,
-    getAllReg
+    getAllReg,
+    getHexaFromToken
   }
 }
