@@ -15,11 +15,14 @@
         </div>
         <div class="flex fr-mt-3v" v-if="legend">
           <span class="legende_dot" :style="styleLegendUnder"></span>
-          <p class="fr-text--sm  fr-text--bold fr-ml-1w fr-mb-0">Valeur cible</p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">Valeur cible</p>
         </div>
         <div class="flex fr-mt-3v" v-if="legend">
           <span class="legende_dot" :style="styleLegendOver"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">Valeur actuelle</p>
+        </div>
+        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': style}">
+          <p class="fr-text--xs">Mise à jour : {{date}}</p>
         </div>
       </div>
     </div>
@@ -64,6 +67,10 @@ export default {
     color: {
       type: String,
       default: 'green-bourgeon'
+    },
+    date: {
+      type: String,
+      default: undefined
     }
   },
   methods: {
@@ -101,11 +108,6 @@ export default {
   @media (min-width: 62em) {
     .ml-lg {
       margin-left: 3rem;
-    }
-  }
-  @media (max-width: 62em) {
-    .chart .flex {
-      margin-left: 0 !important
     }
   }
   .gauge-container{

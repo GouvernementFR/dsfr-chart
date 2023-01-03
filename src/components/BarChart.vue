@@ -27,6 +27,9 @@
           <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index3]}"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index3]) }}</p>
         </div>
+        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': style}">
+          <p class="fr-text--xs">Mise à jour : {{date}}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -122,8 +125,11 @@ export default {
     },
     barsize: {
       type: Number,
-      default: 8,
-      required: false
+      default: undefined
+    },
+    date: {
+      type: String,
+      default: undefined
     }
   },
   computed: {
@@ -258,7 +264,7 @@ export default {
           backgroundColor: self.colorParse[j],
           hoverBorderColor: self.colorHover[j],
           hoverBackgroundColor: self.colorHover[j],
-          barThickness: self.stacked ? self.barsize + 24 : self.horizontal ? self.barsize : self.barsize + 8
+          barThickness: self.barsize !== undefined ? self.barsize : self.stacked ? 32 : self.horizontal ? 8 : 24
         })
       })
     },
@@ -364,9 +370,12 @@ export default {
               gridLines: {
                 zeroLineColor: '#DDDDDD',
                 drawOnChartArea: false,
-                // if dark color = xxxx else color = yyyyy
+                drawTicks: false,
                 color: '#DDDDDD',
                 lineWidth: 1
+              },
+              ticks: {
+                padding: 8
               }
             }],
             yAxes: [{
@@ -380,7 +389,7 @@ export default {
               },
               ticks: {
                 suggestedMin: 0,
-                padding: 4,
+                padding: 8,
                 suggestedMax: self.ymax,
                 autoSkip: true,
                 maxTicksLimit: 5,
@@ -577,11 +586,6 @@ export default {
   @media (min-width: 62em) {
     .ml-lg {
       margin-left: 3rem;
-    }
-  }
-  @media (max-width: 62em) {
-    .chart .flex {
-      margin-left: 0 !important
     }
   }
   .r_col {

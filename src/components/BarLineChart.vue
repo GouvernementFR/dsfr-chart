@@ -29,6 +29,9 @@
           <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index2]}"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index2]) }}</p>
         </div>
+        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': style}">
+          <p class="fr-text--xs">Mise à jour : {{date}}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -117,6 +120,10 @@ export default {
       default: undefined
     },
     hlinename: {
+      type: String,
+      default: undefined
+    },
+    date: {
       type: String,
       default: undefined
     }
@@ -343,8 +350,12 @@ export default {
               gridLines: {
                 zeroLineColor: '#DDDDDD',
                 drawOnChartArea: false,
+                drawTicks: false,
                 color: '#DDDDDD',
                 lineWidth: 1
+              },
+              ticks: {
+                padding: 8
               }
             }],
             yAxes: [{
@@ -358,7 +369,7 @@ export default {
                 lineWidth: 1
               },
               ticks: {
-                padding: 4,
+                padding: 8,
                 suggestedMin: 0,
                 suggestedMax: self.ymax,
                 maxTicksLimit: 5,
@@ -381,10 +392,14 @@ export default {
               position: 'right',
               id: 'yAxisR',
               gridLines: {
-                color: '#e5e5e5',
-                borderDash: [3]
+                drawTicks: false,
+                zeroLineColor: '#DDDDDD',
+                color: '#DDDDDD',
+                borderDash: [3],
+                lineWidth: 1
               },
               ticks: {
+                padding: 8,
                 maxTicksLimit: 5,
                 suggestedMin: 0,
                 callback: function (value, index, values) {
@@ -569,11 +584,6 @@ export default {
   @media (min-width: 62em) {
     .ml-lg {
       margin-left: 3rem;
-    }
-  }
-  @media (max-width: 62em) {
-    .chart .flex {
-      margin-left: 0 !important
     }
   }
   .r_col {

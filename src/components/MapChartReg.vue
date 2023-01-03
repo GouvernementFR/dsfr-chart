@@ -57,7 +57,8 @@ export default {
         value: 0,
         valueNat: 0,
         levelNat: false,
-        locaParent: ''
+        locaParent: '',
+        date: ''
       },
       FranceProps: {
         viewBox: '0 0 262 262',
@@ -85,6 +86,10 @@ export default {
       type: String,
       required: true
     },
+    date: {
+      type: String,
+      required: true
+    },
     region: {
       type: String,
       required: true
@@ -104,6 +109,7 @@ export default {
   },
   methods: {
     createChart () {
+      this.leftColProps.date = this.date
       const parentWidget = document.getElementById(this.widgetId)
       const self = this
 
@@ -290,6 +296,7 @@ export default {
     -ms-user-select: none;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
+    cursor: pointer;
   }
 
   .widget_container{

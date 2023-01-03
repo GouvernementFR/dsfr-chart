@@ -27,6 +27,9 @@
           <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index3]}"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index3]) }}</p>
         </div>
+        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': style}">
+          <p class="fr-text--xs">Mise à jour : {{date}}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -115,6 +118,10 @@ export default {
     showline: {
       type: Boolean,
       default: false
+    },
+    date: {
+      type: String,
+      default: undefined
     }
   },
   computed: {
@@ -570,11 +577,6 @@ export default {
   @media (min-width: 62em) {
     .ml-lg {
       margin-left: 3rem;
-    }
-  }
-  @media (max-width: 62em) {
-    .chart .flex {
-      margin-left: 0 !important
     }
   }
   .r_col {

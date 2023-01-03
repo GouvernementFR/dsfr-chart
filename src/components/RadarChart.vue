@@ -17,6 +17,9 @@
             {{capitalize(nameParse[index])}}
           </p>
         </div>
+        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': style}">
+          <p class="fr-text--xs">Mise à jour : {{date}}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -63,6 +66,10 @@ export default {
       default: undefined
     },
     color: {
+      type: String,
+      default: undefined
+    },
+    date: {
       type: String,
       default: undefined
     }
@@ -288,11 +295,6 @@ export default {
   @media (min-width: 62em) {
     .ml-lg {
       margin-left: 3rem;
-    }
-  }
-  @media (max-width: 62em) {
-    .chart .flex {
-      margin-left: 0 !important
     }
   }
   .r_col {
