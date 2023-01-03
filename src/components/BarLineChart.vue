@@ -13,21 +13,24 @@
         <canvas :id="chartId"></canvas>
         <div class="flex fr-mt-3v" :style="{'margin-left': style}">
           <span class="legende_dot" v-bind:style="{'background-color': colorBarParse}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(namebar) }}</p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(namebar) }}</p>
         </div>
         <div class="flex fr-mt-3v" :style="{'margin-left': style}">
           <span class="legende_dot" v-bind:style="{'background-color': colorParse}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(name) }}</p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(name) }}</p>
         </div>
         <div v-for="(item, index) in hlineNameParse" :key="item" class="flex fr-mt-3v" :style="{'margin-left': style}">
           <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index]}"></span>
           <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(hlineNameParse[index]) }}</p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(hlineNameParse[index]) }}</p>
         </div>
         <div v-for="(item2, index2) in vlineParse" :key="item2" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
           <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index2]}"></span>
           <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index2]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(vlineNameParse[index2]) }}</p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index2]) }}</p>
+        </div>
+        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': style}">
+          <p class="fr-text--xs">Mise à jour : {{date}}</p>
         </div>
       </div>
     </div>
@@ -117,6 +120,10 @@ export default {
       default: undefined
     },
     hlinename: {
+      type: String,
+      default: undefined
+    },
+    date: {
       type: String,
       default: undefined
     }
@@ -212,6 +219,7 @@ export default {
           borderColor: this.colorBarParse,
           hoverBorderColor: self.colorbarHover,
           hoverBackgroundColor: self.colorbarHover,
+          barThickness: 32,
           type: 'bar',
           barPercentage: 0.5,
           yAxisID: 'yAxisL',
@@ -235,6 +243,9 @@ export default {
     },
     createChart () {
       Chart.defaults.global.defaultFontFamily = 'Marianne'
+      Chart.defaults.global.defaultFontSize = 12
+      Chart.defaults.global.defaultLineHeight = 1.66
+
       this.getData()
       const self = this
       const ctx = document.getElementById(self.chartId).getContext('2d')
@@ -337,17 +348,28 @@ export default {
               offset: true,
               type: self.xAxisType,
               gridLines: {
-                color: 'rgba(0, 0, 0, 0)'
+                zeroLineColor: '#DDDDDD',
+                drawOnChartArea: false,
+                drawTicks: false,
+                color: '#DDDDDD',
+                lineWidth: 1
+              },
+              ticks: {
+                padding: 8
               }
             }],
             yAxes: [{
               position: 'left',
               id: 'yAxisL',
               gridLines: {
-                color: '#e5e5e5',
-                borderDash: [3]
+                drawTicks: false,
+                zeroLineColor: '#DDDDDD',
+                color: '#DDDDDD',
+                borderDash: [3],
+                lineWidth: 1
               },
               ticks: {
+                padding: 8,
                 suggestedMin: 0,
                 suggestedMax: self.ymax,
                 maxTicksLimit: 5,
@@ -370,10 +392,14 @@ export default {
               position: 'right',
               id: 'yAxisR',
               gridLines: {
-                color: '#e5e5e5',
-                borderDash: [3]
+                drawTicks: false,
+                zeroLineColor: '#DDDDDD',
+                color: '#DDDDDD',
+                borderDash: [3],
+                lineWidth: 1
               },
               ticks: {
+                padding: 8,
                 maxTicksLimit: 5,
                 suggestedMin: 0,
                 callback: function (value, index, values) {
@@ -508,6 +534,16 @@ export default {
       }
     },
     changeColors (theme) {
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
+      this.chart.options.scales.xAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
+      this.chart.options.scales.xAxes[0].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
+
+      this.chart.options.scales.yAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
+      this.chart.options.scales.yAxes[0].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
+
+      this.chart.options.scales.yAxes[1].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
+      this.chart.options.scales.yAxes[1].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
+
       this.loadColors()
       if (theme === 'light') {
         this.colorPrecisionBar = '#161616'
@@ -523,7 +559,7 @@ export default {
       this.chart.data.datasets[1].pointHoverBackgroundColor = this.colorHover
       this.chart.data.datasets[1].pointHoverBorderColor = this.colorHover
 
-      this.chart.update()
+      this.chart.update(0)
     }
   },
   created () {
@@ -550,11 +586,6 @@ export default {
       margin-left: 3rem;
     }
   }
-  @media (max-width: 62em) {
-    .chart .flex {
-      margin-left: 0 !important
-    }
-  }
   .r_col {
     align-self: center;
     .flex {
@@ -567,23 +598,24 @@ export default {
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-left: 0;
       }
       .legende_dash_line1{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
       }
       .legende_dash_line2{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
-        margin-left: 0.2rem;
+        margin-left: 0.1rem;
       }
     }
   }
@@ -622,6 +654,7 @@ export default {
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-right: 0.25rem;
       }
       .tooltip_place {
         color: #242424;

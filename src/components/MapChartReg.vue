@@ -57,8 +57,8 @@ export default {
         value: 0,
         valueNat: 0,
         levelNat: false,
-        colorFillIcon: '',
-        locaParent: ''
+        locaParent: '',
+        date: ''
       },
       FranceProps: {
         viewBox: '0 0 262 262',
@@ -86,6 +86,10 @@ export default {
       type: String,
       required: true
     },
+    date: {
+      type: String,
+      required: true
+    },
     region: {
       type: String,
       required: true
@@ -105,6 +109,7 @@ export default {
   },
   methods: {
     createChart () {
+      this.leftColProps.date = this.date
       const parentWidget = document.getElementById(this.widgetId)
       const self = this
 
@@ -259,13 +264,11 @@ export default {
         this.colRight = this.getHexaFromName(this.color)
         this.FranceProps.colorStroke = '#FFFFFF'
         this.colorStrokeDOM = '#FFFFFF'
-        this.leftColProps.colorFillIcon = '#161616'
       } else {
         this.colLeft = this.getHexaFromName(this.color)
         this.colRight = '#eeeeee'
         this.FranceProps.colorStroke = '#161616'
         this.colorStrokeDOM = '#161616'
-        this.leftColProps.colorFillIcon = '#FFFFFF'
       }
       this.createChart()
     }
@@ -293,6 +296,7 @@ export default {
     -ms-user-select: none;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
+    cursor: pointer;
   }
 
   .widget_container{

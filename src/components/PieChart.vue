@@ -13,9 +13,12 @@
         <canvas :id="chartId"></canvas>
         <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
           <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
-          <p class='fr-text--sm fr-text--bold fr-ml-1v fr-mb-0'>
+          <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
             {{capitalize(nameParse[index])}}
           </p>
+        </div>
+        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': style}">
+          <p class="fr-text--xs">Mise à jour : {{date}}</p>
         </div>
       </div>
     </div>
@@ -74,6 +77,10 @@ export default {
     pattern: {
       type: Boolean,
       default: false
+    },
+    date: {
+      type: String,
+      default: undefined
     }
   },
   computed: {
@@ -124,6 +131,9 @@ export default {
     },
     createChart () {
       Chart.defaults.global.defaultFontFamily = 'Marianne'
+      Chart.defaults.global.defaultFontSize = 12
+      Chart.defaults.global.defaultLineHeight = 1.66
+
       this.getData()
       const self = this
       const ctx = document.getElementById(self.chartId).getContext('2d')
@@ -134,6 +144,7 @@ export default {
           datasets: self.datasets
         },
         options: {
+          cutoutPercentage: 54,
           animation: {
             easing: 'easeInOutBack',
             duration: 1000
@@ -240,7 +251,8 @@ export default {
         }
       }
     },
-    changeColors () {
+    changeColors (theme) {
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
       this.loadColors()
       this.chart.data.datasets[0].borderColor = this.colorParse
       if (this.pattern) {
@@ -251,7 +263,7 @@ export default {
         this.chart.data.datasets[0].hoverBackgroundColor = this.colorHover
       }
       this.chart.data.datasets[0].hoverBorderColor = this.colorHover
-      this.chart.update()
+      this.chart.update(0)
     }
   },
   created () {
@@ -263,7 +275,7 @@ export default {
     this.createChart()
     const element = document.documentElement // Reference à l'element <html> du DOM
     element.addEventListener('dsfr.theme', (e) => {
-      this.changeColors()
+      this.changeColors(e.detail.theme)
     })
   }
 }
@@ -278,11 +290,6 @@ export default {
       margin-left: 3rem;
     }
   }
-  @media (max-width: 62em) {
-    .chart .flex {
-      margin-left: 0 !important
-    }
-  }
   .r_col {
     align-self: center;
     .flex {
@@ -295,23 +302,24 @@ export default {
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-left: 0;
       }
       .legende_dash_line1{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
       }
       .legende_dash_line2{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
-        margin-left: 0.2rem;
+        margin-left: 0.1rem;
       }
     }
   }
@@ -350,6 +358,7 @@ export default {
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-right: 0.25rem;
       }
       .tooltip_place {
         color: #242424;

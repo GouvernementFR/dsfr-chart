@@ -5,7 +5,7 @@
       <div class="chart ml-lg">
         <div class="gauge-container">
           <div class="rectangle" :style="styleRectangleOver">
-            <p class="fr-text--md fr-mt-1w text-pct">{{Math.round(percentage)}} %</p>
+            <p class="fr-text--md fr-text--bold fr-mt-1w text-pct">{{Math.round(percentage)}} %</p>
           </div>
           <div class="rectangle" :style="styleRectangleUnder"></div>
         </div>
@@ -14,12 +14,15 @@
           <p class="fr-text--xs fr-mt-1w r-align">{{target}}</p>
         </div>
         <div class="flex fr-mt-3v" v-if="legend">
-          <span class="legende_dot"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">Valeur cible</p>
+          <span class="legende_dot" :style="styleLegendUnder"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">Valeur cible</p>
         </div>
         <div class="flex fr-mt-3v" v-if="legend">
-          <span class="legende_dot" :style="styleLegend"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">Valeur actuelle</p>
+          <span class="legende_dot" :style="styleLegendOver"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">Valeur actuelle</p>
+        </div>
+        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': style}">
+          <p class="fr-text--xs">Mise à jour : {{date}}</p>
         </div>
       </div>
     </div>
@@ -38,8 +41,10 @@ export default {
       percentage: 0,
       styleRectangleOver: '',
       styleRectangleUnder: '',
-      styleLegend: '',
-      colorParse: ''
+      styleLegendOver: '',
+      styleLegendUnder: '',
+      colorOver: '',
+      colorUnder: ''
     }
   },
   props: {
@@ -62,20 +67,23 @@ export default {
     color: {
       type: String,
       default: 'green-bourgeon'
+    },
+    date: {
+      type: String,
+      default: undefined
     }
   },
   methods: {
     createChart () {
       this.percentage = 100 * (this.value - this.init) / (this.target - this.init)
-      this.colorParse = this.getHexaFromName(this.color)
-      this.styleRectangleOver = 'background-color:' + this.colorParse + '; width:' + this.percentage + '%'
-      this.styleRectangleUnder = 'width:' + (100 - this.percentage) + '%'
-      this.styleLegend = 'background-color:' + this.colorParse
     },
     changeTheme (theme) {
-      this.colorParse = this.getHexaFromName(this.color)
-      this.styleRectangleOver = 'background-color:' + this.colorParse + '; width:' + this.percentage + '%'
-      this.styleLegend = 'background-color:' + this.colorParse
+      this.colorOver = this.getHexaFromName(this.color)
+      this.colorUnder = this.getHexaFromToken('background-contrats-grey', theme)
+      this.styleRectangleOver = 'background-color:' + this.colorOver + '; width:' + this.percentage + '%'
+      this.styleRectangleUnder = 'background-color:' + this.colorUnder + '; width:' + (100 - this.percentage) + '%'
+      this.styleLegendOver = 'background-color:' + this.colorOver
+      this.styleLegendUnder = 'background-color:' + this.colorUnder
     }
   },
   created () {
@@ -102,17 +110,11 @@ export default {
       margin-left: 3rem;
     }
   }
-  @media (max-width: 62em) {
-    .chart .flex {
-      margin-left: 0 !important
-    }
-  }
   .gauge-container{
     width: 90%;
     margin:auto;
     display: flex;
     .rectangle {
-      background-color: #eee;
       height:40px;
       text-align: center;
     }
