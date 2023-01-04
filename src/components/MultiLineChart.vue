@@ -333,13 +333,9 @@ export default {
               type: self.xAxisType,
               gridLines: {
                 zeroLineColor: '#DDDDDD',
-                color: '#DDDDDD',
-                drawTicks: false,
                 drawOnChartArea: false,
+                color: '#DDDDDD',
                 lineWidth: 1
-              },
-              ticks: {
-                padding: 8
               }
             }],
             yAxes: [{

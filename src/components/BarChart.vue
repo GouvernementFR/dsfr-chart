@@ -370,12 +370,8 @@ export default {
               gridLines: {
                 zeroLineColor: '#DDDDDD',
                 drawOnChartArea: false,
-                drawTicks: false,
                 color: '#DDDDDD',
                 lineWidth: 1
-              },
-              ticks: {
-                padding: 8
               }
             }],
             yAxes: [{
