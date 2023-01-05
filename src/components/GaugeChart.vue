@@ -2,10 +2,10 @@
 
   <div class="widget_container fr-grid-row" :id="widgetId">
     <div class="r_col fr-col-12">
-      <div class="chart ml-lg">
+      <div class="chart">
         <div class="gauge-container">
           <div class="rectangle" :style="styleRectangleOver">
-            <p class="fr-text--md fr-text--bold fr-mt-1w text-pct">{{Math.round(percentage)}} %</p>
+            <p class="fr-text--md fr-text--bold fr-mt-1v text-pct">{{Math.round(percentage)}} %</p>
           </div>
           <div class="rectangle" :style="styleRectangleUnder"></div>
         </div>
@@ -102,21 +102,13 @@ export default {
 
 <style scoped lang="scss">
 .widget_container {
-  .ml-lg {
-    margin-left: 0;
-  }
-  @media (min-width: 62em) {
-    .ml-lg {
-      margin-left: 3rem;
-    }
-  }
   .gauge-container{
-    width: 90%;
-    margin:auto;
+    width: 100%;
     display: flex;
     .rectangle {
-      height:40px;
-      text-align: center;
+      height: 2rem;
+      text-align:center;
+      justify-content: center;
     }
     .r-align {
       margin-left: auto;
@@ -124,14 +116,13 @@ export default {
     }
     .text-pct {
       color: white;
-      margin: auto
     }
   }
   .r_col {
     align-self: center;
     .flex {
       display: flex;
-      width: 90%;
+      width: 100%;
       margin: auto;
       .legende_dot {
         margin-left: 0px;

@@ -8,6 +8,10 @@ node_modules
 /MultiLineChart
 /PieChart
 /ScatterChart
+/GaugeChart
+/MapChartReg
+/RadarChart
+/TableChart
 roadmap.md
 
 

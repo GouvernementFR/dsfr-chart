@@ -1,7 +1,7 @@
 <template>
   <div class="widget_container fr-grid-row" :id="widgetId">
     <div class="r_col fr-col-12">
-      <div class="chart ml-lg">
+      <div class="chart">
         <div class="linechart_tooltip">
           <div class="tooltip_header"></div>
           <div class="tooltip_body">
@@ -122,6 +122,10 @@ export default {
     date: {
       type: String,
       default: undefined
+    },
+    aspectratio: {
+      type: Number,
+      default: 2
     }
   },
   computed: {
@@ -328,6 +332,7 @@ export default {
           }
         }],
         options: {
+          aspectRatio: this.aspectratio,
           animation: {
             easing: 'easeInOutBack',
             duration: 1000
