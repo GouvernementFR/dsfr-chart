@@ -27,19 +27,19 @@
             <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Guadeloupe</span>
             <guadeloupe :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guadeloupe>
           </div>
-          <div class="om fr-col-4 fr-col-sm" :style="{display:displayMartinique}">
+          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{display:displayMartinique}">
             <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Martinique</span>
             <martinique :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></martinique>
           </div>
-          <div class="om fr-col-4 fr-col-sm" :style="{display:displayGuyanne}">
+          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{display:displayGuyanne}">
             <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Guyane</span>
             <guyane :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guyane>
           </div>
-          <div class="om fr-col-4 fr-col-sm" :style="{display:displayReunion}">
+          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{display:displayReunion}">
             <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">La Réunion</span>
             <reunion :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></reunion>
           </div>
-          <div class="om fr-col-4 fr-col-sm" :style="{display:displayMayotte}">
+          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{display:displayMayotte}">
             <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Mayotte</span>
             <mayotte :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></mayotte>
           </div>

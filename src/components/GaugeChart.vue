@@ -15,11 +15,11 @@
         </div>
         <div class="flex fr-mt-3v" v-if="legend">
           <span class="legende_dot" :style="styleLegendUnder"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">Valeur cible</p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">Valeur cible</p>
         </div>
         <div class="flex fr-mt-3v" v-if="legend">
           <span class="legende_dot" :style="styleLegendOver"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">Valeur actuelle</p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">Valeur actuelle</p>
         </div>
         <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': style}">
           <p class="fr-text--xs">Mise à jour : {{date}}</p>
