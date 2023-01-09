@@ -126,6 +126,10 @@ export default {
     date: {
       type: String,
       default: undefined
+    },
+    aspectratio: {
+      type: Number,
+      default: 2
     }
   },
   computed: {
@@ -339,6 +343,7 @@ export default {
           }
         }],
         options: {
+          aspectRatio: this.aspectratio,
           animation: {
             easing: 'easeInOutBack',
             duration: 1000
