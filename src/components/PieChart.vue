@@ -277,6 +277,9 @@ export default {
       this.changeColors(e.detail.theme)
     })
   }
+  // updated () {
+  //   this.createChart()
+  // }
 }
 </script>
 <style scoped lang="scss">

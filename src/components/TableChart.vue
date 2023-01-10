@@ -94,6 +94,10 @@ export default {
     this.getData()
     this.createTableBar()
   }
+  // updated () {
+  //   this.getData()
+  //   this.createTableBar()
+  // }
 }
 </script>
 <style scoped lang="scss">

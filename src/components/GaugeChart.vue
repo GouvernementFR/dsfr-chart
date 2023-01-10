@@ -95,6 +95,9 @@ export default {
     element.addEventListener('dsfr.theme', (e) => {
       this.changeTheme(e.detail.theme)
     })
+  },
+  updated () {
+    this.createChart()
   }
 }
 
