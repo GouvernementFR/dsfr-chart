@@ -99,7 +99,7 @@ export default {
   },
   updated () {
     this.createChart()
-    this.changeTheme()
+    this.changeTheme('light')
   }
 }
 
