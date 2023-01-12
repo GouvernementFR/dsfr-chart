@@ -5,7 +5,7 @@
       <div class="chart">
         <div class="gauge-container">
           <div class="rectangle" :style="styleRectangleOver">
-            <p class="fr-text--md fr-text--bold fr-mt-1v text-pct">{{Math.round(percentage)}} %</p>
+            <p class="fr-text--md fr-text--bold fr-mt-1v text-pct">{{percentage}} %</p>
           </div>
           <div class="rectangle" :style="styleRectangleUnder"></div>
         </div>
@@ -75,13 +75,14 @@ export default {
   },
   methods: {
     createChart () {
-      this.percentage = 100 * (this.value - this.init) / (this.target - this.init)
+      this.percentage = Math.round(100 * (this.value - this.init) / (this.target - this.init))
     },
     changeTheme (theme) {
       this.colorOver = this.getHexaFromName(this.color)
       this.colorUnder = this.getHexaFromToken('background-contrats-grey', theme)
-      this.styleRectangleOver = 'background-color:' + this.colorOver + '; width:' + this.percentage + '%'
-      this.styleRectangleUnder = 'background-color:' + this.colorUnder + '; width:' + (100 - this.percentage) + '%'
+      const widthOver = Math.min(100, this.percentage)
+      this.styleRectangleOver = 'background-color:' + this.colorOver + '; width:' + widthOver + '%'
+      this.styleRectangleUnder = 'background-color:' + this.colorUnder + '; width:' + (100 - widthOver) + '%'
       this.styleLegendOver = 'background-color:' + this.colorOver
       this.styleLegendUnder = 'background-color:' + this.colorUnder
     }
@@ -98,6 +99,7 @@ export default {
   },
   updated () {
     this.createChart()
+    this.changeTheme()
   }
 }
 

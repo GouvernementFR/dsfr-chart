@@ -202,8 +202,8 @@ export default {
 
       // Tracer de la courbe
       self.datasets = [{
+        backgroundColor: 'rgba(0, 0, 0, 0)',
         data: dataLine,
-        // backgroundColor: gradientFill,
         borderColor: self.colorParse,
         type: 'line',
         pointRadius: 8,

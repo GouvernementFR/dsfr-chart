@@ -231,7 +231,7 @@ export default {
         },
         {
           data: dataLine,
-          // backgroundColor: gradientFill,
+          backgroundColor: 'rgba(0, 0, 0, 0)',
           borderColor: this.colorParse,
           type: 'line',
           pointRadius: 8,
