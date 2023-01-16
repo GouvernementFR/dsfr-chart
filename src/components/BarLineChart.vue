@@ -138,6 +138,30 @@ export default {
     }
   },
   methods: {
+    resetData () {
+      this.legendLeftMargin = 0
+      this.display = ''
+      this.datasets = []
+      this.xAxisType = 'category'
+      this.labels = undefined
+      this.xparse = []
+      this.yparse = []
+      this.ybarparse = []
+      this.vlineParse = []
+      this.vlineColorParse = []
+      this.tmpVlineColorParse = []
+      this.vlineNameParse = []
+      this.hlineParse = []
+      this.hlineColorParse = []
+      this.tmpHlineColorParse = []
+      this.hlineNameParse = []
+      this.ymax = 0
+      this.colorParse = undefined
+      this.colorBarParse = undefined
+      this.colorPrecisionBar = '#161616'
+      this.colorHover = undefined
+      this.colorbarHover = undefined
+    },
     getData () {
       const self = this
       // Récupération des paramètres
@@ -574,10 +598,13 @@ export default {
     element.addEventListener('dsfr.theme', (e) => {
       this.changeColors(e.detail.theme)
     })
+  },
+  beforeUpdate () {
+    this.resetData()
+    this.createChart()
+    const element = document.documentElement
+    this.changeColors(element.getAttribute('data-fr-theme'))
   }
-  // updated () {
-  //   this.createChart()
-  // }
 }
 </script>
 <style scoped lang="scss">

@@ -61,7 +61,7 @@ export default {
         }
       }
     },
-    createTableBar () {
+    createTable () {
       const chartbox = document.getElementById(this.tableId)
       const TableDiv = document.createElement('DIV')
       TableDiv.setAttribute('id', 'tableDiv')
@@ -92,12 +92,12 @@ export default {
   },
   mounted () {
     this.getData()
-    this.createTableBar()
+    this.createTable()
+  },
+  beforeUpdate () {
+    this.getData()
+    this.createTable()
   }
-  // updated () {
-  //   this.getData()
-  //   this.createTableBar()
-  // }
 }
 </script>
 <style scoped lang="scss">

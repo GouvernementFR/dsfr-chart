@@ -98,8 +98,9 @@ export default {
     })
   },
   updated () {
+    const element = document.documentElement
     this.createChart()
-    this.changeTheme('light')
+    this.changeTheme(element.getAttribute('data-fr-theme'))
   }
 }
 

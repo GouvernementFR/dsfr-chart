@@ -121,6 +121,27 @@ export default {
     }
   },
   methods: {
+    resetData () {
+      this.legendLeftMargin = 0
+      this.display = ''
+      this.datasets = []
+      this.xAxisType = 'category'
+      this.labels = undefined
+      this.xparse = []
+      this.yparse = []
+      this.vlineParse = []
+      this.vlineColorParse = []
+      this.tmpVlineColorParse = []
+      this.vlineNameParse = []
+      this.hlineParse = []
+      this.hlineColorParse = []
+      this.tmpHlineColorParse = []
+      this.hlineNameParse = []
+      this.ymax = 0
+      this.colorParse = undefined
+      this.colorPrecisionBar = '#161616'
+      this.colorHover = undefined
+    },
     getData () {
       const self = this
       // Récupération des paramètres
@@ -132,23 +153,18 @@ export default {
         this.vlineParse = JSON.parse(this.vline)
         let tmpVlineNameParse = []
         if (this.vlinename !== undefined) {
-          tmpVlineNameParse = JSON.parse(self.vlinename)
+          tmpVlineNameParse = JSON.parse(this.vlinename)
         }
         if (this.vlinecolor !== undefined) {
-          this.tmpVlineColorParse = JSON.parse(self.vlinecolor)
+          this.tmpVlineColorParse = JSON.parse(this.vlinecolor)
         }
 
         for (let i = 0; i < this.vlineParse.length; i++) {
           if (tmpVlineNameParse[i] !== undefined) {
-            self.vlineNameParse.push(tmpVlineNameParse[i])
+            this.vlineNameParse.push(tmpVlineNameParse[i])
           } else {
-            self.vlineNameParse.push('V' + (i + 1))
+            this.vlineNameParse.push('V' + (i + 1))
           }
-          // if (tmpVlineColorParse[i] !== undefined) {
-          //   self.vlineColorParse.push(tmpVlineColorParse[i])
-          // } else {
-          //   self.vlineColorParse.push('#161616')
-          // }
         }
       }
 
@@ -157,30 +173,26 @@ export default {
         this.hlineParse = JSON.parse(this.hline)
         let tmpHlineNameParse = []
         if (this.hlinename !== undefined) {
-          tmpHlineNameParse = JSON.parse(self.hlinename)
+          tmpHlineNameParse = JSON.parse(this.hlinename)
         }
         if (this.hlinecolor !== undefined) {
-          this.tmpHlineColorParse = JSON.parse(self.hlinecolor)
+          this.tmpHlineColorParse = JSON.parse(this.hlinecolor)
         }
 
         for (let i = 0; i < this.hlineParse.length; i++) {
           if (tmpHlineNameParse[i] !== undefined) {
-            self.hlineNameParse.push(tmpHlineNameParse[i])
+            this.hlineNameParse.push(tmpHlineNameParse[i])
           } else {
-            self.hlineNameParse.push('H' + (i + 1))
+            this.hlineNameParse.push('H' + (i + 1))
           }
         }
       }
 
-      // const ctx = document.getElementById(self.chartId).getContext('2d')
-      // let gradientFill
-      // this.display === 'big' ? gradientFill = ctx.createLinearGradient(0, 0, 0, 500) : gradientFill = ctx.createLinearGradient(0, 0, 0, 250)
-      // gradientFill.addColorStop(0, chroma(borderColor).alpha(0.05).hex())
       this.loadColors()
       let dataLine = []
       // Cas ou x est numérique
-      if (typeof self.xparse[0] === 'number') {
-        const xsort = self.xparse.map((a) => a).sort((a, b) => a - b)
+      if (typeof this.xparse[0] === 'number') {
+        const xsort = this.xparse.map((a) => a).sort((a, b) => a - b)
         xsort.forEach(function (k) {
           const index = self.xparse.findIndex((element) => element === k)
           dataLine.push({
@@ -188,30 +200,30 @@ export default {
             y: self.yparse[index]
           })
         })
-        self.labels = undefined
-        self.xAxisType = 'linear'
+        this.labels = undefined
+        this.xAxisType = 'linear'
       } else {
         // Cas ou x est non numérique
-        dataLine = self.yparse
-        self.labels = self.xparse
-        self.xAxisType = 'category'
+        dataLine = this.yparse
+        this.labels = this.xparse
+        this.xAxisType = 'category'
       }
 
       // Set ymax
-      self.ymax = Math.max.apply(null, self.hlineParse)
+      this.ymax = Math.max.apply(null, this.hlineParse)
 
       // Tracer de la courbe
-      self.datasets = [{
+      this.datasets = [{
         backgroundColor: 'rgba(0, 0, 0, 0)',
         data: dataLine,
-        borderColor: self.colorParse,
+        borderColor: this.colorParse,
         type: 'line',
         pointRadius: 8,
         pointStyle: 'rect',
         pointBackgroundColor: 'rgba(0, 0, 0, 0)',
         pointBorderColor: 'rgba(0, 0, 0, 0)',
-        pointHoverBackgroundColor: self.colorHover,
-        pointHoverBorderColor: self.colorHover,
+        pointHoverBackgroundColor: this.colorHover,
+        pointHoverBorderColor: this.colorHover,
         pointHoverRadius: 6,
         borderWidth: 2
       }]
@@ -465,16 +477,18 @@ export default {
     this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
   },
   mounted () {
-    document.getElementById(this.widgetId).offsetWidth > 486 ? this.display = 'big' : this.display = 'small'
     this.createChart()
     const element = document.documentElement // Reference à l'element <html> du DOM
     element.addEventListener('dsfr.theme', (e) => {
       this.changeColors(e.detail.theme)
     })
+  },
+  beforeUpdate () {
+    this.resetData()
+    this.createChart()
+    const element = document.documentElement
+    this.changeColors(element.getAttribute('data-fr-theme'))
   }
-  // updated () {
-  //   this.createChart()
-  // }
 }
 </script>
 <style scoped lang="scss">
