@@ -126,6 +126,10 @@ export default {
     aspectratio: {
       type: Number,
       default: 2
+    },
+    formatdate: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -370,6 +374,15 @@ export default {
                 drawOnChartArea: false,
                 color: '#DDDDDD',
                 lineWidth: 1
+              },
+              ticks: {
+                callback: function (value) {
+                  if (self.formatdate) {
+                    return value.toString().substring(5, 7) + '/' + value.toString().substring(0, 4)
+                  } else {
+                    return value
+                  }
+                }
               }
             }],
             yAxes: [{

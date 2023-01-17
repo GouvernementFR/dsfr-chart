@@ -1,6 +1,6 @@
 <template>
   <div class="widget_container fr-grid-row" :id="widgetId">
-    <div class = 'fr-table scroll' :id="tableId">
+    <div class = 'fr-table scroll' :id="tableId" :style="styleHeight">
       <table>
         <thead>
           <tr>
@@ -34,7 +34,8 @@ export default {
       tableId: '',
       xparse: [],
       yparse: [],
-      nameParse: []
+      nameParse: [],
+      styleHeight: ''
     }
   },
   props: {
@@ -53,6 +54,10 @@ export default {
     varname: {
       type: String,
       default: undefined
+    },
+    maxheight: {
+      type: String,
+      default: '25rem'
     }
   },
   methods: {
@@ -66,6 +71,7 @@ export default {
       // Récupération des paramètres
       this.xparse = JSON.parse(this.x)
       this.yparse = JSON.parse(this.y)
+      this.styleHeight = 'max-height:' + this.maxheight
 
       let tmpNameParse = []
       if (this.name !== undefined) {
@@ -106,7 +112,6 @@ export default {
   table-layout: fixed;
   border-collapse: collapse;
   overflow: auto;
-  max-height: 25em;
 }
 .scroll thead {
   position: sticky;

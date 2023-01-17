@@ -60,9 +60,9 @@ export default {
       type: Number,
       required: true
     },
-    size: {
-      type: Number,
-      required: true
+    height: {
+      type: String,
+      default: '2rem'
     },
     legend: {
       type: Boolean,
@@ -85,7 +85,7 @@ export default {
       this.colorOver = this.getHexaFromName(this.color)
       this.colorUnder = this.getHexaFromToken('background-contrats-grey', theme)
       const widthOver = Math.min(100, this.percentage)
-      this.styleRectangleOver = 'background-color:' + this.colorOver + '; width:' + widthOver + '%;' + 'height:' + this.size + 'px;'
+      this.styleRectangleOver = 'background-color:' + this.colorOver + '; width:' + widthOver + '%;' + 'height:' + this.height
       this.styleRectangleUnder = 'background-color:' + this.colorUnder + '; width:' + (100 - widthOver) + '%'
       this.styleLegendOver = 'background-color:' + this.colorOver
       this.styleLegendUnder = 'background-color:' + this.colorUnder
