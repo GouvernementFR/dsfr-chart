@@ -1,9 +1,8 @@
 <template>
-
   <div class="widget_container fr-grid-row" :id="widgetId">
     <div class="r_col fr-col-12">
       <div class="chart">
-        <div class="gauge-container">
+        <div class="gauge-container" :style="styleGauge">
           <div class="rectangle" :style="styleRectangleOver">
             <p class="fr-text--md fr-text--bold fr-mt-1v text-pct">{{percentage}} %</p>
           </div>
@@ -40,6 +39,7 @@ export default {
       widgetId: '',
       percentage: 0,
       styleRectangleOver: '',
+      styleGauge: '',
       styleRectangleUnder: '',
       styleLegendOver: '',
       styleLegendUnder: '',
@@ -57,6 +57,10 @@ export default {
       required: true
     },
     target: {
+      type: Number,
+      required: true
+    },
+    size: {
       type: Number,
       required: true
     },
@@ -81,7 +85,7 @@ export default {
       this.colorOver = this.getHexaFromName(this.color)
       this.colorUnder = this.getHexaFromToken('background-contrats-grey', theme)
       const widthOver = Math.min(100, this.percentage)
-      this.styleRectangleOver = 'background-color:' + this.colorOver + '; width:' + widthOver + '%'
+      this.styleRectangleOver = 'background-color:' + this.colorOver + '; width:' + widthOver + '%;' + 'height:' + this.size + 'px;'
       this.styleRectangleUnder = 'background-color:' + this.colorUnder + '; width:' + (100 - widthOver) + '%'
       this.styleLegendOver = 'background-color:' + this.colorOver
       this.styleLegendUnder = 'background-color:' + this.colorUnder
@@ -112,7 +116,6 @@ export default {
     width: 100%;
     display: flex;
     .rectangle {
-      height: 2rem;
       text-align:center;
       justify-content: center;
     }
