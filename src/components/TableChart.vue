@@ -9,9 +9,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in xparse" :key="item">
-            <td>{{item}}</td>
-            <td v-for="(item2, index2) in yparse" :key="index2">{{yparse[index2][index]}}</td>
+          <tr v-for="(item, index) in xparse" :key="index">
+            <td :class="getClass(item)">{{item}}</td>
+            <td v-for="(item2, index2) in yparse" :key="index2" :class="getClass(yparse[index2][index])">{{yparse[index2][index]}}</td>
           </tr>
         </tbody>
       </table>
@@ -79,6 +79,13 @@ export default {
           self.nameParse.push('Serie' + (i + 1))
         }
       }
+    },
+    getClass (value) {
+      if (typeof value === 'number') {
+        return 'text-right'
+      } else {
+        return 'text-left'
+      }
     }
   },
   created () {
@@ -104,5 +111,13 @@ export default {
 .scroll thead {
   position: sticky;
   top: 0;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
 }
 </style>
