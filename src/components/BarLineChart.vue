@@ -46,7 +46,7 @@ export default {
     return {
       widgetId: '',
       chartId: '',
-      chart,
+      chart: undefined,
       legendLeftMargin: 0,
       display: '',
       datasets: [],
