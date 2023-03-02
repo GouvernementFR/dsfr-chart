@@ -46,6 +46,7 @@ export default {
     return {
       widgetId: '',
       chartId: '',
+      chart,
       legendLeftMargin: 0,
       display: '',
       datasets: [],
@@ -143,6 +144,7 @@ export default {
   },
   methods: {
     resetData () {
+      this.chart.destroy()
       this.legendLeftMargin = 0
       this.display = ''
       this.datasets = []

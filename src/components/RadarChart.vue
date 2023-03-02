@@ -39,6 +39,7 @@ export default {
     return {
       widgetId: '',
       chartId: '',
+      chart: undefined,
       legendLeftMargin: 100,
       display: '',
       datasets: [],
@@ -81,6 +82,7 @@ export default {
   },
   methods: {
     resetData () {
+      this.chart.destroy()
       this.legendLeftMargin = 100
       this.display = ''
       this.datasets = []

@@ -44,6 +44,7 @@ export default {
     return {
       widgetId: '',
       chartId: '',
+      chart: undefined,
       legendLeftMargin: 0,
       display: '',
       datasets: [],
@@ -126,6 +127,7 @@ export default {
   },
   methods: {
     resetData () {
+      this.chart.destroy()
       this.legendLeftMargin = 0
       this.display = ''
       this.datasets = []
@@ -486,14 +488,17 @@ export default {
     }
   },
   created () {
-    this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
     this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
+    this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
   },
   mounted () {
-    this.createChart()
+    console.log(this.$props)
     const element = document.documentElement // Reference à l'element <html> du DOM
+    this.createChart()
     element.addEventListener('dsfr.theme', (e) => {
-      this.changeColors(e.detail.theme)
+      if (this.chartId !== '') {
+        this.changeColors(e.detail.theme)
+      }
     })
   },
   beforeUpdate () {
