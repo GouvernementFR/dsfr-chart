@@ -9,8 +9,8 @@
           <div class="rectangle" :style="styleRectangleUnder"></div>
         </div>
         <div class="gauge-container">
-          <p class="fr-text--xs fr-mt-1w">{{init}}</p>
-          <p class="fr-text--xs fr-mt-1w r-align">{{target}}</p>
+          <p class="fr-text--xs fr-text-mention--grey fr-mt-1w">{{init}}</p>
+          <p class="fr-text--xs fr-text-mention--grey fr-mt-1w r-align">{{target}}</p>
         </div>
         <div class="flex fr-mt-3v" v-if="legend">
           <span class="legende_dot" :style="styleLegendUnder"></span>
@@ -20,7 +20,7 @@
           <span class="legende_dot" :style="styleLegendOver"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">Valeur actuelle</p>
         </div>
-        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': style}">
+        <div v-if="date!==undefined" class="flex fr-mt-1w">
           <p class="fr-text--xs">Mise à jour : {{date}}</p>
         </div>
       </div>

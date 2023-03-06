@@ -11,23 +11,23 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
+        <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': isSmall ? '0px' : style}">
           <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
           <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
             {{capitalize(nameParse[index])}}
           </p>
         </div>
-        <div v-for="(item2, index2) in hlineNameParse" :key="item2" class="flex fr-mt-3v" :style="{'margin-left': style}">
+        <div v-for="(item2, index2) in hlineNameParse" :key="item2" class="flex fr-mt-3v" :style="{'margin-left': isSmall ? '0px' : style}">
           <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index2]}"></span>
           <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index2]}"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(hlineNameParse[index2]) }}</p>
         </div>
-        <div v-for="(item3, index3) in vlineNameParse" :key="item3" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
+        <div v-for="(item3, index3) in vlineNameParse" :key="item3" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': isSmall ? '0px' : style}">
           <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index3]}"></span>
           <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index3]}"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index3]) }}</p>
         </div>
-        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': style}">
+        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': isSmall ? '0px' : style}">
           <p class="fr-text--xs">Mise à jour : {{date}}</p>
         </div>
       </div>
@@ -72,7 +72,8 @@ export default {
       annotations: [],
       colorPrecisionBar: '#161616',
       colorBox: '#2f2f2f',
-      colorHover: []
+      colorHover: [],
+      isSmall: false
     }
   },
   props: {
@@ -616,6 +617,9 @@ export default {
     const element = document.documentElement // Reference à l'element <html> du DOM
     element.addEventListener('dsfr.theme', (e) => {
       this.changeColors(e.detail.theme)
+    })
+    addEventListener('resize', (event) => {
+      this.isSmall = document.documentElement.clientWidth < 767
     })
   },
   beforeUpdate () {

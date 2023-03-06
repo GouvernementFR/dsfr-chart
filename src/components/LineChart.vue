@@ -11,21 +11,21 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div class="flex fr-mt-1w fr-mb-0" :style="{'margin-left': style}">
+        <div class="flex fr-mt-1w fr-mb-0" :style="{'margin-left': isSmall ? '0px' : style}">
           <span class="legende_dot" v-bind:style="{'background-color': colorParse}"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(name) }}</p>
         </div>
-        <div v-for="(item, index) in hlineNameParse" :key="item" class="flex fr-mt-1w fr-mb-0" :style="{'margin-left': style}">
+        <div v-for="(item, index) in hlineNameParse" :key="item" class="flex fr-mt-1w fr-mb-0" :style="{'margin-left': isSmall ? '0px' : style}">
           <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index]}"></span>
           <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index]}"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(hlineNameParse[index]) }}</p>
         </div>
-        <div v-for="(item2, index2) in vlineParse" :key="item2" class="flex fr-mt-1w fr-mb-0" :style="{'margin-left': style}">
+        <div v-for="(item2, index2) in vlineParse" :key="item2" class="flex fr-mt-1w fr-mb-0" :style="{'margin-left': isSmall ? '0px' : style}">
           <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index2]}"></span>
           <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index2]}"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index2]) }}</p>
         </div>
-        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': style}">
+        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': isSmall ? '0px' : style}">
           <p class="fr-text--xs">Mise à jour : {{date}}</p>
         </div>
       </div>
@@ -63,7 +63,8 @@ export default {
       ymax: 0,
       colorParse: undefined,
       colorPrecisionBar: '#161616',
-      colorHover: undefined
+      colorHover: undefined,
+      isSmall: false
     }
   },
   props: {
@@ -332,6 +333,7 @@ export default {
                 lineWidth: 1
               },
               ticks: {
+                labelOffset: 10,
                 callback: function (value) {
                   if (self.formatdate) {
                     return value.toString().substring(5, 7) + '/' + value.toString().substring(0, 4)
@@ -492,13 +494,15 @@ export default {
     this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
   },
   mounted () {
-    console.log(this.$props)
     const element = document.documentElement // Reference à l'element <html> du DOM
     this.createChart()
     element.addEventListener('dsfr.theme', (e) => {
       if (this.chartId !== '') {
         this.changeColors(e.detail.theme)
       }
+    })
+    addEventListener('resize', (event) => {
+      this.isSmall = document.documentElement.clientWidth < 767
     })
   },
   beforeUpdate () {
