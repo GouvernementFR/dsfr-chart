@@ -50,7 +50,11 @@ export default {
   props: {
     value: {
       type: Number,
-      required: true
+      default: undefined
+    },
+    percentvalue: {
+      type: Number,
+      default: undefined
     },
     init: {
       type: Number,
@@ -79,7 +83,11 @@ export default {
   },
   methods: {
     createChart () {
-      this.percentage = Math.round(100 * (this.value - this.init) / (this.target - this.init))
+      if (this.percentvalue === undefined) {
+        this.percentage = Math.round(100 * (this.value - this.init) / (this.target - this.init))
+      } else {
+        this.percentage = Math.round(this.percentvalue)
+      }
     },
     changeTheme (theme) {
       this.colorOver = this.getHexaFromName(this.color)
