@@ -463,7 +463,7 @@ export default {
               label: function (tooltipItems) {
                 const label = []
                 self.datasets.forEach(function (set, i) {
-                  label.push(set.data[tooltipItems.index])
+                  label.push(self.convertIntToHuman(set.data[tooltipItems.index]))
                 })
                 return label
               },

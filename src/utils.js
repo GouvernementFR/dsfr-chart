@@ -4,16 +4,50 @@ export const capitalize = function (string) {
   }
 }
 export const convertStringToLocaleNumber = function (string) {
-  return parseInt(string).toLocaleString()
+  return parseInt(string).toLocaleString('fr-FR')
 }
 
 export const convertFloatToHuman = function (float) {
   if (Number.isInteger(parseFloat(float))) {
-    return parseInt(float).toLocaleString()
+    return parseInt(float).toLocaleString('fr-FR')
   } else {
-    return parseFloat(float).toFixed(2).toLocaleString()
+    return parseFloat(float).toFixed(2).toLocaleString('fr-FR')
   }
 }
+
+export const convertIntToHuman = function (int) {
+  let res = parseFloat(int)
+  if (Math.floor(res / 1000000000) >= 10) {
+    res = (res / 1000000000).toFixed(0).replace('.', ',') + ' milliards'
+  } else if (Math.floor(res / 1000000000) >= 2) {
+    res = (res / 1000000000).toFixed(1).replace('.', ',') + ' milliards'
+  } else if (Math.floor(res / 1000000000) >= 1) {
+    res = (res / 1000000000).toFixed(1).replace('.', ',') + ' milliard'
+  } else if (Math.floor(res / 1000000) >= 10) {
+    res = (res / 1000000).toFixed(0).replace('.', ',') + ' millions'
+  } else if (Math.floor(res / 1000000) >= 2) {
+    res = (res / 1000000).toFixed(1).replace('.', ',') + ' millions'
+  } else if (Math.floor(res / 1000000) >= 1) {
+    res = (res / 1000000).toFixed(1).replace('.', ',') + ' million'
+  } else if (Number.isInteger(parseFloat(res))) {
+    return parseInt(res).toLocaleString('fr-FR').replace('.', ',')
+  } else {
+    return parseFloat(res).toFixed(2).toLocaleString('fr-FR').replace('.', ',')
+  }
+  return res
+}
+
+export const convertIntToHumanTable = function (int) {
+  const res = parseFloat(int)
+  if (isNaN(res)) {
+    return int
+  } else if (Number.isInteger(parseFloat(res))) {
+    return parseInt(res).toLocaleString('fr-FR')
+  } else {
+    return parseFloat(res).toFixed(2).toLocaleString('fr-FR')
+  }
+}
+console.log(isNaN(parseInt('nnn')))
 
 export const convertDateToHuman = function (string) {
   const date = new Date(string)
@@ -1084,6 +1118,8 @@ export const mixin = {
     capitalize,
     convertStringToLocaleNumber,
     convertFloatToHuman,
+    convertIntToHuman,
+    convertIntToHumanTable,
     convertDateToHuman,
     testIfNaN,
     getDep,

@@ -384,7 +384,7 @@ export default {
             backgroundColor: '#6b6b6b',
             callbacks: {
               label: function (tooltipItems) {
-                return tooltipItems.value
+                return self.convertIntToHuman(tooltipItems.value)
               },
               title: function (tooltipItems) {
                 return tooltipItems[0].label

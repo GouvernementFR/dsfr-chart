@@ -11,7 +11,7 @@
         <tbody>
           <tr v-for="(item, index) in xparse" :key="index">
             <td :class="getClass(item)">{{item}}</td>
-            <td v-for="(item2, index2) in yparse" :key="index2" :class="getClass(yparse[index2][index])">{{yparse[index2][index]}}</td>
+            <td v-for="(item2, index2) in yparse" :key="index2" :class="getClass(yparse[index2][index])">{{convertIntToHumanTable(yparse[index2][index])}}</td>
           </tr>
         </tbody>
       </table>
@@ -71,6 +71,7 @@ export default {
       // Récupération des paramètres
       this.xparse = JSON.parse(this.x)
       this.yparse = JSON.parse(this.y)
+
       this.styleHeight = 'max-height:' + this.maxheight
 
       let tmpNameParse = []

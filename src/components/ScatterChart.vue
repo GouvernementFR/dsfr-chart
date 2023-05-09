@@ -432,12 +432,12 @@ export default {
                     if (self.xAxisType === 'linear') {
                       const index = self.xparse[i].indexOf(tooltipItems.xLabel)
                       if (index !== -1) {
-                        label.push(self.yparse[i][index])
+                        label.push(self.convertIntToHuman(self.yparse[i][index]))
                       } else {
                         label.push(undefined)
                       }
                     } else {
-                      label.push(set.data[tooltipItems.index])
+                      label.push(self.convertIntToHuman(set.data[tooltipItems.index]))
                     }
                   }
                 })
