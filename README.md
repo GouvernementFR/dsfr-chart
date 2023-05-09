@@ -433,6 +433,3 @@ Par défaut la couleur de la ligne sera #009081 et son nom H1, H2, … Cela peut
 ## Contribution
 
 Le processus de contribution est détaillé sur la page [CONTRIBUTING.md](CONTRIBUTING.md).
-
-
-

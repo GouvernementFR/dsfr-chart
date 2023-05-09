@@ -11,13 +11,13 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
+        <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': isSmall ? '0px' : style}">
           <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
           <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
             {{capitalize(nameParse[index])}}
           </p>
         </div>
-        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': style}">
+        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': isSmall ? '0px' : style}">
           <p class="fr-text--xs">Mise à jour : {{date}}</p>
         </div>
       </div>
@@ -39,6 +39,7 @@ export default {
     return {
       widgetId: '',
       chartId: '',
+      chart: undefined,
       legendLeftMargin: 100,
       display: '',
       datasets: [],
@@ -49,7 +50,8 @@ export default {
       tmpColorParse: [],
       colorParse: [],
       listColors: [],
-      colorHover: []
+      colorHover: [],
+      isSmall: false
     }
   },
   props: {
@@ -81,6 +83,7 @@ export default {
   },
   methods: {
     resetData () {
+      this.chart.destroy()
       this.legendLeftMargin = 100
       this.display = ''
       this.datasets = []
@@ -226,7 +229,6 @@ export default {
                     divValue.innerHTML += '<span ' + nodeName + '= "" class="tooltip_dot" style = "background-color:' + color[i] + '"></span>' + ' ' + line + '<br>'
                   }
                 })
-                console.log(divValue.innerHTML)
               }
 
               const {
@@ -296,6 +298,9 @@ export default {
     const element = document.documentElement // Reference à l'element <html> du DOM
     element.addEventListener('dsfr.theme', (e) => {
       this.changeColors(e.detail.theme)
+    })
+    addEventListener('resize', (event) => {
+      this.isSmall = document.documentElement.clientWidth < 767
     })
   },
   beforeUpdate () {

@@ -1,6 +1,20 @@
 <template>
   <div class="widget_container fr-grid-row" :id="widgetId">
-         <div class = 'fr-table scroll' :id="tableId">
+    <div class = 'fr-table scroll' :id="tableId" :style="styleHeight">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">{{varname}}</th>
+            <th v-for="(item, index) in nameParse" :key="item" scope="col">{{nameParse[index]}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in xparse" :key="index">
+            <td :class="getClass(item)">{{item}}</td>
+            <td v-for="(item2, index2) in yparse" :key="index2" :class="getClass(yparse[index2][index])">{{convertIntToHumanTable(yparse[index2][index])}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 </div>
 </template>
@@ -20,7 +34,8 @@ export default {
       tableId: '',
       xparse: [],
       yparse: [],
-      nameParse: []
+      nameParse: [],
+      styleHeight: ''
     }
   },
   props: {
@@ -39,14 +54,25 @@ export default {
     varname: {
       type: String,
       default: undefined
+    },
+    maxheight: {
+      type: String,
+      default: '25rem'
     }
   },
   methods: {
+    resetData () {
+      this.xparse = []
+      this.yparse = []
+      this.nameParse = []
+    },
     getData () {
       const self = this
       // Récupération des paramètres
       this.xparse = JSON.parse(this.x)
       this.yparse = JSON.parse(this.y)
+
+      this.styleHeight = 'max-height:' + this.maxheight
 
       let tmpNameParse = []
       if (this.name !== undefined) {
@@ -61,29 +87,12 @@ export default {
         }
       }
     },
-    createTable () {
-      const chartbox = document.getElementById(this.tableId)
-      const TableDiv = document.createElement('DIV')
-      TableDiv.setAttribute('id', 'tableDiv')
-      const Table = document.createElement('TABLE')
-      const thead = Table.createTHead()
-      Table.classList.add('scroll')
-      thead.insertRow(0)
-      for (let i = 0; i < this.nameParse.length; i++) {
-        thead.rows[0].insertCell(i).innerText = this.nameParse[i]
+    getClass (value) {
+      if (typeof value === 'number') {
+        return 'text-right'
+      } else {
+        return 'text-left'
       }
-      thead.rows[0].insertCell(0).innerText = this.varname
-      const tbody = Table.createTBody()
-      for (let i = 0; i < this.yparse[0].length; i++) {
-        tbody.insertRow(i)
-        for (let index = 0; index < this.yparse.length; index++) {
-          tbody.rows[i].insertCell(index).innerText = this.yparse[index][i]
-        }
-        tbody.rows[i].insertCell(0).innerText = this.xparse[0][i]
-      }
-      tbody.classList.add('scroll')
-      chartbox.appendChild(TableDiv)
-      TableDiv.appendChild(Table)
     }
   },
   created () {
@@ -92,11 +101,10 @@ export default {
   },
   mounted () {
     this.getData()
-    this.createTable()
   },
   beforeUpdate () {
+    this.resetData()
     this.getData()
-    this.createTable()
   }
 }
 </script>
@@ -105,10 +113,17 @@ export default {
   table-layout: fixed;
   border-collapse: collapse;
   overflow: auto;
-  max-height: 25em;
 }
 .scroll thead {
   position: sticky;
   top: 0;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
 }
 </style>
