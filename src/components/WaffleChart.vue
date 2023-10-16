@@ -32,30 +32,29 @@ export default {
   methods: {
     adddiv () {
       for (let i = 0; i < this.x.length; i++) {
+        const parentElement = document.getElementById('div_' + this.x[i])
         for (let j = 0; j < this.y[i].length; j++) {
           for (let k = 0; k < this.y[i][j]; k++) {
-            const parentElement = document.getElementById('div_' + this.x[i])
-            parentElement.style.width = '150px'
-            parentElement.style.height = '15px'
-            parentElement.style.display = 'inline-block'
             const div = document.createElement('div')
             div.id = 'square_' + this.x[i] + '_' + j + '_' + k
             div.className = 'square'
             div.style.backgroundColor = this.getColor(j)
             div.style.width = '15px'
             div.style.height = '15px'
-            div.style.display = 'inline-block'
+            div.style.display = 'inline-grid'
             div.style.margin = '2px'
             div.style.borderRadius = '15px'
+            div.style.verticalAlign = 'top'
+            div.style.direction = 'ltr'
             parentElement.appendChild(div)
           }
         }
-        const parentElement = document.getElementById('div_' + this.x[i])
-        const xLabel = document.createElement('span')
-        xLabel.className = 'x-label'
-        xLabel.textContent = this.x[i]
-        xLabel.style.marginTop = '15px'
-        parentElement.appendChild(xLabel)
+        // const xLabel = document.createElement('span')
+        // xLabel.className = 'x-label'
+        // xLabel.textContent = this.x[i]
+        // xLabel.style.marginTop = '15px'
+        // parentElement.appendChild(xLabel)
+        // xLabel.style.transform = 'rotate(180deg)'
       }
     },
     getColor (index) {
@@ -69,10 +68,12 @@ export default {
 </script>
 
 <style scoped>
+
 .rectangle {
   display: inline-block;
   max-width: 100px;
   margin: 15px;
+  transform: rotate(180deg);
 }
 
 .square {
