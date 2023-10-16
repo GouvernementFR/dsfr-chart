@@ -12,6 +12,9 @@ import GaugeChart from './components/GaugeChart'
 import TableChart from './components/TableChart'
 import RadarChart from './components/RadarChart'
 import WaffleChart from './components/WaffleChart'
+import AverageMobileChart from './components/AverageMobileChart'
+import MagicQuadrantChart from './components/MagicQuadrantChart'
+
 
 import '../node_modules/@gouvfr/dsfr/dist/dsfr.module.min.js'
 
@@ -37,3 +40,5 @@ Vue.customElement('gauge-chart', GaugeChart)
 Vue.customElement('table-chart', TableChart)
 Vue.customElement('radar-chart', RadarChart)
 Vue.customElement('waffle-chart', WaffleChart)
+Vue.customElement('average-mobile-chart', AverageMobileChart)
+Vue.customElement('magic-quadrant-chart', MagicQuadrantChart)
