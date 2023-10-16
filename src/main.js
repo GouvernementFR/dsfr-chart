@@ -12,6 +12,8 @@ import GaugeChart from './components/GaugeChart'
 import TableChart from './components/TableChart'
 import RadarChart from './components/RadarChart'
 import AverageMobileChart from './components/AverageMobileChart'
+import MagicQuadrantChart from './components/MagicQuadrantChart'
+
 
 
 import vueCustomElement from 'vue-custom-element'
@@ -32,3 +34,4 @@ Vue.customElement('gauge-chart', GaugeChart)
 Vue.customElement('table-chart', TableChart)
 Vue.customElement('radar-chart', RadarChart)
 Vue.customElement('average-mobile-chart', AverageMobileChart)
+Vue.customElement('magic-quadrant-chart', MagicQuadrantChart)
