@@ -330,31 +330,31 @@ export default {
                         const yMiddle = (yAxis.top + yAxis.bottom) / 2;
 
                         // Quadrant supérieur gauche
-                        ctx.fillStyle = 'rgba(255, 0, 0, 0.2)'; 
+                        ctx.fillStyle = 'rgba(255, 0, 0, 0.2)';
                         ctx.fillRect(xAxis.left, yAxis.top, xMiddle - xAxis.left, yMiddle - yAxis.top);
 
-                        ctx.fillStyle = 'black'; 
+                        ctx.fillStyle = 'black';
                         ctx.fillText('Challengers', xAxis.left + 10, yAxis.top + 10);
 
                         // Quadrant supérieur droit
                         ctx.fillStyle = 'rgba(0, 255, 0, 0.2)';
                         ctx.fillRect(xMiddle, yAxis.top, xAxis.right - xMiddle, yMiddle - yAxis.top);
 
-                        ctx.fillStyle = 'black'; 
+                        ctx.fillStyle = 'black';
                         ctx.fillText('Leaders', xMiddle + 10, yAxis.top + 10);
 
                         // Quadrant inférieur gauche
                         ctx.fillStyle = 'rgba(0, 0, 255, 0.2)';
                         ctx.fillRect(xAxis.left, yMiddle, xMiddle - xAxis.left, yAxis.bottom - yMiddle);
 
-                        ctx.fillStyle = 'black'; 
+                        ctx.fillStyle = 'black';
                         ctx.fillText('Niche Players', xAxis.left + 10, yMiddle + 10);
 
                         // Quadrant inférieur droit
                         ctx.fillStyle = 'rgba(255, 255, 0, 0.2)';
                         ctx.fillRect(xMiddle, yMiddle, xAxis.right - xMiddle, yAxis.bottom - yMiddle);
 
-                        ctx.fillStyle = 'black'; 
+                        ctx.fillStyle = 'black';
                         ctx.fillText('Visionaries', xMiddle + 10, yMiddle + 10);
                     }
                 }],
@@ -435,7 +435,7 @@ export default {
                         backgroundColor: '#6b6b6b',
 
                         callbacks: {
-                           
+
                             labelTextColor: function (tooltipItems) {
                                 const colors = []
                                 self.showLine.forEach(function (show, i) {
@@ -518,11 +518,11 @@ export default {
                 }
             })
         },
-     
+
         loadColors() {
         },
         changeColors(theme) {
-         }
+        }
     },
     created() {
         this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
