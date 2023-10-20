@@ -1,9 +1,10 @@
 <template>
-  <div class="container">
+  <div class="container" id = "container">
     <div v-for="(product, productIndex) in products" :key="productIndex" class="rectangle" :id="'div_' + product.name">
+      <span class="x-label">{{ product.name }}</span>
     </div>
     <div class="graph">
-      <div v-for="(value, index) in z" :key="index" class="graph-item">
+      <div v-for="(value, index) in this.zparse" :key="index" class="graph-item">
         <div :style="{ backgroundColor: getColor(index) }" class="graph-color"></div>
         <div class="graph-label">{{ value }}</div>
       </div>
@@ -15,28 +16,55 @@
 export default {
   data () {
     return {
-      x: ['Serie1', 'Serie2', 'Serie3', 'Serie4'],
-      y: [[2, 3, 4], [11, 34, 40], [5, 5, 15], [6, 9, 14]],
-      z: ['A', 'B', 'C'],
+      xparse: [],
+      yparse: [],
+      zparse: [],
       colors: ['#2f4077', '#447049', '#6e445a', '#FF33F6', '#F633FF']
     }
   },
+  props: {
+    x: {
+      type: String,
+      required: true
+    },
+    y: {
+      type: String,
+      required: true
+    },
+    z: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      default: undefined
+    },
+    color: {
+      type: String,
+      default: undefined
+    },
+  },
   computed: {
     products () {
-      return this.x.map((name, index) => ({
+      return this.xparse.map((name, index) => ({
         name,
-        quantity: this.y[index]
+        quantity: this.yparse[index]
       }))
     }
   },
   methods: {
+    resetData () {
+      this.xparse = []
+      this.yparse = []
+      this.zparse = []
+    },
     adddiv () {
-      for (let i = 0; i < this.x.length; i++) {
-        const parentElement = document.getElementById('div_' + this.x[i])
-        for (let j = 0; j < this.y[i].length; j++) {
-          for (let k = 0; k < this.y[i][j]; k++) {
+      for (let i = 0; i < this.xparse.length; i++) {
+        const parentElement = document.getElementById("div_" + this.xparse[i])
+        for (let j = 0; j < this.yparse[i].length; j++) {
+          for (let k = 0; k < this.yparse[i][j]; k++) {
             const div = document.createElement('div')
-            div.id = 'square_' + this.x[i] + '_' + j + '_' + k
+            div.id = 'square_' + this.xparse[i] + '_' + j + '_' + k
             div.className = 'square'
             div.style.backgroundColor = this.getColor(j)
             div.style.width = '15px'
@@ -51,7 +79,7 @@ export default {
         }
         // const xLabel = document.createElement('span')
         // xLabel.className = 'x-label'
-        // xLabel.textContent = this.x[i]
+        // xLabel.textContent = this.xparse[i]
         // xLabel.style.marginTop = '15px'
         // parentElement.appendChild(xLabel)
         // xLabel.style.transform = 'rotate(180deg)'
@@ -59,11 +87,21 @@ export default {
     },
     getColor (index) {
       return this.colors[index % this.colors.length]
+    },
+    getData () {
+      const self = this
+      this.xparse = JSON.parse(this.x)
+      this.yparse = JSON.parse(this.y)
+      this.zparse = JSON.parse(this.z)
     }
   },
+
   mounted () {
+    this.getData()
+    this.$nextTick(() => {
     this.adddiv()
-  }
+    })
+   }
 }
 </script>
 
@@ -73,6 +111,7 @@ export default {
   display: inline-block;
   max-width: 100px;
   margin: 15px;
+  direction: rtl;
   transform: rotate(180deg);
 }
 
@@ -117,6 +156,11 @@ export default {
 
 .graph-label {
   font-size: 16px;
+
+}
+
+.x-label{
+  transform: rotate(-180deg);
 }
 
 </style>
