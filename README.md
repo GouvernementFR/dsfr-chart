@@ -343,7 +343,7 @@ Les paramètres obligatoires sont :
 -----------------------------------------------------------------------------------------------
 # IX. Cartes (ou MapChart)
 
-Les MapChart sont accessibles à travers la balise : ``<map-chart>``.
+Lescartes (ou MapChart) sont accessibles à travers la balise : ``<map-chart>``.
 
 Les paramètres obligatoires sont :
 
@@ -357,12 +357,12 @@ Les paramètres obligatoires sont :
 <map-chart data = '{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,"12": 33, "13": 89, "14": 24, "15": 52, "16": 41, "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,"23": 37, "24": 65, "25": 88, "26": 48, "27": 61, "28": 80, "29": 12, "30": 6, "31": 5, "32": 22, "33": 40,"34": 19, "35": 13, "36": 32, "37": 0, "38": 82, "39": 13, "40": 78, "41": 92, "42": 10, "43": 22, "44": 70,"45": 85, "46": 58, "47": 72, "48": 61, "49": 27, "50": 47, "51": 41, "52": 44, "53": 29, "54": 22, "55": 4,"56": 57, "57": 94, "58": 46, "59": 33, "60": 0, "61": 15, "62": 60, "63": 71, "64": 0, "65": 91, "66": 51,"67": 56, "68": 19, "69": 44, "70": 92, "71": 96, "72": 51, "73": 32, "74": 19, "75": 96, "76": 91, "77": 21,"78": 48, "79": 72, "80": 52, "81": 48, "82": 57, "83": 38, "84": 23, "85": 46, "86": 37, "87": 64, "88": 78,"89": 100, "90": 85, "91": 87, "92": 46, "93": 89, "94": 18, "95": 72, "971": 48, "972": 28, "973": 35,"974": 70, "976": 38, "2A": 63, "2B": "16"}' valuenat = 10 name = "Nom de l'indicateur"></map-chart>
 ```
 
-#### 1.Découpage par département
+#### 1. Découpage par département
 <img src="./Pictures/MapChart_dep.png" alt="MapChart_dep" style="width:400px;" />
 
 ### Options MapChart:
 
-#### 2.Découpage par région
+#### 2. Découpage par région
 Les paramètres obligatoires sont :
 * **data :** Un dictionnaire qui pour chaque numéro de département associe la valeur de l’indicateur dans le département
 * **valuenat** : La valeur de l'indicateur à l'échelle natonale. Cette valeur sera affichée dans la sidebar.
@@ -377,7 +377,7 @@ Les paramètres obligatoires sont :
 <img src="./Pictures/MapChart_reg.png" alt="MapChart_reg" style="width:400px;" />
 
 
-#### 3.Région
+#### 3. Région
 
 Les MapChart par région sont accessibles à travers la balise : ``<map-chart-reg>``.
 
@@ -411,7 +411,7 @@ Les couleurs apparaîtront dans leur variante **sun** en thème claire et dans l
 -----------------------------------------------------------------------------------------------
 ### Exemples: 
 
-#### 1.Line-Chart avec option color = 'orange-terre-battue'
+#### 1. Line-Chart avec option color = 'orange-terre-battue'
 
 ```html
 <line-chart x = '[1, 2, 3]' y = '[10, 20, 30]' color = 'orange-terre-battue' name = 'Custom'></line-chart>
