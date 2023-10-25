@@ -396,7 +396,7 @@ Les paramètres obligatoires sont :
 
 -----------------------------------------------------------------------------------------------
 
-# X. Couleurs et noms
+# X. Couleurs
 
 Par défaut les noms des indicateurs sont : Série1, Série2, … et les couleurs associés sont #000091, #007c3a, #A558A0. Ils peuvent être modifiés à la convenance de l’utilisateur par les paramètres color et name.
 
@@ -452,7 +452,27 @@ Enfin dans le cas de **MapChart**, la modification du nom se fait également par
 ```
 <img src="./Pictures/MapChartColor.png" alt="MapChartColor" style="width:400px;" />
 
-# X. Options
+
+-----------------------------------------------------------------------------------------------
+# XI. Accessibilité
+
+### Tableaux
+
+Les résultats peuvent également être présenté sous la forme d'un tableau. Ceci permet dans certaines situations d'offrir une alternative à la visualisation des données et ainsi s'adapter au public concerné.
+
+Les paramètres obligatoires sont :
+
+* **x** : les noms de chaque groupe sous la forme d’une liste entre crochets
+
+* **y** : les valeurs de chaque groupe sous la forme d’une liste entre crochets
+
+<img src="./Pictures/Tableaux.png" alt="Tableaux" style="width:400px;" />
+
+
+-----------------------------------------------------------------------------------------------
+
+
+# XII. Options
 
 ### Barre verticale
 
