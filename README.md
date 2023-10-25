@@ -341,7 +341,7 @@ Les paramètres obligatoires sont :
 <img src="./Pictures/GaugeChart.png" alt="GaugeChart" style="width:400px;" />
 
 -----------------------------------------------------------------------------------------------
-# VIII. Cartes (ou MapChart)
+# IX. Cartes (ou MapChart)
 
 Les MapChart sont accessibles à travers la balise : ``<map-chart>``.
 
