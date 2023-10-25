@@ -97,7 +97,7 @@ Les paramètres obligatoires sont :
 
 **Exemple :** 
 
-1. Nuage de points simple
+### 1. Nuage de points simple
 
 ```html
 <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]'></scatter-chart>
@@ -113,7 +113,7 @@ On peut choisir de relier les points d'un ScatterChart avec l'option **showline*
 
 **Exemple** : 
 
-2. Nuage de points reliés
+### 2. Nuage de points reliés
 
 ```html
 <scatter-chart x='[[1, 5, 8], [1, 2, 15]]', y='[[30, 10, 20], [10, 20, 30]]' showline=true></scatter-chart>
@@ -136,7 +136,7 @@ Les paramètres obligatoires sont :
 
 **Exemple**:
 
-1. Graphique en ligne simple.
+### 1. Graphique en ligne simple.
 
 ```html
 <line-chart x = '[1, 2, 3]' y = '[10, 20, 30]'></line-chart>
@@ -145,7 +145,7 @@ Les paramètres obligatoires sont :
 ### Exemple
 <img src="./Pictures/LineChart.png" alt="LineChart" style="width:400px;" />
 
-2. Graphique en multilignes (ou LineChart multiples).
+### 2. Graphique en multilignes (ou LineChart multiples).
 
 Les graphiques en multilignes (ou LineChart multiples) sont accessibles à travers la balise : ``<multi-line-chart>``.
 
@@ -177,7 +177,7 @@ Les paramètres obligatoires sont :
 
 **Exemple :** 
 
-1. Barres verticales
+### 1. Barres verticales
 
 ```html
 <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3", "5"]]' y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]'></bar-chart>
@@ -187,7 +187,7 @@ Les paramètres obligatoires sont :
 
 #### Options BarChart
 
-2. Barres horizontales
+### 2. Barres horizontales
 
 * Pour tracer un **barchart horizontal**, il faut renseigner l’option **horizontal = true**
 
@@ -269,7 +269,7 @@ Les paramètres obligatoires sont :
 
   **Exemple :** 
 
-1. Diagramme circulaire plein
+### 1. Diagramme circulaire plein
 
   L’option **fill = True**, permet de remplir l’intérieur du graphique.
    
@@ -281,7 +281,7 @@ Les paramètres obligatoires sont :
 
 #### Options PieChart
 
-2. Diagramme circulaire creux (donut)
+### 2. Diagramme circulaire creux (donut)
 
   **Exemple** : 
 
@@ -343,7 +343,7 @@ Les paramètres obligatoires sont :
 -----------------------------------------------------------------------------------------------
 # IX. Cartes (ou MapChart)
 
-Lescartes (ou MapChart) sont accessibles à travers la balise : ``<map-chart>``.
+Les cartes (ou MapChart) sont accessibles à travers la balise : ``<map-chart>``.
 
 Les paramètres obligatoires sont :
 
@@ -379,7 +379,7 @@ Les paramètres obligatoires sont :
 
 #### 3. Région
 
-Les MapChart par région sont accessibles à travers la balise : ``<map-chart-reg>``.
+Les cartes (ou MapChart) par région sont accessibles à travers la balise : ``<map-chart-reg>``.
 
 Les paramètres obligatoires sont :
 * **data :** Un dictionnaire qui pour chaque numéro de département associe la valeur de l’indicateur dans le département
@@ -420,7 +420,7 @@ Les couleurs apparaîtront dans leur variante **sun** en thème claire et dans l
 <img src="./Pictures/LineChartColor.png" alt="LineChartColor" style="width:400px;" />
 
 -----------------------------------------------------------------------------------------------
-#### 2. Multiline-Chart et BarLine-Chart avec option color ( plusieurs couleurs)
+#### 2. Multiline-Chart et BarLine-Chart avec option color (plusieurs couleurs)
 
 Pour les graphiques avec plusieurs séries (barchart, piechart, multilinechart, scatterchart), **color** et **name** doivent être fournis sous la forme d'une liste entre crochets et non d'une simple chaîne de caractère 
 
