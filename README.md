@@ -12,10 +12,9 @@ L'installation de **DSFR Chart** peut se faire de manières différentes. En té
 
 ### Fichiers statiques
 
-Il est possible de télécharger l'ensemble de **DSFR Chart** au format zip ci-dessous. Le zip contient un ensemble de fichiers Javascript et CSS permettant l'utilisation des différents graphiques.
+Il est possible de télécharger l'ensemble du DSFR au format zip ci-dessous. Le zip contient un ensemble de fichiers CSS et Javascript permettant l'utilisation des différents graphiques.
 
-[Fichiers statiques](https://gouvfr.atlassian.net/wiki/spaces/DB/pages/223019574/D+veloppeurs#Fichiers-statiques)
-
+Vous trouverez sur la page [Release de Github](https://github.com/GouvernementFR/dsfr-chart/releases), toutes les sources des versions précédentes et la dernière en date.
 
 
 ### NPM

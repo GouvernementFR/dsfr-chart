@@ -30,7 +30,7 @@ import { isMobile } from 'mobile-device-detect'
 import { mixin } from '@/utils.js'
 
 export default {
-  name: 'MapChart',
+  name: 'MapChartReg',
   mixins: [mixin],
   components: {
     LeftCol,
