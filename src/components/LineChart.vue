@@ -1,38 +1,42 @@
 <template>
-  <div class="widget_container" :id="widgetId">
+  <div class="widget_container fr-grid-row" :id="widgetId">
     <div class="r_col fr-col-12">
-      <div class="chart ml-lg">
+      <div class="chart">
         <div class="linechart_tooltip">
           <div class="tooltip_header"></div>
           <div class="tooltip_body">
             <div class="tooltip_value">
-              <span class="tooltip_dot" v-bind:style="{'background-color': color}"></span>
+              <span class="tooltip_dot" v-bind:style="{'background-color': colorParse}"></span>
             </div>
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div class="flex fr-mt-3v" :style="{'margin-left': style}">
-          <span class="legende_dot" v-bind:style="{'background-color': color}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(name) }}</p>
+        <div class="flex fr-mt-1w fr-mb-0" :style="{'margin-left': isSmall ? '0px' : style}">
+          <span class="legende_dot" v-bind:style="{'background-color': colorParse}"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(name) }}</p>
         </div>
-        <div v-for="index in hlineNameParse.length" :key="index" class="flex fr-mt-3v" :style="{'margin-left': style}">
-          <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index - 1]}"></span>
-          <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index - 1]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(hlineNameParse[index - 1]) }}</p>
+        <div v-for="(item, index) in hlineNameParse" :key="item" class="flex fr-mt-1w fr-mb-0" :style="{'margin-left': isSmall ? '0px' : style}">
+          <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index]}"></span>
+          <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index]}"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(hlineNameParse[index]) }}</p>
         </div>
-        <div v-for="index in vlineParse.length" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
-          <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index - 1]}"></span>
-          <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index - 1]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(vlineNameParse[index - 1]) }}</p>
+        <div v-for="(item2, index2) in vlineParse" :key="item2" class="flex fr-mt-1w fr-mb-0" :style="{'margin-left': isSmall ? '0px' : style}">
+          <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index2]}"></span>
+          <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index2]}"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index2]) }}</p>
+        </div>
+        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': isSmall ? '0px' : style}">
+          <p class="fr-text--xs">Mise à jour : {{date}}</p>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import chroma from 'chroma-js'
+// import chroma from 'chroma-js'
 import { Chart } from 'chart.js'
 import { mixin } from '@/utils.js'
+
 export default {
   name: 'LineChart',
   mixins: [mixin],
@@ -40,6 +44,7 @@ export default {
     return {
       widgetId: '',
       chartId: '',
+      chart: undefined,
       legendLeftMargin: 0,
       display: '',
       datasets: [],
@@ -49,11 +54,17 @@ export default {
       yparse: [],
       vlineParse: [],
       vlineColorParse: [],
+      tmpVlineColorParse: [],
       vlineNameParse: [],
       hlineParse: [],
       hlineColorParse: [],
+      tmpHlineColorParse: [],
       hlineNameParse: [],
-      ymax: 0
+      ymax: 0,
+      colorParse: undefined,
+      colorPrecisionBar: '#161616',
+      colorHover: undefined,
+      isSmall: false
     }
   },
   props: {
@@ -71,7 +82,7 @@ export default {
     },
     color: {
       type: String,
-      default: '#000091'
+      default: 'green-bourgeon'
     },
     vline: {
       type: String,
@@ -96,6 +107,18 @@ export default {
     hlinename: {
       type: String,
       default: undefined
+    },
+    date: {
+      type: String,
+      default: undefined
+    },
+    aspectratio: {
+      type: Number,
+      default: 2
+    },
+    formatdate: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -104,6 +127,28 @@ export default {
     }
   },
   methods: {
+    resetData () {
+      this.chart.destroy()
+      this.legendLeftMargin = 0
+      this.display = ''
+      this.datasets = []
+      this.xAxisType = 'category'
+      this.labels = undefined
+      this.xparse = []
+      this.yparse = []
+      this.vlineParse = []
+      this.vlineColorParse = []
+      this.tmpVlineColorParse = []
+      this.vlineNameParse = []
+      this.hlineParse = []
+      this.hlineColorParse = []
+      this.tmpHlineColorParse = []
+      this.hlineNameParse = []
+      this.ymax = 0
+      this.colorParse = undefined
+      this.colorPrecisionBar = '#161616'
+      this.colorHover = undefined
+    },
     getData () {
       const self = this
       // Récupération des paramètres
@@ -115,23 +160,17 @@ export default {
         this.vlineParse = JSON.parse(this.vline)
         let tmpVlineNameParse = []
         if (this.vlinename !== undefined) {
-          tmpVlineNameParse = JSON.parse(self.vlinename)
+          tmpVlineNameParse = JSON.parse(this.vlinename)
         }
-        let tmpVlineColorParse = []
         if (this.vlinecolor !== undefined) {
-          tmpVlineColorParse = JSON.parse(self.vlinecolor)
+          this.tmpVlineColorParse = JSON.parse(this.vlinecolor)
         }
 
         for (let i = 0; i < this.vlineParse.length; i++) {
           if (tmpVlineNameParse[i] !== undefined) {
-            self.vlineNameParse.push(tmpVlineNameParse[i])
+            this.vlineNameParse.push(tmpVlineNameParse[i])
           } else {
-            self.vlineNameParse.push('V' + (i + 1))
-          }
-          if (tmpVlineColorParse[i] !== undefined) {
-            self.vlineColorParse.push(tmpVlineColorParse[i])
-          } else {
-            self.vlineColorParse.push('#161616')
+            this.vlineNameParse.push('V' + (i + 1))
           }
         }
       }
@@ -141,69 +180,66 @@ export default {
         this.hlineParse = JSON.parse(this.hline)
         let tmpHlineNameParse = []
         if (this.hlinename !== undefined) {
-          tmpHlineNameParse = JSON.parse(self.hlinename)
+          tmpHlineNameParse = JSON.parse(this.hlinename)
         }
-        let tmpHlineColorParse = []
         if (this.hlinecolor !== undefined) {
-          tmpHlineColorParse = JSON.parse(self.hlinecolor)
+          this.tmpHlineColorParse = JSON.parse(this.hlinecolor)
         }
 
         for (let i = 0; i < this.hlineParse.length; i++) {
           if (tmpHlineNameParse[i] !== undefined) {
-            self.hlineNameParse.push(tmpHlineNameParse[i])
+            this.hlineNameParse.push(tmpHlineNameParse[i])
           } else {
-            self.hlineNameParse.push('H' + (i + 1))
-          }
-          if (tmpHlineColorParse[i] !== undefined) {
-            self.hlineColorParse.push(tmpHlineColorParse[i])
-          } else {
-            self.hlineColorParse.push('#009081')
+            this.hlineNameParse.push('H' + (i + 1))
           }
         }
       }
 
-      const ctx = document.getElementById(self.chartId).getContext('2d')
-      let gradientFill
-      this.display === 'big' ? gradientFill = ctx.createLinearGradient(0, 0, 0, 500) : gradientFill = ctx.createLinearGradient(0, 0, 0, 250)
-      gradientFill.addColorStop(0, chroma(this.color).alpha(0.05).hex())
-
-      let data = []
+      this.loadColors()
+      let dataLine = []
       // Cas ou x est numérique
-      if (typeof self.xparse[0] === 'number') {
-        const xsort = self.xparse.map((a) => a).sort((a, b) => a - b)
+      if (typeof this.xparse[0] === 'number') {
+        const xsort = this.xparse.map((a) => a).sort((a, b) => a - b)
         xsort.forEach(function (k) {
           const index = self.xparse.findIndex((element) => element === k)
-          data.push({
+          dataLine.push({
             x: k,
             y: self.yparse[index]
           })
         })
-        self.labels = undefined
-        self.xAxisType = 'linear'
+        this.labels = undefined
+        this.xAxisType = 'linear'
       } else {
         // Cas ou x est non numérique
-        data = self.yparse
-        self.labels = self.xparse
-        self.xAxisType = 'category'
+        dataLine = this.yparse
+        this.labels = this.xparse
+        this.xAxisType = 'category'
       }
 
       // Set ymax
-      self.ymax = Math.max.apply(null, self.hlineParse)
+      this.ymax = Math.max.apply(null, this.hlineParse)
 
       // Tracer de la courbe
-      self.datasets = [{
-        data: data,
-        backgroundColor: gradientFill,
-        borderColor: self.color,
+      this.datasets = [{
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+        data: dataLine,
+        borderColor: this.colorParse,
         type: 'line',
         pointRadius: 8,
+        pointStyle: 'rect',
         pointBackgroundColor: 'rgba(0, 0, 0, 0)',
         pointBorderColor: 'rgba(0, 0, 0, 0)',
-        pointHoverBackgroundColor: self.color,
-        pointHoverRadius: 6
+        pointHoverBackgroundColor: this.colorHover,
+        pointHoverBorderColor: this.colorHover,
+        pointHoverRadius: 6,
+        borderWidth: 2
       }]
     },
     createChart () {
+      Chart.defaults.global.defaultFontFamily = 'Marianne'
+      Chart.defaults.global.defaultFontSize = 12
+      Chart.defaults.global.defaultLineHeight = 1.66
+
       this.getData()
       const self = this
       const ctx = document.getElementById(self.chartId).getContext('2d')
@@ -248,30 +284,75 @@ export default {
               })
             }
           }
+        },
+        {
+          afterDatasetDraw: function (chart, args, options) {
+            if (chart.tooltip._active !== undefined) {
+              if (chart.tooltip._active.length !== 0) {
+                const x = chart.tooltip._active[0]._model.x
+                const y = chart.tooltip._active[0]._model.y
+                const yAxis = chart.scales['y-axis-0']
+                const xAxis = chart.scales['x-axis-0']
+                const ctx = chart.ctx
+                ctx.save()
+                ctx.beginPath()
+                ctx.moveTo(x, yAxis.top)
+                ctx.lineTo(x, yAxis.bottom)
+                ctx.lineWidth = '1'
+                ctx.strokeStyle = self.colorPrecisionBar
+                ctx.setLineDash([10, 5])
+                ctx.stroke()
+                ctx.restore()
+
+                ctx.save()
+                ctx.beginPath()
+                ctx.moveTo(xAxis.left, y)
+                ctx.lineTo(xAxis.right, y)
+                ctx.lineWidth = '1'
+                ctx.strokeStyle = self.colorPrecisionBar
+                ctx.setLineDash([10, 5])
+                ctx.stroke()
+                ctx.restore()
+              }
+            }
+          }
         }],
         options: {
+          aspectRatio: this.aspectratio,
           animation: {
-            easing: 'easeInOutBack'
+            easing: 'easeInOutBack',
+            duration: 1000
           },
           scales: {
             xAxes: [{
               type: self.xAxisType,
               gridLines: {
-                color: 'rgba(0, 0, 0, 0)'
-              }// ,
-              // ticks: {
-              //   autoSkip: true,
-              //   maxTicksLimit: xTickLimit,
-              //   maxRotation: 0,
-              //   minRotation: 0
-              // }
+                zeroLineColor: '#DDDDDD',
+                drawOnChartArea: false,
+                color: '#DDDDDD',
+                lineWidth: 1
+              },
+              ticks: {
+                labelOffset: 10,
+                callback: function (value) {
+                  if (self.formatdate) {
+                    return value.toString().substring(5, 7) + '/' + value.toString().substring(0, 4)
+                  } else {
+                    return value
+                  }
+                }
+              }
             }],
             yAxes: [{
               gridLines: {
-                color: '#e5e5e5',
-                borderDash: [3]
+                drawTicks: false,
+                zeroLineColor: '#DDDDDD',
+                color: '#DDDDDD',
+                borderDash: [3],
+                lineWidth: 1
               },
               ticks: {
+                padding: 8,
                 suggestedMax: self.ymax,
                 autoSkip: true,
                 maxTicksLimit: 5,
@@ -303,7 +384,7 @@ export default {
             backgroundColor: '#6b6b6b',
             callbacks: {
               label: function (tooltipItems) {
-                return tooltipItems.value
+                return self.convertIntToHuman(tooltipItems.value)
               },
               title: function (tooltipItems) {
                 return tooltipItems[0].label
@@ -334,7 +415,8 @@ export default {
                 const divDate = self.$el.querySelector('.tooltip_header')
                 divDate.innerHTML = titleLines[0]
                 const divValue = self.$el.querySelector('.tooltip_value')
-                divValue.innerHTML = self.$el.querySelector('.tooltip_dot').outerHTML + ' ' + bodyLines[0]
+                const nodeName = self.$el.querySelector('.tooltip_dot').attributes[0].nodeName
+                divValue.innerHTML = '<span ' + nodeName + '= "" class="tooltip_dot" style = "background-color:' + self.colorParse + '"></span>' + ' ' + bodyLines + '<br>'
               }
               const {
                 offsetLeft: positionX,
@@ -365,15 +447,69 @@ export default {
           }
         }
       })
+    },
+    loadColors () {
+      this.colorParse = this.getHexaFromName(this.color)
+      this.colorHover = this.getHexaFromName(this.color, { hover: true })
+      this.vlineColorParse = []
+      for (let i = 0; i < this.vlineParse.length; i++) {
+        if (this.tmpVlineColorParse[i] !== undefined) {
+          this.vlineColorParse.push(this.getHexaFromName(this.tmpVlineColorParse[i]))
+        } else {
+          this.vlineColorParse.push(this.getHexaFromName('brown-cafe-creme'))
+        }
+      }
+
+      this.hlineColorParse = []
+      for (let i = 0; i < this.hlineParse.length; i++) {
+        if (this.tmpHlineColorParse[i] !== undefined) {
+          this.hlineColorParse.push(this.getHexaFromName(this.tmpHlineColorParse[i]))
+        } else {
+          this.hlineColorParse.push(this.getHexaFromName('beige-gris-galet'))
+        }
+      }
+    },
+    changeColors (theme) {
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
+      this.chart.options.scales.xAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
+      this.chart.options.scales.xAxes[0].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
+
+      this.chart.options.scales.yAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
+      this.chart.options.scales.yAxes[0].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
+
+      this.loadColors()
+      if (theme === 'light') {
+        this.colorPrecisionBar = '#161616'
+      } else {
+        this.colorPrecisionBar = '#FFFFFF'
+      }
+      this.chart.data.datasets[0].borderColor = this.colorParse
+      this.chart.data.datasets[0].pointHoverBackgroundColor = this.colorHover
+      this.chart.data.datasets[0].pointHoverBorderColor = this.colorHover
+      this.chart.update(0)
     }
   },
   created () {
-    this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
     this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
+    this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
   },
   mounted () {
-    document.getElementById(this.widgetId).offsetWidth > 486 ? this.display = 'big' : this.display = 'small'
+    const element = document.documentElement // Reference à l'element <html> du DOM
     this.createChart()
+    element.addEventListener('dsfr.theme', (e) => {
+      if (this.chartId !== '') {
+        this.changeColors(e.detail.theme)
+      }
+    })
+    addEventListener('resize', (event) => {
+      this.isSmall = document.documentElement.clientWidth < 767
+    })
+  },
+  beforeUpdate () {
+    this.resetData()
+    this.createChart()
+    const element = document.documentElement
+    this.changeColors(element.getAttribute('data-fr-theme'))
   }
 }
 </script>
@@ -387,41 +523,36 @@ export default {
       margin-left: 3rem;
     }
   }
-  @media (max-width: 62em) {
-    .chart .flex {
-      margin-left: 0 !important
-    }
-  }
   .r_col {
     align-self: center;
     .flex {
       display: flex;
       .legende_dot {
-        min-width: 1rem;
-        width: 1rem;
-        height: 1rem;
-        min-width: 1rem;
-        border-radius: 50%;
+        min-width: 0.8rem;
+        width: 0.8rem;
+        height: 0.8rem;
+        min-width: 0.8rem;
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-left: 0;
       }
       .legende_dash_line1{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
       }
       .legende_dash_line2{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
-        margin-left: 0.2rem;
+        margin-left: 0.1rem;
       }
     }
   }
@@ -435,8 +566,7 @@ export default {
     background-color: white;
     position: fixed;
     z-index: 999;
-    border-radius: 4px;
-    box-shadow: 0 8px 16px 0 rgba(22, 22, 22, 0.12), 0 8px 16px -16px rgba(22, 22, 22, 0.32);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 18, 0.16);
     text-align: left;
     pointer-events: none;
     font-size: 0.75rem;
@@ -458,10 +588,10 @@ export default {
         min-width: 0.7rem;
         width: 0.7rem;
         height: 0.7rem;
-        border-radius: 50%;
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-right: 0.25rem;
       }
       .tooltip_place {
         color: #242424;

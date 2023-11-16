@@ -1,40 +1,42 @@
 <template>
-  <div class="widget_container" :id="widgetId">
+  <div class="widget_container fr-grid-row" :id="widgetId">
     <div class="r_col fr-col-12">
-      <div class="chart ml-lg">
+      <div class="chart">
         <div class="linechart_tooltip">
           <div class="tooltip_header"></div>
           <div class="tooltip_body">
             <div class="tooltip_value">
-              <span class="tooltip_dot" v-bind:style="{'background-color': color}"></span>
+              <span class="tooltip_dot" v-bind:style="{'background-color': colorBarParse}"></span>
             </div>
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div class="flex fr-mt-3v" :style="{'margin-left': style}">
-          <span class="legende_dot" v-bind:style="{'background-color': colorbar}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(namebar) }}</p>
+        <div class="flex fr-mt-3v" :style="{'margin-left': isSmall ? '0px' : style}">
+          <span class="legende_dot" v-bind:style="{'background-color': colorBarParse}"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(namebar) }}</p>
         </div>
-        <div class="flex fr-mt-3v" :style="{'margin-left': style}">
-          <span class="legende_dot" v-bind:style="{'background-color': color}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(name) }}</p>
+        <div class="flex fr-mt-3v" :style="{'margin-left': isSmall ? '0px' : style}">
+          <span class="legende_dot" v-bind:style="{'background-color': colorParse}"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(name) }}</p>
         </div>
-        <div v-for="index in hlineNameParse.length" :key="index" class="flex fr-mt-3v" :style="{'margin-left': style}">
-          <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index - 1]}"></span>
-          <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index - 1]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(hlineNameParse[index - 1]) }}</p>
+        <div v-for="(item, index) in hlineNameParse" :key="item" class="flex fr-mt-3v" :style="{'margin-left': isSmall ? '0px' : style}">
+          <span class="legende_dash_line1" v-bind:style="{'background-color': hlineColorParse[index]}"></span>
+          <span class="legende_dash_line2" v-bind:style="{'background-color': hlineColorParse[index]}"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(hlineNameParse[index]) }}</p>
         </div>
-        <div v-for="index in vlineParse.length" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': style}">
-          <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index - 1]}"></span>
-          <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index - 1]}"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1v fr-mb-0">{{ capitalize(vlineNameParse[index - 1]) }}</p>
+        <div v-for="(item2, index2) in vlineParse" :key="item2" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': isSmall ? '0px' : style}">
+          <span class="legende_dash_line1" v-bind:style="{'background-color': vlineColorParse[index2]}"></span>
+          <span class="legende_dash_line2" v-bind:style="{'background-color': vlineColorParse[index2]}"></span>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index2]) }}</p>
+        </div>
+        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': isSmall ? '0px' : style}">
+          <p class="fr-text--xs">Mise à jour : {{date}}</p>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import chroma from 'chroma-js'
 import { Chart } from 'chart.js'
 import { mixin } from '@/utils.js'
 export default {
@@ -44,6 +46,7 @@ export default {
     return {
       widgetId: '',
       chartId: '',
+      chart: undefined,
       legendLeftMargin: 0,
       display: '',
       datasets: [],
@@ -54,11 +57,19 @@ export default {
       ybarparse: [],
       vlineParse: [],
       vlineColorParse: [],
+      tmpVlineColorParse: [],
       vlineNameParse: [],
       hlineParse: [],
       hlineColorParse: [],
+      tmpHlineColorParse: [],
       hlineNameParse: [],
-      ymax: 0
+      ymax: 0,
+      colorParse: undefined,
+      colorBarParse: undefined,
+      colorPrecisionBar: '#161616',
+      colorHover: undefined,
+      colorbarHover: undefined,
+      isSmall: false
     }
   },
   props: {
@@ -76,7 +87,7 @@ export default {
     },
     colorbar: {
       type: String,
-      default: '#000091'
+      default: 'green-bourgeon'
     },
     y: {
       type: String,
@@ -88,7 +99,7 @@ export default {
     },
     color: {
       type: String,
-      default: '#009081'
+      default: 'blue-ecume'
     },
     vline: {
       type: String,
@@ -113,6 +124,18 @@ export default {
     hlinename: {
       type: String,
       default: undefined
+    },
+    date: {
+      type: String,
+      default: undefined
+    },
+    aspectratio: {
+      type: Number,
+      default: 2
+    },
+    formatdate: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -121,6 +144,31 @@ export default {
     }
   },
   methods: {
+    resetData () {
+      this.chart.destroy()
+      this.legendLeftMargin = 0
+      this.display = ''
+      this.datasets = []
+      this.xAxisType = 'category'
+      this.labels = undefined
+      this.xparse = []
+      this.yparse = []
+      this.ybarparse = []
+      this.vlineParse = []
+      this.vlineColorParse = []
+      this.tmpVlineColorParse = []
+      this.vlineNameParse = []
+      this.hlineParse = []
+      this.hlineColorParse = []
+      this.tmpHlineColorParse = []
+      this.hlineNameParse = []
+      this.ymax = 0
+      this.colorParse = undefined
+      this.colorBarParse = undefined
+      this.colorPrecisionBar = '#161616'
+      this.colorHover = undefined
+      this.colorbarHover = undefined
+    },
     getData () {
       const self = this
       // Récupération des paramètres
@@ -135,9 +183,8 @@ export default {
         if (this.vlinename !== undefined) {
           tmpVlineNameParse = JSON.parse(self.vlinename)
         }
-        let tmpVlineColorParse = []
         if (this.vlinecolor !== undefined) {
-          tmpVlineColorParse = JSON.parse(self.vlinecolor)
+          this.tmpVlineColorParse = JSON.parse(self.vlinecolor)
         }
 
         for (let i = 0; i < this.vlineParse.length; i++) {
@@ -145,11 +192,6 @@ export default {
             self.vlineNameParse.push(tmpVlineNameParse[i])
           } else {
             self.vlineNameParse.push('V' + (i + 1))
-          }
-          if (tmpVlineColorParse[i] !== undefined) {
-            self.vlineColorParse.push(tmpVlineColorParse[i])
-          } else {
-            self.vlineColorParse.push('#161616')
           }
         }
       }
@@ -161,9 +203,8 @@ export default {
         if (this.hlinename !== undefined) {
           tmpHlineNameParse = JSON.parse(self.hlinename)
         }
-        let tmpHlineColorParse = []
         if (this.hlinecolor !== undefined) {
-          tmpHlineColorParse = JSON.parse(self.hlinecolor)
+          this.tmpHlineColorParse = JSON.parse(self.hlinecolor)
         }
 
         for (let i = 0; i < this.hlineParse.length; i++) {
@@ -172,34 +213,31 @@ export default {
           } else {
             self.hlineNameParse.push('H' + (i + 1))
           }
-          if (tmpHlineColorParse[i] !== undefined) {
-            self.hlineColorParse.push(tmpHlineColorParse[i])
-          } else {
-            self.hlineColorParse.push('#009081')
-          }
         }
       }
 
-      const ctx = document.getElementById(self.chartId).getContext('2d')
-      let gradientFill
-      this.display === 'big' ? gradientFill = ctx.createLinearGradient(0, 0, 0, 500) : gradientFill = ctx.createLinearGradient(0, 0, 0, 250)
-      gradientFill.addColorStop(0, chroma(this.color).alpha(0.05).hex())
-
-      let data = []
+      // const borderColor = this.getHexaFromName(this.color)
+      // const backgroundColor = this.getHexaFromName(this.colorbar)
+      // const ctx = document.getElementById(self.chartId).getContext('2d')
+      // let gradientFill
+      // this.display === 'big' ? gradientFill = ctx.createLinearGradient(0, 0, 0, 500) : gradientFill = ctx.createLinearGradient(0, 0, 0, 250)
+      // gradientFill.addColorStop(0, chroma(borderColor).alpha(0.05).hex())
+      this.loadColors()
+      let dataLine = []
       let dataBar = []
       // Cas ou x est numérique
       if (typeof self.xparse[0] === 'number') {
         const xsort = self.xparse.map((a) => a).sort((a, b) => a - b)
         xsort.forEach(function (k) {
           const index = self.xparse.findIndex((element) => element === k)
-          data.push(self.yparse[index])
+          dataLine.push(self.yparse[index])
           dataBar.push(self.ybarparse[index])
         })
         self.labels = xsort
         self.xAxisType = 'category'
       } else {
         // Cas ou x est non numérique
-        data = self.yparse
+        dataLine = self.yparse
         dataBar = self.ybarparse
         self.labels = self.xparse
         self.xAxisType = 'category'
@@ -212,28 +250,37 @@ export default {
       self.datasets = [
         {
           data: dataBar,
-          backgroundColor: self.colorbar,
-          borderColor: self.colorbar,
+          backgroundColor: this.colorBarParse,
+          borderColor: this.colorBarParse,
+          hoverBorderColor: self.colorbarHover,
+          hoverBackgroundColor: self.colorbarHover,
+          barThickness: 32,
           type: 'bar',
           barPercentage: 0.5,
           yAxisID: 'yAxisL',
           order: 2
         },
         {
-          data: data,
-          backgroundColor: gradientFill,
-          borderColor: self.color,
+          data: dataLine,
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          borderColor: this.colorParse,
           type: 'line',
           pointRadius: 8,
+          pointStyle: 'rect',
           pointBackgroundColor: 'rgba(0, 0, 0, 0)',
           pointBorderColor: 'rgba(0, 0, 0, 0)',
-          pointHoverBackgroundColor: self.color,
+          pointHoverBackgroundColor: self.colorHover,
+          pointHoverBorderColor: self.colorHover,
           pointHoverRadius: 6,
           yAxisID: 'yAxisR',
           order: 1
         }]
     },
     createChart () {
+      Chart.defaults.global.defaultFontFamily = 'Marianne'
+      Chart.defaults.global.defaultFontSize = 12
+      Chart.defaults.global.defaultLineHeight = 1.66
+
       this.getData()
       const self = this
       const ctx = document.getElementById(self.chartId).getContext('2d')
@@ -278,33 +325,92 @@ export default {
               })
             }
           }
+        },
+        {
+          afterDraw: function (chart, args, options) {
+            if (chart.tooltip._active !== undefined) {
+              if (chart.tooltip._active.length !== 0) {
+                const x = chart.tooltip._active[0]._model.x
+                const index = chart.tooltip._active[0]._index
+                const yAxisR = chart.scales.yAxisR
+                const yAxisL = chart.scales.yAxisL
+                const xAxis = chart.scales['x-axis-0']
+
+                const y = yAxisR.getPixelForValue(self.yparse[index])
+                const ybar = yAxisL.getPixelForValue(self.ybarparse[index])
+
+                const ctx = chart.ctx
+                ctx.save()
+                ctx.beginPath()
+                ctx.moveTo(x, yAxisL.top)
+                ctx.lineTo(x, yAxisL.bottom)
+                ctx.lineWidth = '1'
+                ctx.strokeStyle = self.colorPrecisionBar
+                ctx.setLineDash([10, 5])
+                ctx.stroke()
+                ctx.restore()
+
+                ctx.save()
+                ctx.beginPath()
+                ctx.moveTo(x, y)
+                ctx.lineTo(xAxis.right, y)
+                ctx.lineWidth = '1'
+                ctx.strokeStyle = self.colorPrecisionBar
+                ctx.setLineDash([10, 5])
+                ctx.stroke()
+                ctx.restore()
+
+                ctx.save()
+                ctx.beginPath()
+                ctx.moveTo(xAxis.left, ybar)
+                ctx.lineTo(x, ybar)
+                ctx.lineWidth = '1'
+                ctx.strokeStyle = self.colorPrecisionBar
+                ctx.setLineDash([10, 5])
+                ctx.stroke()
+                ctx.restore()
+              }
+            }
+          }
         }],
         options: {
+          aspectRatio: this.aspectratio,
           animation: {
-            easing: 'easeInOutBack'
+            easing: 'easeInOutBack',
+            duration: 1000
           },
           scales: {
             xAxes: [{
               offset: true,
               type: self.xAxisType,
               gridLines: {
-                color: 'rgba(0, 0, 0, 0)'
-              }// ,
-              // ticks: {
-              //   autoSkip: true,
-              //   maxTicksLimit: xTickLimit,
-              //   maxRotation: 0,
-              //   minRotation: 0
-              // }
+                zeroLineColor: '#DDDDDD',
+                drawOnChartArea: false,
+                color: '#DDDDDD',
+                lineWidth: 1
+              },
+              ticks: {
+                callback: function (value) {
+                  if (self.formatdate) {
+                    return value.toString().substring(5, 7) + '/' + value.toString().substring(0, 4)
+                  } else {
+                    return value
+                  }
+                }
+              }
             }],
             yAxes: [{
               position: 'left',
               id: 'yAxisL',
               gridLines: {
-                color: '#e5e5e5',
-                borderDash: [3]
+                drawTicks: false,
+                zeroLineColor: '#DDDDDD',
+                color: '#DDDDDD',
+                borderDash: [3],
+                lineWidth: 1
               },
               ticks: {
+                padding: 8,
                 suggestedMin: 0,
                 suggestedMax: self.ymax,
                 maxTicksLimit: 5,
@@ -327,10 +433,14 @@ export default {
               position: 'right',
               id: 'yAxisR',
               gridLines: {
-                color: '#e5e5e5',
-                borderDash: [3]
+                drawTicks: false,
+                zeroLineColor: '#DDDDDD',
+                color: '#DDDDDD',
+                borderDash: [3],
+                lineWidth: 1
               },
               ticks: {
+                padding: 8,
                 maxTicksLimit: 5,
                 suggestedMin: 0,
                 callback: function (value, index, values) {
@@ -398,7 +508,7 @@ export default {
                 const divDate = self.$el.querySelector('.tooltip_header')
                 divDate.innerHTML = titleLines[0]
 
-                const color = [self.colorbar, self.color]
+                const color = [self.colorBarParse, self.colorParse]
                 const divValue = self.$el.querySelector('.tooltip_value')
 
                 const nodeName = self.$el.querySelector('.tooltip_dot').attributes[0].nodeName
@@ -439,6 +549,58 @@ export default {
           }
         }
       })
+    },
+    loadColors () {
+      this.colorParse = this.getHexaFromName(this.color)
+      this.colorBarParse = this.getHexaFromName(this.colorbar)
+      this.colorHover = this.getHexaFromName(this.color, { hover: true })
+      this.colorbarHover = this.getHexaFromName(this.colorbar, { hover: true })
+
+      this.vlineColorParse = []
+      for (let i = 0; i < this.vlineParse.length; i++) {
+        if (this.tmpVlineColorParse[i] !== undefined) {
+          this.vlineColorParse.push(this.getHexaFromName(this.tmpVlineColorParse[i]))
+        } else {
+          this.vlineColorParse.push(this.getHexaFromName('brown-cafe-creme'))
+        }
+      }
+
+      this.hlineColorParse = []
+      for (let i = 0; i < this.hlineParse.length; i++) {
+        if (this.tmpHlineColorParse[i] !== undefined) {
+          this.hlineColorParse.push(this.getHexaFromName(this.tmpHlineColorParse[i]))
+        } else {
+          this.hlineColorParse.push(this.getHexaFromName('beige-gris-galet'))
+        }
+      }
+    },
+    changeColors (theme) {
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
+      this.chart.options.scales.xAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
+      this.chart.options.scales.xAxes[0].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
+
+      this.chart.options.scales.yAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
+      this.chart.options.scales.yAxes[0].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
+
+      this.chart.options.scales.yAxes[1].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
+      this.chart.options.scales.yAxes[1].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
+
+      this.loadColors()
+      if (theme === 'light') {
+        this.colorPrecisionBar = '#161616'
+      } else {
+        this.colorPrecisionBar = '#FFFFFF'
+      }
+      this.chart.data.datasets[0].backgroundColor = this.colorBarParse
+      this.chart.data.datasets[0].borderColor = this.colorBarParse
+      this.chart.data.datasets[1].borderColor = this.colorParse
+
+      this.chart.data.datasets[0].hoverBackgroundColor = this.colorbarHover
+      this.chart.data.datasets[0].hoverBorderColor = this.colorbarHover
+      this.chart.data.datasets[1].pointHoverBackgroundColor = this.colorHover
+      this.chart.data.datasets[1].pointHoverBorderColor = this.colorHover
+
+      this.chart.update(0)
     }
   },
   created () {
@@ -448,6 +610,19 @@ export default {
   mounted () {
     document.getElementById(this.widgetId).offsetWidth > 486 ? this.display = 'big' : this.display = 'small'
     this.createChart()
+    const element = document.documentElement // Reference à l'element <html> du DOM
+    element.addEventListener('dsfr.theme', (e) => {
+      this.changeColors(e.detail.theme)
+    })
+    addEventListener('resize', (event) => {
+      this.isSmall = document.documentElement.clientWidth < 767
+    })
+  },
+  beforeUpdate () {
+    this.resetData()
+    this.createChart()
+    const element = document.documentElement
+    this.changeColors(element.getAttribute('data-fr-theme'))
   }
 }
 </script>
@@ -461,41 +636,36 @@ export default {
       margin-left: 3rem;
     }
   }
-  @media (max-width: 62em) {
-    .chart .flex {
-      margin-left: 0 !important
-    }
-  }
   .r_col {
     align-self: center;
     .flex {
       display: flex;
       .legende_dot {
-        min-width: 1rem;
-        width: 1rem;
-        height: 1rem;
-        min-width: 1rem;
-        border-radius: 50%;
+        min-width: 0.8rem;
+        width: 0.8rem;
+        height: 0.8rem;
+        min-width: 0.8rem;
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-left: 0;
       }
       .legende_dash_line1{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
       }
       .legende_dash_line2{
-        min-width: 0.4rem;
-        width: 0.4rem;
+        min-width: 0.35rem;
+        width: 0.35rem;
         height: 0.2rem;
         border-radius: 0%;
         display: inline-block;
         margin-top: 0.6rem;
-        margin-left: 0.2rem;
+        margin-left: 0.1rem;
       }
     }
   }
@@ -509,8 +679,7 @@ export default {
     background-color: white;
     position: fixed;
     z-index: 999;
-    border-radius: 4px;
-    box-shadow: 0 8px 16px 0 rgba(22, 22, 22, 0.12), 0 8px 16px -16px rgba(22, 22, 22, 0.32);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 18, 0.16);
     text-align: left;
     pointer-events: none;
     font-size: 0.75rem;
@@ -532,10 +701,10 @@ export default {
         min-width: 0.7rem;
         width: 0.7rem;
         height: 0.7rem;
-        border-radius: 50%;
         background-color: #000091;
         display: inline-block;
         margin-top: 0.25rem;
+        margin-right: 0.25rem;
       }
       .tooltip_place {
         color: #242424;

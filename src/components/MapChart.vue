@@ -3,36 +3,45 @@
   <div class="widget_container fr-grid-row" :id="widgetId">
     <LeftCol :props="leftColProps"></LeftCol>
     <div class="r_col fr-col-12 fr-col-lg-9">
+      <button class="fr-btn fr-btn--sm fr-icon-arrow-go-back-fill fr-btn--icon-left fr-btn--tertiary-no-outline fr-ml-4w" @click="resetGeoFilters" v-if="zoomDep !== undefined" >
+        Retour
+      </button>
       <div class="map m-lg">
-          <div ref="mapTooltip" class="map_tooltip" :style="{top:tooltip.top,left:tooltip.left,display:tooltip.display,visibility:tooltip.visibility}">
+          <div ref="mapTooltip" class="map_tooltip" :style="{top:tooltip.top,left:tooltip.left,visibility:tooltip.visibility}">
           <div class="tooltip_header">{{tooltip.place}}</div>
           <div class="tooltip_body">
             <div class="tooltip_value">{{convertStringToLocaleNumber(tooltip.value)}}</div>
           </div>
         </div>
-        <div class="france_container no_select" :style="{display:displayFrance}">
+        <div class="france_container no_select" :style="{display:displayFrance}" v-if="isDep">
           <france :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></france>
+        </div>
+        <div class="france_container no_select" :style="{display:displayFrance}" v-if="isReg">
+          <france-reg :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></france-reg>
+        </div>
+        <div class="france_container no_select" :style="{display:displayFrance}" v-if="isAcad">
+          <france-acad :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></france-acad>
         </div>
         <div class="om_container fr-grid-row no_select">
           <div class="om fr-col-4 fr-col-sm" :style="{display:displayGuadeloupe}">
-            <span class="fr-text--xs fr-my-1w">Guadeloupe</span>
-            <guadeloupe :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guadeloupe>
+            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Guadeloupe</span>
+            <guadeloupe :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guadeloupe>
           </div>
-          <div class="om fr-col-4 fr-col-sm" :style="{display:displayMartinique}">
-            <span class="fr-text--xs fr-my-1w">Martinique</span>
-            <martinique :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></martinique>
+          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{display:displayMartinique}">
+            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Martinique</span>
+            <martinique :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></martinique>
           </div>
-          <div class="om fr-col-4 fr-col-sm" :style="{display:displayGuyanne}">
-            <span class="fr-text--xs fr-my-1w">Guyane</span>
-            <guyane :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guyane>
+          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{display:displayGuyanne}">
+            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Guyane</span>
+            <guyane :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guyane>
           </div>
-          <div class="om fr-col-4 fr-col-sm" :style="{display:displayReunion}">
-            <span class="fr-text--xs fr-my-1w">La Réunion</span>
-            <reunion :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></reunion>
+          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{display:displayReunion}">
+            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">La Réunion</span>
+            <reunion :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></reunion>
           </div>
-          <div class="om fr-col-4 fr-col-sm" :style="{display:displayMayotte}">
-            <span class="fr-text--xs fr-my-1w">Mayotte</span>
-            <mayotte :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></mayotte>
+          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{display:displayMayotte}">
+            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Mayotte</span>
+            <mayotte :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></mayotte>
           </div>
         </div>
       </div>
@@ -41,6 +50,7 @@
 </template>
 
 <script>
+import chroma from 'chroma-js'
 import LeftCol from '@/components/LeftCol'
 import maps from '@/components/maps'
 import * as d3 from 'd3-scale'
@@ -62,7 +72,13 @@ export default {
       chartId: '',
       scaleMin: 0,
       scaleMax: 0,
+      colLeft: '',
+      colRight: '',
+      isDep: true,
+      isReg: false,
+      isAcad: false,
       zoomDep: undefined,
+      prefixClass: 'FR-',
       leftColProps: {
         localisation: '',
         names: [],
@@ -70,16 +86,22 @@ export default {
         max: 0,
         colMin: '',
         colMax: '',
-        value: 0
+        value: 0,
+        valueNat: 0,
+        levelNat: false,
+        locaParent: 'en France',
+        date: '',
+        textMention: '',
+        borderDefault: ''
       },
       FranceProps: {
         viewBox: '0 0 262 262',
-        displayDep: {}
+        displayDep: {},
+        colorStroke: '#FFFFFF'
       },
       tooltip: {
         top: '0px',
         left: '0px',
-        display: 'none',
         visibility: 'hidden',
         value: 0,
         place: ''
@@ -89,7 +111,9 @@ export default {
       displayMartinique: '',
       displayMayotte: '',
       displayReunion: '',
-      displayGuyanne: ''
+      displayGuyanne: '',
+      colorStrokeDOM: '#FFFFFF',
+      textMention: ''
     }
   },
   props: {
@@ -97,21 +121,30 @@ export default {
       type: String,
       required: true
     },
+    valuenat: {
+      type: Number,
+      default: undefined
+    },
+    date: {
+      type: String,
+      default: undefined
+    },
+    level: {
+      type: String,
+      default: 'dep'
+    },
     name: {
       type: String,
       default: 'Data'
     },
-    colmin: {
+    color: {
       type: String,
-      default: '#ffc700'
-    },
-    colmax: {
-      type: String,
-      default: '#715845'
+      default: 'green-bourgeon'
     }
   },
   methods: {
     createChart () {
+      this.leftColProps.date = this.date
       const parentWidget = document.getElementById(this.widgetId)
       const self = this
 
@@ -122,9 +155,16 @@ export default {
       // Fill Map
       let listDep = []
       self.FranceProps.displayDep = {}
+
       if (this.zoomDep !== undefined) {
-        const a = this.getDep(this.zoomDep).region_value
-        listDep = this.getDepsFromReg(a)
+        if (this.level === 'dep') {
+          const a = this.getDep(this.zoomDep).region_value
+          listDep = this.getDepsFromReg(a)
+        } else if (this.level === 'reg') {
+          listDep = this.getAllReg()
+        } else {
+          listDep = [this.getAcad(this.zoomDep).value]
+        }
         listDep.forEach(function (key, j) {
           values.push(self.dataParse[key])
         })
@@ -136,75 +176,94 @@ export default {
 
       this.scaleMin = Math.min.apply(null, values)
       this.scaleMax = Math.max.apply(null, values)
-      const x = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colmin, this.colmax])
+      const x = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colLeft, this.colRight])
 
       let xmin = []
       let xmax = []
       let ymin = []
       let ymax = []
+
       for (const key in self.dataParse) {
-        const elCol = parentWidget.getElementsByClassName('FR-' + key)
+        const className = this.getClassMap(key, this.level)
+        const elCol = parentWidget.getElementsByClassName(className)
         if (self.zoomDep === undefined) {
           elCol.length !== 0 && elCol[0].setAttribute('fill', x(self.dataParse[key]))
-          self.FranceProps.displayDep['FR-' + key] = ''
+          self.FranceProps.displayDep[className] = ''
         } else {
-          const polygon = document.querySelector('.FR-' + key).getBBox()
+          const polygon = document.querySelector('.' + className).getBBox()
           if (self.zoomDep === key) {
             elCol.length !== 0 && elCol[0].setAttribute('fill', x(self.dataParse[key]))
-            self.FranceProps.displayDep['FR-' + key] = ''
+            self.FranceProps.displayDep[className] = ''
             xmin.push(polygon.x)
             ymin.push(polygon.y)
             xmax.push(polygon.x + polygon.width)
             ymax.push(polygon.y + polygon.height)
           } else if (listDep.includes(key)) {
-            elCol.length !== 0 && elCol[0].setAttribute('fill', 'rgba(247, 237, 211, 0.72)')
-            self.FranceProps.displayDep['FR-' + key] = ''
+            elCol.length !== 0 && elCol[0].setAttribute('fill', chroma(self.colLeft).alpha(0.72).hex())
+            self.FranceProps.displayDep[className] = ''
             xmin.push(polygon.x)
             ymin.push(polygon.y)
             xmax.push(polygon.x + polygon.width)
             ymax.push(polygon.y + polygon.height)
           } else {
             elCol.length !== 0 && elCol[0].setAttribute('fill', 'rgba(255, 255, 255, 0)')
-            self.FranceProps.displayDep['FR-' + key] = 'none'
+            self.FranceProps.displayDep[className] = 'none'
           }
         }
       }
 
       if (this.zoomDep !== undefined) {
-        this.leftColProps.localisation = this.getDep(this.zoomDep).label
-        this.leftColProps.value = this.dataParse[this.zoomDep]
-        xmin = Math.min.apply(null, xmin)
-        ymin = Math.min.apply(null, ymin)
-        xmax = Math.max.apply(null, xmax)
-        ymax = Math.max.apply(null, ymax)
-        const width = xmax - xmin
-        const height = ymax - ymin
-        const size = Math.max(width, height)
-        this.FranceProps.viewBox = xmin + ' ' + ymin + ' ' + size + ' ' + size
-
-        this.displayFrance = 'none'
-        this.displayGuadeloupe = 'none'
-        this.displayMartinique = 'none'
-        this.displayMayotte = 'none'
-        this.displayReunion = 'none'
-        this.displayGuyanne = 'none'
-        if (self.zoomDep === '971') {
-          this.displayGuadeloupe = ''
-        } else if (self.zoomDep === '972') {
-          this.displayMartinique = ''
-        } else if (self.zoomDep === '973') {
-          this.displayGuyanne = ''
-        } else if (self.zoomDep === '974') {
-          this.displayReunion = ''
-        } else if (self.zoomDep === '976') {
-          this.displayMayotte = ''
+        if (this.level === 'dep') {
+          this.leftColProps.localisation = this.getDep(this.zoomDep).label
+          xmin = Math.min.apply(null, xmin)
+          ymin = Math.min.apply(null, ymin)
+          xmax = Math.max.apply(null, xmax)
+          ymax = Math.max.apply(null, ymax)
+          const width = xmax - xmin
+          const height = ymax - ymin
+          const size = Math.max(width, height)
+          this.FranceProps.viewBox = xmin + ' ' + ymin + ' ' + size + ' ' + size
+        } else if (this.level === 'reg') {
+          this.leftColProps.localisation = this.getReg(this.zoomDep).label
         } else {
-          this.displayFrance = ''
+          this.leftColProps.localisation = this.getAcad(this.zoomDep).label
+        }
+        this.leftColProps.value = this.dataParse[this.zoomDep]
+        this.leftColProps.levelNat = (this.valuenat !== undefined)
+        this.leftColProps.valueNat = this.valuenat
+
+        if (this.level === 'dep') {
+          this.displayFrance = 'none'
+          this.displayGuadeloupe = 'none'
+          this.displayMartinique = 'none'
+          this.displayMayotte = 'none'
+          this.displayReunion = 'none'
+          this.displayGuyanne = 'none'
+          if ((self.zoomDep === '971' && self.level === 'dep') || (self.zoomDep === '01' && self.level === 'reg')) {
+            this.displayGuadeloupe = ''
+          } else if ((self.zoomDep === '972' && self.level === 'dep') || (self.zoomDep === '02' && self.level === 'reg')) {
+            this.displayMartinique = ''
+          } else if ((self.zoomDep === '973' && self.level === 'dep') || (self.zoomDep === '03' && self.level === 'reg')) {
+            this.displayGuyanne = ''
+          } else if ((self.zoomDep === '974' && self.level === 'dep') || (self.zoomDep === '04' && self.level === 'reg')) {
+            this.displayReunion = ''
+          } else if ((self.zoomDep === '976' && self.level === 'dep') || (self.zoomDep === '06' && self.level === 'reg')) {
+            this.displayMayotte = ''
+          } else {
+            this.displayFrance = ''
+          }
         }
       } else {
         this.leftColProps.localisation = 'France'
-        this.leftColProps.value = '3'
-        this.FranceProps.viewBox = '0 0 262 262'
+        this.leftColProps.value = this.valuenat
+        this.leftColProps.levelNat = false
+        if (this.level === 'dep') {
+          this.FranceProps.viewBox = '0 0 262 262'
+        } else if (this.level === 'reg') {
+          this.FranceProps.viewBox = '0 0 800 800'
+        } else {
+          this.FranceProps.viewBox = '0 0 700 700'
+        }
         this.displayFrance = ''
         this.displayGuadeloupe = ''
         this.displayMartinique = ''
@@ -214,37 +273,79 @@ export default {
       }
 
       // Fill leftCol
-      this.leftColProps.names = [this.name]
+      this.leftColProps.names = this.name
       this.leftColProps.min = this.scaleMin
       this.leftColProps.max = this.scaleMax
-      this.leftColProps.colMin = this.colmin
-      this.leftColProps.colMax = this.colmax
+      this.leftColProps.colMin = this.colLeft
+      this.leftColProps.colMax = this.colRight
     },
     displayTooltip (e) {
       if (isMobile) return
-      const hoverdep = e.target.className.baseVal.replace(/FR-/g, '')
+      const parentWidget = document.getElementById(this.widgetId)
+      let hoverdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
 
-      this.tooltip.value = this.dataParse[hoverdep]
-      this.tooltip.place = this.getDep(hoverdep).label
-
-      this.tooltip.display = 'block'
-      const containerRect = e.target.getBoundingClientRect()
-      let tooltipX = (containerRect.left + containerRect.right) / 2 - 165 / 2
-      let tooltipY = containerRect.top - 70
-      if ((tooltipX + 165 / 2) > window.innerWidth) {
-        tooltipX = containerRect.right - 165
+      let className
+      if (hoverdep.includes('DOM')) {
+        hoverdep = hoverdep.replace(/DOM/g, '')
+        className = 'FR-DOM-' + hoverdep
+        if (this.level === 'reg') {
+          hoverdep = this.getDep(hoverdep).region_value
+        }
+      } else {
+        className = this.getClassMap(hoverdep, this.level)
       }
-      if (tooltipY + 70 > window.innerHeight) {
+
+      const elCol = parentWidget.getElementsByClassName(className)
+      elCol[0].style.opacity = '0.72'
+      this.tooltip.value = this.dataParse[hoverdep]
+      if (this.level === 'dep') {
+        this.tooltip.place = this.getDep(hoverdep).label
+      } else if (this.level === 'reg') {
+        this.tooltip.place = this.getReg(hoverdep).label
+      } else {
+        this.tooltip.place = this.getAcad(hoverdep).label
+      }
+
+      const elem = parentWidget.getElementsByClassName('map_tooltip')[0]
+      const tooltipRect = elem.getBoundingClientRect()
+      const tooltipWidth = tooltipRect.width
+      const tooltipHeight = tooltipRect.height
+
+      const containerRect = e.target.getBoundingClientRect()
+      let tooltipX = containerRect.left + ((containerRect.width - tooltipWidth) / 2)
+      let tooltipY = containerRect.top - tooltipHeight
+
+      const limitsRect = parentWidget.getBoundingClientRect()
+      if (tooltipY < limitsRect.top) {
         tooltipY = containerRect.bottom
       }
+      if (tooltipX + tooltipWidth > limitsRect.right) {
+        tooltipX = containerRect.right - tooltipWidth - 10
+        tooltipY = containerRect.top - tooltipHeight / 2
+      }
+
       this.tooltip.top = tooltipY + 'px'
       this.tooltip.left = tooltipX + 'px'
       this.tooltip.visibility = 'visible'
     },
-    hideTooltip () {
+    hideTooltip (e) {
       if (isMobile) return
       this.tooltip.visibility = 'hidden'
-      this.tooltip.display = 'none'
+      const parentWidget = document.getElementById(this.widgetId)
+      let hoverdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
+      let className
+      if (hoverdep.includes('DOM')) {
+        hoverdep = hoverdep.replace(/DOM/g, '')
+        className = 'FR-DOM-' + hoverdep
+        if (this.level === 'reg') {
+          hoverdep = this.getDep(hoverdep).region_value
+        }
+      } else {
+        className = this.getClassMap(hoverdep, this.level)
+      }
+
+      const elCol = parentWidget.getElementsByClassName(className)
+      elCol[0].style.opacity = '1'
     },
     changeGeoLevel (e) {
       // Get clicked departement
@@ -265,33 +366,62 @@ export default {
         }
       }
       if (clickdep === 'France') {
-        clickdep = e.target._prevClass.replace(/FR-/, '')
+        clickdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
       } else {
-        clickdep = clickdep.replace(/FR-/g, '')
+        clickdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
       }
 
+      if (clickdep.includes('DOM')) {
+        clickdep = clickdep.replace(/DOM/g, '')
+        if (this.level === 'reg') {
+          clickdep = this.getDep(clickdep).region_value
+        }
+      }
       this.zoomDep = clickdep
       this.createChart()
     },
     resetGeoFilters () {
       this.zoomDep = undefined
       this.createChart()
+    },
+
+    changeTheme (theme) {
+      this.textMention = this.getHexaFromToken('text-mention-grey', theme)
+      this.leftColProps.textMention = this.textMention
+      this.leftColProps.borderDefault = this.getHexaFromToken('border-default-grey', theme)
+      if (theme === 'light') {
+        this.colLeft = '#eeeeee'
+        this.colRight = this.getHexaFromName(this.color)
+        this.FranceProps.colorStroke = '#FFFFFF'
+        this.colorStrokeDOM = '#FFFFFF'
+      } else {
+        this.colLeft = this.getHexaFromName(this.color)
+        this.colRight = '#eeeeee'
+        this.FranceProps.colorStroke = '#161616'
+        this.colorStrokeDOM = '#161616'
+      }
+      this.createChart()
     }
   },
   created () {
     this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
     this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
-    // this.getData()
+    this.isDep = (this.level === 'dep')
+    this.isReg = (this.level === 'reg')
+    this.isAcad = (this.level === 'acad')
+    this.prefixClass = 'FR-' + this.level + '-'
   },
   mounted () {
-    this.createChart()
+    const element = document.documentElement // Reference à l'element <html> du DOM
+    element.addEventListener('dsfr.theme', (e) => {
+      this.changeTheme(e.detail.theme)
+    })
   }
 }
 
 </script>
 
 <style scoped lang="scss">
-
   .no_select {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -300,6 +430,7 @@ export default {
     -ms-user-select: none;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
+    cursor: pointer;
   }
 
   .widget_container{
@@ -317,8 +448,7 @@ export default {
         background-color: white;
         position: fixed;
         z-index: 999;
-        border-radius: 4px;
-        box-shadow: 0 8px 16px 0 rgba(22, 22, 22, 0.12), 0 8px 16px -16px rgba(22, 22, 22, 0.32);
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 18, 0.16);
         text-align: left;
         pointer-events: none;
         font-size: 0.75rem;
