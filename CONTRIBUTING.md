@@ -92,9 +92,25 @@ soit en utilisant la commande :
 
 ## Publication NPM
 
-Tout d'abord veillez à ce que tous les dossiers/fichiers que vous souhaitez publier soient présents dans la partie *files* de `package.json`.
+La publication du package sur npm nécessite les actions suivantes au niveau du fichier `package.json` : 
+* renseigner le nom dans la partie **name** et la **version**. La combinaison de ces deux paramètres doit être inédite pour être publiée (On ne peut pas publier une version existante)
+* choisir l'ensemble des dossiers/fichiers à intégrer au package et qui seront disponibles lors de l'installation par un utilisateur. Cette liste doit être renseignée au niveau de la partie **files** du `package.json`. Elle doit contenir, a minima, le dossier comprenant le distribuable de tous les graphiques (`/Charts`), les dossiers de distribuables unitaires de chaque graphiques (ex : `/BarChart`) et la documentation (`README.md` et `CONTRIBUTING.md`).
 
-Puis lancez la publication : 
+Le fichier `package.json` permet aussi de définir une description (**description**), un auteur (**author**) et de lier le package au repo github du projet (**repository**).
+
+Vous pouvez ensuite lancer la publication : 
 
 ``npm publish``
 
+Une connexion au compte npm sur lequel doit être publié le package sera demandée.
+
+## Déploiement d'une page de démonstration 
+
+Github permet le déploiement de pages web statiques via la fonctionnalité **Github Pages**. 
+
+1. Compléter le fichier `src/mainDev.js` si nécessaire. Ce fichier doit contenir la compilation de toutes les représentations graphiques que l'on souhaite afficher sur la page de démonstration. Il doit aussi contenir les dépendances au dsfr nécessaires au bon fonctionnement du projet.
+2. Compléter la page d'exemple (`public/index.html`) en utilisant les représentations à afficher.
+3. Visualiser la page en local : `npm run serve`.
+4. Lancer le build de la page : `npm run build-rec`. Les fichiers nécessaires au déploiement de la page seront créés dans le dossier `docs`.
+5. Pusher le dossier `docs`sur le repository github.
+6. Sur le repository github, se rendre dans **Settings** --> **Pages**. Dans la section **Build and deployment**, choisir **Deploy from a branch** pour la source. Choisir ensuite la branche qui sera associée à la page et le dossier `docs` dans *branch*

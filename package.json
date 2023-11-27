@@ -1,10 +1,11 @@
 {
-  "name": "dsfr-chart",
-  "version": "0.1.1",
+  "name": "@gouvfr/dsfr-chart",
+  "version": "1.0.0",
   "description": "Système de Design de l'Etat - Visualisation graphique",
   "repository": "git@github.com:GouvernementFR/dsfr-chart.git",
-  "author": "Seenovate <tristan.conti@seenovate.com>",
+  "author": "Service d'Information du Gouvernement <missak.keloglanian@pm.gouv.fr>",
   "private": false,
+  "license": "SEE LICENSE IN LICENSE.md",
   "scripts": {
     "serve": "vue-cli-service serve ./src/mainDev.js",
     "build": "vue-cli-service build --target lib --dest ./Charts --inline-vue --name dsfr-chart src/main.js",
