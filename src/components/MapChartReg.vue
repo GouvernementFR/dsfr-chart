@@ -233,12 +233,12 @@ export default {
         clickdep = e.path[1]._prevClass
       } catch (error) {
         try {
-          clickdep = e.explicitOriginalTarget._prevClass
+          clickdep = e.explicitOriginalTarget && e.explicitOriginalTarget._prevClass
           if (clickdep === undefined) {
             clickdep = e.explicitOriginalTarget.parentNode._prevClass
           }
         } catch (error) {
-          clickdep = e.toElement._prevClass
+          clickdep = e.toElement && e.toElement._prevClass
           if (clickdep === undefined) {
             clickdep = e.toElement.parentElement._prevClass
           }
