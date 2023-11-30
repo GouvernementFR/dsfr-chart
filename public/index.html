@@ -10,6 +10,7 @@
     <style>
       .code-toolbar {
         background-color: #f5f2f0;
+        overflow: scroll;
       }
       .attr-name,
       .builtin,
@@ -58,9 +59,9 @@
     </noscript>
 
     <div class="fr-container">
-      <section class="fr-grid-row fr-grid-row--center fr-mt-10w">
-        <div class="fr-col-12 fr-col-md-10 fr-mb-6w">
-          <h1>DSFR Chart</h1>
+      <section class="fr-grid-row fr-grid-row--center fr-mt-4w fr-mt-md-8w">
+        <div class="fr-col-12 fr-col-md-10 fr-mb-4w">
+          <h1 class="fr-pt-2w">DSFR Charts</h1>
           <p>
             Cette page a pour objectif de présenter l'ensemble des
             représentations graphiques proposées par la librairie
@@ -71,214 +72,271 @@
               >DSFR Charts</a
             >.<br />
             Tous les graphiques proposés sont disponibles dans le thème clair et
-            dans le thème sombre. Il est possible de changer le thème affiché par l'intermédiaire du
-            bouton en bas à droite.
+            dans le thème sombre. Il est possible de changer le thème affiché
+            par l'intermédiaire du bouton en bas à droite.
           </p>
+        </div>
 
+        <!-- SIDE MENU -->
+        <div class="fr-col-12 fr-col-md-3">
           <nav
-            class="fr-summary fr-mb-6w"
+            class="fr-sidemenu fr-sidemenu--sticky-full-height"
             role="navigation"
-            aria-labelledby="fr-summary-title"
+            aria-labelledby="sidemenu-title-5068"
           >
-            <h2 class="fr-summary__title" id="fr-summary-title">Sommaire</h2>
-            <ol>
-              <li>
-                <a
-                  class="fr-summary__link"
-                  id="summary-link-1"
-                  href="#scatter_chart"
-                  >Nuage de points</a
+            <div class="fr-sidemenu__inner fr-mb-4w">
+              <button
+                class="fr-sidemenu__btn"
+                aria-controls="sidemenu-5069"
+                aria-expanded="false"
+              >
+                Dans cette rubrique
+              </button>
+              <div class="fr-collapse" id="sidemenu-5069">
+                <p
+                  class="fr-sidemenu__title fr-sr-only"
+                  id="sidemenu-title-5068"
                 >
-                <ol>
-                  <li>
+                  Menu de navigation
+                </p>
+                <ul class="fr-sidemenu__list">
+                  <li class="fr-sidemenu__item">
+                    <button
+                      class="fr-sidemenu__btn"
+                      aria-expanded="false"
+                      aria-controls="sidemenu-1"
+                    >
+                      I. Nuage de points
+                    </button>
+                    <div class="fr-collapse" id="sidemenu-1">
+                      <ul class="fr-sidemenu__list">
+                        <li class="fr-sidemenu__item">
+                          <a
+                            class="fr-sidemenu__link"
+                            id="sidemenu-1.1"
+                            href="#scatter_chart.1"
+                            target="_self"
+                            >1. Nuage de points simple</a
+                          >
+                        </li>
+                        <li class="fr-sidemenu__item">
+                          <a
+                            class="fr-sidemenu__link"
+                            id="sidemenu-1.2"
+                            href="#scatter_chart.2"
+                            target="_self"
+                            >2. Nuage de points reliés</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="fr-sidemenu__item">
+                    <button
+                      class="fr-sidemenu__btn"
+                      aria-expanded="false"
+                      aria-controls="sidemenu-2"
+                    >
+                      II. Graphique en ligne
+                    </button>
+                    <div class="fr-collapse" id="sidemenu-2">
+                      <ul class="fr-sidemenu__list">
+                        <li class="fr-sidemenu__item">
+                          <a
+                            class="fr-sidemenu__link"
+                            id="sidemenu-2.1"
+                            href="#line_chart.1"
+                            target="_self"
+                            >1. Graphique en ligne simple</a
+                          >
+                        </li>
+                        <li class="fr-sidemenu__item">
+                          <a
+                            class="fr-sidemenu__link"
+                            id="sidemenu-2.2"
+                            href="#line_chart.2"
+                            target="_self"
+                            >2. Graphique en lignes multiples</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="fr-sidemenu__item">
+                    <button
+                      class="fr-sidemenu__btn"
+                      aria-expanded="false"
+                      aria-controls="sidemenu-3"
+                    >
+                      III. Diagramme en barres
+                    </button>
+                    <div class="fr-collapse" id="sidemenu-3">
+                      <ul class="fr-sidemenu__list">
+                        <li class="fr-sidemenu__item">
+                          <a
+                            class="fr-sidemenu__link"
+                            id="sidemenu-3.1"
+                            href="#bar_chart.1"
+                            target="_self"
+                            >1. Barres verticales</a
+                          >
+                        </li>
+                        <li class="fr-sidemenu__item">
+                          <a
+                            class="fr-sidemenu__link"
+                            id="sidemenu-3.2"
+                            href="#bar_chart.2"
+                            target="_self"
+                            >2. Barres horizontales</a
+                          >
+                        </li>
+                        <li class="fr-sidemenu__item">
+                          <a
+                            class="fr-sidemenu__link"
+                            id="sidemenu-3.3"
+                            href="#bar_chart.3"
+                            target="_self"
+                            >3. Barres empilées</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="fr-sidemenu__item">
                     <a
-                      class="fr-summary__link"
-                      id="summary-link-1-1"
-                      href="#scatter_chart.1"
-                      >Nuage de points simple</a
+                      class="fr-sidemenu__link"
+                      id="sidemenu-4"
+                      href="#bar_line_chart"
+                      target="_self"
+                      >IV. Graphique en ligne / Diagramme en barres</a
                     >
                   </li>
-                  <li>
+                  <li class="fr-sidemenu__item">
                     <a
-                      class="fr-summary__link"
-                      id="summary-link-1-2"
-                      href="#scatter_chart.2"
-                      >Nuage de points reliés</a
+                      class="fr-sidemenu__link"
+                      id="sidemenu-5"
+                      href="#vertical_horyzontal_lines_options"
+                      target="_self"
+                      >V. Options de lignes verticales et horizontales</a
                     >
                   </li>
-                </ol>
-              </li>
-              <li>
-                <a
-                  class="fr-summary__link"
-                  id="summary-link-2"
-                  href="#line_chart"
-                  >Graphique en ligne</a
-                >
-                <ol>
-                  <li>
+                  <li class="fr-sidemenu__item">
+                    <button
+                      class="fr-sidemenu__btn"
+                      aria-expanded="false"
+                      aria-controls="sidemenu-6"
+                    >
+                      VI. Diagramme circulaire
+                    </button>
+                    <div class="fr-collapse" id="sidemenu-6">
+                      <ul class="fr-sidemenu__list">
+                        <li class="fr-sidemenu__item">
+                          <a
+                            class="fr-sidemenu__link"
+                            id="sidemenu-6.1"
+                            href="#pie_chart.1"
+                            target="_self"
+                            >1. Diagramme circulaire plein</a
+                          >
+                        </li>
+                        <li class="fr-sidemenu__item">
+                          <a
+                            class="fr-sidemenu__link"
+                            id="sidemenu-6.2"
+                            href="#pie_chart.2"
+                            target="_self"
+                            >2. Diagramme circulaire creux (donut)</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="fr-sidemenu__item">
                     <a
-                      class="fr-summary__link"
-                      id="summary-link-2-1"
-                      href="#line_chart.1"
-                      >Graphique en ligne simple</a
+                      class="fr-sidemenu__link"
+                      id="sidemenu-7"
+                      href="#radar_chart"
+                      target="_self"
+                      >VII. Diagramme en étoile</a
                     >
                   </li>
-                  <li>
+                  <li class="fr-sidemenu__item">
                     <a
-                      class="fr-summary__link"
-                      id="summary-link-2-2"
-                      href="#line_chart.2"
-                      >Graphique en lignes multiples</a
-                    >
+                      class="fr-sidemenu__link"
+                      id="sidemenu-8"
+                      href="#gauge_chart"
+                      target="_self"
+                      >VIII. Jauge
+                    </a>
                   </li>
-                </ol>
-              </li>
-              <li>
-                <a
-                  class="fr-summary__link"
-                  id="summary-link-3"
-                  href="#bar_chart"
-                  >Diagramme en barres</a
-                >
-                <ol>
-                  <li>
+                  <li class="fr-sidemenu__item">
+                    <button
+                      class="fr-sidemenu__btn"
+                      aria-expanded="false"
+                      aria-controls="sidemenu-9"
+                    >
+                      IX. Cartes
+                    </button>
+                    <div class="fr-collapse" id="sidemenu-9">
+                      <ul class="fr-sidemenu__list">
+                        <li class="fr-sidemenu__item">
+                          <a
+                            class="fr-sidemenu__link"
+                            id="sidemenu-9.1"
+                            href="#map_chart.1"
+                            target="_self"
+                            >1. Découpage départemental</a
+                          >
+                        </li>
+                        <li class="fr-sidemenu__item">
+                          <a
+                            class="fr-sidemenu__link"
+                            id="sidemenu-9.2"
+                            href="#map_chart.2"
+                            target="_self"
+                            >2. Découpage régional</a
+                          >
+                        </li>
+                        <li class="fr-sidemenu__item">
+                          <a
+                            class="fr-sidemenu__link"
+                            id="sidemenu-9.3"
+                            href="#map_chart.3"
+                            target="_self"
+                            >3. Régions</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="fr-sidemenu__item">
                     <a
-                      class="fr-summary__link"
-                      id="summary-link-3-1"
-                      href="#bar_chart.1"
-                      >Barres verticales</a
-                    >
+                      class="fr-sidemenu__link"
+                      id="sidemenu-10"
+                      href="#colors"
+                      target="_self"
+                      >X. Les couleurs
+                    </a>
                   </li>
-                  <li>
+                  <li class="fr-sidemenu__item">
                     <a
-                      class="fr-summary__link"
-                      id="summary-link-3-2"
-                      href="#bar_chart.2"
-                      >Barres horizontales</a
-                    >
+                      class="fr-sidemenu__link"
+                      id="sidemenu-11"
+                      href="#accessibility"
+                      target="_self"
+                      >XI. Accessibilité
+                    </a>
                   </li>
-                  <li>
-                    <a
-                      class="fr-summary__link"
-                      id="summary-link-3-3"
-                      href="#bar_chart.3"
-                      >Barres empilées</a
-                    >
-                  </li>
-                </ol>
-              </li>
-              <li>
-                <a
-                  class="fr-summary__link"
-                  id="summary-link-4"
-                  href="#bar_line_chart"
-                  >Graphique en ligne / Diagramme en barres</a
-                >
-              </li>
-              <li>
-                <a
-                  class="fr-summary__link"
-                  id="summary-link-5"
-                  href="#vertical_horyzontal_lines_options"
-                  >Options de lignes verticales et horizontales</a
-                >
-              </li>
-              <li>
-                <a
-                  class="fr-summary__link"
-                  id="summary-link-6"
-                  href="#pie_chart"
-                  >Diagramme circulaire</a
-                >
-                <ol>
-                  <li>
-                    <a
-                      class="fr-summary__link"
-                      id="summary-link-6-1"
-                      href="#pie_chart.1"
-                      >Diagramme circulaire plein</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="fr-summary__link"
-                      id="summary-link-6-2"
-                      href="#pie_chart.2"
-                      >Diagramme circulaire creux (donut)</a
-                    >
-                  </li>
-                </ol>
-              </li>
-              <li>
-                <a
-                  class="fr-summary__link"
-                  id="summary-link-7"
-                  href="#radar_chart"
-                  >Diagramme en étoile</a
-                >
-              </li>
-              <li>
-                <a
-                  class="fr-summary__link"
-                  id="summary-link-8"
-                  href="#gauge_chart"
-                  >Jauge</a
-                >
-              </li>
-              <li>
-                <a
-                  class="fr-summary__link"
-                  id="summary-link-9"
-                  href="#map_chart"
-                  >Cartes</a
-                >
-                <ol>
-                  <li>
-                    <a
-                      class="fr-summary__link"
-                      id="summary-link-9-1"
-                      href="#map_chart.1"
-                      >Découpage départemental</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="fr-summary__link"
-                      id="summary-link-9-2"
-                      href="#map_chart.2"
-                      >Découpage régional</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="fr-summary__link"
-                      id="summary-link-9-3"
-                      href="#map_chart.3"
-                      >Régions</a
-                    >
-                  </li>
-                </ol>
-              </li>
-              <li>
-                <a class="fr-summary__link" id="summary-link-10" href="#colors"
-                  >Les couleurs</a
-                >
-              </li>
-              <li>
-                <a
-                  class="fr-summary__link"
-                  id="summary-link-11"
-                  href="#accessibility"
-                  >Accessibilité</a
-                >
-              </li>
-            </ol>
+                </ul>
+              </div>
+            </div>
           </nav>
+        </div>
 
+        <div class="fr-col-12 fr-col-md-7">
           <!-- SCATTER CHART -->
           <div class="part_container">
-            <h2 id="scatter_chart">I. Nuage de points</h2>
+            <h2 id="scatter_chart" class="fr-pt-1w">I. Nuage de points</h2>
             <p>
               Le nuage de points est largement utilisée pour présenter plusieurs
               séries de données. C’est une représentation graphique qui est
@@ -290,7 +348,6 @@
             <div class="chart_container">
               <scatter-chart
                 x="[[1, 5, 8], [1, 2, 15]]"
-                ,
                 y="[[30, 10, 20], [10, 20, 30]]"
               ></scatter-chart>
             </div>
@@ -308,23 +365,12 @@
                 </h3>
                 <div class="fr-collapse" id="accordion-7">
                   <div class="code-toolbar">
-                    <pre class="language-html">
-                      <code class="language-html">
-                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
-                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scatter-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[1, 5, 8], [1, 2, 15]]
-                        </span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[30, 10, 20], [10, 20, 30]]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scatter-chart</span><span class="token punctuation">&gt;</span>
-                        <span class="token tag">
-                          <span class="token tag">
-                            <span class="token punctuation">&lt;/</span>
-                            div</span>
-                          </span>
-                          <span class="token punctuation">&gt;</span>
-                        </span>
-                      </code>
+                    <pre>
+                      <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scatter-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[1, 5, 8], [1, 2, 15]]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[30, 10, 20], [10, 20, 30]]</span>
+                      <span class="token attr-name">showline</span><span class="token punctuation">=</span><span class="titre_class">true</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>scatter-chart</span><span class="token punctuation">&gt;</span>
+                      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code>
                     </pre>
-                    <div class="toolbar">
-                      <div class="toolbar-item"></div>
-                    </div>
                   </div>
                 </div>
               </section>
@@ -353,13 +399,10 @@
                 </h3>
                 <div class="fr-collapse" id="accordion-8">
                   <div class="code-toolbar">
-                    <pre
-                      class="language-html"
-                    ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                    <pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scatter-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[1, 5, 8], [1, 2, 15]]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[30, 10, 20], [10, 20, 30]]</span>
 <span class="token attr-name">showline</span><span class="token punctuation">=</span><span class = "titre_class">true</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>scatter-chart</span><span class="token punctuation">&gt;</span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre>
-                    <div class="toolbar"><div class="toolbar-item"></div></div>
                   </div>
                 </div>
               </section>
@@ -376,7 +419,7 @@
               permettre la comparaison.
             </p>
 
-            <h3 id="scatter-chart.1">1. Graphique en ligne simple</h3>
+            <h3 id="line_chart.1">1. Graphique en ligne simple</h3>
             <div class="chart_container">
               <line-chart x="[1, 2, 3, 4]" y="[10, 20, 30,40]"></line-chart>
             </div>
@@ -393,17 +436,14 @@
               </h3>
               <div class="fr-collapse" id="accordion-9">
                 <div class="code-toolbar">
-                  <pre
-                    class="language-html"
-                  ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                  <pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>line-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[1, 2, 3, 4]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[10, 20, 30,40]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>line-chart</span><span class="token punctuation">&gt;</span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre>
-                  <div class="toolbar"><div class="toolbar-item"></div></div>
                 </div>
               </div>
             </section>
 
-            <h3 id="scatter-chart.2">2. Graphique en lignes multiples</h3>
+            <h3 id="line_chart.2">2. Graphique en lignes multiples</h3>
             <div class="chart_container">
               <multiline-chart
                 x="[[1, 2, 3], [1, 2, 3]]"
@@ -423,13 +463,10 @@
               </h3>
               <div class="fr-collapse" id="accordion-10">
                 <div class="code-toolbar">
-                  <pre
-                    class="language-html"
-                  ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                  <pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>multiline-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[1, 2, 3], [1, 2, 3]]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[30, 10, 20], [10, 20, 30]]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>multiline-chart</span><span class="token punctuation">&gt;</span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre>
-                  <div class="toolbar"><div class="toolbar-item"></div></div>
                 </div>
               </div>
             </section>
@@ -465,13 +502,10 @@
               </h3>
               <div class="fr-collapse" id="accordion-3">
                 <div class="code-toolbar">
-                  <pre
-                    class="language-html"
-                  ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                  <pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3",
 "5"]]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre>
-                  <div class="toolbar"><div class="toolbar-item"></div></div>
                 </div>
               </div>
             </section>
@@ -497,14 +531,11 @@
               </h3>
               <div class="fr-collapse" id="accordion-4">
                 <div class="code-toolbar">
-                  <pre
-                    class="language-html"
-                  ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                  <pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3",
 "5"]]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]</span><span class="token punctuation">'</span> 
 <span class="token attr-name">horizontal</span><span class="token punctuation">=</span><span class = "titre_class">true</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre>
-                  <div class="toolbar"><div class="toolbar-item"></div></div>
                 </div>
               </div>
             </section>
@@ -530,14 +561,11 @@
               </h3>
               <div class="fr-collapse" id="accordion-5">
                 <div class="code-toolbar">
-                  <pre
-                    class="language-html"
-                  ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                  <pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3",
 "5"]]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]</span><span class="token punctuation">'</span> 
 <span class="token attr-name">stacked</span><span class="token punctuation">=</span><span class = "titre_class">true</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre>
-                  <div class="toolbar"><div class="toolbar-item"></div></div>
                 </div>
               </div>
             </section>
@@ -573,26 +601,12 @@
               </h3>
               <div class="fr-collapse" id="accordion-11">
                 <div class="code-toolbar">
-                  <pre class="language-html">
-                    <code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
-                      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-line-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[1, 2, 3]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[30, 10, 20]</span><span class="token punctuation">'</span></span><span class="token attr-name">ybar</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[20, 15, 12]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span>
-                      <span class="token tag">
-                        <span class="token tag">
-                          <span class="token punctuation">&lt;/</span>
-                          bar-line-chart
-                        </span>
-                        <span class="token punctuation">&gt;</span>
-                      </span>
-                      <span class="token tag">
-                        <span class="token tag">
-                          <span class="token punctuation">&lt;/</span>
-                          div
-                        </span>
-                        <span class="token punctuation">&gt;</span>
-                      </span>
-                    </code>
+                  <pre>
+                    <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-line-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[1, 2, 3]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[30, 10, 20]</span><span class="token punctuation">'</span></span><span class="token attr-name">ybar</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[20, 15, 12]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bar-line-chart</span><span class="token punctuation">&gt;</span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></span></code>
                   </pre>
-                  <div class="toolbar"><div class="toolbar-item"></div></div>
                 </div>
               </div>
             </section>
@@ -636,8 +650,8 @@
               </h3>
               <div class="fr-collapse" id="accordion-20">
                 <div class="code-toolbar">
-                  <pre class="language-html">
-                    <code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                  <pre>
+                    <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>line-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[1, 2, 3]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[10, 20, 30]</span><span class="token punctuation">'</span>
                       <span class="token attr-name">hline</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[15, 25]</span><span class="token punctuation">'</span>
                       <span class="token attr-name">hlinename</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">["hmin", "hmax"]</span><span class="token punctuation">'</span>
@@ -648,9 +662,6 @@
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></span></span></span></span></span></span>
                     </code>
                   </pre>
-                  <div class="toolbar">
-                    <div class="toolbar-item"></div>
-                  </div>
                 </div>
               </div>
             </section>
@@ -690,14 +701,13 @@
               </h3>
               <div class="fr-collapse" id="accordion-12">
                 <div class="code-toolbar">
-                  <pre class="language-html">
-                    <code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                  <pre>
+                    <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pie-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[1, 2, 3]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[10, 20, 30]</span><span class="token punctuation">'</span></span><span class="token attr-name">fill</span><span class="token punctuation">=</span><span class="titre_class">true</span></span><span class="token punctuation">&gt;</span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pie-chart</span><span class="token punctuation">&gt;</span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></span>
                   </code>
                 </pre>
-                  <div class="toolbar"><div class="toolbar-item"></div></div>
                 </div>
               </div>
             </section>
@@ -719,15 +729,14 @@
               </h3>
               <div class="fr-collapse" id="accordion-13">
                 <div class="code-toolbar">
-                  <pre class="language-html">
-                    <code class="language-html">
+                  <pre>
+                    <code>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pie-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[1, 2, 3]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[10, 20, 30]</span><span class="token punctuation">'</span></span></span><span class="token punctuation">&gt;</span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pie-chart</span><span class="token punctuation">&gt;</span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></span>
                     </code>
                   </pre>
-                  <div class="toolbar"><div class="toolbar-item"></div></div>
                 </div>
               </div>
             </section>
@@ -764,8 +773,8 @@
               </h3>
               <div class="fr-collapse" id="accordion-25">
                 <div class="code-toolbar">
-                  <pre class="language-html">
-                    <code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                  <pre>
+                    <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>radar-chart</span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation"><span class="token tag"><span class="token punctuation"></span><span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],</span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation"><span class="token tag"><span class="token punctuation"></span><span class="titre_class">["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],</span>
@@ -777,7 +786,6 @@
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span>
                   </code>
                 </pre>
-                  <div class="toolbar"><div class="toolbar-item"></div></div>
                 </div>
               </div>
             </section>
@@ -814,14 +822,13 @@
               </h3>
               <div class="fr-collapse" id="accordion-22">
                 <div class="code-toolbar">
-                  <pre class="language-html">
-                    <code class="language-html">
+                  <pre>
+                    <code>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
                       <span class="token tag"><span class="token tag"></span><span class="token tag"><span class="token punctuation">&lt;</span>gauge-chart</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="titre_class">16</span> <span class="token attr-name">init</span><span class="token attr-value"><span class="token punctuation">=</span><span class="titre_class">10</span> <span class="token attr-name">target</span><span class="token attr-value"><span class="token punctuation">=</span><span class="titre_class">20</span><span class="token punctuation"></span> <span class="token attr-name">color</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">blue-france</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>gauge-chart</span><span class="token punctuation">&gt;</span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></span></span>
                     </code>
                   </pre>
-                  <div class="toolbar"><div class="toolbar-item"></div></div>
                 </div>
               </div>
             </section>
@@ -869,8 +876,8 @@
               </h3>
               <div class="fr-collapse" id="accordion-15">
                 <div class="code-toolbar">
-                  <pre class="language-html">
-                    <code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                  <pre>
+                    <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>map-chart</span> <span class="token attr-name">data</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, 
                         "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
                         "12": 33, "13": 89, "14": 24, "15": 52, "16": 41,
@@ -894,7 +901,6 @@
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></span>
                   </code>
                 </pre>
-                  <div class="toolbar"><div class="toolbar-item"></div></div>
                 </div>
               </div>
             </section>
@@ -924,8 +930,8 @@
               </h3>
               <div class="fr-collapse" id="accordion-16">
                 <div class="code-toolbar">
-                  <pre class="language-html">
-                    <code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                  <pre>
+                    <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>map-chart</span> <span class="token attr-name">data</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">{"84": 1, "32": 10, "93": 20, "44": 30, "76": 40,
                        "28": 50, "75": 60, "24": 70,"53": 80, 
                        "94": 90, "52": 100, "01": 95, "02": 85,
@@ -935,9 +941,6 @@
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></span></span>
                     </code>
                   </pre>
-                  <div class="toolbar">
-                    <div class="toolbar-item"></div>
-                  </div>
                 </div>
               </div>
             </section>
@@ -975,8 +978,8 @@
               </h3>
               <div class="fr-collapse" id="accordion-17">
                 <div class="code-toolbar">
-                  <pre class="language-html">
-                    <code class="language-html">
+                  <pre>
+                    <code>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>map-chart-reg</span> <span class="token attr-name">data</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47,
                         "06": 96, "07": 77,"08": 75, "09": 57, "10": 58, "11": 38,
@@ -1002,7 +1005,6 @@
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></span></span>
                   </code>
                 </pre>
-                  <div class="toolbar"><div class="toolbar-item"></div></div>
                 </div>
               </div>
             </section>
@@ -1242,7 +1244,7 @@
           </div>
 
           <!-- Accessibilité -->
-          <div class="part_container">
+          <div class="part_container fr-mb-10w">
             <h2 id="accessibility">XI. Accessibilité</h2>
             <p>
               Pour permettre d'offrir une alternative à la visualisation des
@@ -1271,9 +1273,7 @@
               </h3>
               <div class="fr-collapse" id="accordion-23">
                 <div class="code-toolbar">
-                  <pre
-                    class="language-html"
-                  ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                  <pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table-chart</span> 
 <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[["A","B","C","D","E","F","G","H","I","J"],
 ["A","B","C","D","E","F","G","H","I","J"]]</span><span class="token punctuation">'</span>
@@ -1287,7 +1287,6 @@
 [30, 150,340,379,439,40, 50,40,39,49]]</span><span class="token punctuation">'</span>
 <span class="token attr-name">varname</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">Jours</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>table-chart</span><span class="token punctuation">&gt;</span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre>
-                  <div class="toolbar"><div class="toolbar-item"></div></div>
                 </div>
               </div>
             </section>
@@ -1296,6 +1295,7 @@
       </section>
     </div>
 
+    <!-- DISPLAY BUTTON -->
     <button
       class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary"
       aria-controls="fr-theme-modal"

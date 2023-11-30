@@ -15,8 +15,8 @@ import '../node_modules/@gouvfr/dsfr/dist/dsfr.module.min.js'
 
 import vueCustomElement from 'vue-custom-element'
 
-require('../node_modules/@gouvfr/dsfr/dist/dsfr.main.css')
-require('../node_modules/@gouvfr/dsfr/dist/utility/utility.main.css')
+require('../node_modules/@gouvfr/dsfr/dist/dsfr.main.min.css')
+require('../node_modules/@gouvfr/dsfr/dist/utility/utility.main.min.css')
 require('../node_modules/@gouvfr/dsfr/dist/utility/icons/icons-system/icons-system.min.css')
 
 Vue.config.productionTip = false

@@ -20,7 +20,7 @@
     "build-mapreg": "vue-cli-service build --target lib --dest ./MapChartReg --inline-vue --name map-chart-reg src/MapChartReg.js",
     "build-gauge": "vue-cli-service build --target lib --dest ./GaugeChart --inline-vue --name gauge-chart src/GaugeChart.js",
     "build-table": "vue-cli-service build --target lib --dest ./TableChart --inline-vue --name table-chart-reg src/TableChart.js",
-    "build-radar": "vue-cli-service build --target lib --dest ./RadarChart --inline-vue --name radar-chart src/RadarChart.js",    
+    "build-radar": "vue-cli-service build --target lib --dest ./RadarChart --inline-vue --name radar-chart src/RadarChart.js",
     "build-all": "npm run build-bar & npm run build-barline & npm run build-line & npm run build-map & npm run build-multiline & npm run build-pie & npm run build-scatter & npm run build-mapreg & npm run build-gauge & npm run build-table & npm run build-radar",
     "lint": "vue-cli-service lint"
   },
@@ -53,6 +53,7 @@
     "sass": "^1.32.5",
     "sass-loader": "^10.1.1",
     "vue": "^2.7.11",
+    "vue-code-highlight": "^0.7.8",
     "vue-custom-element": "^3.2.14",
     "vuex": "^3.6.0"
   },
