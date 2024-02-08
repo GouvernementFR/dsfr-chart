@@ -22,7 +22,7 @@ Enfin, il est nécessaire de lancez un serveur local pour visualiser la page d'e
 
 `npm run serve`
 
-Un serveur local sera alors lancé sur l'adresse localhost:8080. Accéder à http://localhost:8080 pour visualiser les exemples.
+Un serveur local sera alors lancé sur l'adresse localhost:8080. Accéder à http://localhost:8080 pour visualiser la liste des exemples.
 
 ## Ajouter un type de graphique
 
@@ -56,7 +56,7 @@ Finalement il faut créer la commande "build" du composants dans le fichier `pac
 `"build-new": "vue-cli-service build --target lib --dest ./NewChart --inline-vue --name new-chart src/NewChart.js"`
 
 -   **--dest** permet de choisir le dossier de destination des fichiers compilés
--   **name** permet de choisir le nom du web-component
+-   **--name** permet de choisir le nom du web-component
 -   **src/NewChart.js** correspond au fichier js à exécuter
 
 Il est également nécessaire de rajouter la commande nouvellement créée dans la commande `build-all` de la manière suivante :
