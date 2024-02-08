@@ -58,7 +58,7 @@
     "vuex": "^3.6.0"
   },
   "devDependencies": {
-    "@gouvfr/dsfr": "^1.10.1",
+    "@gouvfr/dsfr": "^1.11.1",
     "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-service": "^5.0.0",
     "eslint-plugin-vue": "^9.7.0",
