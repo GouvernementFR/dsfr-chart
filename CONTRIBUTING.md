@@ -2,7 +2,7 @@
 
 ## Installation
 
-Le **DSFR** est basé sur une architecture [NodeJS](https://nodejs.org/), il est donc nécessaire d’installer une version récente de nodeJs. Dans le terminal nous utiliserons les commandes de **npm**.
+Le **DSFR Chart** est basé sur une architecture [NodeJS](https://nodejs.org/), il est donc nécessaire d’installer une version récente de nodeJs. Dans le terminal nous utiliserons les commandes de **npm**.
 
 Le dépôt est disponible à cette adresse: https://github.com/GouvernementFR/dsfr-chart
 
