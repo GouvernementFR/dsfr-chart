@@ -92,7 +92,6 @@ Les paramètres obligatoires sont :
 ```html
 <scatter-chart
     x="[[1, 5, 8], [1, 2, 15]]"
-    ,
     y="[[30, 10, 20], [10, 20, 30]]"
 ></scatter-chart>
 ```
@@ -112,7 +111,6 @@ On peut choisir de relier les points d'un ScatterChart avec l'option **showline*
 ```html
 <scatter-chart
     x="[[1, 5, 8], [1, 2, 15]]"
-    ,
     y="[[30, 10, 20], [10, 20, 30]]"
     showline="true"
 ></scatter-chart>
@@ -309,7 +307,7 @@ L’option **fill = True**, permet de remplir l’intérieur du graphique.
 **Exemple** :
 
 ```html
-<pie-chart x="[1, 2, 3]" , y="[10, 20, 30]"></pie-chart>
+<pie-chart x="[1, 2, 3]" y="[10, 20, 30]"></pie-chart>
 ```
 
 <img src="./Pictures/OptionPieChart.png" alt="OptionPieChart" style="width:400px;" />
@@ -472,7 +470,6 @@ Pour les graphiques avec plusieurs séries (barchart, piechart, multilinechart, 
 ```html
 <multiline-chart
     x="[[1, 2, 3], [1, 2, 3]]"
-    ,
     y="[[30, 10, 20], [10, 20, 30]]"
     color='["purple-glycine", "green-archipel"]'
     name='["A", "B"]'
@@ -488,7 +485,6 @@ Pour le cas du **BarLineChart,** les paramètres **color** et **name** sont asso
 ```html
 <bar-line-chart
     x="[1, 2, 3]"
-    ,
     y="[30, 10, 20]"
     color="purple-glycine"
     ybar="[20, 15, 12]"
