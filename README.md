@@ -23,7 +23,7 @@ Vous trouverez sur la page [Release de Github](https://github.com/GouvernementFR
 Une fois en place, il suffit d'installer le package **dsfr-chart** contenant l’ensemble des composants:
 
 ```
-npm install dsfr-chart
+npm i @gouvfr/dsfr-chart
 ```
 
 Une fois terminé dsfr-chart sera alors installé dans le dossier `node_modules/dsfr-chart/`
