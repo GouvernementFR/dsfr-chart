@@ -1,6 +1,6 @@
 const webpack = require('webpack')
 module.exports = {
-  publicPath:'/dsfr-chart/',
+  publicPath: '/',
   configureWebpack: {
     plugins: [
       new webpack.optimize.LimitChunkCountPlugin({
