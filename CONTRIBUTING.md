@@ -24,6 +24,10 @@ Enfin, il est nécessaire de lancez un serveur local pour visualiser la page d'e
 
 Un serveur local sera alors lancé sur l'adresse localhost:8080. Accéder à http://localhost:8080 pour visualiser la liste des exemples.
 
+## GitFlow
+
+Se referer au fichier [CONTRIBUTING-gitflow.md](./CONTRIBUTING-gitflow.md) qui décrit le modèle de branches à suivre pour contribuer au DSFR Chart.
+
 ## Ajouter un type de graphique
 
 Cette partie décrit les étapes à suivre pour l'ajout d'une nouvelle représentation graphique au sein du DSFR Chart.
