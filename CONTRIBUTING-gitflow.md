@@ -8,7 +8,7 @@ Afin de pouvoir commencer à développer et contribuer au DSFR-chart, assurez-vo
 
 Il suffit ensuite de cloner votre fork, en téléchargeant les sources depuis le bouton “clone” de github, ou via un terminal avec commande :
 ```shell
-git clone https://github.com/VOTRE_NOM_UTILISATEUR_GITHUB/dsfr
+git clone https://github.com/VOTRE_NOM_UTILISATEUR_GITHUB/dsfr-chart
 ```
 
 La branche **dev** est la principale branche de travail - la branche **main** correspondant aux versions de productions livrées aux utilisateurs. Il est donc nécessaire de créer de nouvelles branches de travail pour l'ajout et la modification de packages depuis la branche **dev**. (Voir la section [Utilisation > Git](#git), pour le fonctionnement détaillé).
