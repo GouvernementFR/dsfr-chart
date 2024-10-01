@@ -53,11 +53,11 @@ Exemple de commit simple :
 feat: ajout du composant BarChart
 ```
 
-Exemple de commit avec `scope`  le nom du composant ou de la f, description et `BREAKING CHANGE` footer
+Exemple de commit avec `scope`  le nom du composant ou de la fonction, description et `BREAKING CHANGE` footer
 ```
-fix(core): maj mixin: ancien-nom devient nouveau-nom
+fix(core): maj fonction: ancien-nom devient nouveau-nom
 
-BREAKING CHANGE: nouveau nom pour la methode ....
+BREAKING CHANGE: nouveau nom pour la fonction ....
 ```
 
 ### Signature des commits
