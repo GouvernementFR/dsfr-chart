@@ -1,0 +1,14 @@
+.subContainer {
+  &__badge {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+
+  &__detailLink {
+    display: block;
+    position: absolute;
+    bottom: 9px;
+  }
+}

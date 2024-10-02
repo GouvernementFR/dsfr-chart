@@ -64,7 +64,6 @@
     <strong>We're sorry but DSFR Charts doesn't work properly without JavaScript
       enabled. Please enable it to continue.</strong>
   </noscript>
-
   <div class="fr-container">
     <section class="fr-grid-row fr-grid-row--center fr-mt-4w fr-mt-md-8w">
       <div class="fr-col-12 fr-col-md-10 fr-mb-4w">
@@ -214,11 +213,11 @@
                   </div>
                 </li>
                 <li class="fr-sidemenu__item">
-                  <a class="fr-sidemenu__link" id="sidemenu-12" href="#colors" target="_self">X. Les couleurs
+                  <a class="fr-sidemenu__link" id="sidemenu-11" href="#colors" target="_self">X. Les couleurs
                   </a>
                 </li>
                 <li class="fr-sidemenu__item">
-                  <a class="fr-sidemenu__link" id="sidemenu-13" href="#accessibility" target="_self">XI. Accessibilité
+                  <a class="fr-sidemenu__link" id="sidemenu-12" href="#accessibility" target="_self">XI. Accessibilité
                   </a>
                 </li>
               </ul>
@@ -788,9 +787,6 @@
         <!-- DATABOX -->
         <div class="part_container fr-mb-6w">
           <h2 id="databox">XI. La DataBox</h2>
-          <p>
-            à mettre en place ici
-          </p>
           <div class="flex fr-mt-3v"></div>
           <div class="chart_container">
             <div class="chart_container">
@@ -1076,5 +1072,12 @@
       </div>
     </div>
   </dialog>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.dsfr && window.dsfr.start) {
+        window.dsfr.start();
+      }
+    });
+    </script>
 </body>
 </html>
