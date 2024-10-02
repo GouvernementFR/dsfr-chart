@@ -21,11 +21,7 @@
 </template>
 
 <script>
-import { Chart } from 'chart.js'
 import { mixin } from '@/utils.js'
-import annotationPlugin from 'chartjs-plugin-annotation'
-
-Chart.pluginService.register(annotationPlugin)
 
 export default {
   name: 'TableChart',

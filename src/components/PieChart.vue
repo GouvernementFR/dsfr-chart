@@ -11,15 +11,18 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': isSmall ? '0px' : style}">
-          <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
-          <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
-            {{capitalize(nameParse[index])}}
-          </p>
-        </div>
-        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': isSmall ? '0px' : style}">
-          <p class="fr-text--xs">Mise à jour : {{date}}</p>
-        </div>
+        <hr class="fr-mt-6v">
+        <div class="flex fr-mb-0">
+          <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': isSmall ? '0px' : style}">
+            <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
+            <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
+              {{capitalize(nameParse[index])}}
+            </p>
+          </div>
+          <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': isSmall ? '0px' : style}">
+            <p class="fr-text--xs">Mise à jour : {{date}}</p>
+          </div>
+      </div>
       </div>
     </div>
   </div>

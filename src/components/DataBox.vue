@@ -1,138 +1,277 @@
 /* eslint-disable */
 <template>
-    <div
-        :class="['fr-container fr-card--no-icon fr-card--shadow fr-p-2w subContainer databox-card', { fullscreen: isFullScreen }]">
-        <div class="fr-grid-row fr-grid-row--gutters">
-            <div class="fr-col-12 subContainer__title">
-                <div class="subContainer__icon">
-                    <h4 class="serie__title fr-h6 fr-mb-0">
-                        <span id="tooltip-target">{{ serieObj.title }}</span>
-                    </h4>
-                    <span class="icon-container">
-                        <span class="serie__icon fr-icon-question-line fr-icon--sm fr-pl-1w" aria-hidden="true"
-                            @click="toggleTooltip"></span>
-                        <div v-if="tooltipVisible" role="tooltip" id="tooltip" class="tooltip"
-                            :aria-labelledby="'tooltip-target'">
-                            <div class="tooltip__triangle"></div>
-                            <strong class="tooltip__title">{{ serieObj.title }}</strong>
-                            <p class="tooltip__description">{{ serieObj.description }}</p>
+    <div>
+        <div :class="['fr-container fr-card--no-icon fr-card--shadow fr-p-2w subContainer databox-card']">
+            <div class="fr-grid-row fr-grid-row--gutters">
+                <div class="fr-col-12 subContainer__title">
+                    <div class="subContainer__icon">
+                        <h4 class="serie__title fr-h6 fr-mb-0">
+                            <span id="tooltip-target">{{ serieObj.title }}</span>
+                        </h4>
+                        <span class="icon-container">
+                            <span class="serie__icon fr-icon-question-line fr-icon--sm fr-pl-1w" aria-hidden="true"
+                                @click="toggleTooltip"></span>
+                            <div v-if="tooltipVisible" role="tooltip" id="tooltip" class="tooltip"
+                                :aria-labelledby="'tooltip-target'">
+                                <div class="tooltip__triangle"></div>
+                                <strong class="tooltip__title">{{ serieObj.title }}</strong>
+                                <p class="tooltip__description">{{ serieObj.description }}</p>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="fr-col-3 subContainer__fullScreenIcon">
+                        <button title="Plein écran" type="button"
+                            class="fr-btn fr-btn--tertiary-no-outline fr-p-0" @click="openModal">
+                            <span class="fr-icon-modal-fill" aria-label="Afficher la modale" aria-hidden="true"></span>
+                        </button>
+                        <button  title="dropdow" type="button" class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0" @click="toggleDropdown">
+                            <span class="fr-icon-more-line" aria-hidden="true"></span>
+                        </button>
+                        <div class="dropdown-menu" :class="{ show: isDropdownOpen }">
+                            <a class="dropdown-item">Action databox</a>
+                            <a class="dropdown-item">Action databox</a>
+                            <a class="dropdown-item">Action databox</a>
                         </div>
-                    </span>
-                </div>
-                <div class="fr-col-3 subContainer__fullScreenIcon">
-                    <button aria-label="Plein écran" title="Plein écran" type="submit"
-                        class="fr-btn fr-btn--tertiary-no-outline" data-fr-opened="false"
-                        :aria-controls="'fr-modal-' + serieObj.id" id="full-screen" @click="toggleFullScreen">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"
-                            aria-label="Afficher la modale" aria-hidden="true">
-                            <path
-                                d="M21.3333 9.99951H22.6666V13.9995H21.3333V11.3328H18.6666V9.99951H21.3333ZM10.6666 9.99951H13.3333V11.3328H10.6666V13.9995H9.33325V9.99951H10.6666ZM21.3333 20.6662V17.9995H22.6666V21.9995H18.6666V20.6662H21.3333ZM10.6666 20.6662H13.3333V21.9995H9.33325V17.9995H10.6666V20.6662Z"
-                                fill="#00008F" />
-                            <rect x="0.5" y="0.499512" width="31" height="31" stroke="#DDDDDD" />
-                        </svg>
-                    </button>
-                    <button class="dropdown-toggle" @click="toggleDropdown">
-                        <span class="fr-icon-more-line" aria-hidden="true"></span>
-                    </button>
-                    <div class="dropdown-menu" :class="{ show: isDropdownOpen }">
-                        <a class="dropdown-item">Action databox</a>
-                        <a class="dropdown-item">Action databox</a>
-                        <a class="dropdown-item">Action databox</a>
                     </div>
                 </div>
-            </div>
-            <!-- Description and up/down tags -->
-            <div v-if="serieObj.indicator" class="fr-col-12 subContainer__subSection">
-                <!-- <p class="fr-text--sm fr-m-0 fr-p-0">{{ serieObj.description }}</p> -->
-                <div class="up-down__container">
-                    <p class="fr-text--xs fr-m-0" v-if="serieObj.trendValue.includes('-')">
-                        En baisse de
-                        <span class="fr-badge fr-badge--brown-caramel fr-badge--sm"
-                            :aria-label="'Baisse de ' + serieObj.trendValue.replace('-', '').trim()">
-                            <span aria-hidden="true">↘ </span>
-                            {{ serieObj.trendValue.replace("-", "").trim() }} %
-                        </span>
-                    </p>
-                    <p class="fr-text--xs fr-m-0" v-else>
-                        En hausse de
-                        <span class="fr-badge fr-badge--green-emeraude fr-badge--sm"
-                            :aria-label="'Hausse de ' + serieObj.trendValue.trim()">
-                            <span aria-hidden="true">↗ </span>
-                            {{ serieObj.trendValue.trim() }} %
-                        </span>
-                    </p>
-                </div>
-            </div>
-            <!-- Display indicator value -->
-            <div class="fr-col-12 subContainer__contentIndicator" v-if="serieObj.indicator">
-                <p class="fr-display--xs">{{ serieObj.value }}</p>
-            </div>
-
-            <!-- TO IMPROVE  DROP DoWN SELECT-->
-            <div v-if="serieObj.add_sources && serieObj.select_options.length > 0"
-                class="fr-col-12 subContainer__selectSection">
-                <select-source :id_select="widgetId" :optiondefault="serieObj.option_default"
-                    :lsOptions="serieObj.select_options" @select-source="transfertSourceOption">
-                </select-source>
-            </div>
-            <div class="fr-col-12 subContainer__chart" v-if="showGraph && serieObj.component">
-                <div class="subContainer__chart--section">
-                    <p class="text subContainer__chart--section--unit">
-                        {{ serieObj.unitValue }}
-                    </p>
-                </div>
-                <div class="subContainer__chart--canvas">
-                    <!-- <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3","5"]]'
-                                y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]'>
-                    </bar-chart> -->
-                    <component :is="serieObj.component" v-bind="stringifiedSerieValues"></component>
-                </div>
-            </div>
-
-            <div class="table-responsive">
-                <div v-if="!showGraph || serieObj.istable">
-                    <table-vue :captionTitle="serieObj.title" :tablevue_data="serieObj.table"></table-vue>
-                </div>
-            </div>
-
-            <!-- Chart legend -->
-            <div class="subContainer__legendContainer" v-if="
-                serieObj.display_legend &&
-                !serieObj.indicator &&
-                showGraph &&
-                serieObj.component
-            ">
-                <div class="subContainer__legend" v-for="index in serieObj.serie_values.y.length" :key="index">
-                    <div class="subContainer__legend--icon" :style="{
-                        'background-color': getHexaFromName(
-                            serieObj.serie_values.color[index - 1]
-                        ),
-                    }"></div>
-                    <div>
-                        <p class="fr-m-0 fr-text--xs">
-                            {{ serieObj.serie_values.name[index - 1] }}
+                <!-- Description and up/down tags -->
+                <div v-if="serieObj.indicator" class="fr-col-12 subContainer__subSection">
+                    <!-- <p class="fr-text--sm fr-m-0 fr-p-0">{{ serieObj.description }}</p> -->
+                    <div class="up-down__container">
+                        <p class="fr-text--xs fr-m-0" v-if="serieObj.trendValue.includes('-')">
+                            En baisse de
+                            <span class="fr-badge fr-badge--brown-caramel fr-badge--sm"
+                                :aria-label="'Baisse de ' + serieObj.trendValue.replace('-', '').trim()">
+                                <span aria-hidden="true">↘ </span>
+                                {{ serieObj.trendValue.replace("-", "").trim() }} %
+                            </span>
+                        </p>
+                        <p class="fr-text--xs fr-m-0" v-else>
+                            En hausse de
+                            <span class="fr-badge fr-badge--green-emeraude fr-badge--sm"
+                                :aria-label="'Hausse de ' + serieObj.trendValue.trim()">
+                                <span aria-hidden="true">↗ </span>
+                                {{ serieObj.trendValue.trim() }} %
+                            </span>
                         </p>
                     </div>
                 </div>
-            </div>
-
-            <!-- Source, update and icons -->
-            <div class="fr-col-12 subContainer__footer-container">
-                <div class="fr-pt-1w subContainer__footer-text">
-                    <p class="fr-text--xs fr-mb-1w">
-                        <strong>Source : </strong>{{ serieObj.source }} ,
-                        <strong>Mis à jour :</strong>
-                        {{ serieObj.update_date }}
-                    </p>
+                <!-- Display indicator value -->
+                <div class="fr-col-12 subContainer__contentIndicator" v-if="serieObj.indicator">
+                    <p class="fr-display--xs">{{ serieObj.value }}</p>
                 </div>
-                <div class="fr-ml-md-6w fr-pt-1w subContainer__footer-icon">
-                    <!-- Chart and table button -->
-                    <div class="fr-col-12 subContainer__segmented-controls" v-if="serieObj.component">
-                        <div class="subContainer__calltoaction fr-pr-1w">
+
+                <!-- TO IMPROVE  DROP DoWN SELECT-->
+                <div v-if="serieObj.add_sources && serieObj.select_options.length > 0"
+                    class="fr-col-12 subContainer__selectSection">
+                    <select-source :id_select="widgetId" :optiondefault="serieObj.option_default"
+                        :lsOptions="serieObj.select_options" @select-source="transfertSourceOption">
+                    </select-source>
+                </div>
+                <div class="fr-col-12 subContainer__chart" v-if="showGraph && serieObj.component">
+                    <div class="subContainer__chart--section">
+                        <p class="text subContainer__chart--section--unit">
+                            {{ serieObj.unitValue }}
+                        </p>
+                    </div>
+                    <div class="subContainer__chart--canvas">
+                        <div :is="serieObj.component" v-bind="stringifiedSerieValues"></div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <div v-if="!showGraph || serieObj.istable">
+                        <table-vue :captionTitle="serieObj.title" :tablevue_data="serieObj.table"></table-vue>
+                    </div>
+                </div>
+
+                <!-- Chart legend -->
+                <div class="subContainer__legendContainer"
+                v-if="serieObj.display_legend && !serieObj.indicator && showGraph && serieObj.component
+                ">
+                    <div class="subContainer__legend" v-for="index in serieObj.serie_values.y.length" :key="index">
+                        <div class="subContainer__legend--icon" :style="{
+                            'background-color': getHexaFromName(
+                                serieObj.serie_values.color[index - 1]
+                            ),
+                        }"></div>
+                        <div>
+                            <p class="fr-m-0 fr-text--xs">
+                                {{ serieObj.serie_values.name[index - 1] }}
+                            </p>
                         </div>
-                        <segmented-controls :showIcons="true" @chart-selected="handleChartSelected"
-                            :idcontrol="serieObj.id_accordion + '1'">
-                        </segmented-controls>
+                    </div>
+                </div>
+
+                <!-- Source, update and icons -->
+                <div class="fr-col-12 subContainer__footer-container fr-mt-4v">
+                    <div class="fr-pt-1w subContainer__footer-text">
+                        <p class="fr-text--xs fr-mb-0">
+                            <strong>Source : </strong>{{ serieObj.source }} ,
+                            <strong>Mis à jour :</strong>
+                            {{ serieObj.update_date }}
+                        </p>
+                    </div>
+                    <div class="fr-ml-md-6w fr-pt-1w subContainer__footer-icon">
+                        <!-- Chart and table button -->
+                        <div class="fr-col-12 subContainer__segmented-controls" v-if="serieObj.component">
+                            <div class="subContainer__calltoaction fr-pr-1w">
+                            </div>
+                            <segmented-controls :showIcons="true" @chart-selected="handleChartSelected"
+                                :idcontrol="serieObj.id_accordion + '1'">
+                            </segmented-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modale LG -->
+        <div v-if="isModalOpen" class="fr-modal-overlay" @click="closeModal">
+            <div class="fr-modal-content" @click.stop>
+                <div class="fr-modal__body">
+                    <div class="fr-modal__header">
+                        <button class="fr-btn--close fr-btn" @click="closeModal" title="Fermer la fenêtre modale">
+                            Fermer
+                        </button>
+                    </div>
+                    <div class="fr-modal__content">
+                        <div class="fr-grid-row fr-grid-row--gutters">
+                            <div class="fr-col-12 subContainer__title">
+                                <div class="subContainer__icon">
+                                    <h4 class="serie__title fr-h6 fr-mb-0">
+                                        <span id="tooltip-target">{{ serieObj.title }}</span>
+                                    </h4>
+                                    <span class="icon-container">
+                                        <span class="serie__icon fr-icon-question-line fr-icon--sm fr-pl-1w"
+                                            aria-hidden="true" @click="toggleTooltip"></span>
+                                        <div v-if="tooltipVisible" role="tooltip" id="tooltip" class="tooltip"
+                                            :aria-labelledby="'tooltip-target'">
+                                            <div class="tooltip__triangle"></div>
+                                            <strong class="tooltip__title">{{ serieObj.title }}</strong>
+                                            <p class="tooltip__description">{{ serieObj.description }}</p>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="fr-col-3 subContainer__fullScreenIcon">
+                                    <button v-if="!isModalOpen" aria-label="Plein écran" title="Plein écran" type="button"
+                                        class="fr-btn fr-btn--tertiary-no-outline" @click="openModal">
+                                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg" aria-label="Afficher la modale"
+                                            aria-hidden="true">
+                                            <path
+                                                d="M21.3333 9.99951H22.6666V13.9995H21.3333V11.3328H18.6666V9.99951H21.3333ZM10.6666 9.99951H13.3333V11.3328H10.6666V13.9995H9.33325V9.99951H10.6666ZM21.3333 20.6662V17.9995H22.6666V21.9995H18.6666V20.6662H21.3333ZM10.6666 20.6662H13.3333V21.9995H9.33325V17.9995H10.6666V20.6662Z"
+                                                fill="#00008F" />
+                                            <rect x="0.5" y="0.499512" width="31" height="31" stroke="#DDDDDD" />
+                                        </svg>
+                                    </button>
+                                    <button class="dropdown-toggle" @click="toggleDropdown">
+                                        <span class="fr-icon-more-line" aria-hidden="true"></span>
+                                    </button>
+                                    <div class="dropdown-menu" :class="{ show: isDropdownOpen }">
+                                        <a class="dropdown-item">Action databox</a>
+                                        <a class="dropdown-item">Action databox</a>
+                                        <a class="dropdown-item">Action databox</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Description and up/down tags -->
+                            <div v-if="serieObj.indicator" class="fr-col-12 subContainer__subSection">
+                                <!-- <p class="fr-text--sm fr-m-0 fr-p-0">{{ serieObj.description }}</p> -->
+                                <div class="up-down__container">
+                                    <p class="fr-text--xs fr-m-0" v-if="serieObj.trendValue.includes('-')">
+                                        En baisse de
+                                        <span class="fr-badge fr-badge--brown-caramel fr-badge--sm"
+                                            :aria-label="'Baisse de ' + serieObj.trendValue.replace('-', '').trim()">
+                                            <span aria-hidden="true">↘ </span>
+                                            {{ serieObj.trendValue.replace("-", "").trim() }} %
+                                        </span>
+                                    </p>
+                                    <p class="fr-text--xs fr-m-0" v-else>
+                                        En hausse de
+                                        <span class="fr-badge fr-badge--green-emeraude fr-badge--sm"
+                                            :aria-label="'Hausse de ' + serieObj.trendValue.trim()">
+                                            <span aria-hidden="true">↗ </span>
+                                            {{ serieObj.trendValue.trim() }} %
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Display indicator value -->
+                            <div class="fr-col-12 subContainer__contentIndicator" v-if="serieObj.indicator">
+                                <p class="fr-display--xs">{{ serieObj.value }}</p>
+                            </div>
+
+                            <!-- TO IMPROVE  DROP DoWN SELECT-->
+                            <div v-if="serieObj.add_sources && serieObj.select_options.length > 0"
+                                class="fr-col-12 subContainer__selectSection">
+                                <select-source :id_select="widgetId" :optiondefault="serieObj.option_default"
+                                    :lsOptions="serieObj.select_options" @select-source="transfertSourceOption">
+                                </select-source>
+                            </div>
+                            <div class="fr-col-12 subContainer__chart" v-if="showGraph && serieObj.component">
+                                <div class="subContainer__chart--section">
+                                    <p class="text subContainer__chart--section--unit">
+                                        {{ serieObj.unitValue }}
+                                    </p>
+                                </div>
+                                <div class="subContainer__chart--canvas">
+                                    <!-- <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3","5"]]'
+                                y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]'>
+                    </bar-chart> -->
+                                    <component :is="serieObj.component" v-bind="stringifiedSerieValues"></component>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <div v-if="!showGraph || serieObj.istable">
+                                    <table-vue :captionTitle="serieObj.title"
+                                        :tablevue_data="serieObj.table"></table-vue>
+                                </div>
+                            </div>
+
+                            <!-- Chart legend -->
+                            <div class="subContainer__legendContainer" v-if="
+                                serieObj.display_legend &&
+                                !serieObj.indicator &&
+                                showGraph &&
+                                serieObj.component
+                            ">
+                                <div class="subContainer__legend" v-for="index in serieObj.serie_values.y.length"
+                                    :key="index">
+                                    <div class="subContainer__legend--icon" :style="{
+                                        'background-color': getHexaFromName(
+                                            serieObj.serie_values.color[index - 1]
+                                        ),
+                                    }"></div>
+                                    <div>
+                                        <p class="fr-m-0 fr-text--xs">
+                                            {{ serieObj.serie_values.name[index - 1] }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Source, update and icons -->
+                            <div class="fr-col-12 subContainer__footer-container">
+                                <div class="fr-pt-1w subContainer__footer-text">
+                                    <p class="fr-text--xs fr-mb-1w">
+                                        <strong>Source : </strong>{{ serieObj.source }} ,
+                                        <strong>Mis à jour :</strong>
+                                        {{ serieObj.update_date }}
+                                    </p>
+                                </div>
+                                <div class="fr-ml-md-6w fr-pt-1w subContainer__footer-icon">
+                                    <!-- Chart and table button -->
+                                    <div class="fr-col-12 subContainer__segmented-controls" v-if="serieObj.component">
+                                        <div class="subContainer__calltoaction fr-pr-1w">
+                                        </div>
+                                        <segmented-controls :showIcons="true" @chart-selected="handleChartSelected"
+                                            :idcontrol="serieObj.id_accordion + '1'">
+                                        </segmented-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -172,6 +311,7 @@ export default {
             isFullScreen: false,
             isDropdownOpen: false,
             tooltipVisible: false,
+            isModalOpen: false,  // Add this to track modal state
         };
     },
     props: {
@@ -289,6 +429,14 @@ export default {
         toggleTooltip() {
             // Bascule entre afficher/cacher le tooltip
             this.tooltipVisible = !this.tooltipVisible;
+        },
+        // Method to open the modal
+        openModal() {
+            this.isModalOpen = true;
+        },
+        // Method to close the modal
+        closeModal() {
+            this.isModalOpen = false;
         },
         handleClickOutside(event) {
             if (!this.$el.contains(event.target)) {
