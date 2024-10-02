@@ -1,0 +1,130 @@
+/* eslint-disable */
+<template>
+  <fieldset class="fr-segmented fr-segmented--no-legend fr-segmented--sm">
+    <div class="fr-segmented__elements">
+      <!-- Première option -->
+      <div class="fr-segmented__element">
+        <input
+          value="1"
+          type="radio"
+          :id="idcontrol + '-1'"
+          :name="idcontrol + 'segmented-2230'"
+          @click="emitChartSelected(option1Value)"
+          :checked="isOption1Checked"
+        />
+        <label class="fr-label" :for="idcontrol + '-1'" :title="option1Label">
+          <!-- Affiche l'icône ou le texte en fonction de la propriété 'showIcons' -->
+          <span
+            v-if="showIcons"
+            :class="[option1Icon, 'fr-icon', 'fr-icon--sm']"
+            aria-hidden="true"
+          ></span>
+          <span v-else>{{ option1Label }}</span>
+        </label>
+      </div>
+
+      <!-- Deuxième option -->
+      <div class="fr-segmented__element">
+        <input
+          value="2"
+          type="radio"
+          :id="idcontrol + '-2'"
+          :name="idcontrol + 'segmented-2230'"
+          @click="emitChartSelected(option2Value)"
+          :checked="isOption2Checked"
+        />
+        <label class="fr-label" :for="idcontrol + '-2'" :title="option2Label">
+          <!-- Affiche l'icône ou le texte en fonction de la propriété 'showIcons' -->
+          <span
+            v-if="showIcons"
+            :class="[option2Icon, 'fr-icon', 'fr-icon--sm']"
+            aria-hidden="true"
+          ></span>
+          <span v-else>{{ option2Label }}</span>
+        </label>
+      </div>
+    </div>
+  </fieldset>
+</template>
+
+<script>
+/* eslint-disable */
+export default {
+  props: {
+    idcontrol: {
+      type: String,
+      required: true,
+    },
+    showIcons: {
+      type: Boolean,
+      default: true, // Par défaut, affiche les icônes
+    },
+    // Nouvelles props pour personnaliser les options
+    option1Label: {
+      type: String,
+      default: 'Graphique',
+    },
+    option1Value: {
+      type: String,
+      default: 'graphique',
+    },
+    option1Icon: {
+      type: String,
+      default: 'fr-icon-pie-chart-2-fill', // Icône par défaut pour l'option 1
+    },
+    option2Label: {
+      type: String,
+      default: 'Tableau',
+    },
+    option2Value: {
+      type: String,
+      default: 'table',
+    },
+    option2Icon: {
+      type: String,
+      default: 'fr-icon-table-2', // Icône par défaut pour l'option 2
+    },
+    defaultChart: {
+      type: String,
+      default: 'graphique', // Définit le type de graphique par défaut
+    },
+  },
+  data() {
+    return {
+      selectedChart: this.defaultChart,
+    };
+  },
+  computed: {
+    isOption1Checked() {
+      return this.selectedChart === this.option1Value;
+    },
+    isOption2Checked() {
+      return this.selectedChart === this.option2Value;
+    },
+  },
+  mounted() {
+    // Émet le type de graphique par défaut lors du montage du composant
+    this.emitChartSelected(this.defaultChart);
+  },
+  methods: {
+    emitChartSelected(type) {
+      this.selectedChart = type;
+      this.$emit('chart-selected', type);
+    },
+  },
+};
+</script>
+
+<style scoped>
+/* Cache le texte pour les lecteurs d'écran, si nécessaire */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+</style>

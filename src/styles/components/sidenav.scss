@@ -1,0 +1,50 @@
+.sidenav {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 472px;
+  background-color: white;
+  z-index: 1000;
+  overflow-y: scroll;
+
+  @media (max-width: 470px) {
+    width: 100%;
+  }
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &--close-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border: 1px solid #000091;
+      color: #000091;
+      background: none;
+      padding: 0;
+      margin-left: auto;
+      cursor: pointer;
+    }
+  }
+
+  &__line {
+    border: 0;
+    height: 1px;
+    background: #DDDDDD;
+    margin-bottom:1rem;
+  }
+
+  &__fieldset {
+    border: none;
+  }
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 1;
+}

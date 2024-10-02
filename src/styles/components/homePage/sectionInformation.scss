@@ -1,0 +1,15 @@
+.subContainer {
+  &__link {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-self: flex-start;
+  }
+
+  &__img {
+    display: flex;
+    margin-top: -57px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}

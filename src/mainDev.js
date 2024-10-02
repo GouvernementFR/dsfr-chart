@@ -11,6 +11,8 @@ import MapChartReg from './components/MapChartReg'
 import GaugeChart from './components/GaugeChart'
 import TableChart from './components/TableChart'
 import RadarChart from './components/RadarChart'
+import DataBox from './components/DataBox.vue'
+
 import '../node_modules/@gouvfr/dsfr/dist/dsfr.module.min.js'
 
 import vueCustomElement from 'vue-custom-element'
@@ -23,6 +25,7 @@ Vue.config.productionTip = false
 
 Vue.use(vueCustomElement)
 
+Vue.customElement('data-box', DataBox)
 Vue.customElement('line-chart', LineChart)
 Vue.customElement('bar-chart', BarChart)
 Vue.customElement('map-chart', MapChart)
@@ -34,3 +37,4 @@ Vue.customElement('map-chart-reg', MapChartReg)
 Vue.customElement('gauge-chart', GaugeChart)
 Vue.customElement('table-chart', TableChart)
 Vue.customElement('radar-chart', RadarChart)
+Vue.customElement('data-box', DataBox)
