@@ -15,6 +15,15 @@ export const convertFloatToHuman = function (float) {
   }
 }
 
+export function changeDateFormat (date) {
+  if (date !== undefined) {
+    const dateArray = date.split('-')
+    return dateArray[2] + '-' + dateArray[1] + '-' + dateArray[0]
+  } else {
+    return ''
+  }
+}
+
 export const convertIntToHuman = function (int) {
   let res = parseFloat(int)
   if (Math.floor(res / 1000000000) >= 10) {
