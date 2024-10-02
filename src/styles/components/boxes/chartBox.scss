@@ -295,8 +295,8 @@
   /* height: 32px; */
   display: inline-block;
   /* background-color: #00008F; */
-  -webkit-mask-image: url(http://localhost:8081/img/modal-fill.svg);
-  mask-image: url(http://localhost:8081/img/modal-fill.svg);
+  -webkit-mask-image: url("/img/modal-fill.svg");
+  mask-image: url("/img/modal-fill.svg"); 
   -webkit-mask-size: cover;
   mask-size: cover;
   -webkit-mask-repeat: no-repeat;
