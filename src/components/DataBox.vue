@@ -1,46 +1,54 @@
 /* eslint-disable */
 <template>
     <div>
-        <div :class="['fr-container fr-card--no-icon fr-card--shadow fr-p-2w subContainer databox-card']">
+        <div :class="['fr-container fr-card--no-icon fr-p-2w subContainer databox-card']">
             <div class="fr-grid-row fr-grid-row--gutters">
                 <div class="fr-col-12 subContainer__title">
                     <div class="subContainer__icon">
-                        <h4 class="serie__title fr-h6 fr-mb-0">
-                            <span id="tooltip-target">{{ serieObj.title }}</span>
-                        </h4>
-                        <span class="icon-container">
-                            <span class="serie__icon fr-icon-question-line fr-icon--sm fr-pl-1w" aria-hidden="true"
-                                @click="toggleTooltip"></span>
-                            <div v-if="tooltipVisible" role="tooltip" id="tooltip" class="tooltip"
-                                :aria-labelledby="'tooltip-target'">
-                                <div class="tooltip__triangle"></div>
-                                <strong class="tooltip__title">{{ serieObj.title }}</strong>
-                                <p class="tooltip__description">{{ serieObj.description }}</p>
-                            </div>
+                        <transition name="fade">
+                            <h4 v-if="shortTitle" class="serie__title fr-h6 fr-mb-0">
+                                <span id="tooltip-target">{{ serieObj.title }}</span> <!-- Short title -->
+                            </h4>
+                            <h4 v-else class="serie__title fr-h6 fr-mb-0">
+                                <span id="tooltip-target">{{ serieObj.long_title }}</span> <!-- Long title -->
+                            </h4>
+                        </transition>
+                        <button class="fr-btn--tooltip fr-btn" type="button" id="button-2996"
+                            aria-describedby="tooltip-2996">
+                        </button>
+                        <span class="fr-tooltip fr-placement" id="tooltip-2996" role="tooltip" aria-hidden="true">
+                            <p v-if="shortTitle" class="tooltip__title">
+                                <span id="tooltip-target">{{ serieObj.title }}</span>
+                            </p>
+                            <p v-else class="tooltip__title">
+                                <span id="tooltip-target">{{ serieObj.long_title }}</span> <!-- Long title -->
+                            </p>
+                            <p class="tooltip__description">{{ serieObj.description }}</p>
                         </span>
                     </div>
                     <div class="fr-col-3 subContainer__fullScreenIcon">
-                        <button title="Plein écran" type="button"
-                            class="fr-btn fr-btn--tertiary-no-outline fr-p-0" @click="openModal">
+                        <button title="Plein écran" type="button" class="fr-btn fr-btn--tertiary-no-outline fr-p-0"
+                            @click="openModal">
                             <span class="fr-icon-modal-fill" aria-label="Afficher la modale" aria-hidden="true"></span>
                         </button>
-                        <button  title="dropdow" type="button" class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0" @click="toggleDropdown">
+                        <button title="dropdow" type="button"
+                            class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0" @click="toggleDropdown">
                             <span class="fr-icon-more-line" aria-hidden="true"></span>
                         </button>
                         <div class="dropdown-menu" :class="{ show: isDropdownOpen }">
-                            <a class="dropdown-item">Action databox</a>
-                            <a class="dropdown-item">Action databox</a>
-                            <a class="dropdown-item">Action databox</a>
+                            <button class="dropdown-item">Action databox</button>
+                            <button class="dropdown-item">Action databox</button>
+                            <button class="dropdown-item">Action databox</button>
                         </div>
                     </div>
                 </div>
                 <!-- Description and up/down tags -->
-                <div v-if="serieObj.indicator" class="fr-col-12 subContainer__subSection">
+                <div v-if="localSerieObj.indicator" class="fr-col-12 subContainer__subSection">
                     <!-- <p class="fr-text--sm fr-m-0 fr-p-0">{{ serieObj.description }}</p> -->
                     <div class="up-down__container">
                         <p class="fr-text--xs fr-m-0" v-if="serieObj.trendValue.includes('-')">
                             En baisse de
-                            <span class="fr-badge fr-badge--brown-caramel fr-badge--sm"
+                            <span class="fr-badge fr-badge--brown-caramel fr-badge--sm fr-ml-1v"
                                 :aria-label="'Baisse de ' + serieObj.trendValue.replace('-', '').trim()">
                                 <span aria-hidden="true">↘ </span>
                                 {{ serieObj.trendValue.replace("-", "").trim() }} %
@@ -48,7 +56,7 @@
                         </p>
                         <p class="fr-text--xs fr-m-0" v-else>
                             En hausse de
-                            <span class="fr-badge fr-badge--green-emeraude fr-badge--sm"
+                            <span class="fr-badge fr-badge--green-emeraude fr-badge--sm fr-ml-1v"
                                 :aria-label="'Hausse de ' + serieObj.trendValue.trim()">
                                 <span aria-hidden="true">↗ </span>
                                 {{ serieObj.trendValue.trim() }} %
@@ -57,7 +65,7 @@
                     </div>
                 </div>
                 <!-- Display indicator value -->
-                <div class="fr-col-12 subContainer__contentIndicator" v-if="serieObj.indicator">
+                <div class="fr-col-12 subContainer__contentIndicator" v-if="localSerieObj.indicator">
                     <p class="fr-display--xs">{{ serieObj.value }}</p>
                 </div>
 
@@ -68,7 +76,8 @@
                         :lsOptions="serieObj.select_options" @select-source="transfertSourceOption">
                     </select-source>
                 </div>
-                <div class="fr-col-12 subContainer__chart" v-if="showGraph && serieObj.component">
+                <div class="fr-col-12 subContainer__chart"
+                    v-if="!localSerieObj.indicator && serieObj.showGraph && serieObj.component">
                     <div class="subContainer__chart--section">
                         <p class="text subContainer__chart--section--unit">
                             {{ serieObj.unitValue }}
@@ -80,14 +89,13 @@
                 </div>
 
                 <div class="table-responsive">
-                    <div v-if="!showGraph || serieObj.istable">
+                    <div v-if="!serieObj.showGraph || serieObj.istable">
                         <table-vue :captionTitle="serieObj.title" :tablevue_data="serieObj.table"></table-vue>
                     </div>
                 </div>
 
                 <!-- Chart legend -->
-                <div class="subContainer__legendContainer"
-                v-if="serieObj.display_legend && !serieObj.indicator && showGraph && serieObj.component
+                <div class="subContainer__legendContainer" v-if="serieObj.display_legend && !localSerieObj.indicator && serieObj.showGraph && serieObj.component
                 ">
                     <div class="subContainer__legend" v-for="index in serieObj.serie_values.y.length" :key="index">
                         <div class="subContainer__legend--icon" :style="{
@@ -104,7 +112,7 @@
                 </div>
 
                 <!-- Source, update and icons -->
-                <div class="fr-col-12 subContainer__footer-container fr-mt-4v">
+                <div class="fr-col-12 subContainer__footer-container">
                     <div class="fr-pt-1w subContainer__footer-text">
                         <p class="fr-text--xs fr-mb-0">
                             <strong>Source : </strong>{{ serieObj.source }} ,
@@ -112,7 +120,7 @@
                             {{ serieObj.update_date }}
                         </p>
                     </div>
-                    <div class="fr-ml-md-6w fr-pt-1w subContainer__footer-icon">
+                    <div v-if="!localSerieObj.indicator" class="fr-ml-md-6w fr-pt-1w subContainer__footer-icon">
                         <!-- Chart and table button -->
                         <div class="fr-col-12 subContainer__segmented-controls" v-if="serieObj.component">
                             <div class="subContainer__calltoaction fr-pr-1w">
@@ -138,49 +146,50 @@
                         <div class="fr-grid-row fr-grid-row--gutters">
                             <div class="fr-col-12 subContainer__title">
                                 <div class="subContainer__icon">
-                                    <h4 class="serie__title fr-h6 fr-mb-0">
-                                        <span id="tooltip-target">{{ serieObj.title }}</span>
-                                    </h4>
-                                    <span class="icon-container">
-                                        <span class="serie__icon fr-icon-question-line fr-icon--sm fr-pl-1w"
-                                            aria-hidden="true" @click="toggleTooltip"></span>
-                                        <div v-if="tooltipVisible" role="tooltip" id="tooltip" class="tooltip"
-                                            :aria-labelledby="'tooltip-target'">
-                                            <div class="tooltip__triangle"></div>
-                                            <strong class="tooltip__title">{{ serieObj.title }}</strong>
-                                            <p class="tooltip__description">{{ serieObj.description }}</p>
-                                        </div>
+                                    <transition name="fade">
+                                        <h4 v-if="shortTitle" class="serie__title fr-h6 fr-mb-0">
+                                            <span id="tooltip-target">{{ serieObj.title }}</span> <!-- Short title -->
+                                        </h4>
+                                        <h4 v-else class="serie__title fr-h6 fr-mb-0">
+                                            <span id="tooltip-target">{{ serieObj.long_title }}</span>
+                                            <!-- Long title -->
+                                        </h4>
+                                    </transition>
+                                    <button class="fr-btn--tooltip fr-btn" type="button" id="button-2997"
+                                        aria-describedby="tooltip-2997">
+                                    </button>
+                                    <span class="fr-tooltip fr-placement" id="tooltip-2997" role="tooltip"
+                                        aria-hidden="true">
+                                        <p v-if="shortTitle" class="tooltip__title">
+                                            <span id="tooltip-target">{{ serieObj.title }}</span>
+                                        </p>
+                                        <p v-else class="tooltip__title">
+                                            <span id="tooltip-target">{{ serieObj.long_title }}</span>
+                                            <!-- Long title -->
+                                        </p>
+                                        <p class="tooltip__description">{{ serieObj.description }}</p>
                                     </span>
                                 </div>
                                 <div class="fr-col-3 subContainer__fullScreenIcon">
-                                    <button v-if="!isModalOpen" aria-label="Plein écran" title="Plein écran" type="button"
-                                        class="fr-btn fr-btn--tertiary-no-outline" @click="openModal">
-                                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg" aria-label="Afficher la modale"
-                                            aria-hidden="true">
-                                            <path
-                                                d="M21.3333 9.99951H22.6666V13.9995H21.3333V11.3328H18.6666V9.99951H21.3333ZM10.6666 9.99951H13.3333V11.3328H10.6666V13.9995H9.33325V9.99951H10.6666ZM21.3333 20.6662V17.9995H22.6666V21.9995H18.6666V20.6662H21.3333ZM10.6666 20.6662H13.3333V21.9995H9.33325V17.9995H10.6666V20.6662Z"
-                                                fill="#00008F" />
-                                            <rect x="0.5" y="0.499512" width="31" height="31" stroke="#DDDDDD" />
-                                        </svg>
-                                    </button>
-                                    <button class="dropdown-toggle" @click="toggleDropdown">
+                                    <button title="dropdow" type="button"
+                                        class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0"
+                                        @click="toggleDropdown">
                                         <span class="fr-icon-more-line" aria-hidden="true"></span>
                                     </button>
                                     <div class="dropdown-menu" :class="{ show: isDropdownOpen }">
-                                        <a class="dropdown-item">Action databox</a>
-                                        <a class="dropdown-item">Action databox</a>
-                                        <a class="dropdown-item">Action databox</a>
+                                        <button class="dropdown-item">Action databox</button>
+                                        <button class="dropdown-item">Action databox</button>
+                                        <button class="dropdown-item">Action databox</button>
                                     </div>
                                 </div>
                             </div>
                             <!-- Description and up/down tags -->
-                            <div v-if="serieObj.indicator" class="fr-col-12 subContainer__subSection">
+                            <div v-if="localSerieObj.indicator" class="fr-col-12 subContainer__subSection">
                                 <!-- <p class="fr-text--sm fr-m-0 fr-p-0">{{ serieObj.description }}</p> -->
                                 <div class="up-down__container">
                                     <p class="fr-text--xs fr-m-0" v-if="serieObj.trendValue.includes('-')">
                                         En baisse de
-                                        <span class="fr-badge fr-badge--brown-caramel fr-badge--sm"
+                                        <span class="fr-badge fr-badge--brown-caramel fr-badge--sm fr-ml-1v"
                                             :aria-label="'Baisse de ' + serieObj.trendValue.replace('-', '').trim()">
                                             <span aria-hidden="true">↘ </span>
                                             {{ serieObj.trendValue.replace("-", "").trim() }} %
@@ -188,7 +197,7 @@
                                     </p>
                                     <p class="fr-text--xs fr-m-0" v-else>
                                         En hausse de
-                                        <span class="fr-badge fr-badge--green-emeraude fr-badge--sm"
+                                        <span class="fr-badge fr-badge--green-emeraude fr-badge--sm fr-ml-1v"
                                             :aria-label="'Hausse de ' + serieObj.trendValue.trim()">
                                             <span aria-hidden="true">↗ </span>
                                             {{ serieObj.trendValue.trim() }} %
@@ -197,7 +206,7 @@
                                 </div>
                             </div>
                             <!-- Display indicator value -->
-                            <div class="fr-col-12 subContainer__contentIndicator" v-if="serieObj.indicator">
+                            <div class="fr-col-12 subContainer__contentIndicator" v-if="localSerieObj.indicator">
                                 <p class="fr-display--xs">{{ serieObj.value }}</p>
                             </div>
 
@@ -208,33 +217,30 @@
                                     :lsOptions="serieObj.select_options" @select-source="transfertSourceOption">
                                 </select-source>
                             </div>
-                            <div class="fr-col-12 subContainer__chart" v-if="showGraph && serieObj.component">
+                            <div class="fr-col-12 subContainer__chart"></div>
+                            <div class="fr-col-2"></div>
+                            <div class="fr-col-8 subContainer__chart"
+                                v-if="!localSerieObj.indicator && serieObj.showGraph && serieObj.component">
                                 <div class="subContainer__chart--section">
                                     <p class="text subContainer__chart--section--unit">
                                         {{ serieObj.unitValue }}
                                     </p>
                                 </div>
                                 <div class="subContainer__chart--canvas">
-                                    <!-- <bar-chart x='[["4", "2", "3", "5"], ["4", "2", "3", "5"], ["4", "2", "3","5"]]'
-                                y='[[40, 50, 10, 5], [10, 20, 30, 12], [12, 12, 20, 23]]'>
-                    </bar-chart> -->
-                                    <component :is="serieObj.component" v-bind="stringifiedSerieValues"></component>
+                                    <div :is="serieObj.component" v-bind="stringifiedSerieValues"></div>
                                 </div>
                             </div>
+                            <div class="fr-col-2"></div>
 
                             <div class="table-responsive">
-                                <div v-if="!showGraph || serieObj.istable">
+                                <div v-if="!serieObj.showGraph || serieObj.istable">
                                     <table-vue :captionTitle="serieObj.title"
                                         :tablevue_data="serieObj.table"></table-vue>
                                 </div>
                             </div>
 
                             <!-- Chart legend -->
-                            <div class="subContainer__legendContainer" v-if="
-                                serieObj.display_legend &&
-                                !serieObj.indicator &&
-                                showGraph &&
-                                serieObj.component
+                            <div class="subContainer__legendContainer" v-if="serieObj.display_legend && !localSerieObj.indicator && serieObj.showGraph && serieObj.component
                             ">
                                 <div class="subContainer__legend" v-for="index in serieObj.serie_values.y.length"
                                     :key="index">
@@ -252,15 +258,16 @@
                             </div>
 
                             <!-- Source, update and icons -->
-                            <div class="fr-col-12 subContainer__footer-container">
+                            <div class="fr-col-12 subContainer__footer-container fr-mt-4v">
                                 <div class="fr-pt-1w subContainer__footer-text">
-                                    <p class="fr-text--xs fr-mb-1w">
+                                    <p class="fr-text--xs fr-mb-0">
                                         <strong>Source : </strong>{{ serieObj.source }} ,
                                         <strong>Mis à jour :</strong>
                                         {{ serieObj.update_date }}
                                     </p>
                                 </div>
-                                <div class="fr-ml-md-6w fr-pt-1w subContainer__footer-icon">
+                                <div v-if="!localSerieObj.indicator"
+                                    class="fr-ml-md-6w fr-pt-1w subContainer__footer-icon">
                                     <!-- Chart and table button -->
                                     <div class="fr-col-12 subContainer__segmented-controls" v-if="serieObj.component">
                                         <div class="subContainer__calltoaction fr-pr-1w">
@@ -275,6 +282,23 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <!-- Ajout des switches en dessous -->
+        <div class="fr-toggle fr-mt-6v">
+            <!-- Le v-model est lié à localSerieObj.indicator -->
+            <input type="checkbox" class="fr-toggle__input" aria-describedby="toggle-4633-messages" id="toggle-4633"
+                v-model="localSerieObj.indicator">
+            <label class="fr-toggle__label" for="toggle-4633">Afficher l'indicateur</label>
+            <div class="fr-messages-group" id="toggle-4633-messages" aria-live="polite"></div>
+        </div>
+        <div class="fr-toggle fr-mt-6v">
+            <!-- The v-model is bound to the 'shortTitle' property -->
+            <input type="checkbox" class="fr-toggle__input" aria-describedby="toggle-title-messages" id="toggle-title"
+                v-model="shortTitle" />
+            <label class="fr-toggle__label" for="toggle-title">
+                Afficher le titre court
+            </label>
+            <div class="fr-messages-group" id="toggle-title-messages" aria-live="polite"></div>
         </div>
     </div>
 </template>
@@ -307,11 +331,11 @@ export default {
     data() {
         return {
             widgetId: "",
-            showGraph: true,
             isFullScreen: false,
             isDropdownOpen: false,
-            tooltipVisible: false,
             isModalOpen: false,  // Add this to track modal state
+            localSerieObj: { ...this.serieObj },
+            shortTitle: true,
         };
     },
     props: {
@@ -323,9 +347,10 @@ export default {
             type: Object,
             required: false,
             default: () => ({
-                // title: 'Ceci est un texte long qui me permet de mettre à partir de 2 lignes les éléments dans une tooltip, avec un affichage spécial',
+                long_title: 'Ceci est un texte long qui me permet de mettre à partir de 2 lignes les éléments dans une tooltip, avec un affichage spécial',
                 title: 'Ceci est un texte court',
-                description: 'Description de la dataBox',
+                description: 'Ceci est un texte descriptif, il est visible uniquement au clic sur le button icône',
+                showGraph: false,
                 indicator: false,
                 trendValue: '10',
                 value: '100',
@@ -426,10 +451,6 @@ export default {
         toggleDropdown() {
             this.isDropdownOpen = !this.isDropdownOpen;
         },
-        toggleTooltip() {
-            // Bascule entre afficher/cacher le tooltip
-            this.tooltipVisible = !this.tooltipVisible;
-        },
         // Method to open the modal
         openModal() {
             this.isModalOpen = true;
@@ -438,39 +459,10 @@ export default {
         closeModal() {
             this.isModalOpen = false;
         },
-        handleClickOutside(event) {
-            if (!this.$el.contains(event.target)) {
-                this.tooltipVisible = false;
-            }
-        },
         ...mapActions([
             'setIsSticky'
         ]),
         changeDateFormat,
-
-        toggleFullScreen() {
-            this.isFullScreen = !this.isFullScreen
-            const element = this.$el
-            if (this.isFullScreen) {
-                if (element.requestFullscreen) {
-                    element.requestFullscreen().catch((err) => {
-                        console.error('Erreur lors du passage en plein écran :', err)
-                    })
-                } else if (element.webkitRequestFullscreen) {
-                    element.webkitRequestFullscreen()
-                } else if (element.msRequestFullscreen) {
-                    element.msRequestFullscreen()
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen()
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen()
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen()
-                }
-            }
-        },
 
         downloadCSV() {
             const name = this.serieObj.title || 'data';
@@ -520,7 +512,7 @@ export default {
             this.$emit("select-source-api", selectedOption);
         },
         handleChartSelected(type) {
-            this.showGraph = type === "graphique";
+            this.serieObj.showGraph = type === "graphique";
         },
         isOpen() {
             this.setIsSticky(false);
@@ -544,10 +536,32 @@ export default {
             return result;
         },
     },
+    serieObj: {
+        handler(newValue) {
+            const currentIndicator = this.localSerieObj.indicator;
+            this.localSerieObj = { ...newValue };
+            this.localSerieObj.indicator = currentIndicator;
+        },
+        deep: true,
+    },
 };
 
 </script>
 
 <style scoped lang="scss">
 @import "../styles/components/boxes/chartBox.scss";
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s ease;
+    /* Adjust the duration and easing */
+}
+
+.fade-enter,
+.fade-leave-to
+
+/* .fade-leave-active in Vue 2.x */
+    {
+    opacity: 0;
+}
 </style>
