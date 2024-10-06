@@ -6,6 +6,8 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #dddddd;
+    height: 80px;
+    max-height: 80px;
   }
 
   &__icon {
@@ -18,6 +20,7 @@
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
+    column-gap: 5px;
   }
 
   &__selectSection {
@@ -26,7 +29,6 @@
 
   &__subSection {
     border-bottom: 1px solid #dddddd;
-    border-top: 1px solid #dddd;
   }
 
   &__segmented-controls {
@@ -34,7 +36,6 @@
     flex-direction: row;
     justify-content: flex-end;
     align-self: center;
-    // border-bottom: 1px solid #dddddd;
   }
 
   &__calltoaction {
@@ -47,6 +48,7 @@
     flex-direction: row;
     justify-content: space-between;
     border-top: 1px solid #dddddd;
+    max-height: 64px;
   }
 
   &__footer-text {
@@ -82,7 +84,6 @@
       height: 8px;
       width: 12px;
       margin-right: 5px;
-      // background-color: aqua;
     }
   }
 
@@ -97,6 +98,7 @@
   &__chart {
     display: flex;
     flex-direction: row;
+    max-height: 40%;
 
     &--section {
       display: flex;
@@ -141,6 +143,10 @@
   background: none;
   border: none;
   cursor: pointer;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dropdown-menu {
@@ -150,8 +156,8 @@
   background-color: white;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
   width: 200px;
-  right: 16px;
-  top: 60px;
+  right: 10px;
+  top: 45px;
 }
 
 .dropdown-menu.show {
@@ -160,13 +166,13 @@
 
 .dropdown-item {
   text-decoration: none;
-  /* Supprime le soulignement du lien */
   color: inherit;
-  /* Utilise la couleur héritée du parent, au lieu de la couleur par défaut du lien */
-  padding: 12px 16px;
+  padding: 10px 12px;
   display: block;
   border-bottom: 1px solid #eee;
-  font-size: .9rem;
+  font-size: 0.9rem;
+  width: 100%;
+  text-align: left;
 }
 
 .dropdown-item:hover {
@@ -193,12 +199,12 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-height: 3.6em;
+  max-height: 3.4em;
   /* Hauteur pour 2 lignes avec interligne normal */
   white-space: normal;
   /* Permet les sauts de ligne */
   font-size: 1.2rem;
-  line-height: 1.8rem;
+  line-height: 1.5rem !important;
   /* Assure une bonne hauteur de ligne pour l'ellipsis */
 }
 
@@ -206,58 +212,17 @@
   position: relative; /* Anchors the tooltip */
 }
 
-.icon-container {
-  position: relative; /* Position the tooltip relative to the icon */
-  display: inline-block; /* Ensure the icon and tooltip stay together */
+.tooltip__description {
+  font-weight: 400;
+  font-size: 0.8rem !important;
+  margin: 0;
+  line-height: 1.4;
+}
 
-  .serie__icon {
-    cursor: pointer; /* Optional, but indicates that the icon is interactive */
-  }
-
-  .tooltip {
-    width: 300px;
-    position: absolute;
-    top: 117%;
-    left: 60%;
-    transform: translateX(-50%); /* Center the tooltip horizontally */
-    background-color: #fff;
-    padding: 10px;
-    box-shadow: 0px 4px 12px 0px #00001229;
-    color: #333;
-    z-index: 999999999;
-    font-size: 0.875rem;
-    text-align: left;
-    white-space: normal;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    font-size: .8rem;
-    line-height: 1.4;
-
-    &__triangle {
-      position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 4px solid transparent;
-      border-right: 5px solid transparent;
-      border-bottom: 10px solid #fff;
-      /* box-shadow: 0px 4px 12px 0px rgba(0, 0, 18, 0.1607843137); */
-      z-index: 1;
-    }
-
-    &__title {
-      font-size: .8rem !important;
-      margin: 0;
-      font-weight: bold;
-    }
-
-    &__description {
-      font-weight: 400;
-      font-size: .8rem !important;
-      margin: 0;
-    }
-  }
+.tooltip__title {
+  font-size: .8rem !important;
+  margin: 0;
+  font-weight: bold;
 }
 
 .up-down__container {
@@ -279,15 +244,18 @@
   z-index: 9999; /* Pour s'assurer que la modale est au-dessus */
 }
 
-.fr-modal-content {
-  overflow-y: auto;
-  width: 100%;
-  height: 100%;
-}
+.fr-modal {
+  &-content {
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+  }
 
-.fr-modal__body {
-  max-height: 100% !important;
-  height: 100% !important;
+  &__body {
+    max-height: 95% !important;
+    height: 95% !important;
+    margin: 1rem;
+  }
 }
 
 .fr-icon-modal-fill {
@@ -306,3 +274,21 @@
   outline: none;
 }
 
+canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.fullscreen-canvas {
+  width: 100vw;
+  height: 100vh;
+}
+
+.modal-canvas {
+  width: 80vw;
+  height: 80vh;
+}
+
+.databox-card {
+  box-shadow: 0px 2px 6px 0px #00001229;
+}

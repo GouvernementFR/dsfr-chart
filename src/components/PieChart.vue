@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
   <div class="widget_container fr-grid-row" :id="widgetId">
     <div class="r_col fr-col-12">
@@ -11,8 +12,9 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <hr class="fr-mt-6v">
-        <div class="flex fr-mb-0">
+        <div class="flex fr-mb-0 fr-mt-4v">
+          <hr class="fr-mt-6v">
+
           <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': isSmall ? '0px' : style}">
             <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
             <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
@@ -28,6 +30,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable */
 import { Chart } from 'chart.js'
 import { mixin } from '@/utils.js'
 import pattern from 'patternomaly'
@@ -169,6 +172,16 @@ export default {
           datasets: self.datasets
         },
         options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          layout: {
+              padding: {
+              left: 50,
+              right: 50,
+              top: 0,
+              bottom: 0
+            }
+          },
           animation: {
             easing: 'easeInOutBack',
             duration: 1000
