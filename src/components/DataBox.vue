@@ -29,7 +29,7 @@
                             </span>
                         </div>
                         <div class="fr-col-3 subContainer__fullScreenIcon">
-                            <button title="Plein écran" type="button" class="fr-btn fr-btn--tertiary-no-outline fr-p-0"
+                            <button v-if="openDsfrModal" type="button" class="fr-btn fr-btn--tertiary-no-outline fr-p-0"
                                 @click="openModal">
                                 <span class="fr-icon-modal-fill" aria-label="Afficher la modale"
                                     aria-hidden="true"></span>
@@ -294,21 +294,30 @@
             </div>
         </div>
         <!-- Ajout des switches en dessous -->
-        <div class="fr-toggle fr-mt-6v">
-            <!-- Le v-model est lié à localSerieObj.indicator -->
-            <input type="checkbox" class="fr-toggle__input" aria-describedby="toggle-4633-messages" id="toggle-4633"
-                v-model="localSerieObj.indicator">
-            <label class="fr-toggle__label" for="toggle-4633">Afficher l'indicateur</label>
-            <div class="fr-messages-group" id="toggle-4633-messages" aria-live="polite"></div>
-        </div>
-        <div class="fr-toggle fr-mt-6v">
-            <!-- The v-model is bound to the 'shortTitle' property -->
-            <input type="checkbox" class="fr-toggle__input" aria-describedby="toggle-title-messages" id="toggle-title"
-                v-model="shortTitle" />
-            <label class="fr-toggle__label" for="toggle-title">
-                Afficher le titre court
-            </label>
-            <div class="fr-messages-group" id="toggle-title-messages" aria-live="polite"></div>
+         <div class="flex">
+            <div class="fr-toggle fr-mt-6v">
+                <!-- Le v-model est lié à localSerieObj.indicator -->
+                <input type="checkbox" class="fr-toggle__input" aria-describedby="toggle-4633-messages" id="toggle-4633"
+                    v-model="localSerieObj.indicator">
+                <label class="fr-toggle__label" for="toggle-4633">Afficher l'indicateur</label>
+                <div class="fr-messages-group" id="toggle-4633-messages" aria-live="polite"></div>
+            </div>
+            <div class="fr-toggle fr-mt-6v">
+                <!-- The v-model is bound to the 'shortTitle' property -->
+                <input type="checkbox" class="fr-toggle__input" aria-describedby="toggle-title-messages" id="toggle-title"
+                    v-model="shortTitle" />
+                <label class="fr-toggle__label" for="toggle-title">
+                    Afficher le titre court
+                </label>
+                <div class="fr-messages-group" id="toggle-title-messages" aria-live="polite"></div>
+            </div>
+            <div class="fr-toggle fr-mt-6v">
+                <!-- Le v-model est lié à openDsfrModal property -->
+                <input type="checkbox" class="fr-toggle__input" aria-describedby="openDsfrModal" id="openDsfrModal"
+                    v-model="openDsfrModal">
+                <label class="fr-toggle__label" for="openDsfrModal">Afficher le bouton modale</label>
+                <div class="fr-messages-group" id="openDsfrModal" aria-live="polite"></div>
+            </div>
         </div>
     </div>
 </template>
@@ -346,6 +355,7 @@ export default {
             isModalOpen: false,  // Add this to track modal state
             localSerieObj: { ...this.serieObj },
             shortTitle: true,
+            openDsfrModal: true,
         };
     },
     props: {
@@ -560,18 +570,4 @@ export default {
 
 <style scoped lang="scss">
 @import "../styles/components/boxes/chartBox.scss";
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.5s ease;
-    /* Adjust the duration and easing */
-}
-
-.fade-enter,
-.fade-leave-to
-
-/* .fade-leave-active in Vue 2.x */
-    {
-    opacity: 0;
-}
 </style>
