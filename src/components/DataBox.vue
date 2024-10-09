@@ -1,133 +1,142 @@
 /* eslint-disable */
 <template>
-    <div>
-        <div :class="['fr-container fr-card--no-icon fr-p-2w subContainer databox-card']">
-            <div class="fr-grid-row fr-grid-row--gutters">
-                <div class="fr-col-12 subContainer__title">
-                    <div class="subContainer__icon">
-                        <transition name="fade">
-                            <h4 v-if="shortTitle" class="serie__title fr-h6 fr-mb-0">
-                                <span id="tooltip-target">{{ serieObj.title }}</span> <!-- Short title -->
-                            </h4>
-                            <h4 v-else class="serie__title fr-h6 fr-mb-0">
-                                <span id="tooltip-target">{{ serieObj.long_title }}</span> <!-- Long title -->
-                            </h4>
-                        </transition>
-                        <button class="fr-btn--tooltip fr-btn" type="button" id="button-2996"
-                            aria-describedby="tooltip-2996">
-                        </button>
-                        <span class="fr-tooltip fr-placement" id="tooltip-2996" role="tooltip" aria-hidden="true">
-                            <p v-if="shortTitle" class="tooltip__title">
-                                <span id="tooltip-target">{{ serieObj.title }}</span>
-                            </p>
-                            <p v-else class="tooltip__title">
-                                <span id="tooltip-target">{{ serieObj.long_title }}</span> <!-- Long title -->
-                            </p>
-                            <p class="tooltip__description">{{ serieObj.description }}</p>
-                        </span>
+    <div class="box">
+        <div
+            :class="['fr-container--fluid fr-card--no-icon subContainer databox-card', { 'databox__group--height': localSerieObj.indicator }]">
+            <div :class="{ 'databox__group--height': localSerieObj.indicator }" class="databox__group">
+                <div class="databox__header">
+                    <div class="fr-col-12 subContainer__title">
+                        <div class="subContainer__icon">
+                            <transition name="fade">
+                                <h4 v-if="shortTitle" class="serie__title fr-h6 fr-mb-0">
+                                    <span id="tooltip-target">{{ serieObj.title }}</span> <!-- Short title -->
+                                </h4>
+                                <h4 v-else class="serie__title fr-h6 fr-mb-0">
+                                    <span id="tooltip-target">{{ serieObj.long_title }}</span> <!-- Long title -->
+                                </h4>
+                            </transition>
+                            <button class="fr-btn--tooltip fr-btn" type="button" id="button-2996"
+                                aria-describedby="tooltip-2996">
+                            </button>
+                            <span class="fr-tooltip fr-placement" id="tooltip-2996" role="tooltip" aria-hidden="true">
+                                <p v-if="shortTitle" class="tooltip__title">
+                                    <span id="tooltip-target">{{ serieObj.title }}</span>
+                                </p>
+                                <p v-else class="tooltip__title">
+                                    <span id="tooltip-target">{{ serieObj.long_title }}</span> <!-- Long title -->
+                                </p>
+                                <p class="tooltip__description">{{ serieObj.description }}</p>
+                            </span>
+                        </div>
+                        <div class="fr-col-3 subContainer__fullScreenIcon">
+                            <button title="Plein écran" type="button" class="fr-btn fr-btn--tertiary-no-outline fr-p-0"
+                                @click="openModal">
+                                <span class="fr-icon-modal-fill" aria-label="Afficher la modale"
+                                    aria-hidden="true"></span>
+                            </button>
+                            <button title="dropdow" type="button"
+                                class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0"
+                                @click="toggleDropdown">
+                                <span class="fr-icon-more-line" aria-hidden="true"></span>
+                            </button>
+                            <div class="dropdown-menu" :class="{ show: isDropdownOpen }">
+                                <button class="dropdown-item">Action databox</button>
+                                <button class="dropdown-item">Action databox</button>
+                                <button class="dropdown-item">Action databox</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="fr-col-3 subContainer__fullScreenIcon">
-                        <button title="Plein écran" type="button" class="fr-btn fr-btn--tertiary-no-outline fr-p-0"
-                            @click="openModal">
-                            <span class="fr-icon-modal-fill" aria-label="Afficher la modale" aria-hidden="true"></span>
-                        </button>
-                        <button title="dropdow" type="button"
-                            class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0" @click="toggleDropdown">
-                            <span class="fr-icon-more-line" aria-hidden="true"></span>
-                        </button>
-                        <div class="dropdown-menu" :class="{ show: isDropdownOpen }">
-                            <button class="dropdown-item">Action databox</button>
-                            <button class="dropdown-item">Action databox</button>
-                            <button class="dropdown-item">Action databox</button>
+                    <!-- Description and up/down tags -->
+                    <div v-if="localSerieObj.indicator" class="fr-col-12 subContainer__subSection">
+                        <!-- <p class="fr-text--sm fr-m-0 fr-p-0">{{ serieObj.description }}</p> -->
+                        <div class="up-down__container">
+                            <p class="fr-text--xs fr-m-0" v-if="serieObj.trendValue.includes('-')">
+                                En baisse de
+                                <span class="fr-badge fr-badge--brown-caramel fr-badge--sm fr-ml-1v"
+                                    :aria-label="'Baisse de ' + serieObj.trendValue.replace('-', '').trim()">
+                                    <span aria-hidden="true">↘ </span>
+                                    {{ serieObj.trendValue.replace("-", "").trim() }} %
+                                </span>
+                            </p>
+                            <p class="fr-text--xs fr-m-0" v-else>
+                                En hausse de
+                                <span class="fr-badge fr-badge--green-emeraude fr-badge--sm fr-ml-1v"
+                                    :aria-label="'Hausse de ' + serieObj.trendValue.trim()">
+                                    <span aria-hidden="true">↗ </span>
+                                    {{ serieObj.trendValue.trim() }} %
+                                </span>
+                            </p>
                         </div>
                     </div>
                 </div>
-                <!-- Description and up/down tags -->
-                <div v-if="localSerieObj.indicator" class="fr-col-12 subContainer__subSection">
-                    <!-- <p class="fr-text--sm fr-m-0 fr-p-0">{{ serieObj.description }}</p> -->
-                    <div class="up-down__container">
-                        <p class="fr-text--xs fr-m-0" v-if="serieObj.trendValue.includes('-')">
-                            En baisse de
-                            <span class="fr-badge fr-badge--brown-caramel fr-badge--sm fr-ml-1v"
-                                :aria-label="'Baisse de ' + serieObj.trendValue.replace('-', '').trim()">
-                                <span aria-hidden="true">↘ </span>
-                                {{ serieObj.trendValue.replace("-", "").trim() }} %
-                            </span>
-                        </p>
-                        <p class="fr-text--xs fr-m-0" v-else>
-                            En hausse de
-                            <span class="fr-badge fr-badge--green-emeraude fr-badge--sm fr-ml-1v"
-                                :aria-label="'Hausse de ' + serieObj.trendValue.trim()">
-                                <span aria-hidden="true">↗ </span>
-                                {{ serieObj.trendValue.trim() }} %
-                            </span>
-                        </p>
-                    </div>
-                </div>
-                <!-- Display indicator value -->
-                <div class="fr-col-12 subContainer__contentIndicator" v-if="localSerieObj.indicator">
-                    <p class="fr-display--xs">{{ serieObj.value }}</p>
-                </div>
 
                 <!-- TO IMPROVE  DROP DoWN SELECT-->
-                <div v-if="serieObj.add_sources && serieObj.select_options.length > 0"
-                    class="fr-col-12 subContainer__selectSection">
-                    <select-source :id_select="widgetId" :optiondefault="serieObj.option_default"
-                        :lsOptions="serieObj.select_options" @select-source="transfertSourceOption">
-                    </select-source>
-                </div>
-                <div class="fr-col-12 subContainer__chart"
-                    v-if="!localSerieObj.indicator && serieObj.showGraph && serieObj.component">
-                    <div class="subContainer__chart--section">
-                        <p class="text subContainer__chart--section--unit">
-                            {{ serieObj.unitValue }}
-                        </p>
+                <div class="databox__content">
+                    <!-- Display indicator value -->
+                    <div class="fr-col-12 subContainer__contentIndicator" v-if="localSerieObj.indicator">
+                        <p class="fr-display--xs">{{ serieObj.value }}</p>
                     </div>
-                    <div class="subContainer__chart--canvas">
-                        <div :is="serieObj.component" v-bind="stringifiedSerieValues"></div>
+                    <div v-if="serieObj.add_sources && serieObj.select_options.length > 0"
+                        class="fr-col-12 subContainer__selectSection">
+                        <select-source :id_select="widgetId" :optiondefault="serieObj.option_default"
+                            :lsOptions="serieObj.select_options" @select-source="transfertSourceOption">
+                        </select-source>
                     </div>
-                </div>
-
-                <div class="table-responsive">
-                    <div v-if="!serieObj.showGraph || serieObj.istable">
-                        <table-vue :captionTitle="serieObj.title" :tablevue_data="serieObj.table"></table-vue>
-                    </div>
-                </div>
-
-                <!-- Chart legend -->
-                <div class="subContainer__legendContainer" v-if="serieObj.display_legend && !localSerieObj.indicator && serieObj.showGraph && serieObj.component
-                ">
-                    <div class="subContainer__legend" v-for="index in serieObj.serie_values.y.length" :key="index">
-                        <div class="subContainer__legend--icon" :style="{
-                            'background-color': getHexaFromName(
-                                serieObj.serie_values.color[index - 1]
-                            ),
-                        }"></div>
-                        <div>
-                            <p class="fr-m-0 fr-text--xs">
-                                {{ serieObj.serie_values.name[index - 1] }}
+                    <div class="fr-col-12 subContainer__chart"
+                        v-if="!localSerieObj.indicator && serieObj.showGraph && serieObj.component">
+                        <div class="subContainer__chart--section">
+                            <p class="text subContainer__chart--section--unit">
+                                {{ serieObj.unitValue }}
                             </p>
+                        </div>
+                        <div class="subContainer__chart--canvas">
+                            <div :is="serieObj.component" v-bind="stringifiedSerieValues"></div>
+                        </div>
+                    </div>
+
+                    <div v-if="!serieObj.showGraph || serieObj.istable" class="table-responsive">
+                        <div>
+                            <table-vue :captionTitle="serieObj.title" :tablevue_data="serieObj.table"></table-vue>
+                        </div>
+                    </div>
+
+                    <!-- Chart legend -->
+                    <div class="subContainer__legendContainer" v-if="serieObj.display_legend && !localSerieObj.indicator && serieObj.showGraph && serieObj.component
+                    ">
+                        <div class="subContainer__legend" v-for="index in serieObj.serie_values.y.length" :key="index">
+                            <div class="subContainer__legend--icon" :style="{
+                                'background-color': getHexaFromName(
+                                    serieObj.serie_values.color[index - 1]
+                                ),
+                            }"></div>
+                            <div>
+                                <p class="fr-m-0 fr-text--xs">
+                                    {{ serieObj.serie_values.name[index - 1] }}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Source, update and icons -->
-                <div class="fr-col-12 subContainer__footer-container">
-                    <div class="fr-pt-1w subContainer__footer-text">
-                        <p class="fr-text--xs fr-mb-0">
-                            <strong>Source : </strong>{{ serieObj.source }} ,
-                            <strong>Mis à jour :</strong>
-                            {{ serieObj.update_date }}
-                        </p>
-                    </div>
-                    <div v-if="!localSerieObj.indicator" class="fr-ml-md-6w fr-pt-1w subContainer__footer-icon">
-                        <!-- Chart and table button -->
-                        <div class="fr-col-12 subContainer__segmented-controls" v-if="serieObj.component">
-                            <div class="subContainer__calltoaction fr-pr-1w">
+                <div class="databox__footer">
+                    <div class="fr-col-12 subContainer__footer-container">
+                        <div class="subContainer__footer-text">
+                            <p class="fr-text--xs fr-mb-0">
+                                <strong>Source : </strong>{{ serieObj.source }} ,
+                                <strong>Mis à jour :</strong>
+                                {{ serieObj.update_date }}
+                            </p>
+                        </div>
+                        <div v-if="!localSerieObj.indicator" class="fr-ml-md-6w subContainer__footer-icon">
+                            <!-- Chart and table button -->
+                            <div class="fr-col-12 subContainer__segmented-controls" v-if="serieObj.component">
+                                <div class="subContainer__calltoaction fr-pr-1w">
+                                </div>
+                                <segmented-controls :showIcons="true" @chart-selected="handleChartSelected"
+                                    :idcontrol="serieObj.id_accordion + '1'">
+                                </segmented-controls>
                             </div>
-                            <segmented-controls :showIcons="true" @chart-selected="handleChartSelected"
-                                :idcontrol="serieObj.id_accordion + '1'">
-                            </segmented-controls>
                         </div>
                     </div>
                 </div>
@@ -148,7 +157,8 @@
                                 <div class="subContainer__icon">
                                     <transition name="fade">
                                         <h4 v-if="shortTitle" class="serie__title fr-h6 fr-mb-0">
-                                            <span id="tooltip-target">{{ serieObj.title }}</span> <!-- Short title -->
+                                            <span id="tooltip-target">{{ serieObj.title }}</span>
+                                            <!-- Short title -->
                                         </h4>
                                         <h4 v-else class="serie__title fr-h6 fr-mb-0">
                                             <span id="tooltip-target">{{ serieObj.long_title }}</span>
@@ -187,27 +197,27 @@
                             <div v-if="localSerieObj.indicator" class="fr-col-12 subContainer__subSection">
                                 <!-- <p class="fr-text--sm fr-m-0 fr-p-0">{{ serieObj.description }}</p> -->
                                 <div class="up-down__container">
-                                    <p class="fr-text--xs fr-m-0" v-if="serieObj.trendValue.includes('-')">
+                                    <p class="fr-text--xs fr-m-0" v-if="localSerieObj.trendValue.includes('-')">
                                         En baisse de
                                         <span class="fr-badge fr-badge--brown-caramel fr-badge--sm fr-ml-1v"
-                                            :aria-label="'Baisse de ' + serieObj.trendValue.replace('-', '').trim()">
+                                            :aria-label="'Baisse de ' + localSerieObj.trendValue.replace('-', '').trim()">
                                             <span aria-hidden="true">↘ </span>
-                                            {{ serieObj.trendValue.replace("-", "").trim() }} %
+                                            {{ localSerieObj.trendValue.replace("-", "").trim() }} %
                                         </span>
                                     </p>
                                     <p class="fr-text--xs fr-m-0" v-else>
                                         En hausse de
                                         <span class="fr-badge fr-badge--green-emeraude fr-badge--sm fr-ml-1v"
-                                            :aria-label="'Hausse de ' + serieObj.trendValue.trim()">
+                                            :aria-label="'Hausse de ' + localSerieObj.trendValue.trim()">
                                             <span aria-hidden="true">↗ </span>
-                                            {{ serieObj.trendValue.trim() }} %
+                                            {{ localSerieObj.trendValue.trim() }} %
                                         </span>
                                     </p>
                                 </div>
                             </div>
                             <!-- Display indicator value -->
                             <div class="fr-col-12 subContainer__contentIndicator" v-if="localSerieObj.indicator">
-                                <p class="fr-display--xs">{{ serieObj.value }}</p>
+                                <p class="fr-display--xs">{{ localSerieObj.value }}</p>
                             </div>
 
                             <!-- TO IMPROVE  DROP DoWN SELECT-->
@@ -232,8 +242,8 @@
                             </div>
                             <div class="fr-col-2"></div>
 
-                            <div class="table-responsive">
-                                <div v-if="!serieObj.showGraph || serieObj.istable">
+                            <div v-if="!serieObj.showGraph || serieObj.istable" class="table-responsive">
+                                <div>
                                     <table-vue :captionTitle="serieObj.title"
                                         :tablevue_data="serieObj.table"></table-vue>
                                 </div>
