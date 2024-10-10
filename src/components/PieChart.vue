@@ -154,7 +154,8 @@ export default {
         borderColor: self.colorParse,
         backgroundColor: self.colorParse,
         hoverBackgroundColor: self.colorHover,
-        hoverBorderColor: self.colorHover
+        hoverBorderColor: self.colorHover,
+        hoverBorderWidth: 10,
       }]
     },
     createChart () {
