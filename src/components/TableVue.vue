@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
-  <div class="fr-table--sm fr-card--shadow fr-table fr-table fr-table--layout-fixed fr-table--no-caption fr-mb-0"
-    id="table-sm-component">
+  <div class="fr-table--sm fr-table fr-table fr-table--layout-fixed fr-table--no-caption fr-mb-0 "
+    id="table-bordered-component">
     <div class="fr-table__wrapper">
       <div class="fr-table__container">
         <div class="fr-table__content">
