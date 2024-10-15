@@ -1,7 +1,7 @@
 <template>
     <div class="box">
         <div :class="[
-            'fr-container--fluid fr-card--no-icon databox-card',
+            'databox-card',
             { 'databox__group--height': localSerieObj.indicator },
         ]">
             <div :class="{ 'databox__group--height': localSerieObj.indicator }" class="databox__group">
@@ -257,9 +257,9 @@ export default {
                     color: [],
                 },
                 table: [
-                    ["Header 1", "Header 2"],
-                    ["Row 1 Col 1", "Row 1 Col 2"],
-                    ["Row 2 Col 1", "Row 2 Col 2"],
+                    ["Series 1", "Series 2", "Series 3"],
+                    ["10", "20", "30"],
+                    ["10", "20", "30"],
                 ],
             }),
             validator(value) {
