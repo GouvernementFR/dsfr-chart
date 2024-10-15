@@ -6,10 +6,10 @@
         ]">
             <div :class="{ 'databox__group--height': localSerieObj.indicator }" class="databox__group">
                 <div class="databox__header fr-p-2w">
-                    <div class="fr-col-12 databox__header-title">
+                    <div class="databox__header-title">
                         <div class="databox__header-icon">
                             <transition name="fade">
-                                <h4 v-if="shortTitle" class="fr-col-12 databox__header-serietitle fr-h6 fr-mb-0">
+                                <h4 v-if="shortTitle" class="databox__header-serietitle fr-h6 fr-mb-0">
                                     <span id="tooltip-target">{{ serieObj.title }}</span>
                                 </h4>
                                 <h4 v-else class="databox__header-serietitle fr-h6 fr-mb-0">
