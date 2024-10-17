@@ -63,7 +63,6 @@
       }
   
       &-selectSection {
-        max-height: 40px;
         display: flex;
         align-items: center;
       }
@@ -92,20 +91,10 @@
   
       &-chart {
         position: relative;
-        display: -webkit-box;
-        display: -ms-flexbox;
         display: flex;
-        -webkit-box-orient: horizontal;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: row;
-        flex-direction: row;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
         justify-content: center;
-        -ms-flex-direction: column;
         flex-direction: column;
-        overflow-y: auto;
-        overflow-x: hidden;
+        height: var(--chart-height, 450px); /* Ajout de la hauteur dynamique ici avec une valeur par défaut */
         
         &-section {
           display: flex;
@@ -122,7 +111,8 @@
           }
   
           &-canvas {
-            flex: 3;
+            height: var(--chart-height); /* Utilisation de la variable CSS pour la hauteur du graphique */
+            max-height: 100%; /* Pour éviter de dépasser */
             display: contents;
           }
         }   
@@ -130,9 +120,9 @@
   
       &-table-responsive {
         width: 100%;
-        max-height: 414px;
-        height: 414px;
+        height: var(--chart-height, 300px); /* Synchronisation de la hauteur du tableau avec le graphique */
         overflow-x: auto;
+        max-height: 100%; /* Pour s'assurer qu'il respecte la taille du conteneur */
       }
     }
   
@@ -192,9 +182,8 @@
       position: absolute;
       background-color: white;
       box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
-      width: 200px;
-      right: 15px;
-      top: 65px;
+      width: 240px;
+      right: 8px;
     }
   
     &-item {
@@ -306,3 +295,12 @@
       height: 330px;
     }
   }
+
+.fade-slide-enter-active, .fade-slide-leave-active {
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-slide-enter, .fade-slide-leave-to /* .fade-slide-leave-active in versions below 2.1.8 */ {
+    opacity: 0;
+    transform: translateY(20px); /* L'élément glisse légèrement */
+}
