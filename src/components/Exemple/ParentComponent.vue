@@ -42,10 +42,9 @@ export default {
           y: [100, 200, 300],
         },
         table: [
-          ["Serie", "Valeur"],
-          ["Serie1", "100"],
-          ["Serie2", "200"],
-          ["Serie3", "300"],
+          ["Serie 1", "100"],
+          ["Serie 2", "200"],
+          ["Serie 3", "300"],
         ],
       },
     };

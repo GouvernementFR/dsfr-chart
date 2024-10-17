@@ -119,7 +119,8 @@
                     </div>
                     <!-- Tableau -->
                     <div v-if="shouldDisplayTable" class="databox__content-table-responsive">
-                        <table-vue :captionTitle="serieObj.title" :tablevue_data="serieObj.table"></table-vue>
+                        <table-vue :captionTitle="serieObj.title" :tablevue_data="serieObj.table" :isMultilineTableHeader="isMultilineTableHeader">
+                        </table-vue>
                     </div>
                 </div>
             </transition>
@@ -190,6 +191,10 @@ export default {
         selectOptions: {
             type: Array,
             default: () => [],
+        },
+        isMultilineTableHeader: {
+            type: Boolean,
+            default: true, // Défini par défaut à true
         },
         modalSettings: {
             type: Object,
