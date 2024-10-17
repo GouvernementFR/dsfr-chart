@@ -3,7 +3,7 @@
   <div>
     <!-- Utilisation du composant DataBox -->
     <DataBox :serieObj="serieObj" :modalSettings="modalSettings"
-      @select-source-api="handleSelectSourceApi" @open-modal="openModal"></DataBox>
+      @select-source-api="handleSelectSourceApi"></DataBox>
     <!-- Modale -->
   </div>
 </template>
@@ -34,7 +34,7 @@ export default {
           { value: "ubm", label: "Exposition médiatique" },
           // Autres options
         ],
-        update_date: "22-04-2024",
+        update_date: "2024-04-22",
         source: "SIG",
         showGraph: true,
         serie_values: {
