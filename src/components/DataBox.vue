@@ -174,13 +174,17 @@ export default {
         return {
             widgetId: "",
             isDropdownOpen: false,
-            dropdownActions: [
-                { id: '1', label: 'Action 1', action: 'actionBtn1' },
-                { id: '2', label: 'Action 2', action: 'actionBtn2' }
-            ]
+            // dropdownActions: [
+            //     { id: '1', label: 'Action 1', action: 'actionBtn1' },
+            //     { id: '2', label: 'Action 2', action: 'actionBtn2' }
+            // ]
         };
     },
     props: {
+        dropdownActions: {
+            type: Array,
+            default: () => [],
+        },
         selectOptions: {
             type: Array,
             default: () => [],
