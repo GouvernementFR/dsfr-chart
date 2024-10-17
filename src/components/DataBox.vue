@@ -1,187 +1,145 @@
+/* eslint-disable */
 <template>
     <div class="box">
         <div :class="[
             'databox-card',
-            { 'databox__group--height': localSerieObj.indicator },
+            'databox__group',
+            { 'databox__group--height': serieObj.indicator },
         ]">
-            <div :class="{ 'databox__group--height': localSerieObj.indicator }" class="databox__group">
-                <div class="databox__header fr-p-2w">
-                    <div class="databox__header-title">
-                        <div class="databox__header-icon">
-                            <transition name="fade">
-                                <h4 v-if="shortTitle" class="databox__header-serietitle fr-h6 fr-mb-0">
-                                    <span id="tooltip-target">{{ serieObj.title }}</span>
-                                </h4>
-                                <h4 v-else class="databox__header-serietitle fr-h6 fr-mb-0">
-                                    <span id="tooltip-target">{{ serieObj.long_title }}</span>
-                                </h4>
-                            </transition>
-                        </div>
-                        <div class="fr-col-3 databox__header-fullScreenIcon">
-                            <button class="infobulle-btn fr-btn fr-btn--tertiary-no-outline fr-p-0" type="button"
-                                id="button-tooltip" aria-describedby="tooltip-btn">
-                                <span class="fr-icon-question-line" aria-hidden="true"></span>
+            <div class="databox__header fr-p-2w">
+                <div class="databox__header-title">
+                    <div class="fr-col databox__header-icon">
+                        <h4 class="databox__header-serietitle fr-h6 fr-mb-0">
+                            <span id="tooltip-target">{{ serieObj.title }}</span>
+                        </h4>
+                    </div>
+                    <div class="fr-col-3 databox__header-fullScreenIcon">
+                        <button class="infobulle-btn fr-btn fr-btn--tertiary-no-outline fr-p-0" type="button"
+                            id="button-tooltip" aria-describedby="tooltip-btn"
+                            aria-label="Afficher plus d'informations">
+                            <span class="fr-icon-question-line fr-icon--sm" aria-hidden="true"></span>
+                        </button>
+                        <span class="fr-tooltip fr-placement" id="tooltip-btn" role="tooltip" aria-hidden="true">
+                            <p class="tooltip__title">
+                                <span id="tooltip-target">{{ serieObj.title }}</span>
+                            </p>
+                            <p class="tooltip__description">{{ serieObj.description }}</p>
+                        </span>
+                        <!-- Bouton pour ouvrir la modale -->
+                        <button v-if="modalSettings.hasModal" type="button"
+                            class="fr-btn fr-btn--tertiary-no-outline fr-p-0" :aria-controls="modalSettings.modalId"
+                            aria-label="Afficher la modale" @click="$emit('open-modal')">
+                            <span class="fr-icon-modal-fill fr-icon--sm" aria-label="Afficher la modale"
+                                aria-hidden="true"></span>
+                        </button>
+                        <div ref="dropdownContainer" class="dropdown-wrapper">
+                            <button ref="dropdown" title="dropdown" type="button"
+                                class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0"
+                                @click="toggleDropdown">
+                                <span class="fr-icon-more-line fr-icon--sm" aria-hidden="true"
+                                    aria-label="Afficher le menu déroulant"></span>
                             </button>
-                            <span class="fr-tooltip fr-placement" id="tooltip-btn" role="tooltip" aria-hidden="true">
-                                <p v-if="shortTitle" class="tooltip__title">
-                                    <span id="tooltip-target">{{ serieObj.title }}</span>
-                                </p>
-                                <p v-else class="tooltip__title">
-                                    <span id="tooltip-target">{{ serieObj.long_title }}</span>
-                                </p>
-                                <p class="tooltip__description">{{ serieObj.description }}</p>
-                            </span>
-                            <button v-if="openDsfrModal" type="button" class="fr-btn fr-btn--tertiary-no-outline fr-p-0"
-                                data-fr-opened="false" aria-controls="fr-modal-1">
-                                <span class="fr-icon-modal-fill" aria-label="Afficher la modale"
-                                    aria-hidden="true"></span>
-                            </button>
-                            <div ref="dropdownContainer" class="dropdown-wrapper">
-                                <button ref="dropdown" title="dropdown" type="button"
-                                    class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0"
-                                    @click="toggleDropdown">
-                                    <span class="fr-icon-more-line" aria-hidden="true"></span>
-                                </button>
+                            <div class="dropdown-menu" :class="{ show: isDropdownOpen }">
                                 <div class="dropdown-menu" :class="{ show: isDropdownOpen }">
-                                    <button class="dropdown-item">Action databox</button>
-                                    <button class="dropdown-item">Action databox</button>
-                                    <button class="dropdown-item">Action databox</button>
+                                    <button class="dropdown-item" v-for="action in dropdownActions" :key="action"
+                                        :aria-label="action.label" :title="action.label" type="submit"
+                                        @click="performAction(action)">
+                                        {{ action.label }}
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Description and up/down tags -->
-                    <div v-if="localSerieObj.indicator" class="fr-col-12  databox__header-subSection">
-                        <div class="up-down__container">
-                            <p class="fr-text--xs fr-m-0" v-if="serieObj.trendValue.includes('-')">
-                                En baisse de
-                                <span class="fr-badge fr-badge--brown-caramel fr-badge--sm fr-ml-1v"
-                                    :aria-label="'Baisse de ' + serieObj.trendValue.replace('-', '').trim()">
-                                    <span class="fr-pr-1v" aria-hidden="true">↘ </span>
-                                    {{ serieObj.trendValue.replace('-', '').trim() }} %
-                                </span>
-                            </p>
-                            <p class="fr-text--xs fr-m-0" v-else>
-                                En hausse de
-                                <span class="fr-badge fr-badge--green-emeraude fr-badge--sm fr-ml-1v"
-                                    :aria-label="'Hausse de ' + serieObj.trendValue.trim()">
-                                    <span class="fr-pr-1v" aria-hidden="true">↗ </span>
-                                    {{ serieObj.trendValue.trim() }} %
-                                </span>
-                            </p>
-                        </div>
+                </div>
+                <!-- Description et indicateur de tendance -->
+                <div v-if="serieObj.indicator" class="databox__header-subSection">
+                    <div class="up-down__container">
+                        <p class="fr-text--xs fr-m-0" v-if="serieObj.trendValue.includes('-')">
+                            En baisse de
+                            <span class="fr-badge fr-badge--brown-caramel fr-badge--sm fr-ml-1v" :aria-label="'Baisse de ' + serieObj.trendValue.replace('-', '').trim()
+                                ">
+                                <span class="fr-pr-1v" aria-hidden="true">↘ </span>
+                                {{ serieObj.trendValue.replace("-", "").trim() }} %
+                            </span>
+                        </p>
+                        <p class="fr-text--xs fr-m-0" v-else>
+                            En hausse de
+                            <span class="fr-badge fr-badge--green-emeraude fr-badge--sm fr-ml-1v"
+                                :aria-label="'Hausse de ' + serieObj.trendValue.trim()">
+                                <span class="fr-pr-1v" aria-hidden="true">↗ </span>
+                                {{ serieObj.trendValue.trim() }} %
+                            </span>
+                        </p>
                     </div>
-                    <div v-else></div>
                 </div>
 
-                <!-- DataBox Content-->
-                <div class="databox__content fr-p-2w">
-                    <!-- Display indicator value -->
-                    <div class="fr-col-12 databox__content-indicator" v-if="localSerieObj.indicator">
-                        <p class="fr-display--xs fr-mb-0 databox__content-indicator-text">{{ serieObj.value }}</p>
-                    </div>
+                <!-- Sélecteur de source -->
+                <div v-if="serieObj.add_sources && serieObj.select_options.length > 0"
+                    class="databox__content-selectSection fr-pt-2w">
+                    <select-source :id_select="widgetId" :optiondefault="serieObj.option_default"
+                        :lsOptions="serieObj.select_options" @select-source="transfertSourceOption"></select-source>
+                </div>
+            </div>
 
-                    <!-- Source selected -->
-                    <div v-if="serieObj.add_sources && serieObj.select_options.length > 0"
-                        class="fr-col-12 databox__content-selectSection">
-                        <select-source :id_select="widgetId" :optiondefault="serieObj.option_default"
-                            :lsOptions="serieObj.select_options" @select-source="transfertSourceOption"></select-source>
+            <!-- Contenu de la DataBox -->
+            <transition name="fade-slide" mode="out-in">
+                <div class="databox__content fr-p-2w" ref="chartContainer">
+                    <!-- Affichage de la valeur de l'indicateur -->
+                    <div class="databox__content-indicator" v-if="serieObj.indicator">
+                        <p class="fr-display--xs fr-mb-0 databox__content-indicator-text">
+                            {{ serieObj.value }}
+                        </p>
                     </div>
 
                     <!-- Graphique -->
-                    <div class="fr-col-12 databox__content-chart fr-p-2w" v-if="showChart">
+                    <div class="databox__content-chart" v-if="shouldDisplayChart">
                         <div class="databox__content-chart-section">
-                            <p class="databox__content-chart-section-unit text">{{ serieObj.unitValue }}</p>
+                            <p class="databox__content-chart-section-unit text">
+                                {{ serieObj.unitValue }}
+                            </p>
                         </div>
                         <div class="databox__content-chart-section-canvas">
-                            <component :is="serieObj.component" v-bind="stringifiedSerieValues"></component>
+                            <component :is="serieObj.component" v-bind="chartProps"></component>
                         </div>
                     </div>
 
-                    <!-- Chart legend -->
-                    <div class="databox__content-legendContainer" v-if="isShowChartLegend">
+                    <!-- Légende du graphique -->
+                    <div class="databox__content-legendContainer" v-if="shouldDisplayLegend">
                         <div class="databox__content-legend" v-for="(name, index) in serieObj.serie_values.name"
                             :key="index">
                             <div class="databox__content-legend-icon fr-mr-1w" :style="{
-                                'background-color': getHexaFromName(serieObj.serie_values.color[index]),
+                                'background-color': getHexaFromName(
+                                    serieObj.serie_values.color[index]
+                                ),
                             }"></div>
                             <div>
                                 <p class="fr-m-0 fr-text--xs">{{ name }}</p>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Table -->
-                    <div v-if="!localSerieObj.indicator && showTable" class="databox__content-table-responsive">
+                    <!-- Tableau -->
+                    <div v-if="shouldDisplayTable" class="databox__content-table-responsive">
                         <table-vue :captionTitle="serieObj.title" :tablevue_data="serieObj.table"></table-vue>
                     </div>
                 </div>
+            </transition>
 
-                <!-- Footer // Source, update and icons -->
-                <div class="databox__footer">
-                    <div class="fr-col-12 databox__footer-content fr-p-2w">
-                        <div class="databox__footer-content-text">
-                            <p class="fr-text--xs fr-mb-0">
-                                {{ serieObj.source }}, {{ serieObj.update_date }}
-                            </p>
-                        </div>
-                        <div v-if="!localSerieObj.indicator" class="fr-ml-md-6w databox__footer-content-icon">
-                            <div class="fr-col-12 databox__footer-content-segmented-controls" v-if="serieObj.component">
-                                <div class="databox__footer-content-calltoaction fr-pr-1w"></div>
-                                <segmented-controls :showIcons="true" @chart-selected="handleChartSelected"
-                                    :idcontrol="serieObj.id_accordion + '1'"></segmented-controls>
-                            </div>
+            <!-- Pied de page : Source, mise à jour et icônes -->
+            <div class="databox__footer">
+                <div class="databox__footer-content fr-p-2w">
+                    <div class="databox__footer-content-text">
+                        <p class="fr-text--xs fr-mb-0">
+                            {{ serieObj.source }}, {{ serieObj.update_date }}
+                        </p>
+                    </div>
+                    <div v-if="!this.serieObj.indicator" class="fr-ml-md-6w databox__footer-content-icon">
+                        <div class="databox__footer-content-segmented-controls" v-if="serieObj.component">
+                            <div class="databox__footer-content-calltoaction fr-pr-1w"></div>
+                            <segmented-controls :showIcons="true" @chart-selected="handleChartSelected"
+                                :idcontrol="serieObj.id_accordion + '1'"></segmented-controls>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <dialog aria-labelledby="fr-modal-title-modal-1" role="dialog" id="fr-modal-1" class="fr-modal">
-            <div class="fr-container fr-container--fluid fr-container-md">
-                <div class="fr-grid-row fr-grid-row--center">
-                    <div class="fr-col-12 fr-col-md-8 fr-col-lg-6">
-                        <div class="fr-modal__body">
-                            <div class="fr-modal__header">
-                                <button class="fr-btn--close fr-btn" title="Fermer la fenêtre modale"
-                                    aria-controls="fr-modal-1">Fermer</button>
-                            </div>
-                            <div class="fr-modal__content">
-                                <h1 id="fr-modal-title-modal-1" class="fr-modal__title">Titre de la modale</h1>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius tortor nibh,
-                                    sit amet tempor nibh finibus et. Aenean eu enim justo. Vestibulum aliquam hendrerit
-                                    molestie. Mauris malesuada nisi sit amet augue accumsan tincidunt. Maecenas
-                                    tincidunt, velit ac porttitor pulvinar, tortor eros facilisis libero, vitae commodo
-                                    nunc quam et ligula. Ut nec ipsum sapien. Interdum et malesuada fames ac ante ipsum
-                                    primis in faucibus. Integer id nisi nec nulla luctus lacinia non eu turpis. Etiam in
-                                    ex imperdiet justo tincidunt egestas. Ut porttitor urna ac augue cursus tincidunt
-                                    sit amet sed orci.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </dialog>
-
-        <!-- Switch -->
-        <div class="flex">
-            <div class="fr-toggle fr-mt-6v">
-                <input type="checkbox" class="fr-toggle__input" aria-describedby="indicator-messages" id="indicator"
-                    v-model="localSerieObj.indicator" />
-                <label class="fr-toggle__label" for="indicator">Afficher l'indicateur</label>
-                <div class="fr-messages-group" id="indicator-messages" aria-live="polite"></div>
-            </div>
-            <div class="fr-toggle fr-mt-6v">
-                <input type="checkbox" class="fr-toggle__input" aria-describedby="short-title" id="short-title"
-                    v-model="shortTitle" />
-                <label class="fr-toggle__label" for="short-title">Afficher le titre court</label>
-                <div class="fr-messages-group" id="short-title" aria-live="polite"></div>
-            </div>
-            <div class="fr-toggle fr-mt-6v">
-                <input type="checkbox" class="fr-toggle__input" aria-describedby="openDsfrModal" id="openDsfrModal"
-                    v-model="openDsfrModal" />
-                <label class="fr-toggle__label" for="openDsfrModal">Afficher le bouton modale</label>
-                <div class="fr-messages-group" id="openDsfrModal" aria-live="polite"></div>
             </div>
         </div>
     </div>
@@ -197,7 +155,6 @@ import SelectSource from "./SelectSource.vue";
 import SegmentedControls from "./SegmentedControls.vue";
 import TableVue from "./TableVue.vue";
 import { mixin, changeDateFormat } from "../utils.js";
-import { mapActions } from "vuex";
 
 export default {
     name: "DataBox",
@@ -215,9 +172,18 @@ export default {
         return {
             widgetId: "",
             isDropdownOpen: false,
-            shortTitle: false,
-            openDsfrModal: false,
-            localSerieObj: {},
+            dropdownActions: [
+                {
+                    label: "Effectuer une capture d'écran",
+                    action: "captureCanvasBox",
+                    condition: this.showGraph && this.serieObj.component,
+                },
+                {
+                    label: "Télécharger les données",
+                    action: "downloadCSV",
+                    condition: true,
+                }
+            ]
         };
     },
     props: {
@@ -225,113 +191,61 @@ export default {
             type: Array,
             default: () => [],
         },
+        modalSettings: {
+            type: Object,
+            default: () => ({
+                hasModal: false,
+                modalId: "fr-modal-1",
+            }),
+            validator(value) {
+                if (
+                    typeof value.hasModal !== "boolean" ||
+                    typeof value.modalId !== "string"
+                ) {
+                    return false;
+                }
+                return true;
+            },
+        },
         serieObj: {
             type: Object,
             required: false,
-            default: () => ({
-                long_title:
-                    "Ceci est un texte long qui me permet de mettre à partir de 2 lignes les éléments dans une tooltip, avec un affichage spécial",
-                title: "Ceci est un texte court",
-                description:
-                    "Ceci est un texte descriptif, il est visible uniquement au clic sur le button icône",
-                showGraph: false,
-                indicator: false,
-                trendValue: "10",
-                value: "10000000000000000000000000000000000000000000",
-                component: "PieChart",
-                add_sources: false,
-                option_default: "ubm",
-                select_options: [
-                    { value: "ubm", label: "Exposition médiatique" },
-                    { value: "reach", label: "Reach RS" },
-                    { value: "nb_post", label: "Volume de posts RS" },
-                    { value: "engagement", label: "Engagement des posts RS" },
-                    { value: "aday", label: "Volume d'articles de presse" },
-                ],
-                update_date: "22/04/2024",
-                source: "Sig",
-                serie_values: {
-                    x: [10, 20, 30],
-                    y: [10, 20, 30],
-                    name: ["Series 1", "Series 2", "Series 3"],
-                    color: [],
-                },
-                table: [
-                    ["Series 1", "Series 2", "Series 3"],
-                    ["10", "20", "30"],
-                    ["10", "20", "30"],
-                ],
-            }),
+            default: () => ({}),
             validator(value) {
-                if (typeof value !== "object" || value === null) {
-                    console.error("serieObj must be a non-null object.");
-                    return false;
-                }
-
-                const requiredFields = {
-                    title: "string",
-                    description: "string",
-                    indicator: "boolean",
-                    trendValue: "string",
-                    value: ["string", "number"],
-                    component: "string",
-                    add_sources: "boolean",
-                    update_date: "string",
-                };
-
-                for (const [field, type] of Object.entries(requiredFields)) {
-                    if (!(field in value)) {
-                        console.error(`serieObj is missing the required field '${field}'.`);
-                        return false;
-                    }
-                    const fieldType = Array.isArray(type) ? type : [type];
-                    if (!fieldType.includes(typeof value[field])) {
-                        console.error(
-                            `Field '${field}' should be of type '${type}', but got '${typeof value[field]}'.`
-                        );
-                        return false;
-                    }
-                }
-
-                if ("serie_values" in value) {
-                    if (typeof value.serie_values !== "object" || value.serie_values === null) {
-                        console.error("serie_values must be an object.");
-                        return false;
-                    }
-                    const serieValuesFields = {
-                        y: "array",
-                        color: "array",
-                        name: "array",
-                    };
-                    for (const [field, expectedType] of Object.entries(serieValuesFields)) {
-                        if (!(field in value.serie_values)) {
-                            console.error(`serie_values is missing the field '${field}'.`);
-                            return false;
-                        }
-                        if (!Array.isArray(value.serie_values[field])) {
-                            console.error(`Field '${field}' in serie_values should be an array.`);
-                            return false;
-                        }
-                    }
-                }
-
-                if ("table" in value) {
-                    if (!Array.isArray(value.table)) {
-                        console.error("table must be an array.");
-                        return false;
-                    }
-                }
-
                 return true;
             },
         },
     },
     methods: {
+        emitOpenModal() {
+            this.$emit("open-modal");
+        },
+        updateHeight() {
+            const chartContainer = this.$refs.chartContainer;
+            if (chartContainer) {
+                // Utilisation de requestAnimationFrame pour éviter la boucle d'updates
+                requestAnimationFrame(() => {
+                    const parentHeight = chartContainer.parentElement.offsetHeight;
+                    const parentWidth = chartContainer.parentElement.offsetWidth;
+                    // Ajuster la hauteur du conteneur de manière appropriée
+                    const newHeight = Math.min(parentHeight, parentWidth * 0.6); // Par exemple, 60% de la largeur
+                    this.$el.style.setProperty("--chart-height", `${newHeight}px`);
+                });
+            }
+        },
+        toggleView(viewType) {
+            this.serieObj.showGraph = viewType === "graphique";
+            this.serieObj.istable = viewType === "tableau";
+            this.updateHeight();
+        },
         toggleDropdown() {
             this.isDropdownOpen = !this.isDropdownOpen;
         },
         handleClickOutside(event) {
-            if (this.$refs.dropdownContainer && !this.$refs.dropdownContainer.contains(event.target)) {
+            if (
+                this.$refs.dropdownContainer &&
+                !this.$refs.dropdownContainer.contains(event.target)
+            ) {
                 this.isDropdownOpen = false;
             }
         },
@@ -341,52 +255,73 @@ export default {
         handleChartSelected(type) {
             this.serieObj.showGraph = type === "graphique";
         },
-        ...mapActions(["setIsSticky"]),
         changeDateFormat,
     },
     computed: {
-        stringifiedSerieValues() {
+        chartProps() {
             const result = {};
-            for (const key in this.serieObj.serie_values) {
-                result[key] = JSON.stringify(this.serieObj.serie_values[key]);
-            }
+            const keysToStringify = [
+                "x",
+                "y",
+                "name",
+                "color",
+                "vline",
+                "vlinecolor",
+                "vlinename",
+                "hline",
+                "hlinecolor",
+                "hlinename",
+            ];
+
+            keysToStringify.forEach((key) => {
+                if (this.serieObj.serie_values && this.serieObj.serie_values[key]) {
+                    result[key] = JSON.stringify(this.serieObj.serie_values[key]);
+                }
+            });
+
             return result;
         },
-        isShowChartLegend() {
+        shouldDisplayLegend() {
             return (
                 this.serieObj.display_legend &&
-                !this.localSerieObj.indicator &&
                 this.serieObj.showGraph &&
-                this.serieObj.component
+                this.serieObj.component &&
+                !this.serieObj.indicator
             );
         },
-        showChart() {
+        shouldDisplayChart() {
             return (
-                !this.localSerieObj.indicator && this.serieObj.showGraph && this.serieObj.component
+                this.serieObj.showGraph &&
+                this.serieObj.component &&
+                !this.serieObj.indicator
             );
         },
-        showTable() {
+        shouldDisplayTable() {
             return !this.serieObj.showGraph || this.serieObj.istable;
         },
     },
-    created() {
-        this.localSerieObj = { ...this.serieObj };
-    },
     mounted() {
-        document.addEventListener('click', this.handleClickOutside);
+        // Utiliser ResizeObserver sans modifier directement les dimensions dans le callback
+        this.resizeObserver = new ResizeObserver(() => {
+            this.updateHeight(); // Appel de la méthode pour ajuster la hauteur
+        });
+
+        // Observer le container du graphique
+        if (this.$refs.chartContainer) {
+            this.resizeObserver.observe(this.$refs.chartContainer);
+        }
+
+        // Ajout d'un écouteur pour détecter les clics en dehors du dropdown
+        document.addEventListener("click", this.handleClickOutside);
     },
     beforeDestroy() {
-    // Retirer l'écouteur d'événement lors de la destruction du composant
-        document.removeEventListener('click', this.handleClickOutside);
-    },
-    watch: {
-        serieObj: {
-            handler(newVal) {
-                this.localSerieObj = { ...newVal };
-            },
-            immediate: true,
-            deep: true,
-        },
+        // Retirer l'écouteur de l'événement de clic
+        document.removeEventListener("click", this.handleClickOutside);
+
+        // Nettoyage du ResizeObserver
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect(); // Arrête l'observation
+        }
     },
 };
 </script>
