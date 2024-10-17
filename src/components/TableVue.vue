@@ -5,7 +5,7 @@
     <div class="fr-table__wrapper">
       <div class="fr-table__container">
         <div class="fr-table__content">
-          <table id="table--sm">
+          <table :class="{'fr-cell--multiline': isMultilineTableHeader}" id="table--sm">
             <caption>{{ captionTitle }}</caption>
             <thead>
               <tr>
@@ -84,6 +84,10 @@ export default {
     captionTitle: {
       type: String,
       required: true,
+    },
+    isMultilineTableHeader: {
+      type: Boolean,
+      default: true, // Défini par défaut à true
     },
   },
   computed: {
