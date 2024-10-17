@@ -2,7 +2,7 @@
 <template>
   <div>
     <!-- Utilisation du composant DataBox -->
-    <DataBox :serieObj="serieObj" :modalSettings="modalSettings"
+    <DataBox :serieObj="serieObj" :modalSettings="modalSettings" :dropdownActions="dropdownActions"
       @select-source-api="handleSelectSourceApi"></DataBox>
     <!-- Modale -->
   </div>
@@ -47,6 +47,10 @@ export default {
           ["Serie 3", "300"],
         ],
       },
+      dropdownActions: [
+        { id: '1', label: 'Capture d\'écran', action: 'actionBtn1' },
+        { id: '2', label: 'Télécharger CSV', action: 'actionBtn2' }
+      ], 
     };
   },
   methods: {
