@@ -41,7 +41,7 @@
                             </button>
                             <div class="dropdown-menu" :class="{ show: isDropdownOpen }">
                                 <div class="dropdown-menu" :class="{ show: isDropdownOpen }">
-                                    <button class="dropdown-item" v-for="action in dropdownActions" :key="action"
+                                    <button class="dropdown-item" v-for="action in dropdownActions" :key="action.id"
                                         :aria-label="action.label" :title="action.label" type="submit"
                                         @click="performAction(action)">
                                         {{ action.label }}
@@ -92,7 +92,7 @@
                     </div>
 
                     <!-- Graphique -->
-                    <div class="databox__content-chart" v-if="shouldDisplayChart">
+                    <div :id="`chart-section-${widgetId}`" class="databox__content-chart" v-if="shouldDisplayChart">
                         <div class="databox__content-chart-section">
                             <p class="databox__content-chart-section-unit text">
                                 {{ serieObj.unitValue }}
@@ -118,8 +118,9 @@
                         </div>
                     </div>
                     <!-- Tableau -->
-                    <div v-if="shouldDisplayTable" class="databox__content-table-responsive">
-                        <table-vue :captionTitle="serieObj.title" :tablevue_data="serieObj.table" :isMultilineTableHeader="isMultilineTableHeader">
+                    <div :id="`table-section-${widgetId}`" v-if="shouldDisplayTable" class="databox__content-table-responsive">
+                        <table-vue :captionTitle="serieObj.title" :tablevue_data="serieObj.table"
+                            :isMultilineTableHeader="isMultilineTableHeader">
                         </table-vue>
                     </div>
                 </div>
@@ -174,16 +175,8 @@ export default {
             widgetId: "",
             isDropdownOpen: false,
             dropdownActions: [
-                {
-                    label: "Effectuer une capture d'écran",
-                    action: "captureCanvasBox",
-                    condition: this.showGraph && this.serieObj.component,
-                },
-                {
-                    label: "Télécharger les données",
-                    action: "downloadCSV",
-                    condition: true,
-                }
+                { id: '1', label: 'Action 1', action: 'actionBtn1' },
+                { id: '2', label: 'Action 2', action: 'actionBtn2' }
             ]
         };
     },
@@ -260,6 +253,22 @@ export default {
         },
         handleChartSelected(type) {
             this.serieObj.showGraph = type === "graphique";
+        },
+        performAction(action) {
+            if (typeof this[action.action] === 'function') {
+                this[action.action](); // Exécute la méthode correspondante
+            } else {
+                console.warn(`Action ${action.action} non définie`);
+            }
+            this.isDropdownOpen = false;
+        },
+        actionBtn1() {
+            // Ici, logique pour la première action (par exemple, capture d'écran)
+            alert("Action 1 effectuée !");
+        },
+        actionBtn2() {
+            // Ici, logique pour la deuxième action (par exemple, télécharger CSV)
+            alert("Action 2 effectuée !");
         },
     },
     computed: {
