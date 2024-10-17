@@ -12,16 +12,14 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div class="flex fr-mb-0 fr-mt-4v">
-          <hr class="fr-mt-6v">
-
-          <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': isSmall ? '0px' : style}">
+        <div class="chart_legend fr-mb-0 fr-mt-4v">
+          <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v">
             <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
             <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
               {{capitalize(nameParse[index])}}
             </p>
           </div>
-          <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': isSmall ? '0px' : style}">
+          <div v-if="date!==undefined" class="flex fr-mt-1w">
             <p class="fr-text--xs">Mise à jour : {{date}}</p>
           </div>
       </div>
@@ -328,6 +326,14 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+.chart_legend {
+    display: flex;
+    flex-direction: row;
+    -moz-column-gap: 10%;
+    column-gap: 7%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
 .widget_container {
   .ml-lg {
     margin-left: 0;
