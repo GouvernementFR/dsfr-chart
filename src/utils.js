@@ -16,9 +16,9 @@ export const convertFloatToHuman = function (float) {
 }
 
 export function changeDateFormat (date) {
-  if (date !== undefined) {
+  if (date !== undefined && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
     const dateArray = date.split('-')
-    return dateArray[2] + '-' + dateArray[1] + '-' + dateArray[0]
+    return `${dateArray[2]}/${dateArray[1]}/${dateArray[0]}`
   } else {
     return ''
   }

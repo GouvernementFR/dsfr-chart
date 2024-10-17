@@ -129,7 +129,7 @@
                 <div class="databox__footer-content fr-p-2w">
                     <div class="databox__footer-content-text">
                         <p class="fr-text--xs fr-mb-0">
-                            {{ serieObj.source }}, {{ serieObj.update_date }}
+                            {{ serieObj.source }}, {{ changeDateFormat(serieObj.update_date) }}
                         </p>
                     </div>
                     <div v-if="!this.serieObj.indicator" class="fr-ml-md-6w databox__footer-content-icon">
@@ -217,6 +217,7 @@ export default {
         },
     },
     methods: {
+        changeDateFormat,
         emitOpenModal() {
             this.$emit("open-modal");
         },
@@ -255,7 +256,6 @@ export default {
         handleChartSelected(type) {
             this.serieObj.showGraph = type === "graphique";
         },
-        changeDateFormat,
     },
     computed: {
         chartProps() {
