@@ -804,148 +804,148 @@
             <div class="fr-collapse" id="accordion-18">
               <div class="code-toolbar">
                 <pre><code>
-                  &lt;div
-                  :class="['fr-container--fluid fr-card--no-icon subContainer databox-card', { 'databox__group--height': localSerieObj.indicator }]"&gt;
-                  &lt;div :class="{ 'databox__group--height': localSerieObj.indicator }" class="databox__group"&gt;
-                      &lt;div class="databox__header"&gt;
-                          &lt;div class="fr-col-12 subContainer__title"&gt;
-                              &lt;div class="subContainer__icon"&gt;
-                                  &lt;transition name="fade"&gt;
-                                      &lt;h4 v-if="shortTitle" class="serie__title fr-h6 fr-mb-0"&gt;
-                                          &lt;span id="tooltip-target"&gt;{{ serieObj.title }}&lt;/span&gt; &lt;!-- Short title --&gt;
+                  &lt;div class="box"&gt;
+                      &lt;div :class="[
+                          'databox-card',
+                          'databox__group',
+                          { 'databox__group--height': indicator },
+                      ]"&gt;
+                          &lt;div class="databox__header fr-p-2w"&gt;
+                              &lt;div class="databox__header-title"&gt;
+                                  &lt;div class="fr-col databox__header-icon"&gt;
+                                      &lt;h4 class="databox__header-serietitle fr-h6 fr-mb-0"&gt;
+                                          &lt;span id="tooltip-target"&gt;{{ dataBoxTitle }}&lt;/span&gt;
                                       &lt;/h4&gt;
-                                      &lt;h4 v-else class="serie__title fr-h6 fr-mb-0"&gt;
-                                          &lt;span id="tooltip-target"&gt;{{ serieObj.long_title }}&lt;/span&gt; &lt;!-- Long title --&gt;
-                                      &lt;/h4&gt;
-                                  &lt;/transition&gt;
-                                  &lt;button class="fr-btn--tooltip fr-btn" type="button" id="button-2996"
-                                      aria-describedby="tooltip-2996"&gt;
-                                  &lt;/button&gt;
-                                  &lt;span class="fr-tooltip fr-placement" id="tooltip-2996" role="tooltip" aria-hidden="true"&gt;
-                                      &lt;p v-if="shortTitle" class="tooltip__title"&gt;
-                                          &lt;span id="tooltip-target"&gt;{{ serieObj.title }}&lt;/span&gt;
-                                      &lt;/p&gt;
-                                      &lt;p v-else class="tooltip__title"&gt;
-                                          &lt;span id="tooltip-target"&gt;{{ serieObj.long_title }}&lt;/span&gt; &lt;!-- Long title --&gt;
-                                      &lt;/p&gt;
-                                      &lt;p class="tooltip__description"&gt;{{ serieObj.description }}&lt;/p&gt;
-                                  &lt;/span&gt;
-                              &lt;/div&gt;
-                              &lt;div class="fr-col-3 subContainer__fullScreenIcon"&gt;
-                                  &lt;button title="Plein écran" type="button" class="fr-btn fr-btn--tertiary-no-outline fr-p-0"
-                                      @click="openModal"&gt;
-                                      &lt;span class="fr-icon-modal-fill" aria-label="Afficher la modale"
-                                          aria-hidden="true"&gt;&lt;/span&gt;
-                                  &lt;/button&gt;
-                                  &lt;button title="dropdow" type="button"
-                                      class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0"
-                                      @click="toggleDropdown"&gt;
-                                      &lt;span class="fr-icon-more-line" aria-hidden="true"&gt;&lt;/span&gt;
-                                  &lt;/button&gt;
-                                  &lt;div class="dropdown-menu" :class="{ show: isDropdownOpen }"&gt;
-                                      &lt;button class="dropdown-item"&gt;Action databox&lt;/button&gt;
-                                      &lt;button class="dropdown-item"&gt;Action databox&lt;/button&gt;
-                                      &lt;button class="dropdown-item"&gt;Action databox&lt;/button&gt;
                                   &lt;/div&gt;
-                              &lt;/div&gt;
-                          &lt;/div&gt;
-                          &lt;!-- Description and up/down tags --&gt;
-                          &lt;div v-if="localSerieObj.indicator" class="fr-col-12 subContainer__subSection"&gt;
-                              &lt;!-- &lt;p class="fr-text--sm fr-m-0 fr-p-0"&gt;{{ serieObj.description }}&lt;/p&gt; --&gt;
-                              &lt;div class="up-down__container"&gt;
-                                  &lt;p class="fr-text--xs fr-m-0" v-if="serieObj.trendValue.includes('-')"&gt;
-                                      En baisse de
-                                      &lt;span class="fr-badge fr-badge--brown-caramel fr-badge--sm fr-ml-1v"
-                                          :aria-label="'Baisse de ' + serieObj.trendValue.replace('-', '').trim()"&gt;
-                                          &lt;span aria-hidden="true"&gt;↘ &lt;/span&gt;
-                                          {{ serieObj.trendValue.replace("-", "").trim() }} %
+                                  &lt;div class="fr-col-3 databox__header-fullScreenIcon"&gt;
+                                      &lt;button class="infobulle-btn fr-btn fr-btn--tertiary-no-outline fr-p-0" type="button"
+                                          id="button-tooltip" aria-describedby="tooltip-btn"
+                                          aria-label="Afficher plus d'informations"&gt;
+                                          &lt;span class="fr-icon-question-line fr-icon--sm" aria-hidden="true"&gt;&lt;/span&gt;
+                                      &lt;/button&gt;
+                                      &lt;span class="fr-tooltip fr-placement" id="tooltip-btn" role="tooltip" aria-hidden="true"&gt;
+                                          &lt;p class="tooltip__title"&gt;
+                                              &lt;span id="tooltip-target"&gt;{{ dataBoxTitle }}&lt;/span&gt;
+                                          &lt;/p&gt;
+                                          &lt;p class="tooltip__description"&gt;{{ dataBoxDescription }}&lt;/p&gt;
                                       &lt;/span&gt;
-                                  &lt;/p&gt;
-                                  &lt;p class="fr-text--xs fr-m-0" v-else&gt;
-                                      En hausse de
-                                      &lt;span class="fr-badge fr-badge--green-emeraude fr-badge--sm fr-ml-1v"
-                                          :aria-label="'Hausse de ' + serieObj.trendValue.trim()"&gt;
-                                          &lt;span aria-hidden="true"&gt;↗ &lt;/span&gt;
-                                          {{ serieObj.trendValue.trim() }} %
-                                      &lt;/span&gt;
-                                  &lt;/p&gt;
-                              &lt;/div&gt;
-                          &lt;/div&gt;
-                      &lt;/div&gt;
-  
-                      &lt;!-- TO IMPROVE  DROP DoWN SELECT--&gt;
-                      &lt;div class="databox__content"&gt;
-                          &lt;!-- Display indicator value --&gt;
-                          &lt;div class="fr-col-12 subContainer__contentIndicator" v-if="localSerieObj.indicator"&gt;
-                              &lt;p class="fr-display--xs"&gt;{{ serieObj.value }}&lt;/p&gt;
-                          &lt;/div&gt;
-                          &lt;div v-if="serieObj.add_sources &amp;&amp; serieObj.select_options.length &gt; 0"
-                              class="fr-col-12 subContainer__selectSection"&gt;
-                              &lt;select-source :id_select="widgetId" :optiondefault="serieObj.option_default"
-                                  :lsOptions="serieObj.select_options" @select-source="transfertSourceOption"&gt;
-                              &lt;/select-source&gt;
-                          &lt;/div&gt;
-                          &lt;div class="fr-col-12 subContainer__chart"
-                              v-if="!localSerieObj.indicator &amp;&amp; serieObj.showGraph &amp;&amp; serieObj.component"&gt;
-                              &lt;div class="subContainer__chart--section"&gt;
-                                  &lt;p class="text subContainer__chart--section--unit"&gt;
-                                      {{ serieObj.unitValue }}
-                                  &lt;/p&gt;
-                              &lt;/div&gt;
-                              &lt;div class="subContainer__chart--canvas"&gt;
-                                  &lt;div :is="serieObj.component" v-bind="stringifiedSerieValues"&gt;&lt;/div&gt;
-                              &lt;/div&gt;
-                          &lt;/div&gt;
-  
-                          &lt;div v-if="!serieObj.showGraph || serieObj.istable" class="table-responsive"&gt;
-                              &lt;div&gt;
-                                  &lt;table-vue :captionTitle="serieObj.title" :tablevue_data="serieObj.table"&gt;&lt;/table-vue&gt;
-                              &lt;/div&gt;
-                          &lt;/div&gt;
-  
-                          &lt;!-- Chart legend --&gt;
-                          &lt;div class="subContainer__legendContainer" v-if="serieObj.display_legend &amp;&amp; !localSerieObj.indicator &amp;&amp; serieObj.showGraph &amp;&amp; serieObj.component
-                          "&gt;
-                              &lt;div class="subContainer__legend" v-for="index in serieObj.serie_values.y.length" :key="index"&gt;
-                                  &lt;div class="subContainer__legend--icon" :style="{
-                                      'background-color': getHexaFromName(
-                                          serieObj.serie_values.color[index - 1]
-                                      ),
-                                  }"&gt;&lt;/div&gt;
-                                  &lt;div&gt;
-                                      &lt;p class="fr-m-0 fr-text--xs"&gt;
-                                          {{ serieObj.serie_values.name[index - 1] }}
-                                      &lt;/p&gt;
-                                  &lt;/div&gt;
-                              &lt;/div&gt;
-                          &lt;/div&gt;
-                      &lt;/div&gt;
-  
-                      &lt;!-- Source, update and icons --&gt;
-                      &lt;div class="databox__footer"&gt;
-                          &lt;div class="fr-col-12 subContainer__footer-container"&gt;
-                              &lt;div class="subContainer__footer-text"&gt;
-                                  &lt;p class="fr-text--xs fr-mb-0"&gt;
-                                      &lt;strong&gt;Source : &lt;/strong&gt;{{ serieObj.source }} ,
-                                      &lt;strong&gt;Mis à jour :&lt;/strong&gt;
-                                      {{ serieObj.update_date }}
-                                  &lt;/p&gt;
-                              &lt;/div&gt;
-                              &lt;div v-if="!localSerieObj.indicator" class="fr-ml-md-6w subContainer__footer-icon"&gt;
-                                  &lt;!-- Chart and table button --&gt;
-                                  &lt;div class="fr-col-12 subContainer__segmented-controls" v-if="serieObj.component"&gt;
-                                      &lt;div class="subContainer__calltoaction fr-pr-1w"&gt;
+                                      &lt;button v-if="modalSettings.hasModal" type="button"
+                                          class="fr-btn fr-btn--tertiary-no-outline fr-p-0" :aria-controls="modalSettings.modalId"
+                                          aria-label="Afficher la modale" @click="$emit('open-modal')"&gt;
+                                          &lt;span class="fr-icon-modal-fill fr-icon--sm" aria-label="Afficher la modale"
+                                              aria-hidden="true"&gt;&lt;/span&gt;
+                                      &lt;/button&gt;
+                                      &lt;div ref="dropdownContainer" class="dropdown-wrapper"&gt;
+                                          &lt;button ref="dropdown" title="dropdown" type="button"
+                                              class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0"
+                                              @click="toggleDropdown" aria-label="Afficher le menu déroulant"&gt;
+                                              &lt;span class="fr-icon-more-line fr-icon--sm" aria-hidden="true"&gt;&lt;/span&gt;
+                                          &lt;/button&gt;
+                                          &lt;div class="dropdown-menu" :class="{ show: isDropdownOpen }"&gt;
+                                              &lt;div class="dropdown-menu" :class="{ show: isDropdownOpen }"&gt;
+                                                  &lt;button class="dropdown-item" v-for="action in dropdownActions" :key="action.id"
+                                                      :aria-label="action.ariaLabel" :title="action.ariaLabel" type="submit"
+                                                      @click="performAction(action)"&gt;
+                                                      {{ action.ariaLabel }}
+                                                  &lt;/button&gt;
+                                              &lt;/div&gt;
+                                          &lt;/div&gt;
                                       &lt;/div&gt;
-                                      &lt;segmented-controls :showIcons="true" @chart-selected="handleChartSelected"
-                                          :idcontrol="serieObj.id_accordion + '1'"&gt;
-                                      &lt;/segmented-controls&gt;
+                                  &lt;/div&gt;
+                              &lt;/div&gt;
+                              &lt;!-- Description et indicateur de tendance --&gt;
+                              &lt;div v-if="indicator" class="databox__header-subSection"&gt;
+                                  &lt;div class="up-down__container"&gt;
+                                      &lt;p class="fr-text--xs fr-m-0" v-if="trendValue.includes('-')"&gt;
+                                          En baisse de
+                                          &lt;span class="fr-badge fr-badge--brown-caramel fr-badge--sm fr-ml-1v" :aria-label="'Baisse de ' + trendValue.replace('-', '').trim()"&gt;
+                                              &lt;span class="fr-pr-1v" aria-hidden="true"&gt;↘&lt;/span&gt;
+                                              {{ trendValue.replace("-", "").trim() }} %
+                                          &lt;/span&gt;
+                                      &lt;/p&gt;
+                                      &lt;p class="fr-text--xs fr-m-0" v-else&gt;
+                                          En hausse de
+                                          &lt;span class="fr-badge fr-badge--green-emeraude fr-badge--sm fr-ml-1v" :aria-label="'Hausse de ' + trendValue.trim()"&gt;
+                                              &lt;span class="fr-pr-1v" aria-hidden="true"&gt;↗&lt;/span&gt;
+                                              {{ trendValue.trim() }} %
+                                          &lt;/span&gt;
+                                      &lt;/p&gt;
+                                  &lt;/div&gt;
+                              &lt;/div&gt;
+                  
+                              &lt;!-- Sélecteur de source --&gt;
+                              &lt;div v-if="addSources && select_options.length &gt; 0" class="databox__content-selectSection fr-pt-2w"&gt;
+                                  &lt;select-source :id_select="widgetId" :optiondefault="option_default" :lsOptions="select_options"
+                                      @select-source="transfertSourceOption"&gt;&lt;/select-source&gt;
+                              &lt;/div&gt;
+                          &lt;/div&gt;
+                  
+                          &lt;!-- Contenu de la DataBox --&gt;
+                          &lt;transition name="fade-slide" mode="out-in"&gt;
+                              &lt;div class="databox__content fr-p-2w" ref="chartContainer"&gt;
+                                  &lt;!-- Affichage de la valeur de l'indicateur --&gt;
+                                  &lt;div class="databox__content-indicator" v-if="indicator"&gt;
+                                      &lt;p class="fr-display--xs fr-mb-0 databox__content-indicator-text"&gt;
+                                          {{ value }}
+                                      &lt;/p&gt;
+                                  &lt;/div&gt;
+                  
+                                  &lt;!-- Graphique --&gt;
+                                  &lt;div :id="`chart-section-${widgetId}`" class="databox__content-chart" v-if="shouldDisplayChart"&gt;
+                                      &lt;div class="databox__content-chart-section"&gt;
+                                          &lt;p class="databox__content-chart-section-unit text"&gt;
+                                              {{ unit_value }}
+                                          &lt;/p&gt;
+                                      &lt;/div&gt;
+                                      &lt;div class="databox__content-chart-section-canvas"&gt;
+                                          &lt;component :is="component" v-bind="chartProps"&gt;&lt;/component&gt;
+                                      &lt;/div&gt;
+                                  &lt;/div&gt;
+                  
+                                  &lt;!-- Légende du graphique --&gt;
+                                  &lt;div class="databox__content-legendContainer" v-if="shouldDisplayLegend"&gt;
+                                      &lt;div class="databox__content-legend" v-for="(name, index) in serieObj.serie_values.name"
+                                          :key="index"&gt;
+                                          &lt;div class="databox__content-legend-icon fr-mr-1w" :style="{
+                                              'background-color': getHexaFromName(
+                                                  serieObj.serie_values.color[index]
+                                              ),
+                                          }"&gt;&lt;/div&gt;
+                                          &lt;div&gt;
+                                              &lt;p class="fr-m-0 fr-text--xs"&gt;{{ name }}&lt;/p&gt;
+                                          &lt;/div&gt;
+                                      &lt;/div&gt;
+                                  &lt;/div&gt;
+                  
+                                  &lt;!-- Tableau --&gt;
+                                  &lt;div :id="`table-section-${widgetId}`" v-if="shouldDisplayTable" class="databox__content-table-responsive"&gt;
+                                      &lt;table-vue :captionTitle="captionTitle" :tablevue_data="serieObj.table"
+                                          :isMultilineTableHeader="isMultilineTableHeader"&gt;&lt;/table-vue&gt;
+                                  &lt;/div&gt;
+                              &lt;/div&gt;
+                          &lt;/transition&gt;
+                  
+                          &lt;!-- Pied de page : Source, mise à jour et icônes --&gt;
+                          &lt;div class="databox__footer"&gt;
+                              &lt;div class="databox__footer-content fr-p-2w"&gt;
+                                  &lt;div class="databox__footer-content-text"&gt;
+                                      &lt;p class="fr-text--xs fr-mb-0"&gt;
+                                          {{ source }}, {{ changeDateFormat(dataBoxDate) }}
+                                      &lt;/p&gt;
+                                  &lt;/div&gt;
+                                  &lt;div v-if="!this.indicator" class="fr-ml-md-6w databox__footer-content-icon"&gt;
+                                      &lt;div class="databox__footer-content-segmented-controls" v-if="component"&gt;
+                                          &lt;div class="databox__footer-content-calltoaction fr-pr-1w"&gt;&lt;/div&gt;
+                                          &lt;segmented-controls :showIcons="true" @chart-selected="handleChartSelected"
+                                              :idcontrol="serieObj.id_accordion + '1'"&gt;
+                                          &lt;/segmented-controls&gt;
+                                      &lt;/div&gt;
                                   &lt;/div&gt;
                               &lt;/div&gt;
                           &lt;/div&gt;
                       &lt;/div&gt;
                   &lt;/div&gt;
-              &lt;/div&gt;  
-                </code></pre>
+                  </code></pre>
               </div>
               
             </div>
