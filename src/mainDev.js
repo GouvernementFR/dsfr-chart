@@ -12,7 +12,6 @@ import GaugeChart from './components/GaugeChart'
 import TableChart from './components/TableChart'
 import RadarChart from './components/RadarChart'
 import DataBox from './components/DataBox.vue'
-import ParentComponent from './components/Exemple/ParentComponent.vue'
 
 import '../node_modules/@gouvfr/dsfr/dist/dsfr.module.min.js'
 
@@ -39,4 +38,3 @@ Vue.customElement('gauge-chart', GaugeChart)
 Vue.customElement('table-chart', TableChart)
 Vue.customElement('radar-chart', RadarChart)
 Vue.customElement('data-box', DataBox)
-Vue.customElement('parent-component', ParentComponent)
