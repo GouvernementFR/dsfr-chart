@@ -4,13 +4,13 @@
         <div :class="[
             'databox-card',
             'databox__group',
-            { 'databox__group--height': serieObj.indicator },
+            { 'databox__group--height': indicator },
         ]">
             <div class="databox__header fr-p-2w">
                 <div class="databox__header-title">
                     <div class="fr-col databox__header-icon">
                         <h4 class="databox__header-serietitle fr-h6 fr-mb-0">
-                            <span id="tooltip-target">{{ serieObj.title }}</span>
+                            <span id="tooltip-target">{{ dataBoxTitle }}</span>
                         </h4>
                     </div>
                     <div class="fr-col-3 databox__header-fullScreenIcon">
@@ -21,9 +21,9 @@
                         </button>
                         <span class="fr-tooltip fr-placement" id="tooltip-btn" role="tooltip" aria-hidden="true">
                             <p class="tooltip__title">
-                                <span id="tooltip-target">{{ serieObj.title }}</span>
+                                <span id="tooltip-target">{{ dataBoxTitle }}</span>
                             </p>
-                            <p class="tooltip__description">{{ serieObj.description }}</p>
+                            <p class="tooltip__description">{{ dataBoxDescription }}</p>
                         </span>
                         <!-- Bouton pour ouvrir la modale -->
                         <button v-if="modalSettings.hasModal" type="button"
@@ -35,16 +35,15 @@
                         <div ref="dropdownContainer" class="dropdown-wrapper">
                             <button ref="dropdown" title="dropdown" type="button"
                                 class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0"
-                                @click="toggleDropdown">
-                                <span class="fr-icon-more-line fr-icon--sm" aria-hidden="true"
-                                    aria-label="Afficher le menu déroulant"></span>
+                                @click="toggleDropdown" aria-label="Afficher le menu déroulant">
+                                <span class="fr-icon-more-line fr-icon--sm" aria-hidden="true"></span>
                             </button>
                             <div class="dropdown-menu" :class="{ show: isDropdownOpen }">
                                 <div class="dropdown-menu" :class="{ show: isDropdownOpen }">
                                     <button class="dropdown-item" v-for="action in dropdownActions" :key="action.id"
-                                        :aria-label="action.label" :title="action.label" type="submit"
+                                        :aria-label="action.ariaLabel" :title="action.ariaLabel" type="submit"
                                         @click="performAction(action)">
-                                        {{ action.label }}
+                                        {{ action.ariaLabel }}
                                     </button>
                                 </div>
                             </div>
@@ -52,32 +51,31 @@
                     </div>
                 </div>
                 <!-- Description et indicateur de tendance -->
-                <div v-if="serieObj.indicator" class="databox__header-subSection">
+                <div v-if="indicator" class="databox__header-subSection">
                     <div class="up-down__container">
-                        <p class="fr-text--xs fr-m-0" v-if="serieObj.trendValue.includes('-')">
+                        <p class="fr-text--xs fr-m-0" v-if="trendValue.includes('-')">
                             En baisse de
-                            <span class="fr-badge fr-badge--brown-caramel fr-badge--sm fr-ml-1v" :aria-label="'Baisse de ' + serieObj.trendValue.replace('-', '').trim()
+                            <span class="fr-badge fr-badge--brown-caramel fr-badge--sm fr-ml-1v" :aria-label="'Baisse de ' + trendValue.replace('-', '').trim()
                                 ">
                                 <span class="fr-pr-1v" aria-hidden="true">↘ </span>
-                                {{ serieObj.trendValue.replace("-", "").trim() }} %
+                                {{ trendValue.replace("-", "").trim() }} %
                             </span>
                         </p>
                         <p class="fr-text--xs fr-m-0" v-else>
                             En hausse de
                             <span class="fr-badge fr-badge--green-emeraude fr-badge--sm fr-ml-1v"
-                                :aria-label="'Hausse de ' + serieObj.trendValue.trim()">
+                                :aria-label="'Hausse de ' + trendValue.trim()">
                                 <span class="fr-pr-1v" aria-hidden="true">↗ </span>
-                                {{ serieObj.trendValue.trim() }} %
+                                {{ trendValue.trim() }} %
                             </span>
                         </p>
                     </div>
                 </div>
 
                 <!-- Sélecteur de source -->
-                <div v-if="serieObj.add_sources && serieObj.select_options.length > 0"
-                    class="databox__content-selectSection fr-pt-2w">
-                    <select-source :id_select="widgetId" :optiondefault="serieObj.option_default"
-                        :lsOptions="serieObj.select_options" @select-source="transfertSourceOption"></select-source>
+                <div v-if="addSources && select_options.length > 0" class="databox__content-selectSection fr-pt-2w">
+                    <select-source :id_select="widgetId" :optiondefault="option_default" :lsOptions="select_options"
+                        @select-source="transfertSourceOption"></select-source>
                 </div>
             </div>
 
@@ -85,9 +83,9 @@
             <transition name="fade-slide" mode="out-in">
                 <div class="databox__content fr-p-2w" ref="chartContainer">
                     <!-- Affichage de la valeur de l'indicateur -->
-                    <div class="databox__content-indicator" v-if="serieObj.indicator">
+                    <div class="databox__content-indicator" v-if="indicator">
                         <p class="fr-display--xs fr-mb-0 databox__content-indicator-text">
-                            {{ serieObj.value }}
+                            {{ value }}
                         </p>
                     </div>
 
@@ -95,11 +93,11 @@
                     <div :id="`chart-section-${widgetId}`" class="databox__content-chart" v-if="shouldDisplayChart">
                         <div class="databox__content-chart-section">
                             <p class="databox__content-chart-section-unit text">
-                                {{ serieObj.unitValue }}
+                                {{ unit_value }}
                             </p>
                         </div>
                         <div class="databox__content-chart-section-canvas">
-                            <component :is="serieObj.component" v-bind="chartProps"></component>
+                            <component :is="component" v-bind="chartProps"></component>
                         </div>
                     </div>
 
@@ -118,8 +116,9 @@
                         </div>
                     </div>
                     <!-- Tableau -->
-                    <div :id="`table-section-${widgetId}`" v-if="shouldDisplayTable" class="databox__content-table-responsive">
-                        <table-vue :captionTitle="serieObj.title" :tablevue_data="serieObj.table"
+                    <div :id="`table-section-${widgetId}`" v-if="shouldDisplayTable"
+                        class="databox__content-table-responsive">
+                        <table-vue :captionTitle="captionTitle" :tablevue_data="serieObj.table"
                             :isMultilineTableHeader="isMultilineTableHeader">
                         </table-vue>
                     </div>
@@ -131,11 +130,11 @@
                 <div class="databox__footer-content fr-p-2w">
                     <div class="databox__footer-content-text">
                         <p class="fr-text--xs fr-mb-0">
-                            {{ serieObj.source }}, {{ changeDateFormat(serieObj.update_date) }}
+                            {{ source }}, {{ changeDateFormat(dataBoxDate) }}
                         </p>
                     </div>
-                    <div v-if="!this.serieObj.indicator" class="fr-ml-md-6w databox__footer-content-icon">
-                        <div class="databox__footer-content-segmented-controls" v-if="serieObj.component">
+                    <div v-if="!this.indicator" class="fr-ml-md-6w databox__footer-content-icon">
+                        <div class="databox__footer-content-segmented-controls" v-if="component">
                             <div class="databox__footer-content-calltoaction fr-pr-1w"></div>
                             <segmented-controls :showIcons="true" @chart-selected="handleChartSelected"
                                 :idcontrol="serieObj.id_accordion + '1'"></segmented-controls>
@@ -179,15 +178,68 @@ export default {
     props: {
         dropdownActions: {
             type: Array,
-            default: () => [],
-        },
-        selectOptions: {
-            type: Array,
-            default: () => [],
+            default: () => [
+                { id: '1', ariaLabel: 'Capture d\'écran', action: 'actionBtn1' },
+                { id: '2', ariaLabel: 'Télécharger CSV', action: 'actionBtn2' }
+            ],
         },
         isMultilineTableHeader: {
             type: Boolean,
             default: true, // Défini par défaut
+        },
+        dataBoxTitle: {
+            type: String,
+            default: "Titre de la dataBox", // Valeur par défaut
+        },
+        dataBoxDescription: {
+            type: String,
+            default: "Description de la dataBox.",
+        },
+        indicator: {
+            type: Boolean,
+            default: false,
+        },
+        trendValue: {
+            type: String,
+            default: "5",
+        },
+        value: {
+            type: String,
+            default: "1500",
+        },
+        unit_value: {
+            type: String,
+            default: "Nombre exprimé en pourcentage (%)"
+        },
+        component: {
+            type: String,
+            default: "PieChart", // Composant par défaut
+        },
+        addSources: {
+            type: Boolean,
+            default: false,
+        },
+        select_options: {
+            type: Array,
+            default: () => [
+                { value: "ubm", label: "Exposition médiatique" },
+            ],
+        },
+        captionTitle: {
+            type: String,
+            default: "Titre du tableau", // Définissez une valeur par défaut
+        },
+        option_default: {
+            type: String,
+            default: "ubm",
+        },
+        dataBoxDate: {
+            type: String,
+            default: "2024-04-22",
+        },
+        source: {
+            type: String,
+            default: "SIG",
         },
         modalSettings: {
             type: Object,
@@ -208,7 +260,18 @@ export default {
         serieObj: {
             type: Object,
             required: false,
-            default: () => ({}),
+            default: () => ({
+                showGraph: true,
+                serie_values: {
+                    x: ["Serie 1", "Serie 2", "Serie 3"],
+                    y: [100, 200, 300],
+                },
+                table: [
+                    ["Serie 1", "100"],
+                    ["Serie 2", "200"],
+                    ["Serie 3", "300"],
+                ],
+            }),
             validator(value) {
                 return true;
             },
@@ -297,17 +360,17 @@ export default {
         },
         shouldDisplayLegend() {
             return (
-                this.serieObj.display_legend &&
+                this.display_legend &&
                 this.serieObj.showGraph &&
-                this.serieObj.component &&
-                !this.serieObj.indicator
+                this.component &&
+                !this.indicator
             );
         },
         shouldDisplayChart() {
             return (
                 this.serieObj.showGraph &&
-                this.serieObj.component &&
-                !this.serieObj.indicator
+                this.component &&
+                !this.indicator
             );
         },
         shouldDisplayTable() {
