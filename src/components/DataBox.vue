@@ -174,10 +174,6 @@ export default {
         return {
             widgetId: "",
             isDropdownOpen: false,
-            // dropdownActions: [
-            //     { id: '1', label: 'Action 1', action: 'actionBtn1' },
-            //     { id: '2', label: 'Action 2', action: 'actionBtn2' }
-            // ]
         };
     },
     props: {
@@ -191,7 +187,7 @@ export default {
         },
         isMultilineTableHeader: {
             type: Boolean,
-            default: true, // Défini par défaut à true
+            default: true, // Défini par défaut
         },
         modalSettings: {
             type: Object,
