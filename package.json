@@ -21,7 +21,8 @@
     "build-gauge": "vue-cli-service build --target lib --dest ./GaugeChart --inline-vue --name gauge-chart src/GaugeChart.js",
     "build-table": "vue-cli-service build --target lib --dest ./TableChart --inline-vue --name table-chart-reg src/TableChart.js",
     "build-radar": "vue-cli-service build --target lib --dest ./RadarChart --inline-vue --name radar-chart src/RadarChart.js",
-    "build-all": "npm run build-bar & npm run build-barline & npm run build-line & npm run build-map & npm run build-multiline & npm run build-pie & npm run build-scatter & npm run build-mapreg & npm run build-gauge & npm run build-table & npm run build-radar",
+    "build-databox": "vue-cli-service build --target lib --dest ./DataBox --inline-vue --name data-box src/DataBox.js",
+    "build-all": "npm run build-bar & npm run build-barline & npm run build-line & npm run build-map & npm run build-multiline & npm run build-pie & npm run build-scatter & npm run build-mapreg & npm run build-gauge & npm run build-table & npm run build-radar & npm run build-databox",
     "lint": "vue-cli-service lint"
   },
   "files": [
