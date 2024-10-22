@@ -1,3 +1,6 @@
+/* eslint-disable */
+import chroma from 'chroma-js';  // Ajoutez cette ligne
+
 export const capitalize = function (string) {
   if (string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
@@ -12,6 +15,15 @@ export const convertFloatToHuman = function (float) {
     return parseInt(float).toLocaleString('fr-FR')
   } else {
     return parseFloat(float).toFixed(2).toLocaleString('fr-FR')
+  }
+}
+
+export function changeDateFormat (date) {
+  if (date !== undefined) {
+    const dateArray = date.split('-')
+    return dateArray[2] + '/' + dateArray[1] + '/' + dateArray[0]
+  } else {
+    return ''
   }
 }
 
@@ -56,6 +68,84 @@ export const convertDateToHuman = function (string) {
 export const testIfNaN = function (float) {
   return isNaN(parseFloat(float))
 }
+// Palette catégorielle : 8 couleurs
+export const categoricalPalette = [
+  '#5C68E5', // Couleur 1
+  '#82B5F2', // Couleur 2
+  '#29598F', // Couleur 3
+  '#31A7AE', // Couleur 4
+  '#81EEF5', // Couleur 5
+  '#B478F1', // Couleur 6
+  '#CFB1F5', // Couleur 7
+  '#CECECE', // Couleur 8
+];
+
+// Couleur par défaut pour un graphique unicolore
+export const defaultColor = '#5C68E5';
+
+// Couleur neutre (pour les données "minimales")
+export const neutralColor = '#B1B1B1';
+
+// Palette séquentielle (unicolore dégradé, par exemple du clair au foncé)
+export const sequentialPalette = chroma.scale(['#DBDAFF', '#00005F']).colors(3);
+
+// Palette divergente (du vert au rouge, pour représenter des échelles de valeurs avec un point médian)
+export const divergentPalette = chroma.scale(['#298641', '#EFB900', '#E91719']).colors(6);
+
+// Fonction pour limiter les catégories (si plus de 8 catégories)
+export function limitCategories(labels, data, maxCategories = 8) {
+  if (labels.length > maxCategories) {
+    const limitedLabels = labels.slice(0, maxCategories - 1);
+    const otherLabel = 'Autres'; // Catégorie "Autres" pour les labels restants
+    const limitedData = data.slice(0, maxCategories - 1);
+    const otherData = data.slice(maxCategories - 1).reduce((a, b) => a + b, 0); // Somme des données restantes
+    limitedLabels.push(otherLabel);
+    limitedData.push(otherData);
+    return { labels: limitedLabels, data: limitedData };
+  }
+  return { labels, data };
+}
+
+// Gestion du nouveau code couleur DSFR-Chart
+// Fonction pour obtenir des couleurs dynamiques selon un index et une palette
+export function getColorsByIndex(index, palette = categoricalPalette) {
+  return palette[index % palette.length]; // Retourne une couleur en fonction de l'index, en bouclant si nécessaire
+}
+
+// Fonction pour obtenir les couleurs pour un graphique unicolore
+export function getDefaultColor() {
+  return defaultColor;
+}
+
+// Fonction pour obtenir la couleur neutre
+export function getNeutralColor() {
+  return neutralColor;
+}
+
+// Fonction pour récupérer une palette séquentielle (par défaut, 5 couleurs)
+export function getSequentialPalette(count = 3) {
+  return chroma.scale(['#E8EAF6', '#5C68E5']).colors(count);
+}
+
+// Fonction pour récupérer une palette divergente (par défaut, 6 couleurs)
+export function getDivergentPalette(count = 6) {
+  return chroma.scale(['#27AE60', '#FFC300', '#E74C3C']).colors(count);
+}
+
+// Exemple d'export de toutes les fonctions et palettes pour les utiliser dans vos composants
+export const colorUtils = {
+  categoricalPalette,
+  defaultColor,
+  neutralColor,
+  sequentialPalette,
+  divergentPalette,
+  limitCategories,
+  getColorsByIndex,
+  getDefaultColor,
+  getNeutralColor,
+  getSequentialPalette,
+  getDivergentPalette,
+};
 
 const colorsDSFR = [
   'green-bourgeon',
