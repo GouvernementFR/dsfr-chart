@@ -7,7 +7,13 @@
           <div class="tooltip_header"></div>
           <div class="tooltip_body">
             <div class="tooltip_value">
-              <span class="tooltip_dot"></span>
+              <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v"
+                :style="{ 'border-bottom': '1px solid #e0e0e0' }">
+                <div class="tooltip_value-content">
+                  <span class="tooltip_dot" :style="{ 'background-color': colorParse[index] }"></span>
+                  <p class='tooltip_place'>{{ capitalize(nameParse[index]) }}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -43,13 +49,13 @@
 /* eslint-disable */
 import { Chart } from 'chart.js'
 import chroma from 'chroma-js'; // Importez chroma-js
-import { mixin, getColorsByIndex, categoricalPalette, sequentialPalette, divergentPalette, neutralColor, defaultColor, limitCategories } from '@/utils.js' // Importation des nouvelles fonctions et palettes
+import { mixin, getColorsByIndex, categoricalPalette, sequentialAscending, sequentialDescending, divergentAscending, divergentDescending, neutralColor, defaultColor, limitCategories } from '@/utils.js' // Importation des nouvelles fonctions et palettes
 import annotationPlugin from 'chartjs-plugin-annotation'
 
 Chart.pluginService.register(annotationPlugin)
 
 export default {
-  name: 'MultiLineChart',
+  name: 'BarChart',
   mixins: [mixin],
   data() {
     return {
@@ -142,7 +148,7 @@ export default {
     },
     aspectratio: {
       type: Number,
-      default: 2
+      default: 1
     },
     formatdate: {
       type: Boolean,
@@ -161,6 +167,7 @@ export default {
       type: Number,
       default: -1  // Si aucune donnée n'est mise en avant, on met tout en neutre
     },
+
   },
   computed: {
     style() {
@@ -402,8 +409,13 @@ export default {
                   bodyLines[0].forEach(function (line, i) {
                     const dataPoint = tooltipModel.dataPoints[i];
                     if (dataPoint) {
-                      const color = self.colorParse[dataPoint.datasetIndex]; // Associe la bonne couleur à chaque ligne
-                      divValue.innerHTML += `<span class="tooltip_dot" style="background-color:${color};"></span> ${line}<br>`;
+                      const color = self.colorParse[dataPoint.datasetIndex];
+                      divValue.innerHTML += `
+                      <div class="tooltip_value-content">
+                        <span class="tooltip_dot" style="background-color:${color};"></span>
+                        <p class="tooltip_place fr-mb-0">${line}</p>
+                      </div>
+                    `;
                     }
                   });
                 }
@@ -484,25 +496,29 @@ export default {
       switch (this.selectedPalette) {
         case 'categorical':
           return categoricalPalette;
-        case 'sequential':
-          return sequentialPalette;
-        case 'divergent':
-          return divergentPalette;
+        case 'sequentialAscending':
+          return sequentialAscending;
+        case 'sequentialDescending':
+          return sequentialDescending;
+        case 'divergentAscending':
+          return divergentAscending;
+        case 'divergentDescending':
+          return divergentDescending;
         case 'neutral':
-          return neutralColor;
+          return [neutralColor]; // La couleur neutre comme palette unique
         case 'defaultColor':
-          return defaultColor;  // Couleur unicolore neutre
+          return [defaultColor]; // Couleur unicolore par défaut
         default:
           break;
       }
 
       // Détection automatique si `selectedPalette` n'est pas spécifié
       if (this.yparse.some(arr => arr.some(value => value < 0))) {
-        return divergentPalette; // Si des valeurs sont négatives, utiliser la palette divergente
+        return divergentAscending; // Si des valeurs sont négatives, utiliser la palette divergente par défaut
       }
 
       if (this.yparse.length === 1) {
-        return sequentialPalette; // Si une seule série de données, utiliser une palette séquentielle
+        return sequentialAscending; // Si une seule série de données, utiliser une palette séquentielle par défaut
       }
 
       // Par défaut, on retourne la palette catégorielle
@@ -549,106 +565,5 @@ export default {
 </script>
 
 <style lang="scss">
-.widget_container {
-  .ml-lg {
-    margin-left: 0;
-  }
-
-  @media (min-width: 62em) {
-    .ml-lg {
-      margin-left: 3rem;
-    }
-  }
-
-  .r_col {
-    align-self: center;
-
-    .flex {
-      display: flex;
-
-      .legende_dot {
-        min-width: 0.8rem;
-        width: 0.8rem;
-        height: 0.8rem;
-        min-width: 0.8rem;
-        background-color: #000091;
-        display: inline-block;
-        margin-top: 0.25rem;
-        margin-left: 0;
-      }
-
-      .legende_dash_line1 {
-        min-width: 0.35rem;
-        width: 0.35rem;
-        height: 0.2rem;
-        border-radius: 0%;
-        display: inline-block;
-        margin-top: 0.6rem;
-      }
-
-      .legende_dash_line2 {
-        min-width: 0.35rem;
-        width: 0.35rem;
-        height: 0.2rem;
-        border-radius: 0%;
-        display: inline-block;
-        margin-top: 0.6rem;
-        margin-left: 0.1rem;
-      }
-    }
-  }
-
-  .chart canvas {
-    max-width: 100%;
-  }
-
-  .linechart_tooltip {
-    opacity: 0;
-    width: 11.25rem;
-    height: auto;
-    background-color: white;
-    position: fixed;
-    z-index: 999;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 18, 0.16);
-    text-align: left;
-    pointer-events: none;
-    font-size: 0.75rem;
-
-    .tooltip_header {
-      width: 100%;
-      height: 1.75rem;
-      background-color: #f6f6f6;
-      color: #6b6b6b;
-      padding-left: 0.75rem;
-      padding-top: 0.25rem;
-      padding-bottom: 0.25rem;
-    }
-
-    .tooltip_body {
-      padding-left: 0.75rem;
-      padding-right: 0.75rem;
-      padding-top: 0.25rem;
-      line-height: 1.67;
-
-      .tooltip_dot {
-        min-width: 0.7rem;
-        width: 0.7rem;
-        height: 0.7rem;
-        background-color: #000091;
-        display: inline-block;
-        margin-top: 0.25rem;
-        margin-right: 0.25rem;
-      }
-
-      .tooltip_place {
-        color: #242424;
-      }
-
-      .tooltip_value {
-        color: #242424;
-        font-weight: bold;
-      }
-    }
-  }
-}
+@import './Style/BarChart.scss';
 </style>

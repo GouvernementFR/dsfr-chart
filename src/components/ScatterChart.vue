@@ -46,7 +46,7 @@
 /* eslint-disable */
 import { Chart } from 'chart.js'
 import chroma from 'chroma-js' // Assure-toi que chroma-js est installé
-import { mixin, getColorsByIndex, categoricalPalette, sequentialPalette, divergentPalette, neutralColor, defaultColor } from '@/utils.js' // Importation des nouvelles fonctions et palettes
+import { mixin, getColorsByIndex, categoricalPalette, sequentialAscending, sequentialDescending, divergentAscending, divergentDescending, neutralColor, defaultColor } from '@/utils.js'
 
 export default {
   name: 'ScatterChart',
@@ -305,6 +305,8 @@ export default {
           borderColor: self.colorParse[j],
           backgroundColor: self.colorParse[j],
           type: 'scatter',
+          pointRadius: 4,
+          pointHoverRadius: 4,
           pointStyle: 'rect',
           pointRadius: self.pointradius,
           pointHoverRadius: self.pointradius + 1,
@@ -331,43 +333,43 @@ export default {
         },
         plugins: [{
           afterDatasetDraw: function (chart, args, options) {
-  const ctx = chart.chart.ctx;
-  const xScales = chart.config.options.scales.xAxes;
-  const yScales = chart.config.options.scales.yAxes;
+            const ctx = chart.chart.ctx;
+            const xScales = chart.config.options.scales.xAxes;
+            const yScales = chart.config.options.scales.yAxes;
 
-  const xAxisId = xScales[0].id || xScales[0].scaleLabel.labelString;
-  const yAxisId = yScales[0].id || yScales[0].scaleLabel.labelString;
+            const xAxisId = xScales[0].id || xScales[0].scaleLabel.labelString;
+            const yAxisId = yScales[0].id || yScales[0].scaleLabel.labelString;
 
-  const xAxis = chart.scales[xAxisId];
-  const yAxis = chart.scales[yAxisId];
+            const xAxis = chart.scales[xAxisId];
+            const yAxis = chart.scales[yAxisId];
 
-  if (self.vlineParse !== undefined) {
-    self.vlineParse.forEach(function (line, j) {
-      const x = xAxis.getPixelForValue(line);
+            if (self.vlineParse !== undefined) {
+              self.vlineParse.forEach(function (line, j) {
+                const x = xAxis.getPixelForValue(line);
 
-      ctx.beginPath();
-      ctx.moveTo(x, yAxis.top);
-      ctx.strokeStyle = self.vlineColorParse[j];
-      ctx.lineWidth = 3;
-      ctx.setLineDash([10, 5]);
-      ctx.lineTo(x, yAxis.bottom);
-      ctx.stroke();
-    });
-  }
-  if (self.hlineParse !== undefined) {
-    self.hlineParse.forEach(function (line, j) {
-      const y = yAxis.getPixelForValue(line);
+                ctx.beginPath();
+                ctx.moveTo(x, yAxis.top);
+                ctx.strokeStyle = self.vlineColorParse[j];
+                ctx.lineWidth = 3;
+                ctx.setLineDash([10, 5]);
+                ctx.lineTo(x, yAxis.bottom);
+                ctx.stroke();
+              });
+            }
+            if (self.hlineParse !== undefined) {
+              self.hlineParse.forEach(function (line, j) {
+                const y = yAxis.getPixelForValue(line);
 
-      ctx.beginPath();
-      ctx.moveTo(xAxis.left, y);
-      ctx.strokeStyle = self.hlineColorParse[j];
-      ctx.lineWidth = 3;
-      ctx.setLineDash([10, 5]);
-      ctx.lineTo(xAxis.right, y);
-      ctx.stroke();
-    });
-  }
-}
+                ctx.beginPath();
+                ctx.moveTo(xAxis.left, y);
+                ctx.strokeStyle = self.hlineColorParse[j];
+                ctx.lineWidth = 3;
+                ctx.setLineDash([10, 5]);
+                ctx.lineTo(xAxis.right, y);
+                ctx.stroke();
+              });
+            }
+          }
         },
         {
           // Mise à jour de la méthode beforeDatasetsDraw
@@ -408,8 +410,10 @@ export default {
         options: {
           aspectRatio: this.aspectratio,
           animation: {
-            easing: 'easeInOutBack',
-            duration: 1000
+            duration: 1000,
+            easing: 'easeOutBounce',
+            animateScale: true,
+            animateRotate: true
           },
           scales: {
             xAxes: [{
@@ -533,7 +537,12 @@ export default {
                 divValue.innerHTML = ''
                 bodyLines[0].forEach(function (line, i) {
                   if (line !== undefined) {
-                    divValue.innerHTML += '<span class="tooltip_dot" style="background-color:' + self.colorParse[i] + '"></span>' + ' ' + line + '<br>'
+                    divValue.innerHTML += `
+                      <div class="tooltip_value-content">
+                        <span class="tooltip_dot" style="background-color:${self.colorParse[i]};"></span>
+                        <p class="tooltip_place fr-mb-0">${line}</p>
+                      </div>
+                    `;                  
                   }
                 })
               }
@@ -712,106 +721,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.widget_container {
-  .ml-lg {
-    margin-left: 0;
-  }
-
-  @media (min-width: 62em) {
-    .ml-lg {
-      margin-left: 3rem;
-    }
-  }
-
-  .r_col {
-    align-self: center;
-
-    .flex {
-      display: flex;
-
-      .legende_dot {
-        min-width: 0.8rem;
-        width: 0.8rem;
-        height: 0.8rem;
-        min-width: 0.8rem;
-        background-color: #000091;
-        display: inline-block;
-        margin-top: 0.25rem;
-        margin-left: 0;
-      }
-
-      .legende_dash_line1 {
-        min-width: 0.35rem;
-        width: 0.35rem;
-        height: 0.2rem;
-        border-radius: 0%;
-        display: inline-block;
-        margin-top: 0.6rem;
-      }
-
-      .legende_dash_line2 {
-        min-width: 0.35rem;
-        width: 0.35rem;
-        height: 0.2rem;
-        border-radius: 0%;
-        display: inline-block;
-        margin-top: 0.6rem;
-        margin-left: 0.1rem;
-      }
-    }
-  }
-
-  .chart canvas {
-    max-width: 100%;
-  }
-
-  .linechart_tooltip {
-    opacity: 0;
-    width: 11.25rem;
-    height: auto;
-    background-color: white;
-    position: fixed;
-    z-index: 999;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 18, 0.16);
-    text-align: left;
-    pointer-events: none;
-    font-size: 0.75rem;
-
-    .tooltip_header {
-      width: 100%;
-      height: 1.75rem;
-      background-color: #f6f6f6;
-      color: #6b6b6b;
-      padding-left: 0.75rem;
-      padding-top: 0.25rem;
-      padding-bottom: 0.25rem;
-    }
-
-    .tooltip_body {
-      padding-left: 0.75rem;
-      padding-right: 0.75rem;
-      padding-top: 0.25rem;
-      line-height: 1.67;
-
-      .tooltip_dot {
-        min-width: 0.7rem;
-        width: 0.7rem;
-        height: 0.7rem;
-        background-color: #000091;
-        display: inline-block;
-        margin-top: 0.25rem;
-        margin-right: 0.25rem;
-      }
-
-      .tooltip_place {
-        color: #242424;
-      }
-
-      .tooltip_value {
-        color: #242424;
-        font-weight: bold;
-      }
-    }
-  }
-}
+@import './Style/ScatterChart.scss';
 </style>

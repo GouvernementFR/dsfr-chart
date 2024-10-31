@@ -1,47 +1,60 @@
+/* eslint-disable */
 <template>
-
   <div class="widget_container fr-grid-row" :id="widgetId">
     <LeftCol :props="leftColProps"></LeftCol>
     <div class="r_col fr-col-12 fr-col-lg-9">
-      <button class="fr-btn fr-btn--sm fr-icon-arrow-go-back-fill fr-btn--icon-left fr-btn--tertiary-no-outline fr-ml-4w" @click="resetGeoFilters" v-if="zoomDep !== undefined" >
+      <button
+        class="fr-btn fr-btn--sm fr-icon-arrow-go-back-fill fr-btn--icon-left fr-btn--tertiary-no-outline fr-ml-4w"
+        @click="resetGeoFilters" v-if="zoomDep !== undefined">
         Retour
       </button>
       <div class="map m-lg">
-          <div ref="mapTooltip" class="map_tooltip" :style="{top:tooltip.top,left:tooltip.left,visibility:tooltip.visibility}">
-          <div class="tooltip_header">{{tooltip.place}}</div>
+        <div ref="mapTooltip" class="map_tooltip"
+          :style="{ top: tooltip.top, left: tooltip.left, visibility: tooltip.visibility }">
+          <div class="tooltip_header">{{ tooltip.place }}</div>
           <div class="tooltip_body">
-            <div class="tooltip_value">{{convertStringToLocaleNumber(tooltip.value)}}</div>
+            <div class="tooltip_value-content">
+            <div class="tooltip_value">{{ convertStringToLocaleNumber(tooltip.value) }}</div>
+            </div>
           </div>
         </div>
-        <div class="france_container no_select" :style="{display:displayFrance}" v-if="isDep">
-          <france :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></france>
+        <div class="france_container no_select" :style="{ display: displayFrance }" v-if="isDep">
+          <france :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip"
+            :onleave="hideTooltip"></france>
         </div>
-        <div class="france_container no_select" :style="{display:displayFrance}" v-if="isReg">
-          <france-reg :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></france-reg>
+        <div class="france_container no_select" :style="{ display: displayFrance }" v-if="isReg">
+          <france-reg :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters"
+            :onenter="displayTooltip" :onleave="hideTooltip"></france-reg>
         </div>
-        <div class="france_container no_select" :style="{display:displayFrance}" v-if="isAcad">
-          <france-acad :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></france-acad>
+        <div class="france_container no_select" :style="{ display: displayFrance }" v-if="isAcad">
+          <france-acad :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters"
+            :onenter="displayTooltip" :onleave="hideTooltip"></france-acad>
         </div>
         <div class="om_container fr-grid-row no_select">
-          <div class="om fr-col-4 fr-col-sm" :style="{display:displayGuadeloupe}">
-            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Guadeloupe</span>
-            <guadeloupe :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guadeloupe>
+          <div class="om fr-col-4 fr-col-sm" :style="{ display: displayGuadeloupe }">
+            <span class="fr-text--xs fr-my-1w" :style="{ color: textMention }">Guadeloupe</span>
+            <guadeloupe :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters"
+              :onenter="displayTooltip" :onleave="hideTooltip"></guadeloupe>
           </div>
-          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{display:displayMartinique}">
-            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Martinique</span>
-            <martinique :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></martinique>
+          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{ display: displayMartinique }">
+            <span class="fr-text--xs fr-my-1w" :style="{ color: textMention }">Martinique</span>
+            <martinique :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters"
+              :onenter="displayTooltip" :onleave="hideTooltip"></martinique>
           </div>
-          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{display:displayGuyanne}">
-            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Guyane</span>
-            <guyane :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></guyane>
+          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{ display: displayGuyanne }">
+            <span class="fr-text--xs fr-my-1w" :style="{ color: textMention }">Guyane</span>
+            <guyane :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters"
+              :onenter="displayTooltip" :onleave="hideTooltip"></guyane>
           </div>
-          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{display:displayReunion}">
-            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">La Réunion</span>
-            <reunion :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></reunion>
+          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{ display: displayReunion }">
+            <span class="fr-text--xs fr-my-1w" :style="{ color: textMention }">La Réunion</span>
+            <reunion :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters"
+              :onenter="displayTooltip" :onleave="hideTooltip"></reunion>
           </div>
-          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{display:displayMayotte}">
-            <span class="fr-text--xs fr-my-1w" :style="{color:textMention}">Mayotte</span>
-            <mayotte :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></mayotte>
+          <div class="om fr-col-4 fr-col-sm fr-ml-1v" :style="{ display: displayMayotte }">
+            <span class="fr-text--xs fr-my-1w" :style="{ color: textMention }">Mayotte</span>
+            <mayotte :props="colorStrokeDOM" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters"
+              :onenter="displayTooltip" :onleave="hideTooltip"></mayotte>
           </div>
         </div>
       </div>
@@ -50,12 +63,13 @@
 </template>
 
 <script>
+/* eslint-disable */
 import chroma from 'chroma-js'
 import LeftCol from '@/components/LeftCol'
 import maps from '@/components/maps'
 import * as d3 from 'd3-scale'
 import { isMobile } from 'mobile-device-detect'
-import { mixin } from '@/utils.js'
+import { mixin, getColorsByIndex, categoricalPalette, sequentialAscending, sequentialDescending, divergentAscending, divergentDescending, neutralColor, defaultColor } from '@/utils.js'
 
 export default {
   name: 'MapChart',
@@ -64,7 +78,7 @@ export default {
     LeftCol,
     ...maps
   },
-  data () {
+  data() {
     return {
       dataParse: {},
       chart: undefined,
@@ -140,19 +154,43 @@ export default {
     color: {
       type: String,
       default: 'green-bourgeon'
+    },
+    // Nouveau paramètre pour choisir entre les anciennes ou nouvelles couleurs
+    useNewColors: {
+      type: Boolean,
+      default: true
+    },
+    selectedPalette: {
+      type: String,
+      default: 'sequentialAscending'  // Aucune palette définie par défaut
+    },
+    highlightIndex: {
+      type: Number,
+      default: -1  // Si aucune donnée n'est mise en avant, on met tout en neutre
     }
   },
   methods: {
-    createChart () {
+    createChart() {
+      const palette = this.choosePalette()
+
+      // Choisir les couleurs extrêmes basées sur la palette
+      this.colLeft = palette[0];  // La couleur minimale
+      this.colRight = palette[palette.length - 1];  // La couleur maximale
+
       this.leftColProps.date = this.date
+      this.leftColProps.colMin = this.colLeft;  // Colonne gauche, couleur minimale
+      this.leftColProps.colMax = this.colRight; // Colonne droite, couleur maximale
+      this.leftColProps.names = this.name;
+      this.leftColProps.min = this.scaleMin;
+      this.leftColProps.max = this.scaleMax;
       const parentWidget = document.getElementById(this.widgetId)
       const self = this
 
-      // Define colorscale
+      // Parse the data
       this.dataParse = JSON.parse(this.data)
       const values = []
 
-      // Fill Map
+      // Remplir la carte avec les départements/régions
       let listDep = []
       self.FranceProps.displayDep = {}
 
@@ -174,25 +212,30 @@ export default {
         }
       }
 
+      // Calcul des min et max pour l'échelle
       this.scaleMin = Math.min.apply(null, values)
       this.scaleMax = Math.max.apply(null, values)
+
+      // Choisir la palette en fonction du paramètre `selectedPalette`
       const x = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colLeft, this.colRight])
 
-      let xmin = []
-      let xmax = []
-      let ymin = []
-      let ymax = []
+      let xmin = [], xmax = [], ymin = [], ymax = []
 
       for (const key in self.dataParse) {
         const className = this.getClassMap(key, this.level)
         const elCol = parentWidget.getElementsByClassName(className)
+
         if (self.zoomDep === undefined) {
-          elCol.length !== 0 && elCol[0].setAttribute('fill', x(self.dataParse[key]))
+          // Appliquer les couleurs à chaque département/région
+          const color = getColorsByIndex(key, palette)
+          elCol.length !== 0 && elCol[0].setAttribute('fill', color)
           self.FranceProps.displayDep[className] = ''
         } else {
+          // Logique pour zoomer sur des départements spécifiques
           const polygon = document.querySelector('.' + className).getBBox()
           if (self.zoomDep === key) {
-            elCol.length !== 0 && elCol[0].setAttribute('fill', x(self.dataParse[key]))
+            const color = getColorsByIndex(key, palette)
+            elCol.length !== 0 && elCol[0].setAttribute('fill', color)
             self.FranceProps.displayDep[className] = ''
             xmin.push(polygon.x)
             ymin.push(polygon.y)
@@ -212,7 +255,9 @@ export default {
         }
       }
 
+      // Zoom logic remains the same, unchanged
       if (this.zoomDep !== undefined) {
+        // Logic for zoom level and dimensions adjustment
         if (this.level === 'dep') {
           this.leftColProps.localisation = this.getDep(this.zoomDep).label
           xmin = Math.min.apply(null, xmin)
@@ -239,6 +284,7 @@ export default {
           this.displayMayotte = 'none'
           this.displayReunion = 'none'
           this.displayGuyanne = 'none'
+          // Setting visibility for DOM regions
           if ((self.zoomDep === '971' && self.level === 'dep') || (self.zoomDep === '01' && self.level === 'reg')) {
             this.displayGuadeloupe = ''
           } else if ((self.zoomDep === '972' && self.level === 'dep') || (self.zoomDep === '02' && self.level === 'reg')) {
@@ -272,14 +318,14 @@ export default {
         this.displayGuyanne = ''
       }
 
-      // Fill leftCol
+      // Remplir les colonnes de gauche
       this.leftColProps.names = this.name
       this.leftColProps.min = this.scaleMin
       this.leftColProps.max = this.scaleMax
       this.leftColProps.colMin = this.colLeft
       this.leftColProps.colMax = this.colRight
     },
-    displayTooltip (e) {
+    displayTooltip(e) {
       if (isMobile) return
       const parentWidget = document.getElementById(this.widgetId)
       let hoverdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
@@ -328,7 +374,7 @@ export default {
       this.tooltip.left = tooltipX + 'px'
       this.tooltip.visibility = 'visible'
     },
-    hideTooltip (e) {
+    hideTooltip(e) {
       if (isMobile) return
       this.tooltip.visibility = 'hidden'
       const parentWidget = document.getElementById(this.widgetId)
@@ -347,7 +393,7 @@ export default {
       const elCol = parentWidget.getElementsByClassName(className)
       elCol[0].style.opacity = '1'
     },
-    changeGeoLevel (e) {
+    changeGeoLevel(e) {
       // Get clicked departement
       let clickdep
       try {
@@ -380,12 +426,73 @@ export default {
       this.zoomDep = clickdep
       this.createChart()
     },
-    resetGeoFilters () {
+    resetGeoFilters() {
       this.zoomDep = undefined
       this.createChart()
     },
 
-    changeTheme (theme) {
+    loadColors() {
+      this.colorParse = []
+      this.colorHover = []
+      for (let i = 0; i < this.yparse.length; i++) {
+        if (this.tmpColorParse[i] !== undefined) {
+          this.colorParse.push(this.getHexaFromName(this.tmpColorParse[i]))
+          this.colorHover.push(this.getHexaFromName(this.tmpColorParse[i], { hover: true }))
+        } else {
+          this.colorParse.push(this.getHexaFromName(this.listColors[i]))
+          this.colorHover.push(this.getHexaFromName(this.listColors[i], { hover: true }))
+        }
+      }
+    },
+    changeColors(theme) {
+      this.loadColors()
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
+      this.chart.options.scale.gridLines.color = this.getHexaFromToken('border-default-grey', theme)
+      for (let i = 0; i < this.yparse.length; i++) {
+        this.chart.data.datasets[i].borderColor = this.colorParse[i]
+        this.chart.data.datasets[i].pointBackgroundColor = this.colorParse[i]
+        this.chart.data.datasets[i].backgroundColor = chroma(this.colorParse[i]).alpha(0.3).hex()
+        this.chart.data.datasets[i].hoverBorderColor = this.colorHover[i]
+        this.chart.data.datasets[i].hoverBackgroundColor = this.colorHover[i]
+      }
+      this.chart.update(0)
+    },
+
+    choosePalette() {
+      // Priorité à la sélection manuelle de la palette
+      switch (this.selectedPalette) {
+        case 'categorical':
+          return categoricalPalette;
+        case 'sequentialAscending':
+          return sequentialAscending;
+        case 'sequentialDescending':
+          return sequentialDescending;
+        case 'divergentAscending':
+          return divergentAscending;
+        case 'divergentDescending':
+          return divergentDescending;
+        case 'neutral':
+          return [neutralColor, defaultColor]; // La couleur neutre comme palette unique
+        case 'defaultColor':
+          return [defaultColor]; // Couleur unicolore par défaut
+        default:
+          break;
+      }
+
+      // Détection automatique si `selectedPalette` n'est pas spécifié
+      if (this.yparse.some(arr => arr.some(value => value < 0))) {
+        return divergentAscending; // Si des valeurs sont négatives, utiliser la palette divergente par défaut
+      }
+
+      if (this.yparse.length === 1) {
+        return sequentialAscending; // Si une seule série de données, utiliser une palette séquentielle par défaut
+      }
+
+      // Par défaut, on retourne la palette catégorielle
+      return categoricalPalette;
+    },
+
+    changeTheme(theme) {
       this.textMention = this.getHexaFromToken('text-mention-grey', theme)
       this.leftColProps.textMention = this.textMention
       this.leftColProps.borderDefault = this.getHexaFromToken('border-default-grey', theme)
@@ -403,7 +510,7 @@ export default {
       this.createChart()
     }
   },
-  created () {
+  created() {
     this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
     this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
     this.isDep = (this.level === 'dep')
@@ -411,122 +518,15 @@ export default {
     this.isAcad = (this.level === 'acad')
     this.prefixClass = 'FR-' + this.level + '-'
   },
-  mounted () {
+  mounted() {
     const element = document.documentElement // Reference à l'element <html> du DOM
     element.addEventListener('dsfr.theme', (e) => {
       this.changeTheme(e.detail.theme)
     })
   }
 }
-
 </script>
 
 <style scoped lang="scss">
-  .no_select {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-    cursor: pointer;
-  }
-
-  .widget_container{
-    .m-lg {
-      margin-left:0;
-      margin-top:1.5rem;
-    }
-    .map {
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      .map_tooltip{
-        width: 11.25rem;
-        height: auto;
-        background-color: white;
-        position: fixed;
-        z-index: 999;
-        box-shadow: 0 2px 6px 0 rgba(0, 0, 18, 0.16);
-        text-align: left;
-        pointer-events: none;
-        font-size: 0.75rem;
-        .tooltip_header{
-          width: 100%;
-          height: 30px;
-          background-color: #f6f6f6;
-          color:#6b6b6b;
-          padding-left: 0.75rem;
-          padding-bottom: 0.25rem;
-          padding-top:0.25rem;
-        }
-        .tooltip_body{
-          padding-left: 0.75rem;
-          padding-top:0.25rem;
-          padding-right: 0.75rem;
-          line-height: 1.67;
-          .tooltip_place{
-            color:#242424;
-          }
-          .tooltip_value{
-            color:#242424;
-            font-weight: bold;
-          }
-        }
-      }
-      .france_container{
-        height:100%;
-        svg {
-          height:100%;
-          width:100%;
-          g {
-            cursor: pointer;
-          }
-        }
-      }
-      .om_container{
-        width:100%;
-        .om{
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          color: #616161;
-          span{
-            display: block;
-            white-space: nowrap;
-          }
-          g{
-            cursor: pointer;
-          }
-        }
-      }
-    }
-    @media (min-width: 62em) {
-      .m-lg {
-        margin-left:3rem;
-        margin-top:0
-      }
-      .map {
-        height:100%;
-      }
-    }
-    @media (max-width: 62em) {
-      .chart .flex {
-        margin-left:0!important
-      }
-      .map {
-        width:100%;
-      }
-    }
-    .r_col {
-      align-self:stretch;
-      .flex{
-        display: flex;
-        align-items: center;
-      }
-    }
-
-  }
-
+@import './Style/MapChart.scss'
 </style>
