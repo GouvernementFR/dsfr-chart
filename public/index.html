@@ -342,10 +342,10 @@
           <div class="chart_container">
             <bar-chart
               x='[["janvier", "février", "mars", "avril"], ["janvier", "février", "mars", "avril"], ["janvier", "février", "mars", "avril"], ["janvier", "février", "mars", "avril"]]'
-              y='[[-32, -47, -2, -14],
-              [-12, -41, -49, -3],
-              [-18, 23, -10, -30],
-              [25, -36, 14, -22]]'></bar-chart>
+              y='[[32, 47, 2, 14],
+              [12, 41, 49, 3],
+              [18, 23, 10, 30],
+              [25, 36, 14, 22]]'></bar-chart>
           </div>
 
           <section class="fr-accordion fr-mt-4w fr-mb-6w">
@@ -602,9 +602,15 @@
             exemple.
           </p>
 
-          <div class="chart_container">
-            <gauge-chart value="360000" init="100000" target="2000000" initdate="(en 2022)"
-              targetdate="(en 2026)"></gauge-chart>
+          <div class="part_container">
+            <div class="part_container">
+              <gauge-chart
+              value="360000"
+              init="100000"
+              target="2000000"
+              initdate="(en 2022)"
+              targetdate="(en 2026)"
+            ></gauge-chart>            </div>
           </div>
 
           <section class="fr-accordion fr-mt-4w fr-mb-6w">
