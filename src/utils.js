@@ -68,7 +68,7 @@ export const convertDateToHuman = function (string) {
 export const testIfNaN = function (float) {
   return isNaN(parseFloat(float))
 }
-// Palette catégorielle : 8 couleurs
+// Palette catégorique
 export const categoricalPalette = [
   '#5C68E5', // Couleur 1
   '#82B5F2', // Couleur 2
@@ -87,10 +87,12 @@ export const defaultColor = '#5C68E5';
 export const neutralColor = '#B1B1B1';
 
 // Palette séquentielle (unicolore dégradé, par exemple du clair au foncé)
-export const sequentialPalette = chroma.scale(['#DBDAFF', '#00005F']).colors(3);
+export const sequentialAscending = chroma.scale(['#DBDAFF', '#00005F']).colors(10);
+export const sequentialDescending = chroma.scale(['#00005F', '#DBDAFF']).colors(10);
 
 // Palette divergente (du vert au rouge, pour représenter des échelles de valeurs avec un point médian)
-export const divergentPalette = chroma.scale(['#298641', '#EFB900', '#E91719']).colors(6);
+export const divergentAscending = chroma.scale(['#298641', '#EFB900', '#E91719']).colors(6);
+export const divergentDescending = chroma.scale(['#298641', '#EFB900', '#E91719']).colors(6);
 
 // Fonction pour limiter les catégories (si plus de 8 catégories)
 export function limitCategories(labels, data, maxCategories = 8) {
@@ -122,14 +124,22 @@ export function getNeutralColor() {
   return neutralColor;
 }
 
-// Fonction pour récupérer une palette séquentielle (par défaut, 5 couleurs)
-export function getSequentialPalette(count = 3) {
-  return chroma.scale(['#E8EAF6', '#5C68E5']).colors(count);
+// Fonction pour récupérer une palette séquentielle (par défaut, 3 couleurs)
+export function getSequentialPaletteAscending(count = 10) {
+  return chroma.scale(['#DBDAFF', '#00005F']).colors(count);
+}
+
+export function getSequentialPaletteDescending(count = 10) {
+  return chroma.scale(['#00005F', '#DBDAFF']).colors(count);
 }
 
 // Fonction pour récupérer une palette divergente (par défaut, 6 couleurs)
-export function getDivergentPalette(count = 6) {
+export function getDivergentPaletteAscending(count = 6) {
   return chroma.scale(['#27AE60', '#FFC300', '#E74C3C']).colors(count);
+}
+
+export function getDivergentPaletteDescending(count = 6) {
+  return chroma.scale(['#E74C3C', '#FFC300', '#27AE60']).colors(count);
 }
 
 // Exemple d'export de toutes les fonctions et palettes pour les utiliser dans vos composants
@@ -137,14 +147,18 @@ export const colorUtils = {
   categoricalPalette,
   defaultColor,
   neutralColor,
-  sequentialPalette,
-  divergentPalette,
+  sequentialAscending,
+  sequentialDescending,
+  divergentAscending,
+  divergentDescending,
   limitCategories,
   getColorsByIndex,
   getDefaultColor,
   getNeutralColor,
-  getSequentialPalette,
-  getDivergentPalette,
+  getSequentialPaletteAscending,
+  getSequentialPaletteDescending,
+  getDivergentPaletteAscending,
+  getDivergentPaletteDescending
 };
 
 const colorsDSFR = [
@@ -1160,16 +1174,26 @@ export const getAcad = function (code) {
 }
 
 export const getClassMap = function (code, level) {
-  let obj
-
-  if (level === 'reg') {
-    obj = getReg(code)
-  } else if (level === 'dep') {
-    obj = getDep(code)
+  if (!level) {
+    console.warn(`Level is undefined for code: ${code}`);
+    return null; // Ou vous pouvez définir un niveau par défaut ici si nécessaire
   }
 
-  return obj.classMap
-}
+  let obj;
+  if (level === 'reg') {
+    obj = getReg(code);
+  } else if (level === 'dep') {
+    obj = getDep(code);
+  }
+
+  if (obj && obj.classMap) {
+    return obj.classMap;
+  } else {
+    console.warn(`No classMap found for code: ${code}, level: ${level}`);
+    return null;
+  }
+};
+
 
 export const getDepsFromReg = function (code) {
   const depObj = dep.filter(obj => {
