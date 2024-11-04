@@ -22,21 +22,15 @@
           <span class="legende_dot" :style="{ 'background-color': colorParse }"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(name) }}</p>
         </div>
-        <div v-for="(item, index) in hlineNameParse" :key="item" class="flex fr-mt-1w fr-mb-0"
-          :style="{ 'margin-left': isSmall ? '0px' : style }">
+        <div v-for="(item, index) in hlineNameParse" :key="item" class="flex fr-mt-3v" :style="{ 'margin-left': isSmall ? '0px' : style }">
           <span class="legende_dash_line1" :style="{ 'background-color': hlineColorParse[index] }"></span>
           <span class="legende_dash_line2" :style="{ 'background-color': hlineColorParse[index] }"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-            {{ capitalize(hlineNameParse[index]) }}
-          </p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(hlineNameParse[index]) }}</p>
         </div>
-        <div v-for="(item2, index2) in vlineParse" :key="item2" class="flex fr-mt-1w fr-mb-0"
-          :style="{ 'margin-left': isSmall ? '0px' : style }">
+        <div v-for="(item2, index2) in vlineParse" :key="item2" class="flex fr-mt-3v fr-mb-1v" :style="{ 'margin-left': isSmall ? '0px' : style }">
           <span class="legende_dash_line1" :style="{ 'background-color': vlineColorParse[index2] }"></span>
           <span class="legende_dash_line2" :style="{ 'background-color': vlineColorParse[index2] }"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-            {{ capitalize(vlineNameParse[index2]) }}
-          </p>
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index2]) }}</p>
         </div>
         <div v-if="date !== undefined" class="flex fr-mt-1w" :style="{ 'margin-left': isSmall ? '0px' : style }">
           <p class="fr-text--xs">Mise à jour : {{ date }}</p>
@@ -289,7 +283,7 @@ export default {
         if (this.tmpVlineColorParse[i] !== undefined) {
           this.vlineColorParse.push(this.tmpVlineColorParse[i]);
         } else {
-          this.vlineColorParse.push(getNeutralColor());
+          this.vlineColorParse.push(getDefaultColor());
         }
       }
 
@@ -299,7 +293,7 @@ export default {
         if (this.tmpHlineColorParse[i] !== undefined) {
           this.hlineColorParse.push(this.tmpHlineColorParse[i]);
         } else {
-          this.hlineColorParse.push(getNeutralColor());
+          this.hlineColorParse.push(getDefaultColor());
         }
       }
     },
@@ -378,6 +372,7 @@ export default {
               {
                 type: this.xAxisType,
                 gridLines: {
+                  drawTicks: false,
                   zeroLineColor: getNeutralColor(),
                   drawOnChartArea: false,
                   color: getNeutralColor(),
@@ -403,7 +398,6 @@ export default {
                   drawTicks: false,
                   zeroLineColor: getNeutralColor(),
                   color: getNeutralColor(),
-                  borderDash: [3],
                   lineWidth: 1
                 },
                 ticks: {

@@ -254,9 +254,7 @@ export default {
       // If categories were limited, log the message for debugging
       if (limitedCategoriesApplied) {
         this.limitedCategoriesApplied = true;
-        console.log("Categories have been limited to 8, 'Autres' applied.");
       } else {
-        console.log("No need to limit categories, all categories displayed.");
       }
 
       // Load colors
@@ -443,7 +441,6 @@ export default {
               tooltipEl.style.top = tooltipY + 'px';
               tooltipEl.style.opacity = 1;
             }
-
           }
         }
       })
