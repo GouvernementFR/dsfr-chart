@@ -154,11 +154,6 @@ export default {
       type: Boolean,
       default: false
     },
-    // Nouveau paramètre pour choisir entre les anciennes ou nouvelles couleurs
-    useNewColors: {
-      type: Boolean,
-      default: true
-    },
     selectedPalette: {
       type: String,
       default: '',  // Aucnes palettes n'est définie par default
@@ -510,15 +505,6 @@ export default {
           return [defaultColor]; // Couleur unicolore par défaut
         default:
           break;
-      }
-
-      // Détection automatique si `selectedPalette` n'est pas spécifié
-      if (this.yparse.some(arr => arr.some(value => value < 0))) {
-        return divergentAscending; // Si des valeurs sont négatives, utiliser la palette divergente par défaut
-      }
-
-      if (this.yparse.length === 1) {
-        return sequentialAscending; // Si une seule série de données, utiliser une palette séquentielle par défaut
       }
 
       // Par défaut, on retourne la palette catégorielle

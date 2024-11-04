@@ -601,29 +601,7 @@ export default {
       this.colorParse = [];
       this.colorHover = [];
 
-      // Choisir la palette en fonction du paramètre selectedPalette ou auto-détection
-      let palette;
-      switch (this.selectedPalette) {
-        case 'categorical':
-          palette = categoricalPalette;
-          break;
-        case 'sequential':
-          palette = sequentialPalette;
-          break;
-        case 'divergent':
-          palette = divergentPalette;
-          break;
-        default:
-          // Auto-détection de la palette
-          if (this.yparse.some(arr => arr.some(value => value < 0))) {
-            palette = divergentPalette;
-          } else if (this.yparse.length === 1) {
-            palette = sequentialPalette;
-          } else {
-            palette = categoricalPalette;
-          }
-          break;
-      }
+      const paletteType = this.choosePalette();
 
       for (let i = 0; i < this.yparse.length; i++) {
         let color;
@@ -635,7 +613,7 @@ export default {
         } else if (this.highlightIndex !== -1) {
           color = neutralColor;
         } else {
-          color = getColorsByIndex(i, palette);
+          color = getColorsByIndex(i, paletteType);
         }
 
         // Vérifier et convertir la couleur en format hexadécimal
@@ -670,6 +648,31 @@ export default {
         }
       }
     },
+    choosePalette() {
+      // Priorité à la sélection manuelle de la palette
+      switch (this.selectedPalette) {
+        case 'categorical':
+          return categoricalPalette;
+        case 'sequentialAscending':
+          return sequentialAscending;
+        case 'sequentialDescending':
+          return sequentialDescending;
+        case 'divergentAscending':
+          return divergentAscending;
+        case 'divergentDescending':
+          return divergentDescending;
+        case 'neutral':
+          return [neutralColor]; // La couleur neutre comme palette unique
+        case 'defaultColor':
+          return [defaultColor]; // Couleur unicolore par défaut
+        default:
+          break;
+      }
+
+      // Par défaut, on retourne la palette catégorielle
+      return categoricalPalette;
+    },
+
     changeColors(theme) {
       Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
       this.chart.options.scales.xAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
@@ -678,14 +681,12 @@ export default {
       this.chart.options.scales.yAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
       this.chart.options.scales.yAxes[0].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
 
+      this.loadColors()
       if (theme === 'light') {
         this.colorPrecisionBar = '#161616'
       } else {
         this.colorPrecisionBar = '#FFFFFF'
       }
-
-      // Recharger les couleurs
-      this.loadColors()
 
       for (let i = 0; i < this.yparse.length; i++) {
         this.chart.data.datasets[i].borderColor = this.colorParse[i]

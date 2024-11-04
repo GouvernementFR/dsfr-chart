@@ -155,7 +155,7 @@ export default {
     },
     selectedPalette: {
       type: String,
-      default: 'categorical'
+      default: ''
     }
   },
   computed: {
@@ -361,15 +361,6 @@ export default {
           return [getDefaultColor()];
         default:
           break;
-      }
-
-      // Détection automatique si `selectedPalette` n'est pas spécifié
-      if (this.yparse.some((arr) => arr.some((value) => value < 0))) {
-        return divergentAscending;
-      }
-
-      if (this.yparse.length === 1) {
-        return sequentialAscending;
       }
 
       // Par défaut, on retourne la palette catégorielle
