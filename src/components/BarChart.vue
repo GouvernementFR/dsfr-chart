@@ -156,7 +156,7 @@ export default {
     },
     selectedPalette: {
       type: String,
-      default: '',  // Aucnes palettes n'est définie par default
+      default: '',
     },
     highlightIndex: {
       type: Number,
@@ -255,6 +255,7 @@ export default {
       if (limitedCategoriesApplied) {
         this.limitedCategoriesApplied = true;
       } else {
+        console.log("No need to limit categories, all categories displayed.");
       }
 
       // Load colors
