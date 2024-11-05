@@ -188,6 +188,4 @@ export default {
       }
     }
   }
-  
-@import './style/GaugeChart.scss';
 </style>
