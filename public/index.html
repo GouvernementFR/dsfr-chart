@@ -779,9 +779,16 @@
         <!-- COLORS -->
         <div class="part_container fr-mb-6w">
           <h2 id="colors">X. Les couleurs</h2>
-          <h4>Catégorielle</h4>
-          <p>Ces couleurs ont des valeurs.
-            Voici la liste des couleurs disponibles avec leurs deux teintes :</p>
+          <h3 class="fr-mt-5w">Graphiques unicolores</h3>
+          <p>Une représentation graphique n’a pas toujours besoin d’être colorée. Lorsqu’il n’est pas nécessaire de différencier les formes par des couleurs, 
+            on affichera les graphes avec la couleur par défaut du DSFR pour les graphes unicolores :</p>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #5C68E5"></span> <span
+              class="legende_dot" style="background-color: #5C68E5"></span>
+            <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">En attente</p>
+          </div>
+          <h3 class="fr-mt-5w">Graphiques catégoriels</h3>
+          <p>Lorsque les formes du graphique doivent être différenciées par des couleurs mais que celles-ci ne sont pas porteuses de sens supplémentaire que la catégorisation, 
+            la palette catégorielle doit être utilisée : </p>
           <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #5C68E5"></span> <span
               class="legende_dot" style="background-color: #5C68E5"></span>
             <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">En attente</p>
@@ -814,9 +821,10 @@
               class="legende_dot" style="background-color: #CECECE"></span>
             <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">En attente</p>
           </div>
-          <h4 class="fr-mt-4w">Séquentielle</h4>
-          <p>Ces couleurs ont des valeurs.
-            Voici la liste du dégradé disponible avec les deux teintes :</p>
+          <h3 class="fr-mt-5w">Graphiques séquentiels</h3>
+          <h4>Palette séquentielle unicolore</h4>
+          <p>Lorsque les formes du graphique doivent être différenciées par des couleurs et que ces couleurs matérialisent une gradation, une palette séquentielle doit être utilisée. 
+            Il en existe deux versions à utiliser en fonction du besoin, En fonction du nombre de catégories, on appliquera autant de valeurs de couleurs qu’il en existe dans un dégradé allant de la première couleur de cette échelle </p>
           <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #DBDAFF"></span> <span
               class="legende_dot" style="background-color: #DBDAFF"></span>
             <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">En attente</p>
@@ -825,9 +833,11 @@
               class="legende_dot" style="background-color: #00005F"></span>
             <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">En attente</p>
           </div>
-          <h4 class="fr-mt-4w">Séquentielle divergente</h4>
-          <p>Ces couleurs ont des valeurs.
-            Voici la liste des couleurs disponibles avec leurs deux teintes :</p>
+          <h4 class="fr-mt-5w">Palette séquentielle divergente</h4>
+          <p>Cette palette convient également pour matérialiser des échelles numériques mais qui intègrent des valeurs négatives, ou des plages comportant deux extrêmes avec une ligne de base au milieu.<br>
+              Dans la mesure du possible, le nombre de catégories doit refléter cette divergence, à travers 3 ou 5 catégories distinctes. <br>
+              Dans le cas où le nombre de catégories devrait être supérieur à 5, on appliquera autant de valeurs de couleurs qu’il en existe dans un dégradé allant du vert vers le rouge en passant par le jaune. 
+              Un nombre impair doit toutefois être conservé pour marquer la valeur médiane.</p>
           <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #298641"></span> <span
               class="legende_dot" style="background-color: #298641"></span>
             <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">En attente</p>
