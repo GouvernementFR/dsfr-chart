@@ -94,8 +94,14 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
-        height: var(--chart-height, 450px); /* Ajout de la hauteur dynamique ici avec une valeur par défaut */
-        
+        // height: var(--chart-height, 550px);
+        // max-height: 400px;
+
+        // @media (max-width: 1080px) {
+        //   height: auto; /* Réinitialise la hauteur en dessous de 820px */
+        //   max-height: 400px
+        // }
+
         &-section {
           display: flex;
           justify-content: center;
@@ -119,10 +125,10 @@
       }
   
       &-table-responsive {
+        height: var(--chart-height, 390px);
+        max-height: 390px;
         width: 100%;
-        height: var(--chart-height, 300px); /* Synchronisation de la hauteur du tableau avec le graphique */
         overflow-x: auto;
-        max-height: 100%; /* Pour s'assurer qu'il respecte la taille du conteneur */
       }
     }
   
