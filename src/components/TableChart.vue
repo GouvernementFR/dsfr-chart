@@ -1,29 +1,27 @@
 <template>
   <div class="widget_container fr-grid-row" :id="widgetId">
-    <div class = 'fr-table scroll' :id="tableId" :style="styleHeight">
-      <table>
+    <div class='fr-table scroll' :id="tableId" :style="styleHeight">
+      <table aria-labelledby="table-caption">
+        <caption id="table-caption">{{varname}}</caption>
         <thead>
           <tr>
             <th scope="col">{{varname}}</th>
-            <th v-for="(item, index) in nameParse" :key="item" scope="col">{{nameParse[index]}}</th>
+            <th v-for="(item, index) in nameParse" :key="index" scope="col">{{item}}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in xparse" :key="index">
+          <tr v-for="(item, rowIndex) in xparse" :key="rowIndex" :id="'table-row-' + rowIndex">
             <td :class="getClass(item)">{{item}}</td>
-            <td v-for="(item2, index2) in yparse" :key="index2" :class="getClass(yparse[index2][index])">{{convertIntToHumanTable(yparse[index2][index])}}</td>
+            <td v-for="(item2, colIndex) in yparse" :key="colIndex" :class="getClass(yparse[colIndex][rowIndex])">{{convertIntToHumanTable(yparse[colIndex][rowIndex])}}</td>
           </tr>
         </tbody>
       </table>
     </div>
-</div>
+  </div>
 </template>
-<script>
-import { Chart } from 'chart.js'
-import { mixin } from '@/utils.js'
-import annotationPlugin from 'chartjs-plugin-annotation'
 
-Chart.pluginService.register(annotationPlugin)
+<script>
+import { mixin } from '@/utils.js'
 
 export default {
   name: 'TableChart',
@@ -68,7 +66,6 @@ export default {
     },
     getData () {
       const self = this
-      // Récupération des paramètres
       this.xparse = JSON.parse(this.x)
       this.yparse = JSON.parse(this.y)
 
@@ -88,11 +85,7 @@ export default {
       }
     },
     getClass (value) {
-      if (typeof value === 'number') {
-        return 'text-right'
-      } else {
-        return 'text-left'
-      }
+      return typeof value === 'number' ? 'text-right' : 'text-left'
     }
   },
   created () {
@@ -108,12 +101,14 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
 .scroll {
   table-layout: fixed;
   border-collapse: collapse;
   overflow: auto;
 }
+
 .scroll thead {
   position: sticky;
   top: 0;
@@ -124,6 +119,11 @@ export default {
 }
 
 .text-left {
+  text-align: left;
+}
+
+.caption {
+  font-weight: bold;
   text-align: left;
 }
 </style>

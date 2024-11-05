@@ -12,27 +12,17 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div
-          v-for="(item, index) in nameParse"
-          :key="index"
-          class="flex fr-mt-3v fr-mb-1v"
-          :style="{'margin-left': isSmall ? '0px' : style}"
-        >
-          <span
-            class="legende_dot"
-            :style="{'background-color': colorParse[index]}"
-          ></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-            {{ capitalize(nameParse[index]) }}
-          </p>
-        </div>
-        <div
-          v-if="date !== undefined"
-          class="flex fr-mt-1w"
-          :style="{'margin-left': isSmall ? '0px' : style}"
-        >
-          <p class="fr-text--xs">Mise à jour : {{ date }}</p>
-        </div>
+        <div class="chart_legend fr-mb-0 fr-mt-4v">
+          <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v">
+            <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
+            <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
+              {{capitalize(nameParse[index])}}
+            </p>
+          </div>
+          <div v-if="date!==undefined" class="flex fr-mt-1w">
+            <p class="fr-text--xs">Mise à jour : {{date}}</p>
+          </div>
+      </div>
       </div>
     </div>
   </div>
@@ -155,16 +145,15 @@ export default {
       }
 
       // Formatage des données
-      this.labels = this.xparse;
-      this.datasets = [
-        {
-          data: this.yparse,
-          borderColor: this.colorParse,
-          backgroundColor: this.colorParse,
-          hoverBackgroundColor: this.colorHover,
-          hoverBorderColor: this.colorHover
-        }
-      ];
+      this.labels = this.xparse
+      this.datasets = [{
+        data: this.yparse,
+        borderColor: this.colorParse,
+        backgroundColor: this.colorParse,
+        hoverBackgroundColor: this.colorHover,
+        hoverBorderColor: this.colorHover,
+        hoverBorderWidth: 10,
+      }]
     },
     createChart() {
       Chart.defaults.global.defaultFontFamily = 'Marianne';
@@ -181,6 +170,16 @@ export default {
           datasets: this.datasets
         },
         options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          layout: {
+              padding: {
+              left: 50,
+              right: 50,
+              top: 0,
+              bottom: 0
+            }
+          },
           animation: {
             easing: 'easeInOutBack',
             duration: 1000
@@ -349,5 +348,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/PieChart.scss'
+@import './Style/PieChart.scss';
 </style>

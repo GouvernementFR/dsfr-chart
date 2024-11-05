@@ -1,0 +1,30 @@
+.subContainerSideBar{
+    &__header{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    
+    &__segmentComponent{
+        width: 100%;
+
+        &--btns{
+            width: 100%;   
+
+            &--filter{
+                width: 50%;
+            }
+        }
+    }
+
+    &__fieldset{
+        border-top: 1px solid #DDDDDD;
+        border-bottom: 1px solid #DDDDDD;
+    }
+
+}
+
+.margin-top{
+    margin-top: 1rem;
+}
