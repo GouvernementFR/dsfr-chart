@@ -486,6 +486,8 @@ export default {
           scales: {
             xAxes: [
               {
+                offset: true,
+                position: 'center',
                 type: self.xAxisType,
                 gridLines: {
                   zeroLineColor: '#DDDDDD',
@@ -494,6 +496,7 @@ export default {
                   lineWidth: 1
                 },
                 ticks: {
+                  padding: 10, // Espace supplémentaire autour des étiquettes
                   callback: function (value) {
                     if (self.formatdate) {
                       return value.toString().substring(5, 7) + '/' + value.toString().substring(0, 4);
@@ -506,6 +509,7 @@ export default {
             ],
             yAxes: [
               {
+                position: 'left',
                 gridLines: {
                   drawTicks: false,
                   zeroLineColor: '#DDDDDD',
@@ -514,7 +518,7 @@ export default {
                   lineWidth: 1
                 },
                 ticks: {
-                  padding: 4,
+                  padding: 10, // Espace supplémentaire autour des étiquettes
                   autoSkip: true,
                   maxTicksLimit: 5,
                   suggestedMax: self.ymax,

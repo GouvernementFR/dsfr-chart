@@ -293,17 +293,20 @@ export default {
           scales: {
             xAxes: [
               {
+                offset: true,
+                position: 'center',
                 stacked: this.stacked,
                 gridLines: {
                   display: false,
                 },
                 ticks: {
-                  autoSkip: false,
+                  padding: 10, // Espace supplémentaire autour des étiquettes
                 },
               },
             ],
             yAxes: [
               {
+                position: 'left',
                 stacked: this.stacked,
                 gridLines: {
                   drawTicks: false,
@@ -314,6 +317,7 @@ export default {
                 },
                 ticks: {
                   beginAtZero: true,
+                  padding: 10, // Espace supplémentaire autour des étiquettes
                 },
               },
             ],

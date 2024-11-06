@@ -370,6 +370,8 @@ export default {
           scales: {
             xAxes: [
               {
+                offset: true,
+                position: 'center',
                 type: this.xAxisType,
                 gridLines: {
                   drawTicks: false,
@@ -379,6 +381,7 @@ export default {
                   lineWidth: 1
                 },
                 ticks: {
+                  padding: 10, // Espace supplémentaire autour des étiquettes
                   fontColor: getNeutralColor(),
                   labelOffset: 10,
                   callback: function (value) {
@@ -401,8 +404,9 @@ export default {
                   lineWidth: 1
                 },
                 ticks: {
+                  position: 'left',
                   fontColor: getNeutralColor(),
-                  padding: 8,
+                  padding: 10, // Espace supplémentaire autour des étiquettes
                   suggestedMax: this.ymax,
                   autoSkip: true,
                   maxTicksLimit: 5,
