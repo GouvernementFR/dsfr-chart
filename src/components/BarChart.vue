@@ -206,63 +206,69 @@ export default {
     },
 
     loadColors() {
-      this.colorParse = [];
-      this.colorHover = [];
+  this.colorParse = [];
+  this.colorHover = [];
 
-      // Obtenir la palette sélectionnée
-      const palette = this.choosePalette();
+  // Obtenir la palette sélectionnée
+  const palette = this.choosePalette();
 
-      // Générer les couleurs pour chaque dataset
-      for (let i = 0; i < this.yparse.length; i++) {
-        const dataSet = this.yparse[i];
-        let colors = [];
-        let hoverColors = [];
+  // Vérifier si `yparse` ne contient qu'une seule série de données avec plusieurs valeurs
+  const singleSeriesWithMultipleValues = this.yparse.length === 1 && Array.isArray(this.yparse[0]);
+  const applyHighlight = this.selectedPalette === 'neutral' && this.highlightIndex !== -1;
 
-        if (this.tmpColorParse[i] !== undefined) {
-          // Si une couleur personnalisée est spécifiée pour la série
-          const color = this.tmpColorParse[i];
-          colors = Array(dataSet.length).fill(color);
-          hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-        } else if (i === this.highlightIndex) {
-          // Si c'est la série à mettre en avant
-          const color = getDefaultColor(); // Couleur mise en avant
-          colors = Array(dataSet.length).fill(color);
-          hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-        } else if (this.highlightIndex !== -1) {
-          // Si une série est mise en avant, les autres séries sont en couleur neutre
-          const color = getNeutralColor(); // Couleur neutre
-          colors = Array(dataSet.length).fill(color);
-          hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+  // Générer les couleurs pour chaque dataset
+  for (let i = 0; i < this.yparse.length; i++) {
+    const dataSet = this.yparse[i];
+    let colors = [];
+    let hoverColors = [];
+
+    if (this.tmpColorParse[i] !== undefined) {
+      // Si une couleur personnalisée est spécifiée pour la série
+      const color = this.tmpColorParse[i];
+      colors = Array(dataSet.length).fill(color);
+      hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+    } else if (applyHighlight && singleSeriesWithMultipleValues) {
+      // Cas où il y a une seule série avec plusieurs valeurs et highlightIndex est utilisé
+      for (let j = 0; j < dataSet.length; j++) {
+        if (j === this.highlightIndex) {
+          // Appliquer la couleur de mise en avant pour la barre correspondant à highlightIndex
+          const color = getDefaultColor();
+          colors.push(color);
+          hoverColors.push(chroma(color).darken(0.8).hex());
         } else {
-          if (this.selectedPalette === 'divergentAscending' || this.selectedPalette === 'divergentDescending') {
-            // Utilisation de la palette divergente sans dégradé, couleurs fixes
-            colors = Array(dataSet.length).fill(palette[i % palette.length]);
-            hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-          } else if (this.selectedPalette === 'categorical' || !this.selectedPalette) {
-            // Palette catégorielle : une couleur par série
-            const color = getColorsByIndex(i, palette);
-            colors = Array(dataSet.length).fill(color);
-            hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-          } else if (this.selectedPalette === 'neutral' || this.selectedPalette === 'defaultColor') {
-            // Palette neutre ou couleur par défaut : une seule couleur pour tout
-            const color = palette[0];
-            colors = Array(dataSet.length).fill(color);
-            hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-          } else {
-            // Palettes séquentielles : couleur par valeur
-            const allDataValues = this.yparse.flat();
-            const minValue = Math.min(...allDataValues);
-            const maxValue = Math.max(...allDataValues);
-            const colorScale = chroma.scale(palette).domain([maxValue, minValue]);
-            colors = dataSet.map(value => chroma(colorScale(value)).hex());
-            hoverColors = colors.map(color => chroma(color).darken(0.8).hex());
-          }
+          // Appliquer la couleur neutre pour les autres barres
+          const color = getNeutralColor();
+          colors.push(color);
+          hoverColors.push(chroma(color).darken(0.8).hex());
         }
-
-        this.colorParse.push(colors);
-        this.colorHover.push(hoverColors);
       }
-    },
+    } else {
+      // Cas normal pour plusieurs séries ou palette non `neutral`
+      if (this.selectedPalette === 'divergentAscending' || this.selectedPalette === 'divergentDescending') {
+        colors = Array(dataSet.length).fill(palette[i % palette.length]);
+        hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+      } else if (this.selectedPalette === 'categorical' || !this.selectedPalette) {
+        const color = getColorsByIndex(i, palette);
+        colors = Array(dataSet.length).fill(color);
+        hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+      } else if (this.selectedPalette === 'neutral' || this.selectedPalette === 'defaultColor') {
+        const color = palette[0];
+        colors = Array(dataSet.length).fill(color);
+        hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+      } else {
+        const allDataValues = this.yparse.flat();
+        const minValue = Math.min(...allDataValues);
+        const maxValue = Math.max(...allDataValues);
+        const colorScale = chroma.scale(palette).domain([maxValue, minValue]);
+        colors = dataSet.map(value => chroma(colorScale(value)).hex());
+        hoverColors = colors.map(color => chroma(color).darken(0.8).hex());
+      }
+    }
+
+    this.colorParse.push(colors);
+    this.colorHover.push(hoverColors);
+  }
+},
 
     createChart() {
       Chart.defaults.global.defaultFontFamily = 'Marianne';
