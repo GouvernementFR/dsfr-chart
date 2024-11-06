@@ -176,7 +176,8 @@ export default {
         borderColor: this.colorParse[index],
         hoverBackgroundColor: this.colorHover[index],
         hoverBorderColor: this.colorHover[index],
-        barThickness: this.barsize || (this.stacked ? 32 : this.horizontal ? 30 : 32),
+        barThickness: this.barsize || (this.stacked ? 32 : this.horizontal ? 18 : 32),
+        maxBarThickness: 40, // Définissez une épaisseur maximale pour les barres
       }));
     },
 
@@ -285,7 +286,9 @@ export default {
           datasets: this.datasets,
         },
         options: {
-          aspectRatio: this.aspectratio,
+          responsive: true,
+          maintainAspectRatio: true,  // Changez à true pour maintenir le ratio
+        aspectRatio: 2, // Ajustez ce ratio pour gérer la hauteur/largeur du graphique        
           animation: {
             easing: 'easeInOutBack',
             duration: 1000,
@@ -294,7 +297,7 @@ export default {
             xAxes: [
               {
                 offset: true,
-                position: 'center',
+                position: 'left',
                 stacked: this.stacked,
                 gridLines: {
                   display: false,
