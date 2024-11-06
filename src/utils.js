@@ -90,9 +90,8 @@ export const neutralColor = '#B1B1B1';
 export const sequentialAscending = chroma.scale(['#DBDAFF', '#00005F']).colors(10);
 export const sequentialDescending = chroma.scale(['#00005F', '#DBDAFF']).colors(10);
 
-// Palette divergente (du vert au rouge, pour représenter des échelles de valeurs avec un point médian)
-export const divergentAscending = chroma.scale(['#298641', '#EFB900', '#E91719']).colors(6);
-export const divergentDescending = chroma.scale(['#298641', '#EFB900', '#E91719']).colors(6);
+export const divergentAscending = chroma.scale(['#298641', '#EFB900', '#E91719']).colors(4);
+export const divergentDescending = chroma.scale(['#E91719', '#EFB900', '#298641']).colors(4);
 
 // Fonction pour limiter les catégories (si plus de 8 catégories)
 export function limitCategories(labels, data, maxCategories = 8) {
@@ -125,21 +124,21 @@ export function getNeutralColor() {
 }
 
 // Fonction pour récupérer une palette séquentielle (par défaut, 3 couleurs)
-export function getSequentialPaletteAscending(count = 10) {
-  return chroma.scale(['#DBDAFF', '#00005F']).colors(count);
+export function getSequentialPaletteAscending() {
+  return sequentialAscending;
 }
 
-export function getSequentialPaletteDescending(count = 10) {
-  return chroma.scale(['#00005F', '#DBDAFF']).colors(count);
+export function getSequentialPaletteDescending() {
+  return sequentialDescending;
 }
 
 // Fonction pour récupérer une palette divergente (par défaut, 6 couleurs)
-export function getDivergentPaletteAscending(count = 6) {
-  return chroma.scale(['#27AE60', '#FFC300', '#E74C3C']).colors(count);
+export function getDivergentPaletteAscending() {
+  return divergentAscending;
 }
 
-export function getDivergentPaletteDescending(count = 6) {
-  return chroma.scale(['#E74C3C', '#FFC300', '#27AE60']).colors(count);
+export function getDivergentPaletteDescending() {
+  return divergentDescending;
 }
 
 // Exemple d'export de toutes les fonctions et palettes pour les utiliser dans vos composants

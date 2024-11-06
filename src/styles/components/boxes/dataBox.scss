@@ -94,13 +94,6 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
-        // height: var(--chart-height, 550px);
-        // max-height: 400px;
-
-        // @media (max-width: 1080px) {
-        //   height: auto; /* Réinitialise la hauteur en dessous de 820px */
-        //   max-height: 400px
-        // }
 
         &-section {
           display: flex;
@@ -117,8 +110,8 @@
           }
   
           &-canvas {
-            height: var(--chart-height); /* Utilisation de la variable CSS pour la hauteur du graphique */
-            max-height: 100%; /* Pour éviter de dépasser */
+            height: var(--chart-height);
+            max-height: 100%;
             display: contents;
           }
         }   
