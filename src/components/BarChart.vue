@@ -116,9 +116,9 @@ export default {
       default: '',
     },
     highlightIndex: {
-      type: Number,
-      default: -1,
-    },
+    type: Array,
+    default: () => []
+  },
   },
   methods: {
     resetData() {
@@ -214,7 +214,7 @@ export default {
 
   // Vérifier si `yparse` ne contient qu'une seule série de données avec plusieurs valeurs
   const singleSeriesWithMultipleValues = this.yparse.length === 1 && Array.isArray(this.yparse[0]);
-  const applyHighlight = this.selectedPalette === 'neutral' && this.highlightIndex !== -1;
+  const applyHighlight = this.selectedPalette === 'neutral' && this.highlightIndex.length > 0;
 
   // Générer les couleurs pour chaque dataset
   for (let i = 0; i < this.yparse.length; i++) {
@@ -228,10 +228,10 @@ export default {
       colors = Array(dataSet.length).fill(color);
       hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
     } else if (applyHighlight && singleSeriesWithMultipleValues) {
-      // Cas où il y a une seule série avec plusieurs valeurs et highlightIndex est utilisé
+      // Cas où il y a une seule série avec plusieurs valeurs et highlightIndex est un tableau
       for (let j = 0; j < dataSet.length; j++) {
-        if (j === this.highlightIndex) {
-          // Appliquer la couleur de mise en avant pour la barre correspondant à highlightIndex
+        if (this.highlightIndex.includes(j)) {
+          // Appliquer la couleur de mise en avant pour chaque index dans highlightIndex
           const color = getDefaultColor();
           colors.push(color);
           hoverColors.push(chroma(color).darken(0.8).hex());
@@ -424,6 +424,7 @@ export default {
     this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
   },
   mounted() {
+    this.highlightIndex = [3, 4];
     this.createChart();
 
     this.display = document.getElementById(this.widgetId).offsetWidth > 486 ? 'big' : 'small';
