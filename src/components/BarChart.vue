@@ -176,7 +176,7 @@ export default {
         borderColor: this.colorParse[index],
         hoverBackgroundColor: this.colorHover[index],
         hoverBorderColor: this.colorHover[index],
-        barThickness: this.barsize || (this.stacked ? 32 : this.horizontal ? 8 : 24),
+        barThickness: this.barsize || (this.stacked ? 32 : this.horizontal ? 30 : 32),
       }));
     },
 
