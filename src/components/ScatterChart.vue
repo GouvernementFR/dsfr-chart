@@ -4,7 +4,7 @@
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="linechart_tooltip">
-          <div class="tooltip_header"></div>
+          <div class="tooltip_header fr-text--sm fr-mb-0"></div>
           <div class="tooltip_body">
             <div class="tooltip_value">
               <span class="tooltip_dot"></span>
@@ -46,7 +46,7 @@
 /* eslint-disable */
 import { Chart } from 'chart.js'
 import chroma from 'chroma-js' // Assure-toi que chroma-js est installé
-import { mixin, getColorsByIndex, categoricalPalette, sequentialAscending, sequentialDescending, divergentAscending, divergentDescending, neutralColor, defaultColor } from '@/utils.js'
+import { mixin, getColorsByIndex, choosePalette} from '@/utils.js'
 
 export default {
   name: 'ScatterChart',
@@ -125,7 +125,7 @@ export default {
     },
     pointradius: {
       type: Number,
-      default: 8
+      default: 7
     },
     showline: {
       type: Boolean,
@@ -307,7 +307,6 @@ export default {
           type: 'scatter',
           pointRadius: 4,
           pointHoverRadius: 4,
-          pointStyle: 'rect',
           pointRadius: self.pointradius,
           pointHoverRadius: self.pointradius + 1,
           pointHoverBackgroundColor: self.colorHover[j],
@@ -321,6 +320,7 @@ export default {
       Chart.defaults.global.defaultFontFamily = 'Marianne'
       Chart.defaults.global.defaultFontSize = 12
       Chart.defaults.global.defaultLineHeight = 1.66
+      Chart.defaults.global.defaultFontColor = '#DDDDDD';
 
       this.getData()
       const self = this
@@ -529,7 +529,7 @@ export default {
                 const titleLines = tooltipModel.title || []
                 const bodyLines = tooltipModel.body.map(getBody)
 
-                const divDate = self.$el.querySelector('.tooltip_header')
+                const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                 divDate.innerHTML = titleLines[0]
 
                 const divValue = self.$el.querySelector('.tooltip_value')
@@ -649,38 +649,12 @@ export default {
       }
     },
     choosePalette() {
-      // Priorité à la sélection manuelle de la palette
-      switch (this.selectedPalette) {
-        case 'categorical':
-          return categoricalPalette;
-        case 'sequentialAscending':
-          return sequentialAscending;
-        case 'sequentialDescending':
-          return sequentialDescending;
-        case 'divergentAscending':
-          return divergentAscending;
-        case 'divergentDescending':
-          return divergentDescending;
-        case 'neutral':
-          return [neutralColor]; // La couleur neutre comme palette unique
-        case 'defaultColor':
-          return [defaultColor]; // Couleur unicolore par défaut
-        default:
-          break;
-      }
-
-      // Par défaut, on retourne la palette catégorielle
-      return categoricalPalette;
+      // Using the refactored choosePalette function from utils
+      return choosePalette(this.selectedPalette);
     },
 
     changeColors(theme) {
-      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
-      this.chart.options.scales.xAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
-      this.chart.options.scales.xAxes[0].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
-
-      this.chart.options.scales.yAxes[0].gridLines.color = this.getHexaFromToken('border-default-grey', theme)
-      this.chart.options.scales.yAxes[0].gridLines.zeroLineColor = this.getHexaFromToken('border-default-grey', theme)
-
+     
       this.loadColors()
       if (theme === 'light') {
         this.colorPrecisionBar = '#161616'
@@ -722,5 +696,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/ScatterChart.scss';
+@import './Style/Tooltip.scss';
+@import './Style/Rcol.scss';
+@import './Style/WidgetContainer.scss';
 </style>

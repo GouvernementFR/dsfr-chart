@@ -1,0 +1,80 @@
+.linechart_tooltip {
+  opacity: 0;
+  width: auto;
+  height: auto;
+  background-color: white;
+  position: fixed;
+  z-index: 999;
+  box-shadow: 0px 6px 18px 0px #00001229;
+  text-align: left;
+  pointer-events: none;
+  font-size: 0.75rem;
+  min-width: 7rem;
+  max-width: 18rem;
+
+  .tooltip_header {
+    width: 100%;
+    font-size: .75rem;
+    max-height: 3.5rem; // Hauteur pour 2 lignes
+    color: var(--text-default-grey);
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; // Limite à 2 lignes
+    -webkit-box-orient: vertical;
+    background-color: var(--grey-975-75);    
+    padding-top: .55rem;
+    padding-left: .75rem;
+    padding-right: .55rem;
+    padding-bottom: .75rem;
+    line-height: 1.2;
+  }
+
+  .tooltip_body {
+    line-height: 1.67;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    width: auto;
+
+    .tooltip_dot {
+      min-width: 1.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      background-color: var(--blue-france-sun-113-625);
+      display: inline-block;
+      margin-top: .25rem;
+      margin-right: .25rem;
+    }
+
+    .tooltip_place {
+      color: var(--text-default-grey);
+      font-size: .9rem;
+      font-weight: 400;
+    }
+
+    .tooltip_value {
+      width: 100%;
+      display: contents;
+      color: var(--text-default-grey);
+      font-size: .9rem;
+
+      &-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: .55rem;
+        padding-left: .75rem;
+        padding-right: .55rem;
+        padding-bottom: .75rem;
+        border-bottom: 1px solid var(--border-default-grey);
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}

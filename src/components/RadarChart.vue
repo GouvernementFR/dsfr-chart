@@ -4,7 +4,7 @@
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="linechart_tooltip">
-          <div class="tooltip_header"></div>
+          <div class="tooltip_header fr-text--sm fr-mb-0"></div>
           <div class="tooltip_body">
             <div class="tooltip_value">
               <span class="tooltip_dot"></span>
@@ -36,13 +36,7 @@ import { mixin } from '@/utils.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import {
   getColorsByIndex,
-  getDefaultColor,
-  getNeutralColor,
-  categoricalPalette,
-  sequentialAscending,
-  sequentialDescending,
-  divergentAscending,
-  divergentDescending
+  choosePalette
 } from '@/utils.js';
 
 Chart.pluginService.register(annotationPlugin);
@@ -139,9 +133,8 @@ export default {
       // Tracé de la courbe
       data.forEach((dj, j) => {
         this.datasets.push({
-          pointStyle: 'rect',
-          pointRadius: 4,
-          pointHoverRadius: 4,
+          pointRadius: 5,
+          pointHoverRadius: 5,
           data: dj,
           borderColor: this.colorParse[j],
           pointBackgroundColor: this.colorParse[j],
@@ -168,32 +161,14 @@ export default {
       }
     },
     choosePalette() {
-      // Priorité à la sélection manuelle de la palette
-      switch (this.selectedPalette) {
-        case 'categorical':
-          return categoricalPalette;
-        case 'sequentialAscending':
-          return sequentialAscending;
-        case 'sequentialDescending':
-          return sequentialDescending;
-        case 'divergentAscending':
-          return divergentAscending;
-        case 'divergentDescending':
-          return divergentDescending;
-        case 'neutral':
-          return [getNeutralColor()];
-        case 'defaultColor':
-          return [getDefaultColor()];
-        default:
-          break;
-      }
-
-      // Par défaut, on retourne la palette catégorielle
-      return categoricalPalette;
+      // Using the refactored choosePalette function from utils
+      return choosePalette(this.selectedPalette);
     },
     changeColors(theme) {
-      Chart.defaults.global.defaultFontColor = getNeutralColor();
-      this.chart.options.scale.gridLines.color = getNeutralColor();
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme);
+      this.chart.options.scale.gridLines.color = this.getHexaFromToken('text-mention-grey', theme);
+      
+      
       this.loadColors();
       for (let i = 0; i < this.yparse.length; i++) {
         this.chart.data.datasets[i].borderColor = this.colorParse[i];
@@ -208,7 +183,7 @@ export default {
       Chart.defaults.global.defaultFontFamily = 'Marianne';
       Chart.defaults.global.defaultFontSize = 12;
       Chart.defaults.global.defaultLineHeight = 1.66;
-      Chart.defaults.global.defaultFontColor = getNeutralColor();
+      Chart.defaults.global.defaultFontColor = '#DDDDDD';
 
       this.getData();
       const ctx = document.getElementById(this.chartId).getContext('2d');
@@ -226,10 +201,11 @@ export default {
           scale: {
             ticks: {
               backdropColor: 'transparent',
-              fontColor: getNeutralColor()
+              fontColor: '#DDDDDD',
+              color: '#DDDDDD'
             },
             gridLines: {
-              color: getNeutralColor()
+              color: '#DDDDDD'
             }
           },
           legend: {
@@ -280,7 +256,7 @@ export default {
                 const titleLines = [this.xparse[0][tooltipModel.dataPoints[0].index]];
                 const bodyLines = tooltipModel.body.map(getBody);
 
-                const divDate = this.$el.querySelector('.tooltip_header');
+                const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                 divDate.innerHTML = titleLines[0];
 
                 const color = tooltipModel.labelTextColors[0];
@@ -355,5 +331,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/RadarChart.scss';
+@import './Style/Tooltip.scss';
+@import './Style/Rcol.scss';
+@import './Style/WidgetContainer.scss';
+
+.chart_legend {
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+  column-gap: 10px;
+  flex-wrap: wrap;
+}
 </style>

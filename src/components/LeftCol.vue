@@ -1,5 +1,4 @@
 <template>
-
   <div class="l_col fr-col-12 fr-col-lg-3">
         <div v-if="props['levelNat']" data-box="number">
           <p class="fr-text--xs fr-mb-1v" :style="{color: props['textMention']}">Mise à jour : {{props['date']}}</p>

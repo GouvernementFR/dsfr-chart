@@ -4,7 +4,7 @@
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="linechart_tooltip">
-          <div class="tooltip_header"></div>
+          <div class="tooltip_header fr-text--sm fr-mb-0"></div>
           <div class="tooltip_body">
             <div class="tooltip_value">
               <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v"
@@ -58,13 +58,8 @@ import chroma from 'chroma-js';
 import { mixin } from '@/utils.js';
 import {
   getColorsByIndex,
-  getDefaultColor,
   getNeutralColor,
-  categoricalPalette,
-  sequentialAscending,
-  sequentialDescending,
-  divergentAscending,
-  divergentDescending
+  choosePalette
 } from '@/utils.js';
 
 export default {
@@ -294,14 +289,12 @@ export default {
           fill: false,
           borderColor: this.colorParse[j],
           type: 'line',
-          pointRadius: 4,
-          pointHoverRadius: 4,
-          pointStyle: 'rect',
-          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointRadius: 7,  
+          pointHoverRadius: 7,
+          pointBackgroundColor: this.colorParse[j],
+          pointBorderColor: this.colorParse[j],
           pointHoverBackgroundColor: this.colorHover[j],
           pointHoverBorderColor: this.colorHover[j],
-          pointHoverRadius: 6,
           borderWidth: 2
         });
       });
@@ -343,37 +336,14 @@ export default {
       }
     },
     choosePalette() {
-      // Priorité à la sélection manuelle de la palette
-      switch (this.selectedPalette) {
-        case 'categorical':
-          return categoricalPalette;
-        case 'sequentialAscending':
-          return sequentialAscending;
-        case 'sequentialDescending':
-          return sequentialDescending;
-        case 'divergentAscending':
-          return divergentAscending;
-        case 'divergentDescending':
-          return divergentDescending;
-        case 'neutral':
-          return [getNeutralColor()];
-        case 'defaultColor':
-          return [getDefaultColor()];
-        default:
-          break;
-      }
-
-      // Par défaut, on retourne la palette catégorielle
-      return categoricalPalette;
+      // Using the refactored choosePalette function from utils
+      return choosePalette(this.selectedPalette);
     },
     changeColors(theme) {
-      Chart.defaults.global.defaultFontColor = getNeutralColor();
-      this.chart.options.scales.xAxes[0].gridLines.color = getNeutralColor();
-      this.chart.options.scales.xAxes[0].gridLines.zeroLineColor = getNeutralColor();
-
-      this.chart.options.scales.yAxes[0].gridLines.color = getNeutralColor();
-      this.chart.options.scales.yAxes[0].gridLines.zeroLineColor = getNeutralColor();
-
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme);
+      this.chart.options.scales.xAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
+      this.chart.options.scales.yAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
+      
       this.loadColors();
       if (theme === 'light') {
         this.colorPrecisionBar = '#161616';
@@ -392,7 +362,7 @@ export default {
       Chart.defaults.global.defaultFontFamily = 'Marianne';
       Chart.defaults.global.defaultFontSize = 12;
       Chart.defaults.global.defaultLineHeight = 1.66;
-      Chart.defaults.global.defaultFontColor = getNeutralColor();
+      Chart.defaults.global.defaultFontColor = '#DDDDDD';
 
       this.getData();
       const self = this;
@@ -518,7 +488,7 @@ export default {
                   lineWidth: 1
                 },
                 ticks: {
-                  padding: 10, // Espace supplémentaire autour des étiquettes
+                  padding: 4,
                   autoSkip: true,
                   maxTicksLimit: 5,
                   suggestedMax: self.ymax,
@@ -605,7 +575,7 @@ export default {
                 const titleLines = tooltipModel.title || [];
                 const bodyLines = tooltipModel.body.map(getBody);
 
-                const divDate = self.$el.querySelector('.tooltip_header');
+                const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                 divDate.innerHTML = titleLines[0];
 
                 const color = tooltipModel.labelTextColors[0];
@@ -693,5 +663,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/MultiLineChart.scss'
+@import './Style/Tooltip.scss';
+@import './Style/Rcol.scss';
+@import './Style/WidgetContainer.scss';
 </style>

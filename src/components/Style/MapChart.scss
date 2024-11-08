@@ -21,7 +21,7 @@
       align-items: center;
   
       .map_tooltip {
-        width: 11.25rem;
+        width: auto;
         height: auto;
         background-color: white;
         position: fixed;
@@ -37,7 +37,7 @@
           width: 100%;
           font-size: 12px;
           max-height: 3.5rem; // Hauteur pour 2 lignes
-          color: #000; // Titre en noir
+          color: var(--text-default-grey);
           font-weight: bold;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -64,12 +64,12 @@
             min-width: 1.25rem;
             width: 1.25rem;
             height: 1.25rem;
-            background-color: #000091;
+            background-color: var(--blue-france-sun-113-625);
             display: inline-block;
           }
   
           .tooltip_place {
-            color: #242424;
+            color: var(--text-default-grey);
             font-size: 14px;
             font-weight: 400;
           }
@@ -77,7 +77,7 @@
           .tooltip_value {
             width: 100%;
             display: contents;
-            color: #242424;
+            color: var(--text-default-grey);
             font-size: 14px;
   
             &-content {

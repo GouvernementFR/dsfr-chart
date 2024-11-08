@@ -4,7 +4,7 @@
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="linechart_tooltip" ref="tooltip">
-          <div class="tooltip_header"></div>
+          <div class="tooltip_header fr-text--sm fr-mb-0"></div>
           <div class="tooltip_body">
             <div class="tooltip_value">
               <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v"
@@ -48,12 +48,7 @@ import { mixin } from '@/utils.js';
 import {
   getColorsByIndex,
   getDefaultColor,
-  getNeutralColor,
-  categoricalPalette,
-  sequentialAscending,
-  sequentialDescending,
-  divergentAscending,
-  divergentDescending
+  choosePalette
 } from '@/utils.js';
 
 export default {
@@ -255,12 +250,12 @@ export default {
           borderColor: this.colorParse,
           backgroundColor: 'rgba(0, 0, 0, 0)',
           type: 'line',
-          pointRadius: 4,
+          pointRadius: 7,
+          pointHoverRadius: 7,
           pointBackgroundColor: this.colorParse,
           pointBorderColor: this.colorParse,
           pointHoverBackgroundColor: this.colorHover,
           pointHoverBorderColor: this.colorHover,
-          pointHoverRadius: 6,
           borderWidth: 2,
           fill: false
         }
@@ -298,38 +293,14 @@ export default {
       }
     },
     choosePalette() {
-      // Priorité à la sélection manuelle de la palette
-      switch (this.selectedPalette) {
-        case 'categorical':
-          return categoricalPalette;
-        case 'sequentialAscending':
-          return sequentialAscending;
-        case 'sequentialDescending':
-          return sequentialDescending;
-        case 'divergentAscending':
-          return divergentAscending;
-        case 'divergentDescending':
-          return divergentDescending;
-        case 'neutral':
-          return [getNeutralColor()];
-        case 'defaultColor':
-          return [getDefaultColor()];
-        default:
-          break;
-      }    
-
-      // Par défaut, on retourne la palette catégorielle
-      return categoricalPalette;
+      // Using the refactored choosePalette function from utils
+      return choosePalette(this.selectedPalette);
     },
-    changeColors(theme) {
-      Chart.defaults.global.defaultFontColor = getNeutralColor();
-      this.chart.options.scales.xAxes[0].ticks.fontColor = getNeutralColor();
-      this.chart.options.scales.xAxes[0].gridLines.color = getNeutralColor();
-      this.chart.options.scales.xAxes[0].gridLines.zeroLineColor = getNeutralColor();
 
-      this.chart.options.scales.yAxes[0].ticks.fontColor = getNeutralColor();
-      this.chart.options.scales.yAxes[0].gridLines.color = getNeutralColor();
-      this.chart.options.scales.yAxes[0].gridLines.zeroLineColor = getNeutralColor();
+    changeColors(theme) {
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme);
+      this.chart.options.scales.xAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
+      this.chart.options.scales.yAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
 
       this.loadColors();
       if (theme === 'light') {
@@ -348,7 +319,7 @@ export default {
       Chart.defaults.global.defaultFontFamily = 'Marianne';
       Chart.defaults.global.defaultFontSize = 12;
       Chart.defaults.global.defaultLineHeight = 1.66;
-      Chart.defaults.global.defaultFontColor = getNeutralColor();
+      Chart.defaults.global.defaultFontColor = '#DDDDDD';
 
       this.getData();
       const ctx = document.getElementById(this.chartId).getContext('2d');
@@ -375,14 +346,15 @@ export default {
                 type: this.xAxisType,
                 gridLines: {
                   drawTicks: false,
-                  zeroLineColor: getNeutralColor(),
+                  zeroLineColor: '#DDDDDD',
                   drawOnChartArea: false,
-                  color: getNeutralColor(),
+                  color: '#DDDDDD',
+                  borderDash: [3],
                   lineWidth: 1
                 },
                 ticks: {
                   padding: 10, // Espace supplémentaire autour des étiquettes
-                  fontColor: getNeutralColor(),
+                  fontColor: '#DDDDDD',
                   labelOffset: 10,
                   callback: function (value) {
                     if (self.formatdate) {
@@ -399,13 +371,14 @@ export default {
               {
                 gridLines: {
                   drawTicks: false,
-                  zeroLineColor: getNeutralColor(),
-                  color: getNeutralColor(),
-                  lineWidth: 1
+                  zeroLineColor: '#DDDDDD',
+                  color: '#DDDDDD',
+                  lineWidth: 1,
+                  borderDash: [3],
                 },
                 ticks: {
                   position: 'left',
-                  fontColor: getNeutralColor(),
+                  fontColor: '#DDDDDD',
                   padding: 10, // Espace supplémentaire autour des étiquettes
                   suggestedMax: this.ymax,
                   autoSkip: true,
@@ -455,7 +428,7 @@ export default {
                   return bodyItem.lines;
                 });
 
-                const divDate = tooltipEl.querySelector('.tooltip_header');
+                const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                 divDate.innerHTML = titleLines[0];
 
                 const divValue = tooltipEl.querySelector('.tooltip_value');
@@ -599,5 +572,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/LineChart.scss'
+@import './Style/Tooltip.scss';
+@import './Style/Rcol.scss';
+@import './Style/WidgetContainer.scss';
 </style>

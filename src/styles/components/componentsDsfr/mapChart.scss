@@ -21,7 +21,7 @@
     align-items: center;
 
     .map_tooltip {
-      width: 11.25rem;
+      width: auto;
       height: auto;
       background-color: white;
       position: fixed;
@@ -48,11 +48,11 @@
         line-height: 1.67;
 
         .tooltip_place {
-          color: #242424;
+          color: var(--text-default-grey);
         }
 
         .tooltip_value {
-          color: #242424;
+          color: var(--text-default-grey);
           font-weight: bold;
         }
       }

@@ -91,11 +91,6 @@
 
                     <!-- Graphique -->
                     <div :id="`chart-section-${widgetId}`" class="databox__content-chart" v-if="shouldDisplayChart">
-                        <div class="databox__content-chart-section">
-                            <p class="databox__content-chart-section-unit text">
-                                {{ unit_value }}
-                            </p>
-                        </div>
                         <div class="databox__content-chart-section-canvas">
                             <component :is="component" v-bind="chartProps"></component>
                         </div>
@@ -206,10 +201,6 @@ export default {
         value: {
             type: String,
             default: "1500",
-        },
-        unit_value: {
-            type: String,
-            default: "Nombre exprimé en pourcentage (%)"
         },
         component: {
             type: String,

@@ -4,7 +4,7 @@
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="linechart_tooltip">
-          <div class="tooltip_header"></div>
+          <div class="tooltip_header fr-text--sm fr-mb-0"></div>
           <div class="tooltip_body">
             <div class="tooltip_value">
               <span class="tooltip_dot"></span>
@@ -14,15 +14,15 @@
         <canvas :id="chartId"></canvas>
         <div class="chart_legend fr-mb-0 fr-mt-4v">
           <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v">
-            <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
+            <span class="legende_dot" v-bind:style="{ 'background-color': colorParse[index] }"></span>
             <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
-              {{capitalize(nameParse[index])}}
+              {{ capitalize(nameParse[index]) }}
             </p>
           </div>
-          <div v-if="date!==undefined" class="flex fr-mt-1w">
-            <p class="fr-text--xs">Mise à jour : {{date}}</p>
+          <div v-if="date !== undefined" class="flex fr-mt-1w">
+            <p class="fr-text--xs">Mise à jour : {{ date }}</p>
           </div>
-      </div>
+        </div>
       </div>
     </div>
   </div>
@@ -35,13 +35,7 @@ import chroma from 'chroma-js';
 import { mixin } from '@/utils.js';
 import {
   getColorsByIndex,
-  getDefaultColor,
-  getNeutralColor,
-  categoricalPalette,
-  sequentialAscending,
-  sequentialDescending,
-  divergentAscending,
-  divergentDescending
+  choosePalette
 } from '@/utils.js';
 
 export default {
@@ -159,7 +153,7 @@ export default {
       Chart.defaults.global.defaultFontFamily = 'Marianne';
       Chart.defaults.global.defaultFontSize = 12;
       Chart.defaults.global.defaultLineHeight = 1.66;
-      Chart.defaults.global.defaultFontColor = getNeutralColor();
+      Chart.defaults.global.defaultFontColor = '#DDDDDD';
 
       this.getData();
       const ctx = document.getElementById(this.chartId).getContext('2d');
@@ -173,7 +167,7 @@ export default {
           responsive: true,
           maintainAspectRatio: true,
           layout: {
-              padding: {
+            padding: {
               left: 50,
               right: 50,
               top: 0,
@@ -229,7 +223,7 @@ export default {
                 const titleLines = tooltipModel.title || [];
                 const bodyLines = tooltipModel.body.map(getBody);
 
-                const divDate = this.$el.querySelector('.tooltip_header');
+                const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                 divDate.innerHTML = titleLines;
 
                 const color = tooltipModel.labelTextColors[0];
@@ -289,31 +283,11 @@ export default {
       }
     },
     choosePalette() {
-      // Priorité à la sélection manuelle de la palette
-      switch (this.selectedPalette) {
-        case 'categorical':
-          return categoricalPalette;
-        case 'sequentialAscending':
-          return sequentialAscending;
-        case 'sequentialDescending':
-          return sequentialDescending;
-        case 'divergentAscending':
-          return divergentAscending;
-        case 'divergentDescending':
-          return divergentDescending;
-        case 'neutral':
-          return [getNeutralColor()];
-        case 'defaultColor':
-          return [getDefaultColor()];
-        default:
-          break;
-      }
-
-      // Par défaut, on retourne la palette catégorielle
-      return categoricalPalette;
+      // Using the refactored choosePalette function from utils
+      return choosePalette(this.selectedPalette);
     },
     changeColors(theme) {
-      Chart.defaults.global.defaultFontColor = getNeutralColor();
+      Chart.Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
       this.loadColors();
       this.chart.data.datasets[0].borderColor = this.colorParse;
       this.chart.data.datasets[0].backgroundColor = this.colorParse;
@@ -348,5 +322,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/PieChart.scss';
+@import './Style/Tooltip.scss';
+@import './Style/Rcol.scss';
+@import './Style/WidgetContainer.scss';
+
+.chart_legend {
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+  column-gap: 10px;
+  flex-wrap: wrap;
+}
 </style>

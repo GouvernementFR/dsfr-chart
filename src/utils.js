@@ -81,14 +81,14 @@ export const categoricalPalette = [
 ];
 
 // Couleur par défaut pour un graphique unicolore
-export const defaultColor = '#5C68E5';
+export const defaultColor = categoricalPalette[0];
 
 // Couleur neutre (pour les données "minimales")
 export const neutralColor = '#B1B1B1';
 
 // Palette séquentielle (unicolore dégradé, par exemple du clair au foncé)
-export const sequentialAscending = chroma.scale(['#DBDAFF', '#00005F']).colors(10);
-export const sequentialDescending = chroma.scale(['#00005F', '#DBDAFF']).colors(10);
+export const sequentialAscending = chroma.scale(['#D8DAFF', '#000088']).colors(10);
+export const sequentialDescending = chroma.scale(['#000088', '#D8DAFF']).colors(10);
 
 export const divergentAscending = chroma.scale(['#298641', '#EFB900', '#E91719']).colors(4);
 export const divergentDescending = chroma.scale(['#E91719', '#EFB900', '#298641']).colors(4);
@@ -159,6 +159,75 @@ export const colorUtils = {
   getDivergentPaletteAscending,
   getDivergentPaletteDescending
 };
+
+// Core `choosePalette` function
+export function choosePalette(selectedPalette) {
+  switch (selectedPalette) {
+    case 'categorical':
+      return categoricalPalette;
+    case 'sequentialAscending':
+      return sequentialAscending;
+    case 'sequentialDescending':
+      return sequentialDescending;
+    case 'divergentAscending':
+      return divergentAscending;
+    case 'divergentDescending':
+      return divergentDescending;
+    case 'neutral':
+      return [neutralColor];
+    case 'defaultColor':
+      return [defaultColor];
+    default:
+      return categoricalPalette; // Fallback
+  }
+}
+
+// Core `loadColors` function
+export function loadColors({
+  yparse,
+  selectedPalette = '',
+  tmpColorParse = [],
+  highlightIndex = [],
+  reverseOrder = false
+}) {
+  const colorParse = [];
+  const colorHover = [];
+  const palette = choosePalette(selectedPalette);
+
+  // If we need to reverse the order for divergentDescending
+  const adjustedYparse = reverseOrder ? [...yparse].reverse() : yparse;
+
+  for (let i = 0; i < adjustedYparse.length; i++) {
+    const dataSet = adjustedYparse[i];
+    let colors = [];
+    let hoverColors = [];
+
+    if (tmpColorParse[i] !== undefined) {
+      const color = tmpColorParse[i];
+      colors = Array(dataSet.length).fill(color);
+      hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+    } else if (selectedPalette === 'neutral' && highlightIndex.length > 0 && Array.isArray(dataSet)) {
+      for (let j = 0; j < dataSet.length; j++) {
+        const color = highlightIndex.includes(j) ? defaultColor : neutralColor;
+        colors.push(color);
+        hoverColors.push(chroma(color).darken(0.8).hex());
+      }
+    } else {
+      if (selectedPalette.startsWith('divergent')) {
+        colors = Array(dataSet.length).fill(palette[i % palette.length]);
+        hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+      } else {
+        const color = getColorsByIndex(i, palette);
+        colors = Array(dataSet.length).fill(color);
+        hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+      }
+    }
+    colorParse.push(colors);
+    colorHover.push(hoverColors);
+  }
+
+  return { colorParse, colorHover, legendColors: reverseOrder ? colorParse.map(c => c[0]).reverse() : colorParse.map(c => c[0]) };
+}
 
 const colorsDSFR = [
   'green-bourgeon',

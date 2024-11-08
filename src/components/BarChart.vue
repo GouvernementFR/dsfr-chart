@@ -5,7 +5,7 @@
       <div class="chart">
         <!-- Tooltip personnalisé -->
         <div class="linechart_tooltip" style="opacity: 0; position: absolute;">
-          <div class="tooltip_header"></div>
+          <div class="tooltip_header fr-text--sm fr-mb-0"></div>
           <div class="tooltip_body">
             <div class="tooltip_value"></div>
           </div>
@@ -13,9 +13,10 @@
         <!-- Canvas pour le graphique -->
         <canvas :id="chartId"></canvas>
         <!-- Légende -->
+
         <div class="chart_legend fr-mb-0 fr-mt-4v">
           <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v">
-            <span class="legende_dot" :style="{ 'background-color': colorParse[index][0] }"></span>
+            <span class="legende_dot" :style="{ 'background-color': legendColors[index] }"></span>
             <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
               {{ capitalize(nameParse[index]) }}
             </p>
@@ -37,13 +38,9 @@ import chroma from 'chroma-js';
 import {
   mixin,
   getColorsByIndex,
-  categoricalPalette,
-  sequentialAscending,
-  sequentialDescending,
-  divergentAscending,
-  divergentDescending,
   getNeutralColor,
   getDefaultColor,
+  choosePalette
 } from '@/utils.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
 
@@ -116,9 +113,13 @@ export default {
       default: '',
     },
     highlightIndex: {
-    type: Array,
-    default: () => []
-  },
+      type: Array,
+      default: () => []
+    },
+    legendColorOrder: {
+      type: Boolean,
+      default: false, // Default is false; set to true for fixed green-to-red legend order
+    },
   },
   methods: {
     resetData() {
@@ -182,99 +183,94 @@ export default {
     },
 
     choosePalette() {
-      // Priorité à la sélection manuelle de la palette
-      switch (this.selectedPalette) {
-        case 'categorical':
-          return categoricalPalette;
-        case 'sequentialAscending':
-          return sequentialAscending;
-        case 'sequentialDescending':
-          return sequentialDescending;
-        case 'divergentAscending':
-          return divergentAscending;
-        case 'divergentDescending':
-          return divergentDescending;
-        case 'neutral':
-          return [getNeutralColor()];
-        case 'defaultColor':
-          return [getDefaultColor()];
-        default:
-          break;
-      }
-
-      // Par défaut, on retourne la palette catégorielle
-      return categoricalPalette;
+      // Using the refactored choosePalette function from utils
+      return choosePalette(this.selectedPalette);
     },
 
     loadColors() {
-  this.colorParse = [];
-  this.colorHover = [];
+      this.colorParse = [];
+      this.colorHover = [];
 
-  // Obtenir la palette sélectionnée
-  const palette = this.choosePalette();
+      // Load the selected palette for the chart colors
+      const palette = this.choosePalette();
 
-  // Vérifier si `yparse` ne contient qu'une seule série de données avec plusieurs valeurs
-  const singleSeriesWithMultipleValues = this.yparse.length === 1 && Array.isArray(this.yparse[0]);
-  const applyHighlight = this.selectedPalette === 'neutral' && this.highlightIndex.length > 0;
+      // Check if `yparse` contains a single series with multiple values
+      const singleSeriesWithMultipleValues = this.yparse.length === 1 && Array.isArray(this.yparse[0]);
+      const applyHighlight = this.selectedPalette === 'neutral' && this.highlightIndex.length > 0;
 
-  // Générer les couleurs pour chaque dataset
-  for (let i = 0; i < this.yparse.length; i++) {
-    const dataSet = this.yparse[i];
-    let colors = [];
-    let hoverColors = [];
+      // Reverse data order for divergentDescending to align with green-to-red
+      let adjustedYparse = this.selectedPalette === 'divergentDescending'
+        ? [...this.yparse].reverse() // Reverse the entire yparse array
+        : this.yparse;
 
-    if (this.tmpColorParse[i] !== undefined) {
-      // Si une couleur personnalisée est spécifiée pour la série
-      const color = this.tmpColorParse[i];
-      colors = Array(dataSet.length).fill(color);
-      hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-    } else if (applyHighlight && singleSeriesWithMultipleValues) {
-      // Cas où il y a une seule série avec plusieurs valeurs et highlightIndex est un tableau
-      for (let j = 0; j < dataSet.length; j++) {
-        if (this.highlightIndex.includes(j)) {
-          // Appliquer la couleur de mise en avant pour chaque index dans highlightIndex
-          const color = getDefaultColor();
-          colors.push(color);
-          hoverColors.push(chroma(color).darken(0.8).hex());
+      // Generate colors for each dataset based on adjusted data order
+      for (let i = 0; i < adjustedYparse.length; i++) {
+        const dataSet = adjustedYparse[i];
+        let colors = [];
+        let hoverColors = [];
+
+        if (this.tmpColorParse[i] !== undefined) {
+          // Custom color is specified for the series
+          const color = this.tmpColorParse[i];
+          colors = Array(dataSet.length).fill(color);
+          hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+        } else if (applyHighlight && singleSeriesWithMultipleValues) {
+          // Single series with multiple values, highlight specific indices
+          for (let j = 0; j < dataSet.length; j++) {
+            if (this.highlightIndex.includes(j)) {
+              // Apply highlight color for specified indices
+              const color = getDefaultColor();
+              colors.push(color);
+              hoverColors.push(chroma(color).darken(0.8).hex());
+            } else {
+              // Apply neutral color for other bars
+              const color = getNeutralColor();
+              colors.push(color);
+              hoverColors.push(chroma(color).darken(0.8).hex());
+            }
+          }
         } else {
-          // Appliquer la couleur neutre pour les autres barres
-          const color = getNeutralColor();
-          colors.push(color);
-          hoverColors.push(chroma(color).darken(0.8).hex());
+          // Standard case for multiple series or non-neutral palettes
+          if (this.selectedPalette === 'divergentAscending' || this.selectedPalette === 'divergentDescending') {
+            colors = Array(dataSet.length).fill(palette[i % palette.length]);
+            hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+          } else if (this.selectedPalette === 'categorical' || !this.selectedPalette) {
+            const color = getColorsByIndex(i, palette);
+            colors = Array(dataSet.length).fill(color);
+            hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+          } else if (this.selectedPalette === 'neutral' || this.selectedPalette === 'defaultColor') {
+            const color = palette[0];
+            colors = Array(dataSet.length).fill(color);
+            hoverColors = colors.map(c => chroma(color).darken(0.8).hex());
+          } else {
+            const allDataValues = this.yparse.flat();
+            const minValue = Math.min(...allDataValues);
+            const maxValue = Math.max(...allDataValues);
+            const colorScale = chroma.scale(palette).domain([maxValue, minValue]);
+            colors = dataSet.map(value => chroma(colorScale(value)).hex());
+            hoverColors = colors.map(color => chroma(color).darken(0.8).hex());
+          }
         }
-      }
-    } else {
-      // Cas normal pour plusieurs séries ou palette non `neutral`
-      if (this.selectedPalette === 'divergentAscending' || this.selectedPalette === 'divergentDescending') {
-        colors = Array(dataSet.length).fill(palette[i % palette.length]);
-        hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-      } else if (this.selectedPalette === 'categorical' || !this.selectedPalette) {
-        const color = getColorsByIndex(i, palette);
-        colors = Array(dataSet.length).fill(color);
-        hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-      } else if (this.selectedPalette === 'neutral' || this.selectedPalette === 'defaultColor') {
-        const color = palette[0];
-        colors = Array(dataSet.length).fill(color);
-        hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-      } else {
-        const allDataValues = this.yparse.flat();
-        const minValue = Math.min(...allDataValues);
-        const maxValue = Math.max(...allDataValues);
-        const colorScale = chroma.scale(palette).domain([maxValue, minValue]);
-        colors = dataSet.map(value => chroma(colorScale(value)).hex());
-        hoverColors = colors.map(color => chroma(color).darken(0.8).hex());
-      }
-    }
 
-    this.colorParse.push(colors);
-    this.colorHover.push(hoverColors);
-  }
-},
+        this.colorParse.push(colors);
+        this.colorHover.push(hoverColors);
+      }
+
+      // Adjust legend colors based on palette direction
+      if (this.selectedPalette === 'divergentDescending') {
+        // Reverse the colors for both the chart and the legend
+        this.legendColors = this.colorParse.map(colorArray => colorArray[0]).reverse();
+      } else {
+        // Keep the default order for ascending palettes
+        this.legendColors = this.colorParse.map(colorArray => colorArray[0]);
+      }
+    },
 
     createChart() {
       Chart.defaults.global.defaultFontFamily = 'Marianne';
       Chart.defaults.global.defaultFontSize = 12;
       Chart.defaults.global.defaultLineHeight = 1.66;
+      Chart.defaults.global.defaultFontColor = '#DDDDDD';
 
       this.getData();
       const ctx = document.getElementById(this.chartId).getContext('2d');
@@ -288,7 +284,7 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: true,  // Changez à true pour maintenir le ratio
-        aspectRatio: 2, // Ajustez ce ratio pour gérer la hauteur/largeur du graphique        
+          aspectRatio: 2, // Ajustez ce ratio pour gérer la hauteur/largeur du graphique        
           animation: {
             easing: 'easeInOutBack',
             duration: 1000,
@@ -370,7 +366,7 @@ export default {
               const titleLines = tooltipModel.title || [];
               const bodyLines = tooltipModel.body.map(item => item.lines);
 
-              const divDate = tooltipEl.querySelector('.tooltip_header');
+              const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
               divDate.innerHTML = titleLines[0];
 
               const divValue = tooltipEl.querySelector('.tooltip_value');
@@ -409,7 +405,14 @@ export default {
     },
 
     changeColors(theme) {
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme);
       this.loadColors();
+
+      if (theme === 'light') {
+        this.colorPrecisionBar = '#161616';
+      } else {
+        this.colorPrecisionBar = '#FFFFFF';
+      }
 
       // Mise à jour des couleurs dans le graphique
       this.chart.data.datasets.forEach((dataset, i) => {
@@ -449,5 +452,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import './Style/BarChart.scss';
+@import './Style/Tooltip.scss';
+@import './Style/Rcol.scss';
+@import './Style/WidgetContainer.scss';
 </style>

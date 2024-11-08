@@ -4,7 +4,7 @@
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="linechart_tooltip">
-          <div class="tooltip_header"></div>
+          <div class="tooltip_header fr-text--sm fr-mb-0"></div>
           <div class="tooltip_body">
             <div class="tooltip_value">
               <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v"
@@ -18,25 +18,27 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div class="flex fr-mt-3v" :style="{ 'margin-left': isSmall ? '0px' : style }">
-          <span class="legende_dot" :style="{ 'background-color': colorBarParse }"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(namebar) }}</p>
+        <div class="chart_legend fr-mb-0 fr-mt-4v">
+          <div class="flex">
+            <span class="legende_dot" :style="{ 'background-color': colorBarParse }"></span>
+            <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(namebar) }}</p>
+          </div>
+          <div class="flex">
+            <span class="legende_dot" :style="{ 'background-color': colorParse }"></span>
+            <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(name) }}</p>
+          </div>
+          <div v-for="(item, index) in hlineNameParse" :key="item" class="flex">
+            <span class="legende_dash_line1" :style="{ 'background-color': hlineColorParse[index] }"></span>
+            <span class="legende_dash_line2" :style="{ 'background-color': hlineColorParse[index] }"></span>
+            <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(hlineNameParse[index]) }}</p>
+          </div>
+          <div v-for="(item2, index2) in vlineParse" :key="item2" class="flex">
+            <span class="legende_dash_line1" :style="{ 'background-color': vlineColorParse[index2] }"></span>
+            <span class="legende_dash_line2" :style="{ 'background-color': vlineColorParse[index2] }"></span>
+            <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index2]) }}</p>
+          </div>
         </div>
-        <div class="flex fr-mt-3v" :style="{ 'margin-left': isSmall ? '0px' : style }">
-          <span class="legende_dot" :style="{ 'background-color': colorParse }"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(name) }}</p>
-        </div>
-        <div v-for="(item, index) in hlineNameParse" :key="item" class="flex fr-mt-3v" :style="{ 'margin-left': isSmall ? '0px' : style }">
-          <span class="legende_dash_line1" :style="{ 'background-color': hlineColorParse[index] }"></span>
-          <span class="legende_dash_line2" :style="{ 'background-color': hlineColorParse[index] }"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(hlineNameParse[index]) }}</p>
-        </div>
-        <div v-for="(item2, index2) in vlineParse" :key="item2" class="flex fr-mt-3v fr-mb-1v" :style="{ 'margin-left': isSmall ? '0px' : style }">
-          <span class="legende_dash_line1" :style="{ 'background-color': vlineColorParse[index2] }"></span>
-          <span class="legende_dash_line2" :style="{ 'background-color': vlineColorParse[index2] }"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index2]) }}</p>
-        </div>
-        <div v-if="date !== undefined" class="flex fr-mt-1w" :style="{ 'margin-left': isSmall ? '0px' : style }">
+        <div v-if="date !== undefined" class="flex fr-mt-1w">
           <p class="fr-text--xs">Mise à jour : {{ date }}</p>
         </div>
       </div>
@@ -50,14 +52,9 @@ import { Chart } from 'chart.js';
 import chroma from 'chroma-js';
 import { mixin } from '@/utils.js';
 import {
+  choosePalette,
   getColorsByIndex,
-  getDefaultColor,
   getNeutralColor,
-  categoricalPalette,
-  sequentialAscending,
-  sequentialDescending,
-  divergentAscending,
-  divergentDescending
 } from '@/utils.js';
 
 export default {
@@ -276,6 +273,8 @@ export default {
           borderColor: this.colorBarParse,
           hoverBorderColor: this.colorbarHover,
           hoverBackgroundColor: this.colorbarHover,
+          pointRadius: 4,
+          pointHoverRadius: 4,
           barThickness: 32,
           type: 'bar',
           barPercentage: 0.5,
@@ -287,43 +286,22 @@ export default {
           backgroundColor: 'rgba(0, 0, 0, 0)',
           borderColor: this.colorParse,
           type: 'line',
-          pointRadius: 4,
-          pointHoverRadius: 4,
-          pointStyle: 'rect',
-          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-          pointBorderColor: 'rgba(0, 0, 0, 0)',
+          pointRadius: 7,
+          pointHoverRadius: 7,
+          pointBackgroundColor: this.colorParse,
+          pointBorderColor: this.colorParse,
           pointHoverBackgroundColor: this.colorHover,
           pointHoverBorderColor: this.colorHover,
-          pointHoverRadius: 6,
           yAxisID: 'yAxisR',
           order: 1
         }
       ];
     },
     choosePalette() {
-      // Priorité à la sélection manuelle de la palette
-      switch (this.selectedPalette) {
-        case 'categorical':
-          return categoricalPalette;
-        case 'sequentialAscending':
-          return sequentialAscending;
-        case 'sequentialDescending':
-          return sequentialDescending;
-        case 'divergentAscending':
-          return divergentAscending;
-        case 'divergentDescending':
-          return divergentDescending;
-        case 'neutral':
-          return [getNeutralColor()];
-        case 'defaultColor':
-          return [getDefaultColor()];
-        default:
-          break;
-      }
-
-      // Par défaut, on retourne la palette catégorielle
-      return categoricalPalette;
+      // Using the refactored choosePalette function from utils
+      return choosePalette(this.selectedPalette);
     },
+
     loadColors() {
       const palette = this.choosePalette();
 
@@ -331,19 +309,19 @@ export default {
       if (this.color !== undefined) {
         this.colorParse = this.color;
       } else {
-        this.colorParse = getColorsByIndex(0, palette);
+        this.colorParse = getColorsByIndex(1, palette);
       }
 
       // Couleur pour les barres
       if (this.colorbar !== undefined) {
         this.colorBarParse = this.colorbar;
       } else {
-        this.colorBarParse = getColorsByIndex(1, palette);
+        this.colorBarParse = getColorsByIndex(0, palette);
       }
 
       // Couleurs pour le survol (hover)
-      this.colorHover = chroma(this.colorParse).brighten(0.5).hex();
-      this.colorbarHover = chroma(this.colorBarParse).brighten(0.5).hex();
+      this.colorHover = chroma(this.colorParse).darken(0.8).hex();
+      this.colorbarHover = chroma(this.colorBarParse).darken(0.8).hex();
 
       // Couleurs pour les lignes verticales (vlines)
       this.vlineColorParse = [];
@@ -369,6 +347,7 @@ export default {
       Chart.defaults.global.defaultFontFamily = 'Marianne';
       Chart.defaults.global.defaultFontSize = 12;
       Chart.defaults.global.defaultLineHeight = 1.66;
+      Chart.defaults.global.defaultFontColor = '#DDDDDD';
 
       this.getData();
       const self = this;
@@ -430,6 +409,8 @@ export default {
                   const ybar = yAxisL.getPixelForValue(self.ybarparse[index]);
 
                   const ctx = chart.ctx;
+
+                  // Draw the vertical line under the points
                   ctx.save();
                   ctx.beginPath();
                   ctx.moveTo(x, yAxisL.top);
@@ -440,16 +421,18 @@ export default {
                   ctx.stroke();
                   ctx.restore();
 
+                  // Draw the horizontal line for the line chart value
                   ctx.save();
                   ctx.beginPath();
-                  ctx.moveTo(x, y);
-                  ctx.lineTo(xAxis.right, y);
+                  ctx.moveTo(xAxis.left, y);
+                  ctx.lineTo(x, y);
                   ctx.lineWidth = '1';
                   ctx.strokeStyle = self.colorPrecisionBar;
                   ctx.setLineDash([10, 5]);
                   ctx.stroke();
                   ctx.restore();
 
+                  // Draw the horizontal line for the bar chart value
                   ctx.save();
                   ctx.beginPath();
                   ctx.moveTo(xAxis.left, ybar);
@@ -476,9 +459,9 @@ export default {
                 offset: true,
                 type: self.xAxisType,
                 gridLines: {
-                  zeroLineColor: getNeutralColor(),
+                  zeroLineColor: '#DDDDDD',
                   drawOnChartArea: false,
-                  color: getNeutralColor(),
+                  color: '#DDDDDD',
                   lineWidth: 1
                 },
                 ticks: {
@@ -498,8 +481,8 @@ export default {
                 id: 'yAxisL',
                 gridLines: {
                   drawTicks: false,
-                  zeroLineColor: getNeutralColor(),
-                  color: getNeutralColor(),
+                  zeroLineColor: '#DDDDDD',
+                  color: '#DDDDDD',
                   borderDash: [3],
                   lineWidth: 1
                 },
@@ -528,8 +511,8 @@ export default {
                 id: 'yAxisR',
                 gridLines: {
                   drawTicks: false,
-                  zeroLineColor: getNeutralColor(),
-                  color: getNeutralColor(),
+                  zeroLineColor: '#DDDDDD',
+                  color: '#DDDDDD',
                   borderDash: [3],
                   lineWidth: 1
                 },
@@ -600,7 +583,7 @@ export default {
                 const titleLines = tooltipModel.title || []
                 const bodyLines = tooltipModel.body.map(getBody)
 
-                const divDate = self.$el.querySelector('.tooltip_header')
+                const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                 divDate.innerHTML = titleLines[0]
 
                 const color = [self.colorBarParse, self.colorParse]
@@ -610,14 +593,14 @@ export default {
                 const nodeName = tooltipDotElement ? tooltipDotElement.attributes[0].nodeName : 'data-attribute';
                 divValue.innerHTML = ''
                 bodyLines[0].forEach(function (line, i) {
-                      if (line !== undefined) {
-                        divValue.innerHTML += `
+                  if (line !== undefined) {
+                    divValue.innerHTML += `
                         <div class="tooltip_value-content">
                           <span ${nodeName} class="tooltip_dot" style="background-color:${color[i]};"></span>
                           ${line}<br>
                         </div>
                       `;
-                    }
+                  }
                 })
               }
 
@@ -652,15 +635,7 @@ export default {
       });
     },
     changeColors(theme) {
-      Chart.defaults.global.defaultFontColor = getNeutralColor();
-      this.chart.options.scales.xAxes[0].gridLines.color = getNeutralColor();
-      this.chart.options.scales.xAxes[0].gridLines.zeroLineColor = getNeutralColor();
-
-      this.chart.options.scales.yAxes[0].gridLines.color = getNeutralColor();
-      this.chart.options.scales.yAxes[0].gridLines.zeroLineColor = getNeutralColor();
-
-      this.chart.options.scales.yAxes[1].gridLines.color = getNeutralColor();
-      this.chart.options.scales.yAxes[1].gridLines.zeroLineColor = getNeutralColor();
+      this.chart.options.scales.xAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
 
       this.loadColors();
       if (theme === 'light') {
@@ -702,5 +677,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/BarLineChart.scss';
+@import './Style/Tooltip.scss';
+@import './Style/Rcol.scss';
+@import './Style/WidgetContainer.scss';
 </style>

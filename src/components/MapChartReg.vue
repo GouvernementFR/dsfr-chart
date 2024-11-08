@@ -3,24 +3,21 @@
   <div class="widget_container fr-grid-row" :id="widgetId">
     <LeftCol :props="leftColProps"></LeftCol>
     <div class="r_col fr-col-12 fr-col-lg-9">
-      <button
-        class="fr-btn fr-btn--sm fr-icon-arrow-go-back-fill fr-btn--icon-left fr-btn--tertiary-no-outline fr-ml-4w"
-        @click="resetGeoFilters" v-if="zoomDep !== undefined">
+      <button class="fr-btn fr-btn--sm fr-icon-arrow-go-back-fill fr-btn--icon-left fr-btn--tertiary-no-outline fr-ml-4w" @click="resetGeoFilters" v-if="zoomDep !== undefined" >
         Retour
       </button>
       <div class="map m-lg">
-        <div ref="mapTooltip" class="map_tooltip"
-          :style="{ top: tooltip.top, left: tooltip.left, visibility: tooltip.visibility }">
-          <div class="tooltip_header">{{ tooltip.place }}</div>
-          <div class="tooltip_body">
-            <div class="tooltip_value-content">
-              <div class="tooltip_value">{{ convertStringToLocaleNumber(tooltip.value) }}</div>
-            </div>
+          <div ref="mapTooltip" class="map_tooltip" :style="{top:tooltip.top,left:tooltip.left,visibility:tooltip.visibility}">
+            <div class="tooltip_header fr-text--sm fr-mb-0">{{ tooltip.place }}</div>
+            <div class="tooltip_body">
+              <div class="tooltip_value-content">
+
+            <div class="tooltip_value">{{convertStringToLocaleNumber(tooltip.value)}}</div>
+              </div>
           </div>
         </div>
-        <div class="france_container no_select" :style="{ display: displayFrance }">
-          <france :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip"
-            :onleave="hideTooltip"></france>
+        <div class="france_container no_select" :style="{display:displayFrance}">
+          <france :props="FranceProps" :onclick="changeGeoLevel" :ondblclick="resetGeoFilters" :onenter="displayTooltip" :onleave="hideTooltip"></france>
         </div>
       </div>
     </div>
@@ -34,7 +31,7 @@ import LeftCol from '@/components/LeftCol'
 import maps from '@/components/maps'
 import * as d3 from 'd3-scale'
 import { isMobile } from 'mobile-device-detect'
-import { mixin, getColorsByIndex, categoricalPalette, sequentialAscending, sequentialDescending, divergentAscending, divergentDescending, neutralColor, defaultColor } from '@/utils.js'
+import { mixin, getColorsByIndex, choosePalette } from '@/utils.js'
 
 export default {
   name: 'MapChartReg',
@@ -62,7 +59,6 @@ export default {
         colMin: '',
         colMax: '',
         value: 0,
-        valueReg: 0,
         levelNat: false,
         locaParent: '',
         date: ''
@@ -124,179 +120,78 @@ export default {
   },
   methods: {
     createChart() {
-      if (!this.level) {
-        console.warn("Level is undefined, setting default level to 'dep'");
-        this.level = 'dep'; // Valeur par défaut
-      }
-      const palette = this.choosePalette();
+    // Initialize region data
+    const parentWidget = document.getElementById(this.widgetId);
+    const self = this;
+    this.dataParse = JSON.parse(this.data);
 
-      this.colLeft = palette[0];
-      this.colRight = palette[palette.length - 1];
+    // Define color scale
+    const palette = this.choosePalette();
+    this.colLeft = palette[0];
+    this.colRight = palette[palette.length - 1];
+    this.leftColProps.colMin = this.colLeft;
+    this.leftColProps.colMax = this.colRight;
+    this.leftColProps.date = this.date;
+    this.leftColProps.names = this.name;
 
-      this.leftColProps.colMin = this.colLeft;
-      this.leftColProps.colMax = this.colRight;
+    const values = [];
+    let listDep = [];
 
-      this.leftColProps.date = this.date;
-      this.leftColProps.names = this.name;
-      this.leftColProps.min = this.scaleMin;
-      this.leftColProps.max = this.scaleMax;
+    // Display only departments within the selected region
+    self.FranceProps.displayDep = {};
+    listDep = this.getDepsFromReg(this.region); // Get departments for the specified region
+    listDep.forEach(key => {
+      values.push(self.dataParse[key]);
+    });
 
-      const parentWidget = document.getElementById(this.widgetId);
-      const self = this;
+    // Define color scale based on regional values
+    this.scaleMin = Math.min(...values);
+    this.scaleMax = Math.max(...values);
+    const colorScale = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colLeft, this.colRight]);
 
-      this.dataParse = JSON.parse(this.data);
-      const values = [];
+    let xmin = [], xmax = [], ymin = [], ymax = [];
 
-      let listDep = [];
-      self.FranceProps.displayDep = {};
+    // Iterate over each department in the region and set colors
+    for (const key in self.dataParse) {
+      const className = this.getClassMap(key, 'dep'); // Use department-level mapping
+      const elCol = parentWidget.getElementsByClassName(className);
 
-      if (this.zoomDep !== undefined) {
-        if (this.level === 'dep') {
-          const a = this.getDep(this.zoomDep).region_value;
-          listDep = this.getDepsFromReg(a);
-        } else if (this.level === 'reg') {
-          listDep = this.getAllReg();
-        } else {
-          listDep = [this.getAcad(this.zoomDep).value];
-        }
-        listDep.forEach(function (key) {
-          values.push(self.dataParse[key]);
-        });
+      if (listDep.includes(key)) { // If the department is in the selected region
+        elCol.length !== 0 && elCol[0].setAttribute('fill', colorScale(self.dataParse[key]));
+        self.FranceProps.displayDep[className] = ''; // Show the department
+        const polygon = elCol[0].getBBox();
+        xmin.push(polygon.x);
+        ymin.push(polygon.y);
+        xmax.push(polygon.x + polygon.width);
+        ymax.push(polygon.y + polygon.height);
       } else {
-        for (const key in self.dataParse) {
-          values.push(self.dataParse[key]);
-        }
+        // Hide other departments outside the selected region
+        elCol.length !== 0 && elCol[0].setAttribute('fill', 'rgba(255, 255, 255, 0)');
+        self.FranceProps.displayDep[className] = 'none';
       }
+    }
 
-      this.scaleMin = Math.min.apply(null, values);
-      this.scaleMax = Math.max.apply(null, values);
-
-      const colorScale = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colLeft, this.colRight]);
-
-      let xmin = [], xmax = [], ymin = [], ymax = [];
-
-      for (const key in self.dataParse) {
-        const className = this.getClassMap ? this.getClassMap(key, this.level) : null;
-
-        // Si `className` est `null`, on continue la boucle
-        if (!className) {
-          console.warn(`Class map not found for key: ${key}, level: ${this.level}`);
-          continue;
-        }
-
-        const elCol = parentWidget.getElementsByClassName(className);
-        if (elCol.length !== 0) {
-          const polygon = elCol[0].getBBox(); // Assurez-vous que getBBox est utilisé correctement
-
-          // Si polygon n'existe pas, continuez la boucle
-          if (!polygon) {
-            console.warn(`Polygon not found for key: ${key}`);
-            continue;
-          }
-
-          xmin.push(polygon.x);
-          ymin.push(polygon.y);
-          xmax.push(polygon.x + polygon.width);
-          ymax.push(polygon.y + polygon.height);
-        }
-
-        if (xmin.length > 0 && ymin.length > 0 && xmax.length > 0 && ymax.length > 0) {
-          const xminValue = Math.min(...xmin);
-          const yminValue = Math.min(...ymin);
-          const xmaxValue = Math.max(...xmax);
-          const ymaxValue = Math.max(...ymax);
-
-          const width = xmaxValue - xminValue;
-          const height = ymaxValue - yminValue;
-          const size = Math.max(width, height);
-
-          // Si la taille est valide, mettez à jour la vue
-          if (isFinite(xminValue) && isFinite(yminValue) && isFinite(size)) {
-            this.FranceProps.viewBox = `${xminValue} ${yminValue} ${size} ${size}`;
-          } else {
-            console.warn("Invalid values for viewBox, falling back to default viewBox.");
-            this.FranceProps.viewBox = "0 0 262 262"; // Vue par défaut en cas de problème
-          }
-        } else {
-          console.warn("Empty xmin, ymin, xmax, or ymax arrays, falling back to default viewBox.");
-          this.FranceProps.viewBox = "0 0 262 262"; // Vue par défaut si aucune valeur valide n'est trouvée
-        }
-
-        if (self.zoomDep === undefined) {
-          const color = getColorsByIndex(key, palette);
-          elCol.length !== 0 && elCol[0].setAttribute('fill', color);
-          self.FranceProps.displayDep[className] = '';
-        } else {
-          const polygon = document.querySelector('.' + className).getBBox();
-          if (self.zoomDep === key) {
-            const color = getColorsByIndex(key, palette);
-            elCol.length !== 0 && elCol[0].setAttribute('fill', color);
-            self.FranceProps.displayDep[className] = '';
-            xmin.push(polygon.x);
-            ymin.push(polygon.y);
-            xmax.push(polygon.x + polygon.width);
-            ymax.push(polygon.y + polygon.height);
-          } else if (listDep.includes(key)) {
-            elCol.length !== 0 && elCol[0].setAttribute('fill', chroma(self.colLeft).alpha(0.72).hex());
-            self.FranceProps.displayDep[className] = '';
-            xmin.push(polygon.x);
-            ymin.push(polygon.y);
-            xmax.push(polygon.x + polygon.width);
-            ymax.push(polygon.y + polygon.height);
-          } else {
-            elCol.length !== 0 && elCol[0].setAttribute('fill', 'rgba(255, 255, 255, 0)');
-            self.FranceProps.displayDep[className] = 'none';
-          }
-        }
-      }
-      xmin = Math.min.apply(null, xmin);
-      ymin = Math.min.apply(null, ymin);
-      xmax = Math.max.apply(null, xmax);
-      ymax = Math.max.apply(null, ymax);
-      const width = xmax - xmin;
-      const height = ymax - ymin;
+    // Calculate viewBox to focus on the selected region
+    if (xmin.length && ymin.length && xmax.length && ymax.length) {
+      const xminValue = Math.min(...xmin);
+      const yminValue = Math.min(...ymin);
+      const xmaxValue = Math.max(...xmax);
+      const ymaxValue = Math.max(...ymax);
+      const width = xmaxValue - xminValue;
+      const height = ymaxValue - yminValue;
       const size = Math.max(width, height);
-      this.FranceProps.viewBox = xmin + ' ' + ymin + ' ' + size + ' ' + size;
+      this.FranceProps.viewBox = `${xminValue} ${yminValue} ${size} ${size}`;
+    }
 
-      this.leftColProps.levelNat = (this.valuereg !== undefined && this.zoomDep !== undefined);
-      this.leftColProps.valuereg = this.valuereg;
-      if (this.zoomDep === undefined) {
-        this.leftColProps.localisation = 'France';
-        this.leftColProps.value = this.valuereg;
-      } else {
-        this.leftColProps.localisation = this.getDep(this.zoomDep).label;
-        this.leftColProps.value = this.dataParse[this.zoomDep];
-      }
-
-      this.leftColProps.names = this.name;
-      this.leftColProps.min = this.scaleMin;
-      this.leftColProps.max = this.scaleMax;
-      this.leftColProps.colMin = this.colLeft;
-      this.leftColProps.colMax = this.colRight;
-    },
+    // Update left column properties for region-specific display
+    this.leftColProps.localisation = this.getReg(this.region).label;
+    this.leftColProps.value = this.valuereg;
+    this.leftColProps.min = this.scaleMin;
+    this.leftColProps.max = this.scaleMax;
+  },
     choosePalette() {
-      // Priorité à la sélection manuelle de la palette
-      switch (this.selectedPalette) {
-        case 'categorical':
-          return categoricalPalette;
-        case 'sequentialAscending':
-          return sequentialAscending;
-        case 'sequentialDescending':
-          return sequentialDescending;
-        case 'divergentAscending':
-          return divergentAscending;
-        case 'divergentDescending':
-          return divergentDescending;
-        case 'neutral':
-          return [neutralColor]; // La couleur neutre comme palette unique
-        case 'defaultColor':
-          return [defaultColor]; // Couleur unicolore par défaut
-        default:
-          break;
-      }
-
-      // Par défaut, on retourne la palette catégorielle
-      return categoricalPalette;
+      // Using the refactored choosePalette function from utils
+      return choosePalette(this.selectedPalette);
     },
     displayTooltip(e) {
       if (isMobile) return
@@ -402,5 +297,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/MapChartReg.scss';
+@import './Style/MapChart.scss';
 </style>

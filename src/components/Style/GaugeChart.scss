@@ -29,10 +29,12 @@
     }
     .r_col {
       align-self: center;
+
       .flex {
         display: flex;
         width: 100%;
         margin: auto;
+        
         .legende_dot {
           margin-left: 0px;
           min-width: 0.8rem;

@@ -11,7 +11,7 @@
       <div class="map m-lg">
         <div ref="mapTooltip" class="map_tooltip"
           :style="{ top: tooltip.top, left: tooltip.left, visibility: tooltip.visibility }">
-          <div class="tooltip_header">{{ tooltip.place }}</div>
+          <div class="tooltip_header fr-text--sm fr-mb-0">{{ tooltip.place }}</div>
           <div class="tooltip_body">
             <div class="tooltip_value-content">
             <div class="tooltip_value">{{ convertStringToLocaleNumber(tooltip.value) }}</div>
@@ -69,7 +69,7 @@ import LeftCol from '@/components/LeftCol'
 import maps from '@/components/maps'
 import * as d3 from 'd3-scale'
 import { isMobile } from 'mobile-device-detect'
-import { mixin, getColorsByIndex, categoricalPalette, sequentialAscending, sequentialDescending, divergentAscending, divergentDescending, neutralColor, defaultColor } from '@/utils.js'
+import { mixin, getColorsByIndex, choosePalette} from '@/utils.js'
 
 export default {
   name: 'MapChart',
@@ -454,28 +454,8 @@ export default {
     },
 
     choosePalette() {
-      // Priorité à la sélection manuelle de la palette
-      switch (this.selectedPalette) {
-        case 'categorical':
-          return categoricalPalette;
-        case 'sequentialAscending':
-          return sequentialAscending;
-        case 'sequentialDescending':
-          return sequentialDescending;
-        case 'divergentAscending':
-          return divergentAscending;
-        case 'divergentDescending':
-          return divergentDescending;
-        case 'neutral':
-          return [neutralColor, defaultColor]; // La couleur neutre comme palette unique
-        case 'defaultColor':
-          return [defaultColor]; // Couleur unicolore par défaut
-        default:
-          break;
-      }
-
-      // Par défaut, on retourne la palette catégorielle
-      return categoricalPalette;
+      // Using the refactored choosePalette function from utils
+      return choosePalette(this.selectedPalette);
     },
 
     changeTheme(theme) {
@@ -514,5 +494,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/MapChart.scss'
+@import './Style/MapChart.scss';
 </style>
