@@ -88,6 +88,10 @@ export default {
     selectedPalette: {
       type: String,
       default: ''
+    },
+    unitTooltip: {
+      type: String,
+      default: ''  // Default to an empty string if no unit is specified
     }
   },
   computed: {
@@ -225,17 +229,19 @@ export default {
 
                 const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                 divDate.innerHTML = titleLines;
-
                 const color = tooltipModel.labelTextColors[0];
                 const divValue = this.$el.querySelector('.tooltip_value');
+                const value = bodyLines[0][0]; // assuming bodyLines[0][0] contains the value
+                const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
 
                 const nodeName = this.$el.querySelector('.tooltip_dot').attributes[0].nodeName;
+
                 divValue.innerHTML = `
                   <div class="tooltip_value-content">
-                    <span ${nodeName}="" class="tooltip_dot" style="background-color:${color};"></span>
-                    ${bodyLines[0]}
-                  </div>
-                `;
+                      <span ${nodeName}="" class="tooltip_dot" style="background-color:${color};"></span>
+                      ${displayValue}
+                    </div>
+                  `;
               }
 
               const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;

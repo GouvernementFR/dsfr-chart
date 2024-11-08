@@ -120,6 +120,10 @@ export default {
       type: Boolean,
       default: false, // Default is false; set to true for fixed green-to-red legend order
     },
+    unitTooltip: {
+      type: String,
+      default: '%'  // Default to an empty string if no unit is specified
+    }
   },
   methods: {
     resetData() {
@@ -345,16 +349,14 @@ export default {
             custom: tooltipModel => {
               const tooltipEl = this.$el.querySelector('.linechart_tooltip');
 
-              if (!tooltipEl) {
-                return;
-              }
+              if (!tooltipEl) return;
 
               if (!tooltipModel || tooltipModel.opacity === 0) {
                 tooltipEl.style.opacity = 0;
                 return;
               }
 
-              // Positionnement du tooltip
+              // Set tooltip position classes
               tooltipEl.classList.remove('above', 'below', 'no-transform');
               if (tooltipModel.yAlign) {
                 tooltipEl.classList.add(tooltipModel.yAlign);
@@ -362,7 +364,7 @@ export default {
                 tooltipEl.classList.add('no-transform');
               }
 
-              // Mise à jour du contenu du tooltip
+              // Update tooltip content
               const titleLines = tooltipModel.title || [];
               const bodyLines = tooltipModel.body.map(item => item.lines);
 
@@ -372,22 +374,27 @@ export default {
               const divValue = tooltipEl.querySelector('.tooltip_value');
               divValue.innerHTML = '';
 
+              // Iterate over each data point to set the color and value in the tooltip
               tooltipModel.dataPoints.forEach(dataPoint => {
                 const datasetIndex = dataPoint.datasetIndex;
                 const index = dataPoint.index;
-                const color = this.colorParse[datasetIndex][index];
+
+                // Ensure the color is correctly referenced
+                const colorArray = this.colorParse[datasetIndex];
+                const color = colorArray ? colorArray[index] : '#000'; // Fallback to black if color is undefined
+
                 const value = this.convertIntToHuman(this.datasets[datasetIndex].data[index]);
-                const name = this.datasets[datasetIndex].label;
+                const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
 
                 divValue.innerHTML += `
-                  <div class="tooltip_value-content">
+                  <div class="tooltip_value-content" style="display: flex; align-items: center;">
                     <span class="tooltip_dot" style="background-color:${color};"></span>
-                    <p class="tooltip_place fr-mb-0">${value}</p>
+                    <p class="tooltip_place fr-mb-0">${displayValue}</p>
                   </div>
                 `;
               });
 
-              // Positionnement du tooltip
+              // Position the tooltip
               const position = this.chart.canvas.getBoundingClientRect();
               tooltipEl.style.position = 'absolute';
               tooltipEl.style.pointerEvents = 'none';
@@ -395,10 +402,10 @@ export default {
               let tooltipX = position.left + window.pageXOffset + tooltipModel.caretX + 10;
               let tooltipY = position.top + window.pageYOffset + tooltipModel.caretY - 18;
 
-              tooltipEl.style.left = tooltipX + 'px';
-              tooltipEl.style.top = tooltipY + 'px';
+              tooltipEl.style.left = `${tooltipX}px`;
+              tooltipEl.style.top = `${tooltipY}px`;
               tooltipEl.style.opacity = 1;
-            },
+            }
           },
         },
       });

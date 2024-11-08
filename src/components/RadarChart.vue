@@ -83,6 +83,10 @@ export default {
     date: {
       type: String,
       default: undefined
+    },
+    unitTooltip: {
+      type: String,
+      default: ''  // Default to an empty string if no unit is specified
     }
   },
   computed: {
@@ -167,8 +171,8 @@ export default {
     changeColors(theme) {
       Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme);
       this.chart.options.scale.gridLines.color = this.getHexaFromToken('text-mention-grey', theme);
-      
-      
+
+
       this.loadColors();
       for (let i = 0; i < this.yparse.length; i++) {
         this.chart.data.datasets[i].borderColor = this.colorParse[i];
@@ -200,13 +204,17 @@ export default {
           },
           scale: {
             ticks: {
+              display: false,  // Hide the tick labels
               backdropColor: 'transparent',
-              fontColor: '#DDDDDD',
-              color: '#DDDDDD'
             },
             gridLines: {
-              color: '#DDDDDD'
-            }
+              color: '#DDDDDD',
+            },
+            angleLines: {
+              color: '#DDDDDD',
+              lineWidth: 1,
+              borderDash: [3, 3]
+            },
           },
           legend: {
             display: false
@@ -251,41 +259,58 @@ export default {
               function getBody(bodyItem) {
                 return bodyItem.lines;
               }
+
               // Set Text
               if (tooltipModel.body) {
                 const titleLines = [this.xparse[0][tooltipModel.dataPoints[0].index]];
                 const bodyLines = tooltipModel.body.map(getBody);
 
+                // Set the title in the tooltip header
                 const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                 divDate.innerHTML = titleLines[0];
 
-                const color = tooltipModel.labelTextColors[0];
-                const divValue = this.$el.querySelector('.tooltip_value');
-
-                const nodeName = this.$el.querySelector('.tooltip_dot').attributes[0].nodeName;
+                const divValue = tooltipEl.querySelector('.tooltip_value');
                 divValue.innerHTML = '';
 
+                // Retrieve the node name for tooltip dots
+                const tooltipDotElement = this.$el.querySelector('.tooltip_dot');
+                const nodeName = tooltipDotElement ? tooltipDotElement.attributes[0].nodeName : 'data-attribute';
+
+                // Process each line in bodyLines to display in the tooltip
                 bodyLines[0].forEach((line, i) => {
-                  if (line !== undefined) {
+                  if (line !== undefined && tooltipModel.dataPoints[i]) {
+                    // Get the color for the specific dataset index safely
+                    const dataPoint = tooltipModel.dataPoints[i];
+                    const datasetIndex = dataPoint.datasetIndex;
+
+                    // Ensure that colorParse and datasetIndex are valid
+                    const color = this.colorParse[datasetIndex] ? this.colorParse[datasetIndex] : '#000';  // Default to black if not found
+
+                    // Include unitTooltip if provided
+                    const displayValue = `${line}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
+
                     divValue.innerHTML += `
-                      <div class="tooltip_value-content">
-                        <span ${nodeName}="" class="tooltip_dot" style="background-color:${color[i]};"></span>
-                        ${line}<br>
+                      <div class="tooltip_value-content" style="display: flex; align-items: center;">
+                        <span ${nodeName}="" class="tooltip_dot" style="background-color:${color};"></span>
+                        ${displayValue}
                       </div>
                     `;
                   }
                 });
               }
 
+              // Position the tooltip
               const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;
-
               const canvasWidth = Number(this.chart.canvas.style.width.replace(/\D/g, ''));
               const canvasHeight = Number(this.chart.canvas.style.height.replace(/\D/g, ''));
+
               tooltipEl.style.position = 'absolute';
-              tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+              tooltipEl.style.padding = `${tooltipModel.padding}px ${tooltipModel.padding}px`;
               tooltipEl.style.pointerEvents = 'none';
-              let tooltipX = positionX + tooltipModel.caretX + 10;
-              let tooltipY = positionY + tooltipModel.caretY - 18;
+
+              let tooltipX = positionX + window.pageXOffset + tooltipModel.caretX + 10;
+              let tooltipY = positionY + window.pageYOffset + tooltipModel.caretY - 18;
+
               if (tooltipX + tooltipEl.clientWidth + this.legendLeftMargin > positionX + canvasWidth) {
                 tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10;
               }
@@ -296,8 +321,9 @@ export default {
                 tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2;
                 tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 18;
               }
-              tooltipEl.style.left = tooltipX + 'px';
-              tooltipEl.style.top = tooltipY + 'px';
+
+              tooltipEl.style.left = `${tooltipX}px`;
+              tooltipEl.style.top = `${tooltipY}px`;
               tooltipEl.style.opacity = 1;
             }
           }

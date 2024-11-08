@@ -22,12 +22,14 @@
           <span class="legende_dot" :style="{ 'background-color': colorParse }"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(name) }}</p>
         </div>
-        <div v-for="(item, index) in hlineNameParse" :key="item" class="flex fr-mt-3v" :style="{ 'margin-left': isSmall ? '0px' : style }">
+        <div v-for="(item, index) in hlineNameParse" :key="item" class="flex fr-mt-3v"
+          :style="{ 'margin-left': isSmall ? '0px' : style }">
           <span class="legende_dash_line1" :style="{ 'background-color': hlineColorParse[index] }"></span>
           <span class="legende_dash_line2" :style="{ 'background-color': hlineColorParse[index] }"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(hlineNameParse[index]) }}</p>
         </div>
-        <div v-for="(item2, index2) in vlineParse" :key="item2" class="flex fr-mt-3v fr-mb-1v" :style="{ 'margin-left': isSmall ? '0px' : style }">
+        <div v-for="(item2, index2) in vlineParse" :key="item2" class="flex fr-mt-3v fr-mb-1v"
+          :style="{ 'margin-left': isSmall ? '0px' : style }">
           <span class="legende_dash_line1" :style="{ 'background-color': vlineColorParse[index2] }"></span>
           <span class="legende_dash_line2" :style="{ 'background-color': vlineColorParse[index2] }"></span>
           <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index2]) }}</p>
@@ -141,6 +143,10 @@ export default {
     highlightIndex: {
       type: Number,
       default: -1
+    },
+    unitTooltip: {
+      type: String,
+      default: ''  // Default to an empty string if no unit is specified
     }
   },
   computed: {
@@ -428,18 +434,25 @@ export default {
                   return bodyItem.lines;
                 });
 
+                // Set tooltip header
                 const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                 divDate.innerHTML = titleLines[0];
 
+                // Clear existing tooltip content
                 const divValue = tooltipEl.querySelector('.tooltip_value');
                 divValue.innerHTML = '';
 
-                bodyLines.forEach(function (line, i) {
+                // Iterate through each line in the body and add formatted HTML
+                bodyLines.forEach((line, i) => {
                   if (line !== undefined) {
+                    // Get the color for the current line (or a default color if colorParse is not an array)
+                    const color = Array.isArray(self.colorParse) ? self.colorParse[i] : self.colorParse;
+
+                    // Append the line with color and optional unitTooltip
                     divValue.innerHTML += `
                     <div class="tooltip_value-content" style="display: flex; justify-content: space-between; align-items: center;">
-                      <span class="tooltip_dot" style="background-color: ${self.colorParse};"></span>
-                      <p class="tooltip_place fr-mb-0">${line}</p>
+                      <span class="tooltip_dot" style="background-color: ${color};"></span>
+                      <p class="tooltip_place fr-mb-0">${line}${self.unitTooltip ? ' ' + self.unitTooltip : ''}</p>
                     </div>
                   `;
                   }

@@ -178,6 +178,10 @@ export default {
                 { id: '2', ariaLabel: 'Télécharger CSV', action: 'actionBtn2' }
             ],
         },
+        unitTooltip: {
+            type: String,
+            default: '' // Default to an empty string if not provided
+        },
         isMultilineTableHeader: {
             type: Boolean,
             default: true, // Défini par défaut
@@ -253,6 +257,7 @@ export default {
             required: false,
             default: () => ({
                 showGraph: true,
+                unitTooltip:"%",
                 serie_values: {
                     x: ["Serie 1", "Serie 2", "Serie 3"],
                     y: [100, 200, 300],
@@ -346,6 +351,8 @@ export default {
                     result[key] = JSON.stringify(this.serieObj.serie_values[key]);
                 }
             });
+
+            result.unitTooltip = this.serieObj.unitTooltip || '';
 
             return result;
         },

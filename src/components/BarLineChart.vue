@@ -159,6 +159,10 @@ export default {
     selectedPalette: {
       type: String,
       default: 'categorical'
+    },
+    unitTooltip: {
+      type: String,
+      default: ''  // Default to an empty string if no unit is specified
     }
   },
   computed: {
@@ -578,44 +582,54 @@ export default {
               function getBody(bodyItem) {
                 return bodyItem.lines;
               }
+
               // Set Text
               if (tooltipModel.body) {
-                const titleLines = tooltipModel.title || []
-                const bodyLines = tooltipModel.body.map(getBody)
+                const titleLines = tooltipModel.title || [];
+                const bodyLines = tooltipModel.body.map(getBody);
 
+                // Set the title in the tooltip header
                 const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
-                divDate.innerHTML = titleLines[0]
+                divDate.innerHTML = titleLines[0];
 
-                const color = [self.colorBarParse, self.colorParse]
-                const divValue = self.$el.querySelector('.tooltip_value')
+                const divValue = tooltipEl.querySelector('.tooltip_value');
+                divValue.innerHTML = '';
 
+                // Access color arrays for different datasets
+                const colors = [self.colorBarParse, self.colorParse]; // Adjust to match your color variables
+
+                // If there is no .tooltip_dot element, set a fallback for nodeName
                 const tooltipDotElement = self.$el.querySelector('.tooltip_dot');
                 const nodeName = tooltipDotElement ? tooltipDotElement.attributes[0].nodeName : 'data-attribute';
-                divValue.innerHTML = ''
+
+                // Iterate over bodyLines to set each line with the correct color and value
                 bodyLines[0].forEach(function (line, i) {
                   if (line !== undefined) {
+                    const color = colors[i] ? colors[i] : '#000'; // Fallback to black if color is undefined
+                    const displayValue = `${line}${self.unitTooltip ? ' ' + self.unitTooltip : ''}`;
+
                     divValue.innerHTML += `
-                        <div class="tooltip_value-content">
-                          <span ${nodeName} class="tooltip_dot" style="background-color:${color[i]};"></span>
-                          ${line}<br>
-                        </div>
-                      `;
+                      <div class="tooltip_value-content" style="display: flex; align-items: center;">
+                        <span ${nodeName} class="tooltip_dot" style="background-color:${color};"></span>
+                        ${displayValue}
+                      </div>
+                    `;
                   }
-                })
+                });
               }
 
-              const {
-                offsetLeft: positionX,
-                offsetTop: positionY
-              } = self.chart.canvas;
-
+              // Position the tooltip
+              const { offsetLeft: positionX, offsetTop: positionY } = self.chart.canvas;
               const canvasWidth = Number(self.chart.canvas.style.width.replace(/\D/g, ''));
               const canvasHeight = Number(self.chart.canvas.style.height.replace(/\D/g, ''));
+
               tooltipEl.style.position = 'absolute';
-              tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+              tooltipEl.style.padding = `${tooltipModel.padding}px ${tooltipModel.padding}px`;
               tooltipEl.style.pointerEvents = 'none';
-              let tooltipX = positionX + tooltipModel.caretX + 10;
-              let tooltipY = positionY + tooltipModel.caretY - 18;
+
+              let tooltipX = positionX + window.pageXOffset + tooltipModel.caretX + 10;
+              let tooltipY = positionY + window.pageYOffset + tooltipModel.caretY - 18;
+
               if (tooltipX + tooltipEl.clientWidth + self.legendLeftMargin > positionX + canvasWidth) {
                 tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10;
               }
@@ -626,10 +640,12 @@ export default {
                 tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2;
                 tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 18;
               }
-              tooltipEl.style.left = tooltipX + 'px';
-              tooltipEl.style.top = tooltipY + 'px';
+
+              tooltipEl.style.left = `${tooltipX}px`;
+              tooltipEl.style.top = `${tooltipY}px`;
               tooltipEl.style.opacity = 1;
             }
+
           }
         }
       });

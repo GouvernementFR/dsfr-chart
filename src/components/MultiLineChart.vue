@@ -151,6 +151,10 @@ export default {
     selectedPalette: {
       type: String,
       default: ''
+    },
+    unitTooltip: {
+      type: String,
+      default: ''  // Default to an empty string if no unit is specified
     }
   },
   computed: {
@@ -289,7 +293,7 @@ export default {
           fill: false,
           borderColor: this.colorParse[j],
           type: 'line',
-          pointRadius: 7,  
+          pointRadius: 7,
           pointHoverRadius: 7,
           pointBackgroundColor: this.colorParse[j],
           pointBorderColor: this.colorParse[j],
@@ -343,7 +347,7 @@ export default {
       Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme);
       this.chart.options.scales.xAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
       this.chart.options.scales.yAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
-      
+
       this.loadColors();
       if (theme === 'light') {
         this.colorPrecisionBar = '#161616';
@@ -575,24 +579,37 @@ export default {
                 const titleLines = tooltipModel.title || [];
                 const bodyLines = tooltipModel.body.map(getBody);
 
+                // Set the tooltip header
                 const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                 divDate.innerHTML = titleLines[0];
 
-                const color = tooltipModel.labelTextColors[0];
+                // Clear the existing tooltip content
                 const divValue = self.$el.querySelector('.tooltip_value');
-
-                const nodeName = self.$el.querySelector('.tooltip_dot').attributes[0].nodeName;
                 divValue.innerHTML = '';
-                bodyLines[0].forEach(function (line, i) {
+
+                // Check if `.tooltip_dot` element exists and get its attribute node name
+                const tooltipDot = self.$el.querySelector('.tooltip_dot');
+                const nodeName = tooltipDot ? tooltipDot.attributes[0].nodeName : 'data-attribute'; // Default attribute if `.tooltip_dot` is missing
+
+                // Iterate through each line in the body and add formatted HTML with correct colors
+                bodyLines[0].forEach((line, i) => {
                   if (line !== undefined) {
+                    const lineColor = tooltipModel.labelTextColors[i] || self.colorParse[i]; // Use tooltipModel color if available, fallback to self.colorParse
+
+                    // Append the line with color and optional unitTooltip
                     divValue.innerHTML += `
-                    <div class="tooltip_value-content" style="display: flex; justify-content: space-between; align-items: center;">
-                      <span ${nodeName}="" class="tooltip_dot" style="background-color:${color[i]};"></span>
-                      ${line}<br>
-                    </div>
-                  `;
+                      <div class="tooltip_value-content" style="display: flex; justify-content: space-between; align-items: center;">
+                        <span ${nodeName}="" class="tooltip_dot" style="background-color:${lineColor};"></span>
+                        ${line}${self.unitTooltip ? ' ' + self.unitTooltip : ''}<br>
+                      </div>
+                    `;
                   }
                 });
+              }
+
+              // Helper function for extracting body lines
+              function getBody(bodyItem) {
+                return bodyItem.lines;
               }
 
               const { offsetLeft: positionX, offsetTop: positionY } = self.chart.canvas;
