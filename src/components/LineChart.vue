@@ -298,6 +298,7 @@ export default {
         }
       }
     },
+    
     choosePalette() {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);

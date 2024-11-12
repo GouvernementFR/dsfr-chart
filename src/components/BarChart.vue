@@ -181,8 +181,8 @@ export default {
         borderColor: this.colorParse[index],
         hoverBackgroundColor: this.colorHover[index],
         hoverBorderColor: this.colorHover[index],
-        barThickness: this.barsize || (this.stacked ? 32 : this.horizontal ? 18 : 32),
-        maxBarThickness: 40, // Définissez une épaisseur maximale pour les barres
+        barThickness: this.barsize || (this.stacked ? 32 : this.horizontal ? 20 : 32),
+        maxBarThickness: 32, // Définissez une épaisseur maximale pour les barres
       }));
     },
 
@@ -296,21 +296,21 @@ export default {
           scales: {
             xAxes: [
               {
-                offset: true,
-                position: 'left',
+                offset: true, // Remove any offset from the X-axis
                 stacked: this.stacked,
                 gridLines: {
                   display: false,
                 },
                 ticks: {
-                  padding: 10, // Espace supplémentaire autour des étiquettes
+                  beginAtZero: true,
+                  padding: 5, // Espace supplémentaire autour des étiquettes
                 },
               },
             ],
             yAxes: [
               {
-                position: 'left',
                 stacked: this.stacked,
+                offset: true,
                 gridLines: {
                   drawTicks: false,
                   zeroLineColor: '#DDDDDD',
@@ -320,7 +320,7 @@ export default {
                 },
                 ticks: {
                   beginAtZero: true,
-                  padding: 10, // Espace supplémentaire autour des étiquettes
+                  padding: 5, // Espace supplémentaire autour des étiquettes
                 },
               },
             ],
