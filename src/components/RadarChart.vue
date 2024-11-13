@@ -60,7 +60,6 @@ export default {
       colorParse: [],
       colorHover: [],
       isSmall: false,
-      selectedPalette: 'categorical' // Ajout de la propriété pour choisir la palette
     };
   },
   props: {
@@ -83,6 +82,10 @@ export default {
     date: {
       type: String,
       default: undefined
+    },
+    selectedPalette: {
+      type: String,
+      default: ''
     },
     unitTooltip: {
       type: String,

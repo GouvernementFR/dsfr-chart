@@ -65,6 +65,7 @@ export default {
       colorHover: [],
       typeGraph: '',
       isSmall: false,
+      legendColors: [], // Ajoutez cette ligne
     };
   },
   props: {
@@ -116,13 +117,13 @@ export default {
       type: Array,
       default: () => []
     },
-    legendColorOrder: {
+    isDescendingOrder: {
       type: Boolean,
       default: false, // Default is false; set to true for fixed green-to-red legend order
     },
     unitTooltip: {
       type: String,
-      default: '%'  // Default to an empty string if no unit is specified
+      default: ''  // Default to an empty string if no unit is specified
     }
   },
   methods: {

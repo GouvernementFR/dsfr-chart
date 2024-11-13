@@ -1,5 +1,6 @@
 /* eslint-disable */
-import chroma from 'chroma-js';  // Ajoutez cette ligne
+import chroma from 'chroma-js';  // Import de chroma-js
+import colors from '../src/styles/assets/colors.json';  // Import du fichier colors.json
 
 export const capitalize = function (string) {
   if (string) {
@@ -68,30 +69,69 @@ export const convertDateToHuman = function (string) {
 export const testIfNaN = function (float) {
   return isNaN(parseFloat(float))
 }
-// Palette catégorique
-export const categoricalPalette = [
-  '#5C68E5', // Couleur 1
-  '#82B5F2', // Couleur 2
-  '#29598F', // Couleur 3
-  '#31A7AE', // Couleur 4
-  '#81EEF5', // Couleur 5
-  '#B478F1', // Couleur 6
-  '#CFB1F5', // Couleur 7
-  '#CECECE', // Couleur 8
-];
 
-// Couleur par défaut pour un graphique unicolore
-export const defaultColor = categoricalPalette[0];
+// Fonction pour obtenir les couleurs du thème actuel
+export function getThemeColors() {
+  const currentTheme = document.documentElement.getAttribute('data-fr-theme') || 'light';
+  console.log('Thème actuel :', currentTheme);
+  console.log('Couleurs disponibles :', colors);
+  console.log('Couleurs du thème actuel :', colors[currentTheme]);
+  return colors[currentTheme] || colors['light'];
+}
 
-// Couleur neutre (pour les données "minimales")
-export const neutralColor = '#B1B1B1';
+// Fonction pour obtenir la palette catégorique
+export function getCategoricalPalette() {
+  const themeColors = getThemeColors();
+  return [
+    themeColors['dsfr-chart-colors-01'],
+    themeColors['dsfr-chart-colors-02'],
+    themeColors['dsfr-chart-colors-03'],
+    themeColors['dsfr-chart-colors-04'],
+    themeColors['dsfr-chart-colors-05'],
+    themeColors['dsfr-chart-colors-06'],
+    themeColors['dsfr-chart-colors-07'],
+    themeColors['dsfr-chart-colors-08']
+  ];
+}
 
-// Palette séquentielle (unicolore dégradé, par exemple du clair au foncé)
-export const sequentialAscending = chroma.scale(['#D8DAFF', '#000088']).colors(10);
-export const sequentialDescending = chroma.scale(['#000088', '#D8DAFF']).colors(10);
+// Log de vérification final
+console.log("Palette catégorique après chargement :", getCategoricalPalette());
 
-export const divergentAscending = chroma.scale(['#298641', '#EFB900', '#E91719']).colors(4);
-export const divergentDescending = chroma.scale(['#E91719', '#EFB900', '#298641']).colors(4);
+// Palettes séquentielles
+export function getSequentialAscending() {
+  const themeColors = getThemeColors();
+  return chroma.scale([
+    themeColors['dsfr-chart-colors-09'],
+    themeColors['dsfr-chart-colors-10']
+  ]).colors(10);
+}
+
+export function getSequentialDescending() {
+  const themeColors = getThemeColors();
+  return chroma.scale([
+    themeColors['dsfr-chart-colors-10'],
+    themeColors['dsfr-chart-colors-09']
+  ]).colors(10);
+}
+
+// Palettes divergentes
+export function getDivergentAscending() {
+  const themeColors = getThemeColors();
+  return chroma.scale([
+    themeColors['dsfr-chart-colors-11'],
+    themeColors['dsfr-chart-colors-13'],
+    themeColors['dsfr-chart-colors-15']
+  ]).colors(4);
+}
+
+export function getDivergentDescending() {
+  const themeColors = getThemeColors();
+  return chroma.scale([
+    themeColors['dsfr-chart-colors-15'],
+    themeColors['dsfr-chart-colors-13'],
+    themeColors['dsfr-chart-colors-11']
+  ]).colors(4);
+}
 
 // Fonction pour limiter les catégories (si plus de 8 catégories)
 export function limitCategories(labels, data, maxCategories = 8) {
@@ -107,78 +147,55 @@ export function limitCategories(labels, data, maxCategories = 8) {
   return { labels, data };
 }
 
-// Gestion du nouveau code couleur DSFR-Chart
 // Fonction pour obtenir des couleurs dynamiques selon un index et une palette
-export function getColorsByIndex(index, palette = categoricalPalette) {
-  return palette[index % palette.length]; // Retourne une couleur en fonction de l'index, en bouclant si nécessaire
+export function getColorsByIndex(index, palette = getCategoricalPalette()) {
+  return palette[index % palette.length];
 }
 
-// Fonction pour obtenir les couleurs pour un graphique unicolore
+// Fonction pour obtenir la couleur par défaut pour un graphique unicolore
 export function getDefaultColor() {
-  return defaultColor;
+  const themeColors = getThemeColors();
+  return themeColors['dsfr-chart-colors-default'];
 }
 
-// Fonction pour obtenir la couleur neutre
+// Fonction pour obtenir la couleur neutre (pour les données "minimales")
 export function getNeutralColor() {
-  return neutralColor;
-}
-
-// Fonction pour récupérer une palette séquentielle (par défaut, 3 couleurs)
-export function getSequentialPaletteAscending() {
-  return sequentialAscending;
-}
-
-export function getSequentialPaletteDescending() {
-  return sequentialDescending;
-}
-
-// Fonction pour récupérer une palette divergente (par défaut, 6 couleurs)
-export function getDivergentPaletteAscending() {
-  return divergentAscending;
-}
-
-export function getDivergentPaletteDescending() {
-  return divergentDescending;
+  const themeColors = getThemeColors();
+  return themeColors['dsfr-chart-colors-neutral'];
 }
 
 // Exemple d'export de toutes les fonctions et palettes pour les utiliser dans vos composants
 export const colorUtils = {
-  categoricalPalette,
-  defaultColor,
-  neutralColor,
-  sequentialAscending,
-  sequentialDescending,
-  divergentAscending,
-  divergentDescending,
-  limitCategories,
-  getColorsByIndex,
+  getCategoricalPalette,
   getDefaultColor,
   getNeutralColor,
-  getSequentialPaletteAscending,
-  getSequentialPaletteDescending,
-  getDivergentPaletteAscending,
-  getDivergentPaletteDescending
+  getSequentialAscending,
+  getSequentialDescending,
+  getDivergentAscending,
+  getDivergentDescending,
+  limitCategories,
+  getColorsByIndex,
 };
 
-// Core `choosePalette` function
+// Fonction principale `choosePalette`
 export function choosePalette(selectedPalette) {
   switch (selectedPalette) {
     case 'categorical':
-      return categoricalPalette;
+      return getCategoricalPalette();
     case 'sequentialAscending':
-      return sequentialAscending;
+      return getSequentialAscending();
     case 'sequentialDescending':
-      return sequentialDescending;
+      return getSequentialDescending();
     case 'divergentAscending':
-      return divergentAscending;
+      return getDivergentAscending();
     case 'divergentDescending':
-      return divergentDescending;
+      return getDivergentDescending();
     case 'neutral':
-      return [neutralColor];
+      return [getNeutralColor()];
     case 'defaultColor':
-      return [defaultColor];
+      return [getDefaultColor()];
     default:
-      return categoricalPalette; // Fallback
+      return getCategoricalPalette(); // Fallback
   }
 }
 

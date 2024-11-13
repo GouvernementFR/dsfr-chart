@@ -1,0 +1,49 @@
+:root {
+  // Couleurs pour le thème light
+  --dsfr-chart-colors-light-01: #5C68E5;
+  --dsfr-chart-colors-light-02: #82B5F2;
+  --dsfr-chart-colors-light-03: #29598F;
+  --dsfr-chart-colors-light-04: #31A7AE;
+  --dsfr-chart-colors-light-05: #81EEF5;
+  --dsfr-chart-colors-light-06: #B478F1;
+  --dsfr-chart-colors-light-07: #CFB1F5;
+  --dsfr-chart-colors-light-08: #CECECE;
+  --dsfr-chart-colors-light-09: #DBDAFF;
+  --dsfr-chart-colors-light-10: #00005F;
+  --dsfr-chart-colors-light-11: #298641;
+  --dsfr-chart-colors-light-12: #79D289;
+  --dsfr-chart-colors-light-13: #EFB900;
+  --dsfr-chart-colors-light-14: #FFA373;
+  --dsfr-chart-colors-light-15: #E91719;
+  
+  // Couleur par défaut pour les graphiques
+  --dsfr-chart-colors-light-default: var(--dsfr-chart-colors-light-01);
+
+  // Couleur neutre
+  --dsfr-chart-colors-light-neutral: #B1B1B1;
+}
+
+[data-theme="dark"] {
+  // Couleurs pour le thème dark
+  --dsfr-chart-colors-dark-01: #5C68E5;
+  --dsfr-chart-colors-dark-02: #699BD6;
+  --dsfr-chart-colors-dark-03: #4878B1;
+  --dsfr-chart-colors-dark-04: #00828A;
+  --dsfr-chart-colors-dark-05: #51C1C8;
+  --dsfr-chart-colors-dark-06: #BC8AF2;
+  --dsfr-chart-colors-dark-07: #CFB1F5;
+  --dsfr-chart-colors-dark-08: #A4A4A4;
+  --dsfr-chart-colors-dark-09: #B8B9FF;
+  --dsfr-chart-colors-dark-10: #3647CA;
+  --dsfr-chart-colors-dark-11: #298641;
+  --dsfr-chart-colors-dark-12: #449D57;
+  --dsfr-chart-colors-dark-13: #AF8800;
+  --dsfr-chart-colors-dark-14: #FFA373;
+  --dsfr-chart-colors-dark-15: #E16834;
+
+  // Couleur par défaut pour les graphiques dans le thème sombre
+  --dsfr-chart-colors-dark-default: var(--dsfr-chart-colors-dark-01);
+
+  // Couleur neutre pour le thème sombre
+  --dsfr-chart-colors-dark-neutral: #808080;
+}
