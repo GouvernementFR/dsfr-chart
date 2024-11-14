@@ -81,10 +81,6 @@ export default {
       type: String,
       default: undefined,
     },
-    color: {
-      type: String,
-      default: undefined,
-    },
     stacked: {
       type: Boolean,
       default: false,
@@ -115,7 +111,7 @@ export default {
     },
     highlightIndex: {
       type: Array,
-      default: () => []
+      default: () => [3, 4]
     },
     isDescendingOrder: {
       type: Boolean,
@@ -438,7 +434,6 @@ export default {
     this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
   },
   mounted() {
-    this.highlightIndex = [3, 4];
     this.createChart();
 
     this.display = document.getElementById(this.widgetId).offsetWidth > 486 ? 'big' : 'small';

@@ -151,10 +151,6 @@ export default {
       type: String,
       default: 'Data'
     },
-    color: {
-      type: String,
-      default: 'green-bourgeon'
-    },
     selectedPalette: {
       type: String,
       default: 'sequentialAscending'  // Aucune palette définie par défaut

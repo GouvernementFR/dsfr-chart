@@ -98,10 +98,6 @@ export default {
       type: String,
       default: 'S1'
     },
-    color: {
-      type: String,
-      default: undefined
-    },
     vline: {
       type: String,
       default: undefined

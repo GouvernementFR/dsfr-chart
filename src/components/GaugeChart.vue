@@ -85,10 +85,6 @@ export default {
       type: Boolean,
       default: true
     },
-    color: {
-      type: String,
-      default: 'green-bourgeon'
-    },
     date: {
       type: String,
       default: undefined

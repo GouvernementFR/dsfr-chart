@@ -73,10 +73,6 @@ export default {
       type: String,
       default: undefined
     },
-    color: {
-      type: String,
-      default: undefined
-    },
     fill: {
       type: Boolean,
       default: false

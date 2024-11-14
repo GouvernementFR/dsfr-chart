@@ -75,10 +75,6 @@ export default {
       type: String,
       default: undefined
     },
-    color: {
-      type: String,
-      default: undefined
-    },
     date: {
       type: String,
       default: undefined

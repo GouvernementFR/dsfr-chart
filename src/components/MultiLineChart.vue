@@ -109,10 +109,6 @@ export default {
       type: String,
       default: undefined
     },
-    color: {
-      type: String,
-      default: undefined
-    },
     vline: {
       type: String,
       default: undefined
