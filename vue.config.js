@@ -13,11 +13,4 @@ module.exports = {
   chainWebpack: config => {
     config.optimization.delete('splitChunks')
   },
-  css: {
-    loaderOptions: {
-      sass: {
-        additionalData: `@import "@/styles/dsfrChartColors.scss";`
-      }
-    }
-  }
 }

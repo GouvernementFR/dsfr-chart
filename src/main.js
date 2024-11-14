@@ -1,8 +1,6 @@
 import Vue from 'vue'
 
 // Import des styles globaux
-import './styles/dsfrChartColors.scss' // Assurez-vous que le chemin est correct
-
 import LineChart from './components/LineChart'
 import BarChart from './components/BarChart'
 import MapChart from './components/MapChart'

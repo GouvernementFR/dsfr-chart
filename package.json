@@ -7,7 +7,6 @@
   "private": false,
   "license": "SEE LICENSE IN LICENSE.md",
   "scripts": {
-    "generate-colors-scss": "node generate-colors-scss.js",
     "serve": "vue-cli-service serve ./src/mainDev.js",
     "build": "vue-cli-service build --target lib --dest ./Charts --inline-vue --name dsfr-chart src/main.js",
     "build-rec": "vue-cli-service build --dest ./docs ./src/mainDev.js",
