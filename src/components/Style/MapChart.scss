@@ -26,7 +26,7 @@
         background-color: var(--grey-1000-50);
         position: fixed;
         z-index: 999;
-        box-shadow: 0px 6px 18px 0px #00001229;
+        box-shadow: 0px 6px 18px 0px var(--shadow-color);
         text-align: left;
         pointer-events: none;
         font-size: 0.75rem;
@@ -88,7 +88,7 @@
               padding-left: 12px;
               padding-right: 8px;
               padding-bottom: 12px;
-              border-bottom: 1px solid #e0e0e0;
+              border-bottom: 1px solid var(--border-default-grey);
   
               &:last-child {
                 border-bottom: none;
@@ -118,7 +118,7 @@
           display: flex;
           flex-direction: column;
           align-items: center;
-          color: #616161;
+          color: var(--grey-200-850);
   
           span {
             display: block;

@@ -226,10 +226,6 @@ Les graphiques en lignes sont accessibles à travers la balise : `<line-chart>`.
 <line-chart x="[1, 2, 3, 4]" y="[10, 20, 30, 40]" unit-tooltip="%"></line-chart>
 ```
 
-### Exemple visuel :
-
-<img src="./Pictures/LineChart.png" alt="LineChart" style="width:400px;" />
-
 ---
 
 ### 2. Graphique en lignes avec palette divergente ascendante
@@ -345,11 +341,6 @@ Les graphiques en multilignes (ou LineChart multiples) sont accessibles à trave
   unit-tooltip="%"
 ></multiline-chart>
 ```
-
-### Exemple visuel :
-
-<img src="./Pictures/MultiLineChart.png" alt="MultiLineChart" style="width:400px;"/>
-
 ---
 
 ## Notes supplémentaires
@@ -444,11 +435,6 @@ Les graphiques en barres sont accessibles à travers la balise : `<bar-chart>`.
   unit-tooltip="millions"
 ></bar-chart>
 ```
-
-**Exemple visuel :**
-
-<img src="./Pictures/BarChart.png" alt="BarChart" style="width:400px;" />
-
 ---
 
 ### 2. Barres horizontales
@@ -465,10 +451,6 @@ Pour tracer un **BarChart horizontal**, il faut renseigner l’option **horizont
   selected-palette="categorical"
 ></bar-chart>
 ```
-
-**Exemple visuel :**
-
-<img src="./Pictures/BarChartHorizontal.png" alt="BarChartHorizontal" style="width:400px;" />
 
 ---
 
@@ -489,10 +471,6 @@ Pour tracer un **BarChart empilé**, il faut renseigner l’option **stacked="tr
   unit-tooltip="%"
 ></bar-chart>
 ```
-
-**Exemple visuel :**
-
-<img src="./Pictures/OptionsBar.png" alt="OptionsBar" style="width:400px;" />
 
 ---
 
@@ -601,10 +579,6 @@ Sur tous les graphiques présentés ci-dessus, il est possible d'ajouter des lig
 ></line-chart>
 ```
 
-### Exemple visuel :
-
-<img src="./Pictures/hline_vline.png" alt="hline_vline" style="width:400px;"/>
-
 ---
 
 ## Notes supplémentaires
@@ -693,8 +667,6 @@ Les diagrammes circulaires (ou PieChart) sont accessibles à travers la balise :
   selectedPalette="categorical"
 ></pie-chart>
 ```
-
-<img src="./Pictures/PieChart.png" alt="PieChart" style="width:400px;" />
 
 ---
 

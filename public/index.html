@@ -245,9 +245,10 @@
             <p class="fr-text--sm">
               En 2023, le taux de fécondité des femmes de 30 à 34 ans est de 11,5 enfants pour 100 femmes.
             </p>
-            <scatter-chart x="[[5.2, 5.1, 4.8, 4.6, 4.5, 4.3, 4.2, 4.0, 3.7, 3.5, 3.3], [5.2, 5.1, 4.8, 4.6, 4.5, 4.3, 4.2, 4.0, 3.7, 3.5, 3.3]]"
-              y="[[65.8, 65.8, 65.6, 65.7, 65.8, 65.9, 66.0, 65.5, 65.7, 65.6, 66.2], [13.8, 65.8, 23.6, 22.7, 65.8, 85.9, 56.0, 65.5, 54.7, 65.6, 52.2]]" name='["Espérance de vie", "taux de fécondité"]'
-              unit-tooltip="%"></scatter-chart>
+            <scatter-chart
+              x="[[5.2, 5.1, 4.8, 4.6, 4.5, 4.3, 4.2, 4.0, 3.7, 3.5, 3.3], [5.2, 5.1, 4.8, 4.6, 4.5, 4.3, 4.2, 4.0, 3.7, 3.5, 3.3]]"
+              y="[[65.8, 65.8, 65.6, 65.7, 65.8, 65.9, 66.0, 65.5, 65.7, 65.6, 66.2], [13.8, 65.8, 23.6, 22.7, 65.8, 85.9, 56.0, 65.5, 54.7, 65.6, 52.2]]"
+              name='["Espérance de vie", "taux de fécondité"]' unit-tooltip="%"></scatter-chart>
             <p class="fr-text--sm fr-mt-1w">
               Insee, estimations de population, statistiques et estimations d’état civil, 04/11/2024
             </p>
@@ -324,7 +325,8 @@
             <p class="fr-text--sm">
               Prix moyen des logements anciens, France entière
             </p>
-            <line-chart x="[1996, 2000, 2006, 2009]" y="[77131, 96534, 181066, 179510]" name='Prix moyen en euros' unit-tooltip="€"></line-chart>
+            <line-chart x="[1996, 2000, 2006, 2009]" y="[77131, 96534, 181066, 179510]" name='Prix moyen en euros'
+              unit-tooltip="€"></line-chart>
             <p class="fr-text--sm fr-mt-1w">
               Insee, 04/11/2024
             </p>
@@ -935,147 +937,13 @@
             <div class="fr-collapse" id="accordion-18">
               <div class="code-toolbar">
                 <pre><code>
-            &lt;div class="box"&gt;
-                &lt;div :class="[
-                    'databox-card',
-                    'databox__group',
-                    { 'databox__group--height': indicator },
-                ]"&gt;
-                    &lt;div class="databox__header fr-p-2w"&gt;
-                        &lt;div class="databox__header-title"&gt;
-                            &lt;div class="fr-col databox__header-icon"&gt;
-                                &lt;h4 class="databox__header-serietitle fr-h6 fr-mb-0"&gt;
-                                    &lt;span id="tooltip-target"&gt;{{ dataBoxTitle }}&lt;/span&gt;
-                                &lt;/h4&gt;
-                            &lt;/div&gt;
-                            &lt;div class="fr-col-3 databox__header-fullScreenIcon"&gt;
-                                &lt;button class="infobulle-btn fr-btn fr-btn--tertiary-no-outline fr-p-0" type="button"
-                                    id="button-tooltip" aria-describedby="tooltip-btn"
-                                    aria-label="Afficher plus d'informations"&gt;
-                                    &lt;span class="fr-icon-question-line fr-icon--sm" aria-hidden="true"&gt;&lt;/span&gt;
-                                &lt;/button&gt;
-                                &lt;span class="fr-tooltip fr-placement" id="tooltip-btn" role="tooltip" aria-hidden="true"&gt;
-                                    &lt;p class="tooltip__title"&gt;
-                                        &lt;span id="tooltip-target"&gt;{{ dataBoxTitle }}&lt;/span&gt;
-                                    &lt;/p&gt;
-                                    &lt;p class="tooltip__description"&gt;{{ dataBoxDescription }}&lt;/p&gt;
-                                &lt;/span&gt;
-                                &lt;button v-if="modalSettings.hasModal" type="button"
-                                    class="fr-btn fr-btn--tertiary-no-outline fr-p-0" :aria-controls="modalSettings.modalId"
-                                    aria-label="Afficher la modale" @click="$emit('open-modal')"&gt;
-                                    &lt;span class="fr-icon-modal-fill fr-icon--sm" aria-label="Afficher la modale"
-                                        aria-hidden="true"&gt;&lt;/span&gt;
-                                &lt;/button&gt;
-                                &lt;div ref="dropdownContainer" class="dropdown-wrapper"&gt;
-                                    &lt;button ref="dropdown" title="dropdown" type="button"
-                                        class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0"
-                                        @click="toggleDropdown" aria-label="Afficher le menu déroulant"&gt;
-                                        &lt;span class="fr-icon-more-line fr-icon--sm" aria-hidden="true"&gt;&lt;/span&gt;
-                                    &lt;/button&gt;
-                                    &lt;div class="dropdown-menu" :class="{ show: isDropdownOpen }"&gt;
-                                        &lt;div class="dropdown-menu" :class="{ show: isDropdownOpen }"&gt;
-                                            &lt;button class="dropdown-item" v-for="action in dropdownActions" :key="action.id"
-                                                :aria-label="action.ariaLabel" :title="action.ariaLabel" type="submit"
-                                                @click="performAction(action)"&gt;
-                                                {{ action.ariaLabel }}
-                                            &lt;/button&gt;
-                                        &lt;/div&gt;
-                                    &lt;/div&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                        &lt;!-- Description et indicateur de tendance --&gt;
-                        &lt;div v-if="indicator" class="databox__header-subSection"&gt;
-                            &lt;div class="up-down__container"&gt;
-                                &lt;p class="fr-text--xs fr-m-0" v-if="trendValue.includes('-')"&gt;
-                                    En baisse de
-                                    &lt;span class="fr-badge fr-badge--brown-caramel fr-badge--sm fr-ml-1v" :aria-label="'Baisse de ' + trendValue.replace('-', '').trim()"&gt;
-                                        &lt;span class="fr-pr-1v" aria-hidden="true"&gt;↘&lt;/span&gt;
-                                        {{ trendValue.replace("-", "").trim() }} %
-                                    &lt;/span&gt;
-                                &lt;/p&gt;
-                                &lt;p class="fr-text--xs fr-m-0" v-else&gt;
-                                    En hausse de
-                                    &lt;span class="fr-badge fr-badge--green-emeraude fr-badge--sm fr-ml-1v" :aria-label="'Hausse de ' + trendValue.trim()"&gt;
-                                        &lt;span class="fr-pr-1v" aria-hidden="true"&gt;↗&lt;/span&gt;
-                                        {{ trendValue.trim() }} %
-                                    &lt;/span&gt;
-                                &lt;/p&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-            
-                        &lt;!-- Sélecteur de source --&gt;
-                        &lt;div v-if="addSources && select_options.length &gt; 0" class="databox__content-selectSection fr-pt-2w"&gt;
-                            &lt;select-source :id_select="widgetId" :optiondefault="option_default" :lsOptions="select_options"
-                                @select-source="transfertSourceOption"&gt;&lt;/select-source&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-            
-                    &lt;!-- Contenu de la DataBox --&gt;
-                    &lt;transition name="fade-slide" mode="out-in"&gt;
-                        &lt;div class="databox__content fr-p-2w" ref="chartContainer"&gt;
-                            &lt;!-- Affichage de la valeur de l'indicateur --&gt;
-                            &lt;div class="databox__content-indicator" v-if="indicator"&gt;
-                                &lt;p class="fr-display--xs fr-mb-0 databox__content-indicator-text"&gt;
-                                    {{ value }}
-                                &lt;/p&gt;
-                            &lt;/div&gt;
-            
-                            &lt;!-- Graphique --&gt;
-                            &lt;div :id="`chart-section-${widgetId}`" class="databox__content-chart" v-if="shouldDisplayChart"&gt;
-                                &lt;div class="databox__content-chart-section"&gt;
-                                    &lt;p class="databox__content-chart-section-unit text"&gt;
-                                        {{ unit_value }}
-                                    &lt;/p&gt;
-                                &lt;/div&gt;
-                                &lt;div class="databox__content-chart-section-canvas"&gt;
-                                    &lt;component :is="component" v-bind="chartProps"&gt;&lt;/component&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-            
-                            &lt;!-- Légende du graphique --&gt;
-                            &lt;div class="databox__content-legendContainer" v-if="shouldDisplayLegend"&gt;
-                                &lt;div class="databox__content-legend" v-for="(name, index) in serieObj.serie_values.name"
-                                    :key="index"&gt;
-                                    &lt;div class="databox__content-legend-icon fr-mr-1w" :style="{
-                                        'background-color': getHexaFromName(
-                                            serieObj.serie_values.color[index]
-                                        ),
-                                    }"&gt;&lt;/div&gt;
-                                    &lt;div&gt;
-                                        &lt;p class="fr-m-0 fr-text--xs"&gt;{{ name }}&lt;/p&gt;
-                                    &lt;/div&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-            
-                            &lt;!-- Tableau --&gt;
-                            &lt;div :id="`table-section-${widgetId}`" v-if="shouldDisplayTable" class="databox__content-table-responsive"&gt;
-                                &lt;table-vue :captionTitle="captionTitle" :tablevue_data="serieObj.table"
-                                    :isMultilineTableHeader="isMultilineTableHeader"&gt;&lt;/table-vue&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/transition&gt;
-            
-                    &lt;!-- Pied de page : Source, mise à jour et icônes --&gt;
-                    &lt;div class="databox__footer"&gt;
-                        &lt;div class="databox__footer-content fr-p-2w"&gt;
-                            &lt;div class="databox__footer-content-text"&gt;
-                                &lt;p class="fr-text--xs fr-mb-0"&gt;
-                                    {{ source }}, {{ changeDateFormat(dataBoxDate) }}
-                                &lt;/p&gt;
-                            &lt;/div&gt;
-                            &lt;div v-if="!this.indicator" class="fr-ml-md-6w databox__footer-content-icon"&gt;
-                                &lt;div class="databox__footer-content-segmented-controls" v-if="component"&gt;
-                                    &lt;div class="databox__footer-content-calltoaction fr-pr-1w"&gt;&lt;/div&gt;
-                                    &lt;segmented-controls :showIcons="true" @chart-selected="handleChartSelected"
-                                        :idcontrol="serieObj.id_accordion + '1'"&gt;
-                                    &lt;/segmented-controls&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
+                  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>data-box</span> 
+                  <span class="token attr-name">data-Box-Title</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">Titre de votre DataBox</span><span class="token punctuation">"</span></span> 
+                  <span class="token attr-name">data-Box-Description</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">Ceci est une nouvelle description pour la dataBox.</span><span class="token punctuation">"</span></span> 
+                  <span class="token attr-name">data-Box-Date</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">2024-10-22</span><span class="token punctuation">"</span></span> 
+                  <span class="token attr-name">:isMultilineTableHeader</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">false</span><span class="token punctuation">"</span></span> 
+                  <span class="token attr-name">unit-tooltip</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">%</span><span class="token punctuation">"</span> 
+                  <span class="token punctuation">/&gt;</span>       
             </code></pre>
               </div>
             </div>

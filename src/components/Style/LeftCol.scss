@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     .sep, .sep-viz {
-      border-bottom:1px solid #E5E5E5;
+      border-bottom:1px solid var(--border-default-grey);;
     }
 
     @media (min-width: 62em) {
@@ -38,33 +38,6 @@
         &.horizontal {
           .trend_ico {
             transform: rotate(45deg);
-          }
-        }
-        &.green {
-          color: #357941;
-          background-color: #d9ffeb;
-          .trend_ico {
-            path {
-              fill: #357941;
-            }
-          }
-        }
-        &.red {
-          color: #d80600;
-          background-color: #fff4f3;
-          .trend_ico {
-            path {
-              fill: #d80600;
-            }
-          }
-        }
-        &.blue {
-          color: #0768d5;
-          background-color: #f0f7ff;
-          .trend_ico {
-            path {
-              fill: #0768d5;
-            }
           }
         }
       }
