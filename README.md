@@ -1042,18 +1042,17 @@ Les cartes par région sont accessibles à travers la balise : `<map-chart-reg>`
 
 ## Résumé des paramètres de MapChart
 
-|Paramètre       |Type                    |Obligatoire | Description                                                                
-|-----------------|-------------------------|-------------|----------------------------------------------------------------------------|---|---|---|---|---|---|
-| data            | String                  | Oui         | Dictionnaire associant les codes géographiques aux valeurs de l'indicateur |   |   |   |   |   |   |
-| valuenat        | String ou Number        | Oui         | Valeur de l'indicateur à l'échelle nationale                               |   |   |   |   |   |   |
-| name            | String                  | Oui         | Nom de l'indicateur                                                        |   |   |   |   |   |   |
-| level           | String ('dep' ou 'reg') | Non         | Niveau de zoom de la carte ('dep' pour départements, 'reg' pour régions)   |   |   |   |   |   |   |
-| selectedPalette | String                  | Non         | Palette de couleurs utilisée pour la carte                                 |   |   |   |   |   |   |
-| highlightIndex  | Number, String ou Array | Non         | Code ou liste des codes géographiques à mettre en avant                    |   |   |   |   |   |   |
+| **paramètre**   | **type**         | **obligatoire** | **description**                                                               |
+|-----------------|------------------|-----------------|-------------------------------------------------------------------------------|
+| data            | string           | oui             | dictionnaire associant les codes des départements aux valeurs de l'indicateur |
+| valuereg        | string ou number | oui             | Valeur de l'indicateur à l'échelle nationale |
+| name            | string           | oui             | nom de l'indicateur |
+| level          | String ('dep' ou 'reg')           | Non             | Niveau de zoom de la carte ('dep' pour départements, 'reg' pour régions) |
+| selectedpalette | string           | non             | palette de couleurs utilisée pour la carte |
+| highlightIndex | Number, String ou Array           | non             | Code ou liste des codes géographiques à mettre en avant
 
 
 ## Résumé des paramètres de MapChart-reg
-
 
 | **paramètre**   | **type**         | **obligatoire** | **description**                                                               |
 |-----------------|------------------|-----------------|-------------------------------------------------------------------------------|
