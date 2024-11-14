@@ -73,9 +73,6 @@ export const testIfNaN = function (float) {
 // Fonction pour obtenir les couleurs du thème actuel
 export function getThemeColors() {
   const currentTheme = document.documentElement.getAttribute('data-fr-theme') || 'light';
-  console.log('Thème actuel :', currentTheme);
-  console.log('Couleurs disponibles :', colors);
-  console.log('Couleurs du thème actuel :', colors[currentTheme]);
   return colors[currentTheme] || colors['light'];
 }
 
