@@ -18,9 +18,11 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div class="flex fr-mt-1w fr-mb-0" :style="{ 'margin-left': isSmall ? '0px' : style }">
-          <span class="legende_dot" :style="{ 'background-color': colorParse }"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(name) }}</p>
+        <div class="chart_legend fr-mb-0 fr-mt-4v">
+          <div class="flex fr-mt-1w fr-mb-0">
+            <span class="legende_dot"></span>
+            <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(name) }}</p>
+          </div>
         </div>
         <div v-for="(item, index) in hlineNameParse" :key="item" class="flex fr-mt-3v"
           :style="{ 'margin-left': isSmall ? '0px' : style }">
@@ -49,7 +51,7 @@ import chroma from 'chroma-js';
 import { mixin } from '@/utils.js';
 import {
   getColorsByIndex,
-  getDefaultColor,
+  getNeutralColor,
   choosePalette
 } from '@/utils.js';
 
@@ -78,7 +80,7 @@ export default {
       hlineNameParse: [],
       ymax: 0,
       colorParse: '',
-      colorPrecisionBar: '#161616',
+      colorPrecisionBar: '',
       colorHover: '',
       isSmall: false
     };
@@ -147,7 +149,7 @@ export default {
     unitTooltip: {
       type: String,
       default: ''  // Default to an empty string if no unit is specified
-    }
+    },
   },
   computed: {
     style() {
@@ -284,7 +286,7 @@ export default {
         if (this.tmpVlineColorParse[i] !== undefined) {
           this.vlineColorParse.push(this.tmpVlineColorParse[i]);
         } else {
-          this.vlineColorParse.push(getDefaultColor());
+          this.vlineColorParse.push(getNeutralColor());
         }
       }
 
@@ -294,11 +296,11 @@ export default {
         if (this.tmpHlineColorParse[i] !== undefined) {
           this.hlineColorParse.push(this.tmpHlineColorParse[i]);
         } else {
-          this.hlineColorParse.push(getDefaultColor());
+          this.hlineColorParse.push(getNeutralColor());
         }
       }
     },
-    
+
     choosePalette() {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
@@ -446,16 +448,17 @@ export default {
                 // Iterate through each line in the body and add formatted HTML
                 bodyLines.forEach((line, i) => {
                   if (line !== undefined) {
-                    // Get the color for the current line (or a default color if colorParse is not an array)
                     const color = Array.isArray(self.colorParse) ? self.colorParse[i] : self.colorParse;
 
-                    // Append the line with color and optional unitTooltip
+                    // Extraire uniquement la valeur numérique sans le texte "Prix moyen en euros"
+                    const valueOnly = line[0].replace(self.name + ': ', ''); // Enlever le nom depuis le prop `name`
+
                     divValue.innerHTML += `
-                    <div class="tooltip_value-content" style="display: flex; justify-content: space-between; align-items: center;">
-                      <span class="tooltip_dot" style="background-color: ${color};"></span>
-                      <p class="tooltip_place fr-mb-0">${line}${self.unitTooltip ? ' ' + self.unitTooltip : ''}</p>
-                    </div>
-                  `;
+                      <div class="tooltip_value-content" style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="tooltip_dot" style="background-color: ${color};"></span>
+                        <p class="tooltip_place fr-mb-0">${valueOnly}${self.unitTooltip ? ' ' + self.unitTooltip : ''}</p>
+                      </div>
+                    `;
                   }
                 });
               }

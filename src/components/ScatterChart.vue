@@ -13,12 +13,13 @@
         </div>
         <canvas :id="chartId"></canvas>
         <!-- Légende pour les séries de données -->
-        <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v"
-          :style="{ 'margin-left': isSmall ? '0px' : style }">
-          <span class="legende_dot" :style="{ 'background-color': colorParse[index] }"></span>
-          <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
-            {{ capitalize(nameParse[index]) }}
-          </p>
+        <div class="chart_legend fr-mb-0 fr-mt-4v">
+          <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v">
+            <span class="legende_dot" :style="{ 'background-color': colorParse[index] }"></span>
+            <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
+              {{ capitalize(nameParse[index]) }}
+            </p>
+          </div>
         </div>
         <!-- Légende pour les lignes horizontales -->
         <div v-for="(item2, index2) in hlineNameParse" :key="item2" class="flex fr-mt-3v"
@@ -153,6 +154,10 @@ export default {
       type: Number,
       default: -1
     },
+    unitTooltip: {
+      type: String,
+      default: ''  // Default to an empty string if no unit is specified
+    }
   },
   computed: {
     style() {
@@ -536,11 +541,12 @@ export default {
 
                 divValue.innerHTML = ''
                 bodyLines[0].forEach(function (line, i) {
+                  const displayValue = `${line}${self.unitTooltip ? ' ' + self.unitTooltip : ''}`;
                   if (line !== undefined) {
                     divValue.innerHTML += `
                       <div class="tooltip_value-content">
                         <span class="tooltip_dot" style="background-color:${self.colorParse[i]};"></span>
-                        <p class="tooltip_place fr-mb-0">${line}</p>
+                        <p class="tooltip_place fr-mb-0">${displayValue}</p>
                       </div>
                     `;                  
                   }
@@ -654,6 +660,9 @@ export default {
     },
 
     changeColors(theme) {
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme);
+      this.chart.options.scales.xAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
+      this.chart.options.scales.yAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
      
       this.loadColors()
       if (theme === 'light') {

@@ -18,14 +18,15 @@
           </div>
         </div>
         <canvas :id="chartId"></canvas>
-        <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v"
-          :style="{ 'margin-left': isSmall ? '0px' : style }">
-          <span class="legende_dot" :style="{ 'background-color': colorParse[index], 'opacity': opacity[index] }"
-            @click="ChangeShowLine(index)"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0" :style="{ 'opacity': opacity[index] }"
-            @click="ChangeShowLine(index)">
-            {{ capitalize(nameParse[index]) }}
-          </p>
+        <div class="chart_legend fr-mb-0 fr-mt-4v">
+          <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v">
+            <span class="legende_dot" :style="{ 'background-color': colorParse[index], 'opacity': opacity[index] }"
+              @click="ChangeShowLine(index)"></span>
+            <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0" :style="{ 'opacity': opacity[index] }"
+              @click="ChangeShowLine(index)">
+              {{ capitalize(nameParse[index]) }}
+            </p>
+          </div>
         </div>
         <div v-for="(item2, index2) in hlineNameParse" :key="item2" class="flex fr-mt-3v"
           :style="{ 'margin-left': isSmall ? '0px' : style }">
@@ -90,7 +91,7 @@ export default {
       tmpHlineColorParse: [],
       hlineNameParse: [],
       ymax: 0,
-      colorPrecisionBar: '#161616',
+      colorPrecisionBar: '',
       colorHover: [],
       isSmall: false
     };

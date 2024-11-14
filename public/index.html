@@ -239,7 +239,18 @@
 
           <h3 id="scatter_chart.1">1. Nuage de points simple</h3>
           <div class="chart_container">
-            <scatter-chart x="[[1, 5, 8], [1, 2, 15]]" y="[[30, 10, 20], [10, 20, 30]]"></scatter-chart>
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">
+              Espérance de vie des femmes de 20 ans en fonction de leur taux de fécondité
+            </h3>
+            <p class="fr-text--sm">
+              En 2023, le taux de fécondité des femmes de 30 à 34 ans est de 11,5 enfants pour 100 femmes.
+            </p>
+            <scatter-chart x="[[5.2, 5.1, 4.8, 4.6, 4.5, 4.3, 4.2, 4.0, 3.7, 3.5, 3.3], [5.2, 5.1, 4.8, 4.6, 4.5, 4.3, 4.2, 4.0, 3.7, 3.5, 3.3]]"
+              y="[[65.8, 65.8, 65.6, 65.7, 65.8, 65.9, 66.0, 65.5, 65.7, 65.6, 66.2], [13.8, 65.8, 23.6, 22.7, 65.8, 85.9, 56.0, 65.5, 54.7, 65.6, 52.2]]" name='["Espérance de vie", "taux de fécondité"]'
+              unit-tooltip="%"></scatter-chart>
+            <p class="fr-text--sm fr-mt-1w">
+              Insee, estimations de population, statistiques et estimations d’état civil, 04/11/2024
+            </p>
           </div>
 
           <div class="part_container">
@@ -252,11 +263,15 @@
               <div class="fr-collapse" id="accordion-7">
                 <div class="code-toolbar">
                   <pre>
-                      <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
-                      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scatter-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[1, 5, 8], [1, 2, 15]]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[30, 10, 20], [10, 20, 30]]</span>
-                      <span class="token attr-name">showline</span><span class="token punctuation">=</span><span class="titre_class">true</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>scatter-chart</span><span class="token punctuation">&gt;</span>
-                      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code>
-                    </pre>
+                    <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scatter-chart</span>
+                        <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[5.2, 5.1, 4.8, 4.6, 4.5, 4.3, 4.2, 4.0, 3.7, 3.5, 3.3]]</span><span class="token punctuation">'</span></span>
+                        <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[65.8, 65.8, 65.6, 65.7, 65.8, 65.9, 66.0, 65.5, 65.7, 65.6, 66.2]]</span><span class="token punctuation">'</span></span>
+                        <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">["En pourcentage"]</span><span class="token punctuation">'</span></span>
+                        <span class="token attr-name">unit-tooltip</span><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">%</span><span class="token punctuation">'</span></span>
+                      <span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>scatter-chart</span><span class="token punctuation">&gt;</span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code>
+                  </pre>
                 </div>
               </div>
             </section>
@@ -301,12 +316,19 @@
             permet d’affiche une seule ligne ou en présenter plusieurs pour
             permettre la comparaison.
           </p>
-
           <h3 id="line_chart.1">1. Graphique en ligne simple</h3>
           <div class="chart_container">
-            <line-chart x="[1, 2, 3, 4]" y="[10, 20, 30,40]" unit-tooltip="%"></line-chart>
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">
+              Évolution des prix des logements anciens entre 1996 et 2009
+            </h3>
+            <p class="fr-text--sm">
+              Prix moyen des logements anciens, France entière
+            </p>
+            <line-chart x="[1996, 2000, 2006, 2009]" y="[77131, 96534, 181066, 179510]" name='Prix moyen en euros' unit-tooltip="€"></line-chart>
+            <p class="fr-text--sm fr-mt-1w">
+              Insee, 04/11/2024
+            </p>
           </div>
-
           <section class="fr-accordion fr-mt-4w fr-mb-6w">
             <h3 class="fr-accordion__title">
               <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-9">
@@ -315,17 +337,33 @@
             </h3>
             <div class="fr-collapse" id="accordion-9">
               <div class="code-toolbar">
-                <pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>line-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[1, 2, 3, 4]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[10, 20, 30,40]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>line-chart</span><span class="token punctuation">&gt;</span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre>
+                <pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>line-chart</span>
+                    <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">[1996, 2000, 2006, 2009]</span><span class="token punctuation">"</span></span>
+                    <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">[77131, 96534, 181066, 179510]</span><span class="token punctuation">"</span></span>
+                    <span class="token attr-name">unit-tooltip</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">€</span><span class="token punctuation">"</span></span>
+                  <span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>line-chart</span><span class="token punctuation">&gt;</span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre>
               </div>
             </div>
           </section>
 
           <h3 id="line_chart.2">2. Graphique en lignes multiples</h3>
           <div class="chart_container">
-            <multiline-chart x="[[1, 2, 3], [1, 2, 3]]" y="[[30, 10, 20], [10, 20, 30]]"
-              unit-tooltip="%"></multiline-chart>
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">
+              Évolution des salaires selon le sexe depuis 1960
+            </h3>
+            <p class="fr-text--sm">
+              Salaire net de prélèvements des salariés à temps complet, y compris apprentis et stagiaires. Indice base
+              100 en 1951, en euros constants.
+            </p>
+            <multiline-chart
+              x="[[1960, 1970, 1980, 1990, 2000, 2010, 2020], [1960, 1970, 1980, 1990, 2000, 2010, 2020]]"
+              y="[[154, 239, 338, 379, 416, 450, 461], [156, 233, 303, 327, 336, 354, 348]]" name='["Femmes", "Hommes"]'
+              unit-tooltip="€"></multiline-chart>
+            <p class="fr-text--sm fr-mt-1w">
+              Insee, Dads, 04/11/2024
+            </p>
           </div>
 
           <section class="fr-accordion fr-mt-4w fr-mb-6w">
@@ -336,10 +374,15 @@
             </h3>
             <div class="fr-collapse" id="accordion-10">
               <div class="code-toolbar">
-                <pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class = "titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>multiline-chart</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[1, 2, 3], [1, 2, 3]]</span><span class="token punctuation">'</span></span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[30, 10, 20], [10, 20, 30]]</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span>
-<span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>multiline-chart</span><span class="token punctuation">&gt;</span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre>
+                <pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+                  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>multiline-chart</span>
+                    <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[1960, 1970, 1980, 1990, 2000, 2010, 2020], [1960, 1970, 1980, 1990, 2000, 2010, 2020]]</span><span class="token punctuation">'</span></span>
+                    <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[154, 239, 338, 379, 416, 450, 461], [156, 233, 303, 327, 336, 354, 348]]</span><span class="token punctuation">'</span></span>
+                    <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">["Femmes", "Hommes"]</span><span class="token punctuation">'</span></span>
+                    <span class="token attr-name">unit-tooltip</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">€</span><span class="token punctuation">'</span></span>
+                  <span class="token punctuation">&gt;</span></span>
+                  <span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>multiline-chart</span><span class="token punctuation">&gt;</span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre>
               </div>
             </div>
           </section>
@@ -453,7 +496,7 @@
             x='[["Ensemble des Français", "Agglomération parisienne", "Communauté urbaine de province", "Commune rurale"]]'
             y="[[15, 19, 15, 13], [45, 40, 47, 41], [36, 32, 34, 44], [4, 9, 4, 2]]"
             name='["Tout à fait satisfait", "Plutôt satisfait", "Plutôt pas satisfait", "Pas du tout satisfait"]'
-            stacked="true" selected-palette="divergentDescending" :isDescendingOrder="true" unit-tooltip="%">
+            stacked="true" selected-palette="divergentDescending" :isAscendingOrder="true" unit-tooltip="%">
           </bar-chart>
           <p class="fr-text--sm fr-mt-1w">Ifop, enquête Emploi, 04/01/2024</p>
 
@@ -473,7 +516,7 @@
                       <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">["Tout à fait satisfait", "Plutôt satisfait", "Plutôt pas satisfait", "Pas du tout satisfait"]</span><span class="token punctuation">'</span></span>
                       <span class="token attr-name">stacked</span><span class="token punctuation">=</span><span class="titre_class">"true"</span>
                       <span class="token attr-name">selected-palette</span><span class="token punctuation">=</span><span class="titre_class">"divergentDescending"</span>
-                      <span class="token attr-name">:isDescendingOrder</span><span class="token punctuation">=</span><span class="titre_class">"true"</span>
+                      <span class="token attr-name">:isAscendingOrder</span><span class="token punctuation">=</span><span class="titre_class">"true"</span>
                       <span class="token attr-name">unit-tooltip</span><span class="token punctuation">=</span><span class="titre_class">"%"</span>
                     <span class="token punctuation">&gt;</span>
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span>
@@ -1099,7 +1142,7 @@
               class="legende_dot" style="background-color: #E16834"></span> </div>
           <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #B1B1B1"></span> <span
               class="legende_dot" style="background-color: #808080"></span> </div>
-          </div>
+        </div>
 
         <!-- Accessibilité -->
         <div class="part_container fr-mb-10w">
