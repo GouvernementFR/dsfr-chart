@@ -91,11 +91,6 @@
 
                     <!-- Graphique -->
                     <div :id="`chart-section-${widgetId}`" class="databox__content-chart" v-if="shouldDisplayChart">
-                        <div class="databox__content-chart-section">
-                            <p class="databox__content-chart-section-unit text">
-                                {{ unit_value }}
-                            </p>
-                        </div>
                         <div class="databox__content-chart-section-canvas">
                             <component :is="component" v-bind="chartProps"></component>
                         </div>
@@ -183,6 +178,10 @@ export default {
                 { id: '2', ariaLabel: 'Télécharger CSV', action: 'actionBtn2' }
             ],
         },
+        unitTooltip: {
+            type: String,
+            default: '' // Default to an empty string if not provided
+        },
         isMultilineTableHeader: {
             type: Boolean,
             default: true, // Défini par défaut
@@ -206,10 +205,6 @@ export default {
         value: {
             type: String,
             default: "1500",
-        },
-        unit_value: {
-            type: String,
-            default: "Nombre exprimé en pourcentage (%)"
         },
         component: {
             type: String,
@@ -262,6 +257,7 @@ export default {
             required: false,
             default: () => ({
                 showGraph: true,
+                unitTooltip:"%",
                 serie_values: {
                     x: ["Serie 1", "Serie 2", "Serie 3"],
                     y: [100, 200, 300],
@@ -355,6 +351,8 @@ export default {
                     result[key] = JSON.stringify(this.serieObj.serie_values[key]);
                 }
             });
+
+            result.unitTooltip = this.serieObj.unitTooltip || '';
 
             return result;
         },

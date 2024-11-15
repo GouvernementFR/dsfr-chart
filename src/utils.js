@@ -1,3 +1,7 @@
+/* eslint-disable */
+import chroma from 'chroma-js';  // Import de chroma-js
+import colors from '../src/styles/assets/colors.json';  // Import du fichier colors.json
+
 export const capitalize = function (string) {
   if (string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
@@ -66,25 +70,178 @@ export const testIfNaN = function (float) {
   return isNaN(parseFloat(float))
 }
 
-const colorsDSFR = [
-  'green-bourgeon',
-  'blue-ecume',
-  'purple-glycine',
-  'pink-macaron',
-  'yellow-tournesol',
-  'orange-terre-battue',
-  'brown-cafe-creme',
-  'beige-gris-galet',
-  'green-emeraude',
-  'blue-cumulus',
-  'pink-tuile',
-  'yellow-moutarde',
-  'brown-caramel',
-  'green-menthe',
-  'brown-opera',
-  'green-archipel',
-  'green-tilleul-verveine'
-]
+// Fonction pour obtenir les couleurs du thème actuel
+export function getThemeColors() {
+  const currentTheme = document.documentElement.getAttribute('data-fr-theme') || 'light';
+  return colors[currentTheme] || colors['light'];
+}
+
+// Fonction pour obtenir la palette catégorique
+export function getCategoricalPalette() {
+  const themeColors = getThemeColors();
+  return [
+    themeColors['dsfr-chart-colors-01'],
+    themeColors['dsfr-chart-colors-02'],
+    themeColors['dsfr-chart-colors-03'],
+    themeColors['dsfr-chart-colors-04'],
+    themeColors['dsfr-chart-colors-05'],
+    themeColors['dsfr-chart-colors-06'],
+    themeColors['dsfr-chart-colors-07'],
+    themeColors['dsfr-chart-colors-08']
+  ];
+}
+
+// Log de vérification final
+console.log("Palette catégorique après chargement :", getCategoricalPalette());
+
+// Palettes séquentielles
+export function getSequentialAscending() {
+  const themeColors = getThemeColors();
+  return chroma.scale([
+    themeColors['dsfr-chart-colors-09'],
+    themeColors['dsfr-chart-colors-10']
+  ]).colors(10);
+}
+
+export function getSequentialDescending() {
+  const themeColors = getThemeColors();
+  return chroma.scale([
+    themeColors['dsfr-chart-colors-10'],
+    themeColors['dsfr-chart-colors-09']
+  ]).colors(10);
+}
+
+// Palettes divergentes
+export function getDivergentAscending() {
+  const themeColors = getThemeColors();
+  return chroma.scale([
+    themeColors['dsfr-chart-colors-11'],
+    themeColors['dsfr-chart-colors-13'],
+    themeColors['dsfr-chart-colors-15']
+  ]).colors(4);
+}
+
+export function getDivergentDescending() {
+  const themeColors = getThemeColors();
+  return chroma.scale([
+    themeColors['dsfr-chart-colors-15'],
+    themeColors['dsfr-chart-colors-13'],
+    themeColors['dsfr-chart-colors-11']
+  ]).colors(4);
+}
+
+// Fonction pour limiter les catégories (si plus de 8 catégories)
+export function limitCategories(labels, data, maxCategories = 8) {
+  if (labels.length > maxCategories) {
+    const limitedLabels = labels.slice(0, maxCategories - 1);
+    const otherLabel = 'Autres'; // Catégorie "Autres" pour les labels restants
+    const limitedData = data.slice(0, maxCategories - 1);
+    const otherData = data.slice(maxCategories - 1).reduce((a, b) => a + b, 0); // Somme des données restantes
+    limitedLabels.push(otherLabel);
+    limitedData.push(otherData);
+    return { labels: limitedLabels, data: limitedData };
+  }
+  return { labels, data };
+}
+
+// Fonction pour obtenir des couleurs dynamiques selon un index et une palette
+export function getColorsByIndex(index, palette = getCategoricalPalette()) {
+  return palette[index % palette.length];
+}
+
+// Fonction pour obtenir la couleur par défaut pour un graphique unicolore
+export function getDefaultColor() {
+  const themeColors = getThemeColors();
+  return themeColors['dsfr-chart-colors-default'];
+}
+
+// Fonction pour obtenir la couleur neutre (pour les données "minimales")
+export function getNeutralColor() {
+  const themeColors = getThemeColors();
+  return themeColors['dsfr-chart-colors-neutral'];
+}
+
+// Exemple d'export de toutes les fonctions et palettes pour les utiliser dans vos composants
+export const colorUtils = {
+  getCategoricalPalette,
+  getDefaultColor,
+  getNeutralColor,
+  getSequentialAscending,
+  getSequentialDescending,
+  getDivergentAscending,
+  getDivergentDescending,
+  limitCategories,
+  getColorsByIndex,
+};
+
+// Fonction principale `choosePalette`
+export function choosePalette(selectedPalette) {
+  switch (selectedPalette) {
+    case 'categorical':
+      return getCategoricalPalette();
+    case 'sequentialAscending':
+      return getSequentialAscending();
+    case 'sequentialDescending':
+      return getSequentialDescending();
+    case 'divergentAscending':
+      return getDivergentAscending();
+    case 'divergentDescending':
+      return getDivergentDescending();
+    case 'neutral':
+      return [getNeutralColor()];
+    case 'defaultColor':
+      return [getDefaultColor()];
+    default:
+      return getCategoricalPalette(); // Fallback
+  }
+}
+
+// Core `loadColors` function
+export function loadColors({
+  yparse,
+  selectedPalette = '',
+  tmpColorParse = [],
+  highlightIndex = [],
+  reverseOrder = false
+}) {
+  const colorParse = [];
+  const colorHover = [];
+  const palette = choosePalette(selectedPalette);
+
+  // If we need to reverse the order for divergentDescending
+  const adjustedYparse = reverseOrder ? [...yparse].reverse() : yparse;
+
+  for (let i = 0; i < adjustedYparse.length; i++) {
+    const dataSet = adjustedYparse[i];
+    let colors = [];
+    let hoverColors = [];
+
+    if (tmpColorParse[i] !== undefined) {
+      const color = tmpColorParse[i];
+      colors = Array(dataSet.length).fill(color);
+      hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+    } else if (selectedPalette === 'neutral' && highlightIndex.length > 0 && Array.isArray(dataSet)) {
+      for (let j = 0; j < dataSet.length; j++) {
+        const color = highlightIndex.includes(j) ? defaultColor : neutralColor;
+        colors.push(color);
+        hoverColors.push(chroma(color).darken(0.8).hex());
+      }
+    } else {
+      if (selectedPalette.startsWith('divergent')) {
+        colors = Array(dataSet.length).fill(palette[i % palette.length]);
+        hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+      } else {
+        const color = getColorsByIndex(i, palette);
+        colors = Array(dataSet.length).fill(color);
+        hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
+      }
+    }
+    colorParse.push(colors);
+    colorHover.push(hoverColors);
+  }
+
+  return { colorParse, colorHover, legendColors: reverseOrder ? colorParse.map(c => c[0]).reverse() : colorParse.map(c => c[0]) };
+}
 
 const dep = [
   {
@@ -917,10 +1074,6 @@ const patternDraw = [
   'diamond-box'
 ]
 
-export const getAllColors = function () {
-  return colorsDSFR
-}
-
 export const getAllPattern = function () {
   return patternDraw
 }
@@ -1079,16 +1232,26 @@ export const getAcad = function (code) {
 }
 
 export const getClassMap = function (code, level) {
-  let obj
-
-  if (level === 'reg') {
-    obj = getReg(code)
-  } else if (level === 'dep') {
-    obj = getDep(code)
+  if (!level) {
+    console.warn(`Level is undefined for code: ${code}`);
+    return null; // Ou vous pouvez définir un niveau par défaut ici si nécessaire
   }
 
-  return obj.classMap
-}
+  let obj;
+  if (level === 'reg') {
+    obj = getReg(code);
+  } else if (level === 'dep') {
+    obj = getDep(code);
+  }
+
+  if (obj && obj.classMap) {
+    return obj.classMap;
+  } else {
+    console.warn(`No classMap found for code: ${code}, level: ${level}`);
+    return null;
+  }
+};
+
 
 export const getDepsFromReg = function (code) {
   const depObj = dep.filter(obj => {
@@ -1134,7 +1297,6 @@ export const mixin = {
     getReg,
     getAcad,
     getDepsFromReg,
-    getAllColors,
     getHexaFromName,
     getAllPattern,
     getClassMap,

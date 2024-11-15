@@ -2,7 +2,7 @@
 .databox {
     &-card {
       box-shadow: 0px 2px 6px 0px #00001229;
-      background-color: white;
+      background-color: var(--grey-1000-50);
       flex: 1;
       box-sizing: border-box;
     }
@@ -94,8 +94,7 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
-        height: var(--chart-height, 450px); /* Ajout de la hauteur dynamique ici avec une valeur par défaut */
-        
+
         &-section {
           display: flex;
           justify-content: center;
@@ -111,18 +110,18 @@
           }
   
           &-canvas {
-            height: var(--chart-height); /* Utilisation de la variable CSS pour la hauteur du graphique */
-            max-height: 100%; /* Pour éviter de dépasser */
+            height: var(--chart-height);
+            max-height: 100%;
             display: contents;
           }
         }   
       }
   
       &-table-responsive {
+        height: var(--chart-height, 390px);
+        max-height: 390px;
         width: 100%;
-        height: var(--chart-height, 300px); /* Synchronisation de la hauteur du tableau avec le graphique */
         overflow-x: auto;
-        max-height: 100%; /* Pour s'assurer qu'il respecte la taille du conteneur */
       }
     }
   
@@ -180,7 +179,7 @@
       z-index: 510;
       display: none;
       position: absolute;
-      background-color: white;
+      background-color: var(--grey-1000-50);
       box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
       width: 240px;
       right: 8px;
@@ -213,7 +212,7 @@
   }
   
   .dropdown-item:hover {
-    background-color: #f1f1f1;
+    background-color: var(--grey-1000-50);
     color: inherit;
   }
   
@@ -227,7 +226,7 @@
   .fr-icon-more-line,
   .fr-icon-camera-line,
   .fr-icon-download-fill {
-    color: #000091;
+    color: var(--text-active-blue-france);
   }
   
   .fr-icon-modal-fill {
@@ -281,7 +280,7 @@
   .box {
     flex: 1;
     max-width: 45%;
-    background-color: #f5f5f5;
+    background-color: var(--grey-1000-50);
     padding: 10px;
     box-sizing: border-box;
     display: contents;

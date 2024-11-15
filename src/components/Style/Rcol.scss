@@ -1,0 +1,36 @@
+.r_col {
+    align-self: center;
+
+    .flex {
+      display: flex;
+
+      .legende_dot {
+        min-width: 0.8rem;
+        width: 0.8rem;
+        height: 0.8rem;
+        background-color: var(--blue-france-sun-113-625);
+        display: inline-block;
+        margin-top: 0.25rem;
+        margin-left: 0;
+      }
+
+      .legende_dash_line1 {
+        min-width: 0.35rem;
+        width: 0.35rem;
+        height: 0.2rem;
+        border-radius: 0;
+        display: inline-block;
+        margin-top: 0.6rem;
+      }
+
+      .legende_dash_line2 {
+        min-width: 0.35rem;
+        width: 0.35rem;
+        height: 0.2rem;
+        border-radius: 0;
+        display: inline-block;
+        margin-top: 0.6rem;
+        margin-left: 0.1rem;
+      }
+    }
+  }

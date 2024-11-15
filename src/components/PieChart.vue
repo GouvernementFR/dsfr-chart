@@ -4,7 +4,7 @@
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="linechart_tooltip">
-          <div class="tooltip_header"></div>
+          <div class="tooltip_header fr-text--sm fr-mb-0"></div>
           <div class="tooltip_body">
             <div class="tooltip_value">
               <span class="tooltip_dot"></span>
@@ -14,28 +14,34 @@
         <canvas :id="chartId"></canvas>
         <div class="chart_legend fr-mb-0 fr-mt-4v">
           <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v">
-            <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
+            <span class="legende_dot" v-bind:style="{ 'background-color': colorParse[index] }"></span>
             <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
-              {{capitalize(nameParse[index])}}
+              {{ capitalize(nameParse[index]) }}
             </p>
           </div>
-          <div v-if="date!==undefined" class="flex fr-mt-1w">
-            <p class="fr-text--xs">Mise à jour : {{date}}</p>
+          <div v-if="date !== undefined" class="flex fr-mt-1w">
+            <p class="fr-text--xs">Mise à jour : {{ date }}</p>
           </div>
-      </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 /* eslint-disable */
-import { Chart } from 'chart.js'
-import { mixin } from '@/utils.js'
-import pattern from 'patternomaly'
+import { Chart } from 'chart.js';
+import chroma from 'chroma-js';
+import { mixin } from '@/utils.js';
+import {
+  getColorsByIndex,
+  choosePalette
+} from '@/utils.js';
+
 export default {
   name: 'PieChart',
   mixins: [mixin],
-  data () {
+  data() {
     return {
       widgetId: '',
       chartId: '',
@@ -44,21 +50,15 @@ export default {
       display: '',
       datasets: [],
       labels: undefined,
-      dicHline: {},
       xparse: [],
       yparse: [],
       nameParse: [],
       tmpColorParse: [],
       colorParse: [],
-      listColors: [],
-      listPattern: [],
-      colorPattern: [],
-      colorPatternHover: [],
-      typeGraph: 'doughnut',
       colorHover: [],
+      typeGraph: 'doughnut',
       isSmall: false,
-      pattern: false
-    }
+    };
   },
   props: {
     x: {
@@ -73,108 +73,101 @@ export default {
       type: String,
       default: undefined
     },
-    color: {
-      type: String,
-      default: undefined
-    },
     fill: {
       type: Boolean,
       default: false
     },
-    // pattern: {
-    //   type: Boolean,
-    //   default: false
-    // },
     date: {
       type: String,
       default: undefined
+    },
+    selectedPalette: {
+      type: String,
+      default: ''
+    },
+    unitTooltip: {
+      type: String,
+      default: ''  // Default to an empty string if no unit is specified
     }
   },
   computed: {
-    style () {
-      return this.legendLeftMargin + 'px'
+    style() {
+      return this.legendLeftMargin + 'px';
     }
   },
   methods: {
-    resetData () {
-      this.chart.destroy()
-      this.legendLeftMargin = 100
-      this.display = ''
-      this.datasets = []
-      this.labels = undefined
-      this.dicHline = {}
-      this.xparse = []
-      this.yparse = []
-      this.nameParse = []
-      this.tmpColorParse = []
-      this.colorParse = []
-      this.listColors = []
-      this.listPattern = []
-      this.colorPattern = []
-      this.colorPatternHover = []
-      this.typeGraph = ''
-      this.colorHover = []
-    },
-    getData () {
-      const self = this
-      // Récupération des paramètres
-      if (this.fill) {
-        this.typeGraph = 'pie'
-      } else {
-        this.typeGraph = 'doughnut'
+    resetData() {
+      if (this.chart) {
+        this.chart.destroy();
       }
-      this.listColors = this.getAllColors()
-      this.listPattern = this.getAllPattern()
-      this.xparse = JSON.parse(this.x)
-      this.yparse = JSON.parse(this.y)
+      this.legendLeftMargin = 100;
+      this.display = '';
+      this.datasets = [];
+      this.labels = undefined;
+      this.xparse = [];
+      this.yparse = [];
+      this.nameParse = [];
+      this.tmpColorParse = [];
+      this.colorParse = [];
+      this.colorHover = [];
+      this.typeGraph = '';
+    },
+    getData() {
+      // Détermination du type de graphique
+      this.typeGraph = this.fill ? 'pie' : 'doughnut';
 
-      let tmpNameParse = []
+      // Parsing des données
+      this.xparse = JSON.parse(this.x);
+      this.yparse = JSON.parse(this.y);
+
+      let tmpNameParse = [];
       if (this.name !== undefined) {
-        tmpNameParse = JSON.parse(self.name)
+        tmpNameParse = JSON.parse(this.name);
       }
       if (this.color !== undefined) {
-        this.tmpColorParse = JSON.parse(self.color)
+        this.tmpColorParse = JSON.parse(this.color);
       }
 
-      this.loadColors()
+      this.loadColors();
+
       for (let i = 0; i < this.yparse.length; i++) {
         if (tmpNameParse[i] !== undefined) {
-          self.nameParse.push(tmpNameParse[i])
+          this.nameParse.push(tmpNameParse[i]);
         } else {
-          self.nameParse.push('Serie' + (i + 1))
+          this.nameParse.push('Serie' + (i + 1));
         }
       }
 
       // Formatage des données
-      self.labels = self.xparse
-      self.datasets = [{
-        data: self.yparse,
-        borderColor: self.colorParse,
-        backgroundColor: self.colorParse,
-        hoverBackgroundColor: self.colorHover,
-        hoverBorderColor: self.colorHover,
+      this.labels = this.xparse
+      this.datasets = [{
+        data: this.yparse,
+        borderColor: this.colorParse,
+        backgroundColor: this.colorParse,
+        hoverBackgroundColor: this.colorHover,
+        hoverBorderColor: this.colorHover,
         hoverBorderWidth: 10,
       }]
     },
-    createChart () {
-      Chart.defaults.global.defaultFontFamily = 'Marianne'
-      Chart.defaults.global.defaultFontSize = 12
-      Chart.defaults.global.defaultLineHeight = 1.66
+    createChart() {
+      Chart.defaults.global.defaultFontFamily = 'Marianne';
+      Chart.defaults.global.defaultFontSize = 12;
+      Chart.defaults.global.defaultLineHeight = 1.66;
+      Chart.defaults.global.defaultFontColor = '#DDDDDD';
 
-      this.getData()
-      const self = this
-      const ctx = document.getElementById(self.chartId).getContext('2d')
+      this.getData();
+      const ctx = document.getElementById(this.chartId).getContext('2d');
       this.chart = new Chart(ctx, {
-        type: self.typeGraph,
+        type: this.typeGraph,
         data: {
-          labels: self.labels,
-          datasets: self.datasets
+          labels: this.labels,
+          datasets: this.datasets
         },
         options: {
           responsive: true,
           maintainAspectRatio: true,
           layout: {
-              padding: {
+            padding: {
               left: 50,
               right: 50,
               top: 0,
@@ -193,234 +186,153 @@ export default {
             backgroundColor: '#6b6b6b',
             enabled: false,
             callbacks: {
-              label: function (tooltipItems) {
-                return self.datasets[0].data[tooltipItems.index]
+              label: (tooltipItems) => {
+                return this.datasets[0].data[tooltipItems.index];
               },
-              title: function (tooltipItems) {
-                return self.labels[tooltipItems[0].index]
+              title: (tooltipItems) => {
+                return this.labels[tooltipItems[0].index];
               },
-              labelTextColor: function (tooltipItems) {
-                return self.colorParse[tooltipItems.index]
+              labelTextColor: (tooltipItems) => {
+                return this.colorParse[tooltipItems.index];
               }
             },
-            custom: function (context) {
+            custom: (context) => {
               // Tooltip Element
-              const tooltipEl = self.$el.querySelector('.linechart_tooltip')
+              const tooltipEl = this.$el.querySelector('.linechart_tooltip');
 
               // Hide if no tooltip
-              const tooltipModel = context
+              const tooltipModel = context;
               if (tooltipModel.opacity === 0) {
-                tooltipEl.style.opacity = 0
-                return
+                tooltipEl.style.opacity = 0;
+                return;
               }
 
               // Set caret Position
-              tooltipEl.classList.remove('above', 'below', 'no-transform')
+              tooltipEl.classList.remove('above', 'below', 'no-transform');
               if (tooltipModel.yAlign) {
-                tooltipEl.classList.add(tooltipModel.yAlign)
+                tooltipEl.classList.add(tooltipModel.yAlign);
               } else {
-                tooltipEl.classList.add('no-transform')
+                tooltipEl.classList.add('no-transform');
               }
 
-              function getBody (bodyItem) {
-                return bodyItem.lines
+              function getBody(bodyItem) {
+                return bodyItem.lines;
               }
               // Set Text
               if (tooltipModel.body) {
-                const titleLines = tooltipModel.title || []
-                const bodyLines = tooltipModel.body.map(getBody)
+                const titleLines = tooltipModel.title || [];
+                const bodyLines = tooltipModel.body.map(getBody);
 
-                const divDate = self.$el.querySelector('.tooltip_header')
-                divDate.innerHTML = titleLines
+                const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
+                divDate.innerHTML = titleLines;
+                const color = tooltipModel.labelTextColors[0];
+                const divValue = this.$el.querySelector('.tooltip_value');
+                const value = bodyLines[0][0]; // assuming bodyLines[0][0] contains the value
+                const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
 
-                const color = tooltipModel.labelTextColors[0]
-                const divValue = self.$el.querySelector('.tooltip_value')
+                const nodeName = this.$el.querySelector('.tooltip_dot').attributes[0].nodeName;
 
-                const nodeName = self.$el.querySelector('.tooltip_dot').attributes[0].nodeName
-                divValue.innerHTML = '<span ' + nodeName + '= "" class="tooltip_dot" style = "background-color:' + color + '"></span>' + ' ' + bodyLines[0]
+                divValue.innerHTML = `
+                  <div class="tooltip_value-content">
+                      <span ${nodeName}="" class="tooltip_dot" style="background-color:${color};"></span>
+                      ${displayValue}
+                    </div>
+                  `;
               }
 
-              const {
-                offsetLeft: positionX,
-                offsetTop: positionY
-              } = self.chart.canvas
+              const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;
 
-              const canvasWidth = Number(self.chart.canvas.style.width.replace(/\D/g, ''))
-              const canvasHeight = Number(self.chart.canvas.style.height.replace(/\D/g, ''))
-              tooltipEl.style.position = 'absolute'
-              tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px'
-              tooltipEl.style.pointerEvents = 'none'
-              let tooltipX = positionX + tooltipModel.caretX + 10
-              let tooltipY = positionY + tooltipModel.caretY - 18
-              if (tooltipX + tooltipEl.clientWidth + self.legendLeftMargin > positionX + canvasWidth) { // tooltip disappears at the right of the canvas
-                tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10
+              const canvasWidth = Number(this.chart.canvas.style.width.replace(/\D/g, ''));
+              const canvasHeight = Number(this.chart.canvas.style.height.replace(/\D/g, ''));
+              tooltipEl.style.position = 'absolute';
+              tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+              tooltipEl.style.pointerEvents = 'none';
+              let tooltipX = positionX + tooltipModel.caretX + 10;
+              let tooltipY = positionY + tooltipModel.caretY - 18;
+              if (tooltipX + tooltipEl.clientWidth + this.legendLeftMargin > positionX + canvasWidth) {
+                tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10;
               }
-              if (tooltipY + tooltipEl.clientHeight > positionY + 0.9 * canvasHeight) { // tooltip disappears at the bottom of the canvas
-                tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 18
+              if (tooltipY + tooltipEl.clientHeight > positionY + 0.9 * canvasHeight) {
+                tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 18;
               }
               if (tooltipX < positionX) {
-                tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2
-                tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 18
+                tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2;
+                tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 18;
               }
-              tooltipEl.style.left = tooltipX + 'px'
-              tooltipEl.style.top = tooltipY + 'px'
-              tooltipEl.style.opacity = 1
+              tooltipEl.style.left = tooltipX + 'px';
+              tooltipEl.style.top = tooltipY + 'px';
+              tooltipEl.style.opacity = 1;
             }
           }
         }
-      })
+      });
     },
-    loadColors () {
-      this.colorParse = []
-      this.colorHover = []
-      this.colorPattern = []
-      this.colorPatternHover = []
+    loadColors() {
+      this.colorParse = [];
+      this.colorHover = [];
+
+      const palette = this.choosePalette();
+
       for (let i = 0; i < this.yparse.length; i++) {
+        let color;
         if (this.tmpColorParse[i] !== undefined) {
-          this.colorParse.push(this.getHexaFromName(this.tmpColorParse[i]))
-          this.colorHover.push(this.getHexaFromName(this.tmpColorParse[i], { hover: true }))
+          color = this.tmpColorParse[i];
         } else {
-          this.colorParse.push(this.getHexaFromName(this.listColors[i]))
-          this.colorHover.push(this.getHexaFromName(this.listColors[i], { hover: true }))
-          this.colorPattern.push(pattern.draw(this.listPattern[i], this.getHexaFromName(this.listColors[i])))
-          this.colorPatternHover.push(pattern.draw(this.listPattern[i], this.getHexaFromName(this.listColors[i], { hover: true })))
+          color = getColorsByIndex(i, palette);
         }
+        this.colorParse.push(color);
+        this.colorHover.push(chroma(color).brighten(0.5).hex());
       }
     },
-    changeColors (theme) {
-      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
-      this.loadColors()
-      this.chart.data.datasets[0].borderColor = this.colorParse
-      if (this.pattern) {
-        this.chart.data.datasets[0].backgroundColor = this.colorPattern
-        this.chart.data.datasets[0].hoverBackgroundColor = this.colorPatternHover
-      } else {
-        this.chart.data.datasets[0].backgroundColor = this.colorParse
-        this.chart.data.datasets[0].hoverBackgroundColor = this.colorHover
-      }
-      this.chart.data.datasets[0].hoverBorderColor = this.colorHover
-      this.chart.update(0)
+    choosePalette() {
+      // Using the refactored choosePalette function from utils
+      return choosePalette(this.selectedPalette);
+    },
+    changeColors(theme) {
+      Chart.Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
+      this.loadColors();
+      this.chart.data.datasets[0].borderColor = this.colorParse;
+      this.chart.data.datasets[0].backgroundColor = this.colorParse;
+      this.chart.data.datasets[0].hoverBackgroundColor = this.colorHover;
+      this.chart.data.datasets[0].hoverBorderColor = this.colorHover;
+      this.chart.update(0);
     }
   },
-  created () {
-    this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
-    this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
+  created() {
+    this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
+    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
   },
-  mounted () {
-    document.getElementById(this.widgetId).offsetWidth > 486 ? this.display = 'big' : this.display = 'small'
-    this.createChart()
-    const element = document.documentElement // Reference à l'element <html> du DOM
+  mounted() {
+    this.display =
+      document.getElementById(this.widgetId).offsetWidth > 486 ? 'big' : 'small';
+    this.createChart();
+    const element = document.documentElement; // Référence à l'élément <html> du DOM
     element.addEventListener('dsfr.theme', (e) => {
-      this.changeColors(e.detail.theme)
-    })
+      this.changeColors(e.detail.theme);
+    });
     addEventListener('resize', (event) => {
-      this.isSmall = document.documentElement.clientWidth < 767
-    })
+      this.isSmall = document.documentElement.clientWidth < 767;
+    });
   },
-  beforeUpdate () {
-    this.resetData()
-    this.createChart()
-    const element = document.documentElement
-    this.changeColors(element.getAttribute('data-fr-theme'))
+  beforeUpdate() {
+    this.resetData();
+    this.createChart();
+    const element = document.documentElement;
+    this.changeColors(element.getAttribute('data-fr-theme'));
   }
-}
+};
 </script>
+
 <style scoped lang="scss">
+@import './Style/Tooltip.scss';
+@import './Style/Rcol.scss';
+@import './Style/WidgetContainer.scss';
+
 .chart_legend {
-    display: flex;
-    flex-direction: row;
-    -moz-column-gap: 10%;
-    column-gap: 7%;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
-.widget_container {
-  .ml-lg {
-    margin-left: 0;
-  }
-  @media (min-width: 62em) {
-    .ml-lg {
-      margin-left: 3rem;
-    }
-  }
-  .r_col {
-    align-self: center;
-    .flex {
-      display: flex;
-      .legende_dot {
-        min-width: 0.8rem;
-        width: 0.8rem;
-        height: 0.8rem;
-        min-width: 0.8rem;
-        background-color: #000091;
-        display: inline-block;
-        margin-top: 0.25rem;
-        margin-left: 0;
-      }
-      .legende_dash_line1{
-        min-width: 0.35rem;
-        width: 0.35rem;
-        height: 0.2rem;
-        border-radius: 0%;
-        display: inline-block;
-        margin-top: 0.6rem;
-      }
-      .legende_dash_line2{
-        min-width: 0.35rem;
-        width: 0.35rem;
-        height: 0.2rem;
-        border-radius: 0%;
-        display: inline-block;
-        margin-top: 0.6rem;
-        margin-left: 0.1rem;
-      }
-    }
-  }
-  .chart canvas {
-    max-width: 100%;
-  }
-  .linechart_tooltip {
-    opacity: 0;
-    width: 11.25rem;
-    height: auto;
-    background-color: white;
-    position: fixed;
-    z-index: 999;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 18, 0.16);
-    text-align: left;
-    pointer-events: none;
-    font-size: 0.75rem;
-    .tooltip_header {
-      width: 100%;
-      height: 1.75rem;
-      background-color: #f6f6f6;
-      color: #6b6b6b;
-      padding-left: 0.75rem;
-      padding-top: 0.25rem;
-      padding-bottom: 0.25rem;
-    }
-    .tooltip_body {
-      padding-left: 0.75rem;
-      padding-right: 0.75rem;
-      padding-top:0.25rem;
-      line-height: 1.67;
-      .tooltip_dot {
-        min-width: 0.7rem;
-        width: 0.7rem;
-        height: 0.7rem;
-        background-color: #000091;
-        display: inline-block;
-        margin-top: 0.25rem;
-        margin-right: 0.25rem;
-      }
-      .tooltip_place {
-        color: #242424;
-      }
-      .tooltip_value {
-        color: #242424;
-        font-weight: bold;
-      }
-    }
-  }
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+  column-gap: 10px;
+  flex-wrap: wrap;
 }
 </style>

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 
+// Import des styles globaux
 import LineChart from './components/LineChart'
 import BarChart from './components/BarChart'
 import MapChart from './components/MapChart'
