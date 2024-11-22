@@ -122,7 +122,7 @@ export default {
     },
     pointradius: {
       type: Number,
-      default: 7
+      default: 5
     },
     showline: {
       type: Boolean,
@@ -306,10 +306,8 @@ export default {
           borderColor: self.colorParse[j],
           backgroundColor: self.colorParse[j],
           type: 'scatter',
-          pointRadius: 4,
-          pointHoverRadius: 4,
           pointRadius: self.pointradius,
-          pointHoverRadius: self.pointradius + 1,
+          pointHoverRadius: self.pointradius,
           pointHoverBackgroundColor: self.colorHover[j],
           pointHoverBorderColor: self.colorHover[j],
           showLine: self.showline,
