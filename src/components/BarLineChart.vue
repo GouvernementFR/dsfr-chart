@@ -100,10 +100,6 @@ export default {
       type: String,
       required: true
     },
-    namebar: {
-      type: String,
-      default: 'B1'
-    },
     colorbar: {
       type: String,
       default: undefined
@@ -114,7 +110,11 @@ export default {
     },
     name: {
       type: String,
-      default: 'S1'
+      default: ''
+    },
+    namebar: {
+      type: String,
+      default: ''
     },
     vline: {
       type: String,
@@ -157,6 +157,10 @@ export default {
       default: 'categorical'
     },
     unitTooltip: {
+      type: String,
+      default: ''  // Default to an empty string if no unit is specified
+    },
+    unitTooltipBar: {
       type: String,
       default: ''  // Default to an empty string if no unit is specified
     }
@@ -273,8 +277,8 @@ export default {
           borderColor: this.colorBarParse,
           hoverBorderColor: this.colorbarHover,
           hoverBackgroundColor: this.colorbarHover,
-          pointRadius: 4,
-          pointHoverRadius: 4,
+          pointRadius: 5,
+          pointHoverRadius: 5,
           barThickness: 32,
           type: 'bar',
           barPercentage: 0.5,
@@ -286,8 +290,8 @@ export default {
           backgroundColor: 'rgba(0, 0, 0, 0)',
           borderColor: this.colorParse,
           type: 'line',
-          pointRadius: 7,
-          pointHoverRadius: 7,
+          pointRadius: 5,
+          pointHoverRadius: 5,
           pointBackgroundColor: this.colorParse,
           pointBorderColor: this.colorParse,
           pointHoverBackgroundColor: this.colorHover,
@@ -602,14 +606,18 @@ export default {
                 bodyLines[0].forEach(function (line, i) {
                   if (line !== undefined) {
                     const color = colors[i] ? colors[i] : '#000'; // Fallback to black if color is undefined
-                    const displayValue = `${line}${self.unitTooltip ? ' ' + self.unitTooltip : ''}`;
+
+                    // Détecter si c'est une barre ou une ligne en fonction de l'index
+                    const displayValue = i === 0
+                      ? `${line}${self.unitTooltipBar ? ' ' + self.unitTooltipBar : ''}` // Barres
+                      : `${line}${self.unitTooltip ? ' ' + self.unitTooltip : ''}`; // Lignes
 
                     divValue.innerHTML += `
-                      <div class="tooltip_value-content" style="display: flex; align-items: center;">
-                        <span ${nodeName} class="tooltip_dot" style="background-color:${color};"></span>
-                        ${displayValue}
-                      </div>
-                    `;
+                  <div class="tooltip_value-content" style="display: flex; align-items: center;">
+                    <span ${nodeName} class="tooltip_dot" style="background-color:${color};"></span>
+                    ${displayValue}
+                  </div>
+    `;
                   }
                 });
               }

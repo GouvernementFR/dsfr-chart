@@ -146,7 +146,6 @@ export default {
         backgroundColor: this.colorParse,
         hoverBackgroundColor: this.colorHover,
         hoverBorderColor: this.colorHover,
-        hoverBorderWidth: 10,
       }]
     },
     createChart() {
@@ -327,12 +326,4 @@ export default {
 @import './Style/Tooltip.scss';
 @import './Style/Rcol.scss';
 @import './Style/WidgetContainer.scss';
-
-.chart_legend {
-  flex-direction: row;
-  display: flex;
-  justify-content: center;
-  column-gap: 10px;
-  flex-wrap: wrap;
-}
 </style>
