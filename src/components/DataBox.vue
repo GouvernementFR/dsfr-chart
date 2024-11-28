@@ -150,7 +150,7 @@ import MultiLineChart from "./MultiLineChart.vue";
 import SelectSource from "./SelectSource.vue";
 import SegmentedControls from "./SegmentedControls.vue";
 import TableVue from "./TableVue.vue";
-import { mixin, changeDateFormat } from "../utils.js";
+import { mixin, changeDateFormat } from "../utils/global.js";
 
 export default {
     name: "DataBox",

@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mixin } from '@/utils.js'
+import { mixin } from '@/utils/global.js'
 
 export default {
   name: 'GaugeChart',
