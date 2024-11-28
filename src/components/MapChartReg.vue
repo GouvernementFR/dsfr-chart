@@ -26,12 +26,11 @@
 
 <script>
 /* eslint-disable */
-import chroma from 'chroma-js'
 import LeftCol from '@/components/LeftCol'
 import maps from '@/components/maps'
 import * as d3 from 'd3-scale'
 import { isMobile } from 'mobile-device-detect'
-import { mixin, getColorsByIndex, choosePalette } from '@/utils.js'
+import { mixin, choosePalette } from '@/utils/global.js'
 
 export default {
   name: 'MapChartReg',

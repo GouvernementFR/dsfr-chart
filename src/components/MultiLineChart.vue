@@ -56,12 +56,12 @@
 /* eslint-disable */
 import { Chart } from 'chart.js';
 import chroma from 'chroma-js';
-import { mixin } from '@/utils.js';
 import {
-  getColorsByIndex,
+  mixin, getColorsByIndex,
   getNeutralColor,
   choosePalette
-} from '@/utils.js';
+} from '@/utils/global.js';
+import { configureChartDefaults } from '../utils/configureChartDefaults.js';
 
 export default {
   name: 'MultiLineChart',
@@ -359,11 +359,9 @@ export default {
       }
       this.chart.update(0);
     },
+    
     createChart() {
-      Chart.defaults.global.defaultFontFamily = 'Marianne';
-      Chart.defaults.global.defaultFontSize = 12;
-      Chart.defaults.global.defaultLineHeight = 1.66;
-      Chart.defaults.global.defaultFontColor = '#DDDDDD';
+      if (this.chart) this.chart.destroy();
 
       this.getData();
       const self = this;
@@ -651,6 +649,7 @@ export default {
     }
   },
   created() {
+    configureChartDefaults();
     this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
     this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
   },

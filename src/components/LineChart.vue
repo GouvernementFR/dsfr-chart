@@ -47,13 +47,12 @@
 <script>
 /* eslint-disable */
 import Chart from 'chart.js';
-import chroma from 'chroma-js';
-import { mixin } from '@/utils.js';
+import { generateBarLineChartColors } from '../utils/colors.js';
 import {
-  getColorsByIndex,
-  getNeutralColor,
+  mixin,
   choosePalette
-} from '@/utils.js';
+} from '@/utils/global.js';
+import { configureChartDefaults } from '../utils/configureChartDefaults.js';
 
 export default {
   name: 'LineChart',
@@ -266,35 +265,25 @@ export default {
       ];
     },
     loadColors() {
-      const palette = this.choosePalette();
-      let color;
-      if (this.color !== undefined) {
-        color = this.color;
-      } else {
-        color = getColorsByIndex(0, palette);
-      }
-      this.colorParse = color;
-      this.colorHover = chroma(color).brighten(0.5).hex();
+      const {
+        colorParse,
+        colorHover,
+        vlineColorParse,
+        hlineColorParse
+      } = generateBarLineChartColors({
+        vlineParse: this.vlineParse,
+        hlineParse: this.hlineParse,
+        tmpVlineColorParse: this.tmpVlineColorParse,
+        tmpHlineColorParse: this.tmpHlineColorParse,
+        colorbar: this.color,
+        selectedPalette: this.selectedPalette
+      });
 
-      // Couleurs pour les lignes verticales (vlines)
-      this.vlineColorParse = [];
-      for (let i = 0; i < this.vlineParse.length; i++) {
-        if (this.tmpVlineColorParse[i] !== undefined) {
-          this.vlineColorParse.push(this.tmpVlineColorParse[i]);
-        } else {
-          this.vlineColorParse.push(getNeutralColor());
-        }
-      }
-
-      // Couleurs pour les lignes horizontales (hlines)
-      this.hlineColorParse = [];
-      for (let i = 0; i < this.hlineParse.length; i++) {
-        if (this.tmpHlineColorParse[i] !== undefined) {
-          this.hlineColorParse.push(this.tmpHlineColorParse[i]);
-        } else {
-          this.hlineColorParse.push(getNeutralColor());
-        }
-      }
+      // Assignation des couleurs générées
+      this.colorParse = colorParse;
+      this.colorHover = colorHover;
+      this.vlineColorParse = vlineColorParse;
+      this.hlineColorParse = hlineColorParse;
     },
 
     choosePalette() {
@@ -321,10 +310,7 @@ export default {
       this.chart.update(0);
     },
     createChart() {
-      Chart.defaults.global.defaultFontFamily = 'Marianne';
-      Chart.defaults.global.defaultFontSize = 12;
-      Chart.defaults.global.defaultLineHeight = 1.66;
-      Chart.defaults.global.defaultFontColor = '#DDDDDD';
+      if (this.chart) this.chart.destroy();
 
       this.getData();
       const ctx = document.getElementById(this.chartId).getContext('2d');
@@ -560,6 +546,7 @@ export default {
     }
   },
   created() {
+    configureChartDefaults();
     this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
     this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
   },
