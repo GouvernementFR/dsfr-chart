@@ -34,14 +34,13 @@
 <script>
 /* eslint-disable */
 import { Chart } from 'chart.js';
-import chroma from 'chroma-js';
 import {
   mixin,
-  getColorsByIndex,
-  getNeutralColor,
-  getDefaultColor,
   choosePalette
-} from '@/utils.js';
+} from '../utils/global.js';
+import { generateColors } from '../utils/colors.js'; // Adaptez le chemin si nécessaire
+import { configureChartDefaults } from '../utils/configureChartDefaults.js';
+
 import annotationPlugin from 'chartjs-plugin-annotation';
 
 Chart.pluginService.register(annotationPlugin);
@@ -189,89 +188,21 @@ export default {
     },
 
     loadColors() {
-      this.colorParse = [];
-      this.colorHover = [];
+      const { colorParse, colorHover, legendColors } = generateColors({
+        yparse: this.yparse,
+        tmpColorParse: this.tmpColorParse,
+        highlightIndex: this.highlightIndex,
+        selectedPalette: this.selectedPalette,
+        reverseOrder: this.selectedPalette === 'divergentDescending',
+      })
 
-      // Load the selected palette for the chart colors
-      const palette = this.choosePalette();
-
-      // Check if `yparse` contains a single series with multiple values
-      const singleSeriesWithMultipleValues = this.yparse.length === 1 && Array.isArray(this.yparse[0]);
-      const applyHighlight = this.selectedPalette === 'neutral' && this.highlightIndex.length > 0;
-
-      // Reverse data order for divergentDescending to align with green-to-red
-      let adjustedYparse = this.selectedPalette === 'divergentDescending'
-        ? [...this.yparse].reverse() // Reverse the entire yparse array
-        : this.yparse;
-
-      // Generate colors for each dataset based on adjusted data order
-      for (let i = 0; i < adjustedYparse.length; i++) {
-        const dataSet = adjustedYparse[i];
-        let colors = [];
-        let hoverColors = [];
-
-        if (this.tmpColorParse[i] !== undefined) {
-          // Custom color is specified for the series
-          const color = this.tmpColorParse[i];
-          colors = Array(dataSet.length).fill(color);
-          hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-        } else if (applyHighlight && singleSeriesWithMultipleValues) {
-          // Single series with multiple values, highlight specific indices
-          for (let j = 0; j < dataSet.length; j++) {
-            if (this.highlightIndex.includes(j)) {
-              // Apply highlight color for specified indices
-              const color = getDefaultColor();
-              colors.push(color);
-              hoverColors.push(chroma(color).darken(0.8).hex());
-            } else {
-              // Apply neutral color for other bars
-              const color = getNeutralColor();
-              colors.push(color);
-              hoverColors.push(chroma(color).darken(0.8).hex());
-            }
-          }
-        } else {
-          // Standard case for multiple series or non-neutral palettes
-          if (this.selectedPalette === 'divergentAscending' || this.selectedPalette === 'divergentDescending') {
-            colors = Array(dataSet.length).fill(palette[i % palette.length]);
-            hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-          } else if (this.selectedPalette === 'categorical' || !this.selectedPalette) {
-            const color = getColorsByIndex(i, palette);
-            colors = Array(dataSet.length).fill(color);
-            hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-          } else if (this.selectedPalette === 'neutral' || this.selectedPalette === 'defaultColor') {
-            const color = palette[0];
-            colors = Array(dataSet.length).fill(color);
-            hoverColors = colors.map(c => chroma(color).darken(0.8).hex());
-          } else {
-            const allDataValues = this.yparse.flat();
-            const minValue = Math.min(...allDataValues);
-            const maxValue = Math.max(...allDataValues);
-            const colorScale = chroma.scale(palette).domain([maxValue, minValue]);
-            colors = dataSet.map(value => chroma(colorScale(value)).hex());
-            hoverColors = colors.map(color => chroma(color).darken(0.8).hex());
-          }
-        }
-
-        this.colorParse.push(colors);
-        this.colorHover.push(hoverColors);
-      }
-
-      // Adjust legend colors based on palette direction
-      if (this.selectedPalette === 'divergentDescending') {
-        // Reverse the colors for both the chart and the legend
-        this.legendColors = this.colorParse.map(colorArray => colorArray[0]).reverse();
-      } else {
-        // Keep the default order for ascending palettes
-        this.legendColors = this.colorParse.map(colorArray => colorArray[0]);
-      }
+      this.colorParse = colorParse;
+      this.colorHover = colorHover;
+      this.legendColors = legendColors;
     },
 
     createChart() {
-      Chart.defaults.global.defaultFontFamily = 'Marianne';
-      Chart.defaults.global.defaultFontSize = 12;
-      Chart.defaults.global.defaultLineHeight = 1.66;
-      Chart.defaults.global.defaultFontColor = '#DDDDDD';
+      if (this.chart) this.chart.destroy();
 
       this.getData();
       const ctx = document.getElementById(this.chartId).getContext('2d');
@@ -430,6 +361,7 @@ export default {
     },
   },
   created() {
+    configureChartDefaults();
     this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
     this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
   },

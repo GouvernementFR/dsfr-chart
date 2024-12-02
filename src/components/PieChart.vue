@@ -31,12 +31,12 @@
 <script>
 /* eslint-disable */
 import { Chart } from 'chart.js';
-import chroma from 'chroma-js';
-import { mixin } from '@/utils.js';
 import {
-  getColorsByIndex,
+  mixin,
   choosePalette
-} from '@/utils.js';
+} from '@/utils/global.js';
+import { generateColors } from '@/utils/colors.js';
+import { configureChartDefaults } from '../utils/configureChartDefaults.js';
 
 export default {
   name: 'PieChart',
@@ -149,10 +149,7 @@ export default {
       }]
     },
     createChart() {
-      Chart.defaults.global.defaultFontFamily = 'Marianne';
-      Chart.defaults.global.defaultFontSize = 12;
-      Chart.defaults.global.defaultLineHeight = 1.66;
-      Chart.defaults.global.defaultFontColor = '#DDDDDD';
+      if (this.chart) this.chart.destroy();
 
       this.getData();
       const ctx = document.getElementById(this.chartId).getContext('2d');
@@ -267,21 +264,15 @@ export default {
       });
     },
     loadColors() {
-      this.colorParse = [];
-      this.colorHover = [];
+        const { colorParse, colorHover, legendColors } = generateColors({
+          yparse: this.yparse,
+          tmpColorParse: this.tmpColorParse,
+          selectedPalette: this.selectedPalette,
+        });
 
-      const palette = this.choosePalette();
-
-      for (let i = 0; i < this.yparse.length; i++) {
-        let color;
-        if (this.tmpColorParse[i] !== undefined) {
-          color = this.tmpColorParse[i];
-        } else {
-          color = getColorsByIndex(i, palette);
-        }
-        this.colorParse.push(color);
-        this.colorHover.push(chroma(color).brighten(0.5).hex());
-      }
+        this.colorParse = colorParse;
+        this.colorHover = colorHover;
+        this.legendColors = legendColors;
     },
     choosePalette() {
       // Using the refactored choosePalette function from utils
@@ -298,6 +289,7 @@ export default {
     }
   },
   created() {
+    configureChartDefaults();
     this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
     this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
   },

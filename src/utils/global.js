@@ -1,6 +1,6 @@
 /* eslint-disable */
 import chroma from 'chroma-js';  // Import de chroma-js
-import colors from '../src/styles/assets/colors.json';  // Import du fichier colors.json
+import colors from '../styles/assets/colors.json';  // Import du fichier colors.json
 
 export const capitalize = function (string) {
   if (string) {
@@ -194,53 +194,6 @@ export function choosePalette(selectedPalette) {
     default:
       return getCategoricalPalette(); // Fallback
   }
-}
-
-// Core `loadColors` function
-export function loadColors({
-  yparse,
-  selectedPalette = '',
-  tmpColorParse = [],
-  highlightIndex = [],
-  reverseOrder = false
-}) {
-  const colorParse = [];
-  const colorHover = [];
-  const palette = choosePalette(selectedPalette);
-
-  // If we need to reverse the order for divergentDescending
-  const adjustedYparse = reverseOrder ? [...yparse].reverse() : yparse;
-
-  for (let i = 0; i < adjustedYparse.length; i++) {
-    const dataSet = adjustedYparse[i];
-    let colors = [];
-    let hoverColors = [];
-
-    if (tmpColorParse[i] !== undefined) {
-      const color = tmpColorParse[i];
-      colors = Array(dataSet.length).fill(color);
-      hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-    } else if (selectedPalette === 'neutral' && highlightIndex.length > 0 && Array.isArray(dataSet)) {
-      for (let j = 0; j < dataSet.length; j++) {
-        const color = highlightIndex.includes(j) ? defaultColor : neutralColor;
-        colors.push(color);
-        hoverColors.push(chroma(color).darken(0.8).hex());
-      }
-    } else {
-      if (selectedPalette.startsWith('divergent')) {
-        colors = Array(dataSet.length).fill(palette[i % palette.length]);
-        hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-      } else {
-        const color = getColorsByIndex(i, palette);
-        colors = Array(dataSet.length).fill(color);
-        hoverColors = colors.map(c => chroma(c).darken(0.8).hex());
-      }
-    }
-    colorParse.push(colors);
-    colorHover.push(hoverColors);
-  }
-
-  return { colorParse, colorHover, legendColors: reverseOrder ? colorParse.map(c => c[0]).reverse() : colorParse.map(c => c[0]) };
 }
 
 const dep = [

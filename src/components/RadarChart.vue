@@ -32,12 +32,14 @@
 /* eslint-disable */
 import { Chart } from 'chart.js';
 import chroma from 'chroma-js';
-import { mixin } from '@/utils.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
+import { generateColors } from '@/utils/colors.js';
+import { configureChartDefaults } from '../utils/configureChartDefaults.js';
+
 import {
-  getColorsByIndex,
-  choosePalette
-} from '@/utils.js';
+  choosePalette,
+  mixin
+} from '@/utils/global.js';
 
 Chart.pluginService.register(annotationPlugin);
 
@@ -149,20 +151,17 @@ export default {
       });
     },
     loadColors() {
-      this.colorParse = [];
-      this.colorHover = [];
-      const palette = this.choosePalette();
-      for (let i = 0; i < this.yparse.length; i++) {
-        let color;
-        if (this.tmpColorParse[i] !== undefined) {
-          color = this.tmpColorParse[i];
-        } else {
-          color = getColorsByIndex(i, palette);
-        }
-        this.colorParse.push(color);
-        this.colorHover.push(chroma(color).brighten(0.5).hex());
-      }
+      // Utilisation de generateColors
+      const { colorParse, colorHover } = generateColors({
+        yparse: this.yparse.map(() => [1]), // Simule une série avec une valeur unique
+        tmpColorParse: this.tmpColorParse,
+        selectedPalette: this.selectedPalette,
+      });
+
+      this.colorParse = colorParse.map(colors => colors[0]); // Récupère uniquement la première couleur de chaque série
+      this.colorHover = colorHover.map(colors => colors[0]); // Idem pour les couleurs de survol
     },
+
     choosePalette() {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
@@ -183,10 +182,7 @@ export default {
       this.chart.update(0);
     },
     createChart() {
-      Chart.defaults.global.defaultFontFamily = 'Marianne';
-      Chart.defaults.global.defaultFontSize = 12;
-      Chart.defaults.global.defaultLineHeight = 1.66;
-      Chart.defaults.global.defaultFontColor = '#DDDDDD';
+      if (this.chart) this.chart.destroy();
 
       this.getData();
       const ctx = document.getElementById(this.chartId).getContext('2d');
@@ -331,6 +327,7 @@ export default {
     }
   },
   created() {
+    configureChartDefaults();
     this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
     this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
   },

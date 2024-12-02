@@ -46,8 +46,9 @@
 <script>
 /* eslint-disable */
 import { Chart } from 'chart.js'
-import chroma from 'chroma-js' // Assure-toi que chroma-js est installé
-import { mixin, getColorsByIndex, choosePalette} from '@/utils.js'
+import { generateScatterChartColors } from '@/utils/colors.js';
+import { mixin, choosePalette } from '@/utils/global.js';
+import { configureChartDefaults } from '../utils/configureChartDefaults.js';
 
 export default {
   name: 'ScatterChart',
@@ -316,10 +317,7 @@ export default {
       })
     },
     createChart() {
-      Chart.defaults.global.defaultFontFamily = 'Marianne'
-      Chart.defaults.global.defaultFontSize = 12
-      Chart.defaults.global.defaultLineHeight = 1.66
-      Chart.defaults.global.defaultFontColor = '#DDDDDD';
+      if (this.chart) this.chart.destroy();
 
       this.getData()
       const self = this
@@ -542,7 +540,7 @@ export default {
                         <span class="tooltip_dot" style="background-color:${self.colorParse[i]};"></span>
                         <p class="tooltip_place fr-mb-0">${displayValue}</p>
                       </div>
-                    `;                  
+                    `;
                   }
                 })
               }
@@ -598,55 +596,26 @@ export default {
       this.chart.update(0)
     },
     loadColors() {
-      this.colorParse = [];
-      this.colorHover = [];
+      const {
+        colorParse,
+        colorHover,
+        vlineColorParse,
+        hlineColorParse
+      } = generateScatterChartColors({
+        yparse: this.yparse,
+        tmpColorParse: this.tmpColorParse,
+        selectedPalette: this.selectedPalette,
+        highlightIndex: this.highlightIndex,
+        vlineParse: this.vlineParse,
+        tmpVlineColorParse: this.tmpVlineColorParse,
+        hlineParse: this.hlineParse,
+        tmpHlineColorParse: this.tmpHlineColorParse
+      });
 
-      const paletteType = this.choosePalette();
-
-      for (let i = 0; i < this.yparse.length; i++) {
-        let color;
-
-        if (this.tmpColorParse[i] !== undefined) {
-          color = this.tmpColorParse[i];
-        } else if (i === this.highlightIndex) {
-          color = defaultColor;
-        } else if (this.highlightIndex !== -1) {
-          color = neutralColor;
-        } else {
-          color = getColorsByIndex(i, paletteType);
-        }
-
-        // Vérifier et convertir la couleur en format hexadécimal
-        try {
-          color = chroma(color).hex();
-        } catch (error) {
-          console.error(`Format de couleur invalide: ${color}`, error);
-          color = '#000000'; // Couleur par défaut en cas d'erreur
-        }
-
-        this.colorParse.push(color);
-        this.colorHover.push(chroma(color).darken(0.8).hex());
-      }
-
-      // Couleurs pour les lignes verticales
-      this.vlineColorParse = [];
-      for (let i = 0; i < this.vlineParse.length; i++) {
-        if (this.tmpVlineColorParse[i] !== undefined) {
-          this.vlineColorParse.push(this.tmpVlineColorParse[i]);
-        } else {
-          this.vlineColorParse.push(neutralColor);
-        }
-      }
-
-      // Couleurs pour les lignes horizontales
-      this.hlineColorParse = [];
-      for (let i = 0; i < this.hlineParse.length; i++) {
-        if (this.tmpHlineColorParse[i] !== undefined) {
-          this.hlineColorParse.push(this.tmpHlineColorParse[i]);
-        } else {
-          this.hlineColorParse.push(neutralColor);
-        }
-      }
+      this.colorParse = colorParse;
+      this.colorHover = colorHover;
+      this.vlineColorParse = vlineColorParse;
+      this.hlineColorParse = hlineColorParse;
     },
     choosePalette() {
       // Using the refactored choosePalette function from utils
@@ -657,7 +626,7 @@ export default {
       Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme);
       this.chart.options.scales.xAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
       this.chart.options.scales.yAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
-     
+
       this.loadColors()
       if (theme === 'light') {
         this.colorPrecisionBar = '#161616'
@@ -675,6 +644,7 @@ export default {
     }
   },
   created() {
+    configureChartDefaults();
     this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
     this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
   },

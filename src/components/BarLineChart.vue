@@ -49,13 +49,9 @@
 <script>
 /* eslint-disable */
 import { Chart } from 'chart.js';
-import chroma from 'chroma-js';
-import { mixin } from '@/utils.js';
-import {
-  choosePalette,
-  getColorsByIndex,
-  getNeutralColor,
-} from '@/utils.js';
+import { mixin, choosePalette} from '../utils/global.js';
+import { generateBarLineChartColors } from '../utils/colors.js';
+import { configureChartDefaults } from '../utils/configureChartDefaults.js';
 
 export default {
   name: 'BarLineChart',
@@ -307,51 +303,33 @@ export default {
     },
 
     loadColors() {
-      const palette = this.choosePalette();
+      const {
+        colorBarParse,
+        colorbarHover,
+        colorParse,
+        colorHover,
+        vlineColorParse,
+        hlineColorParse
+      } = generateBarLineChartColors({
+        vlineParse: this.vlineParse,
+        hlineParse: this.hlineParse,
+        tmpVlineColorParse: this.tmpVlineColorParse,
+        tmpHlineColorParse: this.tmpHlineColorParse,
+        colorbar: this.colorbar,
+        color: this.color,
+        selectedPalette: this.selectedPalette
+      });
 
-      // Couleur pour la ligne
-      if (this.color !== undefined) {
-        this.colorParse = this.color;
-      } else {
-        this.colorParse = getColorsByIndex(1, palette);
-      }
-
-      // Couleur pour les barres
-      if (this.colorbar !== undefined) {
-        this.colorBarParse = this.colorbar;
-      } else {
-        this.colorBarParse = getColorsByIndex(0, palette);
-      }
-
-      // Couleurs pour le survol (hover)
-      this.colorHover = chroma(this.colorParse).darken(0.8).hex();
-      this.colorbarHover = chroma(this.colorBarParse).darken(0.8).hex();
-
-      // Couleurs pour les lignes verticales (vlines)
-      this.vlineColorParse = [];
-      for (let i = 0; i < this.vlineParse.length; i++) {
-        if (this.tmpVlineColorParse[i] !== undefined) {
-          this.vlineColorParse.push(this.tmpVlineColorParse[i]);
-        } else {
-          this.vlineColorParse.push(getNeutralColor());
-        }
-      }
-
-      // Couleurs pour les lignes horizontales (hlines)
-      this.hlineColorParse = [];
-      for (let i = 0; i < this.hlineParse.length; i++) {
-        if (this.tmpHlineColorParse[i] !== undefined) {
-          this.hlineColorParse.push(this.tmpHlineColorParse[i]);
-        } else {
-          this.hlineColorParse.push(getNeutralColor());
-        }
-      }
+      this.colorBarParse = colorBarParse;
+      this.colorbarHover = colorbarHover;
+      this.colorParse = colorParse;
+      this.colorHover = colorHover;
+      this.vlineColorParse = vlineColorParse;
+      this.hlineColorParse = hlineColorParse;
     },
+
     createChart() {
-      Chart.defaults.global.defaultFontFamily = 'Marianne';
-      Chart.defaults.global.defaultFontSize = 12;
-      Chart.defaults.global.defaultLineHeight = 1.66;
-      Chart.defaults.global.defaultFontColor = '#DDDDDD';
+      if (this.chart) this.chart.destroy();
 
       this.getData();
       const self = this;
@@ -674,6 +652,7 @@ export default {
     }
   },
   created() {
+    configureChartDefaults();
     this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
     this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
   },

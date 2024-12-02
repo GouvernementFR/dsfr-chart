@@ -14,7 +14,7 @@
           <div class="tooltip_header fr-text--sm fr-mb-0">{{ tooltip.place }}</div>
           <div class="tooltip_body">
             <div class="tooltip_value-content">
-            <div class="tooltip_value">{{ convertStringToLocaleNumber(tooltip.value) }}</div>
+              <div class="tooltip_value">{{ convertStringToLocaleNumber(tooltip.value) }}</div>
             </div>
           </div>
         </div>
@@ -69,7 +69,9 @@ import LeftCol from '@/components/LeftCol'
 import maps from '@/components/maps'
 import * as d3 from 'd3-scale'
 import { isMobile } from 'mobile-device-detect'
-import { mixin, getColorsByIndex, choosePalette} from '@/utils.js'
+import { mixin, getColorsByIndex, choosePalette } from '@/utils/global.js'
+import { generateColors } from '@/utils/colors.js'; // Import depuis colors.js
+
 
 export default {
   name: 'MapChart',
@@ -423,18 +425,27 @@ export default {
     },
 
     loadColors() {
-      this.colorParse = []
-      this.colorHover = []
-      for (let i = 0; i < this.yparse.length; i++) {
-        if (this.tmpColorParse[i] !== undefined) {
-          this.colorParse.push(this.getHexaFromName(this.tmpColorParse[i]))
-          this.colorHover.push(this.getHexaFromName(this.tmpColorParse[i], { hover: true }))
-        } else {
-          this.colorParse.push(this.getHexaFromName(this.listColors[i]))
-          this.colorHover.push(this.getHexaFromName(this.listColors[i], { hover: true }))
-        }
-      }
+      const {
+        colorParse,
+        colorHover
+      } = generateColors({
+        yparse: this.yparse,
+        tmpColorParse: this.tmpColorParse,
+        selectedPalette: this.selectedPalette,
+        customColorHandler: (index) => ({
+          color: this.tmpColorParse[index] !== undefined
+            ? this.getHexaFromName(this.tmpColorParse[index])
+            : this.getHexaFromName(this.listColors[index]),
+          hoverColor: this.tmpColorParse[index] !== undefined
+            ? this.getHexaFromName(this.tmpColorParse[index], { hover: true })
+            : this.getHexaFromName(this.listColors[index], { hover: true })
+        })
+      });
+
+      this.colorParse = colorParse;
+      this.colorHover = colorHover;
     },
+
     changeColors(theme) {
       this.loadColors()
       Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
