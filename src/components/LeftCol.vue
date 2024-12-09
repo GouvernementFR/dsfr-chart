@@ -28,7 +28,9 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { mixin } from '@/utils/global.js'
+
 export default {
   name: 'LeftCol',
   mixins: [mixin],
@@ -50,5 +52,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/LeftCol.scss';
+@import '@/styles/LeftCol.scss';
 </style>

@@ -33,13 +33,9 @@
 import { Chart } from 'chart.js';
 import chroma from 'chroma-js';
 import annotationPlugin from 'chartjs-plugin-annotation';
+import { choosePalette, mixin } from '@/utils/global.js';
 import { generateColors } from '@/utils/colors.js';
-import { configureChartDefaults } from '../utils/configureChartDefaults.js';
-
-import {
-  choosePalette,
-  mixin
-} from '@/utils/global.js';
+import { configureChartDefaults } from '@/utils/configureChartDefaults.js';
 
 Chart.pluginService.register(annotationPlugin);
 
@@ -353,7 +349,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/Tooltip.scss';
-@import './Style/Rcol.scss';
-@import './Style/WidgetContainer.scss';
+@import '@/styles/Tooltip.scss';
+@import '@/styles/Rcol.scss';
+@import '@/styles/WidgetContainer.scss';
 </style>

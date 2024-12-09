@@ -1,21 +1,36 @@
+# IDE / Editor
+.idea/
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Dependency directories
+node_modules/
+vendor/
+
+# Build output
+BarChart/
+BarLineChart/
+Charts/
+LineChart/
+MapChart/
+MultiLineChart/
+PieChart/
+ScatterChart/
+GaugeChart/
+MapChartReg/
+RadarChart/
+TableChart/
+DataBox/
+
+# File systems
 .DS_Store
-node_modules
-/BarChart
-/BarLineChart
-/Charts
-/LineChart
-/MapChart
-/MultiLineChart
-/PieChart
-/ScatterChart
-/GaugeChart
-/MapChartReg
-/RadarChart
-/TableChart
-roadmap.md
+Thumbs.db
 
-
-# local env files
+# Env files
+.env
 .env.local
 .env.*.local
 
@@ -33,7 +48,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-#/package-lock.json
 
 *storybook.log
 /test-results/

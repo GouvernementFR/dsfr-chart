@@ -29,8 +29,7 @@
 import LeftCol from '@/components/LeftCol'
 import maps from '@/components/maps'
 import * as d3 from 'd3-scale'
-import { isMobile } from 'mobile-device-detect'
-import { mixin, choosePalette } from '@/utils/global.js'
+import { isMobile, mixin, choosePalette } from '@/utils/global.js'
 
 export default {
   name: 'MapChartReg',
@@ -189,7 +188,7 @@ export default {
       return choosePalette(this.selectedPalette);
     },
     displayTooltip(e) {
-      if (isMobile) return
+      if (isMobile()) return
       const parentWidget = document.getElementById(this.widgetId)
       const hoverdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
 
@@ -222,7 +221,7 @@ export default {
       this.tooltip.visibility = 'visible'
     },
     hideTooltip(e) {
-      if (isMobile) return
+      if (isMobile()) return
       this.tooltip.visibility = 'hidden'
       const parentWidget = document.getElementById(this.widgetId)
       const hoverdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
@@ -292,5 +291,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/MapChart.scss';
+@import '@/styles/MapChart.scss';
 </style>

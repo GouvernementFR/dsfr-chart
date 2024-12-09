@@ -103,27 +103,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.scroll {
-  table-layout: fixed;
-  border-collapse: collapse;
-  overflow: auto;
-}
-
-.scroll thead {
-  position: sticky;
-  top: 0;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.caption {
-  font-weight: bold;
-  text-align: left;
-}
+@import '@/styles/TableChart.scss';
 </style>

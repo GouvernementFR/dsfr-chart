@@ -56,12 +56,8 @@
 /* eslint-disable */
 import { Chart } from 'chart.js';
 import chroma from 'chroma-js';
-import {
-  mixin, getColorsByIndex,
-  getNeutralColor,
-  choosePalette
-} from '@/utils/global.js';
-import { configureChartDefaults } from '../utils/configureChartDefaults.js';
+import { mixin, getColorsByIndex, getNeutralColor, choosePalette } from '@/utils/global.js';
+import { configureChartDefaults } from '@/utils/configureChartDefaults.js';
 
 export default {
   name: 'MultiLineChart',
@@ -676,7 +672,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/Tooltip.scss';
-@import './Style/Rcol.scss';
-@import './Style/WidgetContainer.scss';
+@import '@/styles/Tooltip.scss';
+@import '@/styles/Rcol.scss';
+@import '@/styles/WidgetContainer.scss';
 </style>

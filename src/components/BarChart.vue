@@ -34,12 +34,9 @@
 <script>
 /* eslint-disable */
 import { Chart } from 'chart.js';
-import {
-  mixin,
-  choosePalette
-} from '../utils/global.js';
-import { generateColors } from '../utils/colors.js'; // Adaptez le chemin si nécessaire
-import { configureChartDefaults } from '../utils/configureChartDefaults.js';
+import { mixin, choosePalette } from '@/utils/global.js';
+import { generateColors } from '@/utils/colors.js';
+import { configureChartDefaults } from '@/utils/configureChartDefaults.js';
 
 import annotationPlugin from 'chartjs-plugin-annotation';
 
@@ -387,7 +384,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import './Style/Tooltip.scss';
-@import './Style/Rcol.scss';
-@import './Style/WidgetContainer.scss';
+@import '@/styles/Tooltip.scss';
+@import '@/styles/Rcol.scss';
+@import '@/styles/WidgetContainer.scss';
 </style>

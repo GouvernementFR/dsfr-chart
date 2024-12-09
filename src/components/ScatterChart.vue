@@ -46,9 +46,9 @@
 <script>
 /* eslint-disable */
 import { Chart } from 'chart.js'
-import { generateScatterChartColors } from '@/utils/colors.js';
 import { mixin, choosePalette } from '@/utils/global.js';
-import { configureChartDefaults } from '../utils/configureChartDefaults.js';
+import { generateScatterChartColors } from '@/utils/colors.js';
+import { configureChartDefaults } from '@/utils/configureChartDefaults.js';
 
 export default {
   name: 'ScatterChart',
@@ -669,7 +669,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/Tooltip.scss';
-@import './Style/Rcol.scss';
-@import './Style/WidgetContainer.scss';
+@import '@/styles/Tooltip.scss';
+@import '@/styles/Rcol.scss';
+@import '@/styles/WidgetContainer.scss';
 </style>

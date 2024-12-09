@@ -1,10 +1,6 @@
 /* eslint-disable */
 import chroma from 'chroma-js';
-import {
-    getDefaultColor, getColorsByIndex,
-    getNeutralColor,
-    choosePalette
-  } from '@/utils/global.js';
+import { getDefaultColor, getColorsByIndex, getNeutralColor, choosePalette } from '@/utils/global.js';
 
 /**
  * Génère des couleurs pour un graphique.
@@ -90,9 +86,6 @@ export function generateColors({
     };
 }
 
-/**
- * Génère les couleurs pour le composant BarLineChart.
- */
 export function generateBarLineChartColors({
     vlineParse = [],
     hlineParse = [],
@@ -174,4 +167,73 @@ export function generateScatterChartColors({
         vlineColorParse,
         hlineColorParse
     };
+}
+
+export function changeChartColors({
+  Chart,
+  theme,
+  yparse,
+  loadColors,
+  getHexaFromToken,
+  colorPrecisionBarCallback = () => {},
+}) {
+  // Met à jour les couleurs globales
+  Chart.defaults.global.defaultFontColor = getHexaFromToken('text-mention-grey', theme);
+
+  console.log('Debug: yparse', yparse); // Add this
+  console.log('Debug: chart.data.datasets', chart.data.datasets); // Add this
+  console.log('Debug: chart.colorParse', chart.colorParse); // Add this
+
+  if (!Array.isArray(yparse) || yparse.length === 0) {
+    console.error('yparse is not a valid array or is empty:', yparse);
+    return;
+  }
+  // Met à jour les options des axes
+  if (chart.options.scales) {
+    if (chart.options.scales.xAxes) {
+      chart.options.scales.xAxes[0].ticks.fontColor = getHexaFromToken('text-mention-grey', theme);
+    }
+    if (chart.options.scales.yAxes) {
+      chart.options.scales.yAxes[0].ticks.fontColor = getHexaFromToken('text-mention-grey', theme);
+    }
+  }
+
+  if (chart.options.scale && chart.options.scale.gridLines) {
+    chart.options.scale.gridLines.color = getHexaFromToken('border-default-grey', theme);
+  }
+
+  // Charge les couleurs
+  loadColors();
+
+  // Définir `colorPrecisionBar`
+  const colorPrecisionBar = theme === 'light' ? '#161616' : '#FFFFFF';
+  colorPrecisionBarCallback(colorPrecisionBar);
+
+  // Mise à jour des datasets
+  for (let i = 0; i < yparse.length; i++) {
+    if (chart.data.datasets[i]) {
+      chart.data.datasets[i].borderColor = chart.colorParse[i];
+      chart.data.datasets[i].backgroundColor = chroma(chart.colorParse[i]).alpha(0.3).hex();
+      chart.data.datasets[i].hoverBorderColor = chart.colorHover[i];
+      chart.data.datasets[i].hoverBackgroundColor = chart.colorHover[i];
+
+      /* eslint-disable */
+      console.log('Debug: chart.colorParse', chart.colorParse);
+      console.log('Debug: chart.colorParse[i]', chart.colorParse[i]);
+      console.log('Debug: chart.data.datasets', chart.data.datasets);
+      console.log('Debug: chart.data.datasets[i]', chart.data.datasets[i]);
+
+      if (chart.data.datasets[i].pointBackgroundColor !== undefined) {
+        chart.data.datasets[i].pointBackgroundColor = chart.colorParse[i];
+      }
+      if (chart.data.datasets[i].pointHoverBackgroundColor !== undefined) {
+        chart.data.datasets[i].pointHoverBackgroundColor = chart.colorHover[i];
+      }
+      if (chart.data.datasets[i].pointHoverBorderColor !== undefined) {
+        chart.data.datasets[i].pointHoverBorderColor = chart.colorHover[i];
+      }
+    }
+  }
+  // Mise à jour du graphique
+  chart.update(0);
 }

@@ -101,5 +101,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../styles/components/boxes/tableVue.scss';
+@import '@/styles/tableVue.scss';
 </style>

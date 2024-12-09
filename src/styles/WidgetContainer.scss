@@ -1,0 +1,23 @@
+.widget_container {
+  .ml-lg {
+    margin-left: 0;
+  }
+
+  @media (min-width: 62em) {
+    .ml-lg {
+      margin-left: 3rem;
+    }
+  }
+
+  .chart canvas {
+    max-width: 100%;
+  }
+
+  .chart_legend {
+    flex-direction: row;
+    display: flex;
+    column-gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

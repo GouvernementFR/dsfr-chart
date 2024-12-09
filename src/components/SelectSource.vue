@@ -57,6 +57,6 @@ export default {
 };
 </script>
 
-<style scoped>
-@import "../styles/components/boxes/selectSource.scss";
+<style scoped lang="scss">
+@import '@/styles/selectSource.scss';
 </style>

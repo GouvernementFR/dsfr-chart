@@ -1,13 +1,13 @@
 .principaux-indicateurs-axes-cell {
   cursor: pointer;
 
-  &__axe-tag{
+  &__axe-tag {
     display: flex;
     flex-direction: column;
     white-space: nowrap;
     overflow-x: hidden;
-  
-    &:hover{
+
+    &:hover {
       display: flex;
       overflow: visible;
       white-space: wrap;
@@ -27,7 +27,7 @@
   white-space: normal;
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     line-clamp: unset;
     -webkit-line-clamp: unset;
     white-space: normal;
@@ -35,7 +35,7 @@
     z-index: 9999;
     position: relative;
     background-color: white;
-  } 
+  }
 }
 
 .cell-multiline-without-hover {
@@ -55,14 +55,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  
-    &__icon {
-      height: auto;
-      max-width: 25px;
-      max-height: 25px;
-      display: block;
-      margin: 0 auto;
-    }
+
+  &__icon {
+    height: auto;
+    max-width: 25px;
+    max-height: 25px;
+    display: block;
+    margin: 0 auto;
+  }
 }
 
 .cells-tab-segment-graph {

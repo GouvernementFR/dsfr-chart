@@ -68,10 +68,8 @@ import chroma from 'chroma-js'
 import LeftCol from '@/components/LeftCol'
 import maps from '@/components/maps'
 import * as d3 from 'd3-scale'
-import { isMobile } from 'mobile-device-detect'
-import { mixin, getColorsByIndex, choosePalette } from '@/utils/global.js'
-import { generateColors } from '@/utils/colors.js'; // Import depuis colors.js
-
+import { isMobile, mixin, getColorsByIndex, choosePalette } from '@/utils/global.js'
+import { generateColors } from '@/utils/colors.js';
 
 export default {
   name: 'MapChart',
@@ -319,7 +317,7 @@ export default {
       this.leftColProps.colMax = this.colRight
     },
     displayTooltip(e) {
-      if (isMobile) return
+      if (isMobile()) return
       const parentWidget = document.getElementById(this.widgetId)
       let hoverdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
 
@@ -368,7 +366,7 @@ export default {
       this.tooltip.visibility = 'visible'
     },
     hideTooltip(e) {
-      if (isMobile) return
+      if (isMobile()) return
       this.tooltip.visibility = 'hidden'
       const parentWidget = document.getElementById(this.widgetId)
       let hoverdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
@@ -501,5 +499,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './Style/MapChart.scss';
+@import '@/styles/MapChart.scss';
 </style>
