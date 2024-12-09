@@ -34,3 +34,10 @@ pnpm-debug.log*
 *.sln
 *.sw?
 #/package-lock.json
+
+*storybook.log
+/test-results/
+/blob-report/
+/storybook-static/
+/playwright-report/
+/playwright/.cache/
