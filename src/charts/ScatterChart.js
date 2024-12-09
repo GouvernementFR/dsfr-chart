@@ -1,11 +1,7 @@
-import Vue from 'vue'
+import { defineCustomElement } from 'vue'
 
 import ScatterChart from './components/ScatterChart'
 
-import vueCustomElement from 'vue-custom-element'
+const ScatterChartElement = defineCustomElement(ScatterChart)
 
-Vue.config.productionTip = false
-
-Vue.use(vueCustomElement)
-
-Vue.customElement('scatter-chart', ScatterChart)
+customElements.define('scatter-chart', ScatterChartElement, { shadowRoot: false })

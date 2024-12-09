@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
   <div class="fr-select-group select-widget">
-    <select v-if="lsOptions.length > 0" class="fr-select" :id="id_select" v-model="selectedOption" @change="emitSelectedValue">
+    <select v-if="lsOptions.length > 0" class="fr-select" :ref="id_select" v-model="selectedOption" @change="emitSelectedValue">
       <option v-for="option in lsOptions" :key="option.value" :value="option.value">
         {{ option.label }}
       </option>

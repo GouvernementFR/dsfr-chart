@@ -14,7 +14,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr :id="'table-sm-row-key-' + rowIndex" v-for="(row, rowIndex) in tablevue_data.slice(1)" :key="rowIndex"
+              <tr :ref="'table-sm-row-key-' + rowIndex" v-for="(row, rowIndex) in tablevue_data.slice(1)" :key="rowIndex"
                 :data-row-key="rowIndex">
                 <td class="fr-cell--center fr-px-2v" v-for="(column, columnIndex) in row " :key="columnIndex">
                   <div class="principaux-indicateurs-axes-cell"
@@ -86,7 +86,7 @@ export default {
       required: true,
     },
     isMultilineTableHeader: {
-      type: Boolean,
+      type: [Boolean, String],
       default: true, // Défini par défaut à true
     },
   },

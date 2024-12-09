@@ -1,5 +1,6 @@
+/* eslint-disable */
 <template>
-  <div class="widget_container fr-grid-row" :id="widgetId">
+  <div class="widget_container fr-grid-row" :ref="widgetId">
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="gauge-container">
@@ -83,7 +84,7 @@ export default {
       default: '2rem'
     },
     legend: {
-      type: Boolean,
+      type: [Boolean, String],
       default: true
     },
     date: {
@@ -114,17 +115,10 @@ export default {
   created () {
     this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
   },
-  mounted () {
-    this.createChart()
-    const element = document.documentElement // Reference à l'element <html> du DOM
-    element.addEventListener('dsfr.theme', (e) => {
-      this.changeTheme(e.detail.theme)
-    })
-  },
-  updated () {
-    const element = document.documentElement
-    this.createChart()
-    this.changeTheme(element.getAttribute('data-fr-theme'))
+  mounted() {
+    this.createChart();
+
+    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
   }
 }
 

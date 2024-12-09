@@ -1,6 +1,6 @@
 /* eslint-disable */
 <template>
-  <div class="widget_container fr-grid-row" :id="widgetId">
+  <div class="widget_container fr-grid-row" :ref="widgetId">
     <LeftCol :props="leftColProps"></LeftCol>
     <div class="r_col fr-col-12 fr-col-lg-9">
       <button class="fr-btn fr-btn--sm fr-icon-arrow-go-back-fill fr-btn--icon-left fr-btn--tertiary-no-outline fr-ml-4w" @click="resetGeoFilters" v-if="zoomDep !== undefined" >
@@ -115,7 +115,7 @@ export default {
   methods: {
     createChart() {
     // Initialize region data
-    const parentWidget = document.getElementById(this.widgetId);
+    const parentWidget = this.$refs[this.widgetId];
     const self = this;
     this.dataParse = JSON.parse(this.data);
 
@@ -189,7 +189,7 @@ export default {
     },
     displayTooltip(e) {
       if (isMobile()) return
-      const parentWidget = document.getElementById(this.widgetId)
+      const parentWidget = this.$refs[this.widgetId]
       const hoverdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
 
       const className = this.getClassMap(hoverdep, 'dep')
@@ -223,7 +223,7 @@ export default {
     hideTooltip(e) {
       if (isMobile()) return
       this.tooltip.visibility = 'hidden'
-      const parentWidget = document.getElementById(this.widgetId)
+      const parentWidget = this.$refs[this.widgetId]
       const hoverdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
       const className = this.getClassMap(hoverdep, 'dep')
       const elCol = parentWidget.getElementsByClassName(className)
@@ -260,7 +260,6 @@ export default {
       this.zoomDep = undefined
       this.createChart()
     },
-
     changeTheme(theme) {
       if (theme === 'light') {
         this.colLeft = '#eeeeee';
@@ -281,10 +280,12 @@ export default {
     this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
   },
   mounted() {
-    const element = document.documentElement // Reference à l'element <html> du DOM
+    const element = document.documentElement;
     element.addEventListener('dsfr.theme', (e) => {
-      this.changeTheme(e.detail.theme)
-    })
+      if (this.chartId !== '') {
+        this.changeTheme(e.detail.theme);
+      }
+    });
   }
 }
 

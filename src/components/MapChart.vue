@@ -1,6 +1,6 @@
 /* eslint-disable */
 <template>
-  <div class="widget_container fr-grid-row" :id="widgetId">
+  <div class="widget_container fr-grid-row" :ref="widgetId">
     <LeftCol :props="leftColProps"></LeftCol>
     <div class="r_col fr-col-12 fr-col-lg-9">
       <button
@@ -174,7 +174,7 @@ export default {
       this.leftColProps.names = this.name;
       this.leftColProps.min = this.scaleMin;
       this.leftColProps.max = this.scaleMax;
-      const parentWidget = document.getElementById(this.widgetId)
+      const parentWidget = this.$refs[this.widgetId]
       const self = this
 
       // Parse the data
@@ -318,7 +318,7 @@ export default {
     },
     displayTooltip(e) {
       if (isMobile()) return
-      const parentWidget = document.getElementById(this.widgetId)
+      const parentWidget = this.$refs[this.widgetId]
       let hoverdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
 
       let className
@@ -368,7 +368,7 @@ export default {
     hideTooltip(e) {
       if (isMobile()) return
       this.tooltip.visibility = 'hidden'
-      const parentWidget = document.getElementById(this.widgetId)
+      const parentWidget = this.$refs[this.widgetId]
       let hoverdep = e.target.className.baseVal.replace(/FR|-|dep|reg|acad/g, '')
       let className
       if (hoverdep.includes('DOM')) {
@@ -421,7 +421,6 @@ export default {
       this.zoomDep = undefined
       this.createChart()
     },
-
     loadColors() {
       const {
         colorParse,
@@ -443,7 +442,6 @@ export default {
       this.colorParse = colorParse;
       this.colorHover = colorHover;
     },
-
     changeColors(theme) {
       this.loadColors()
       Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
@@ -457,12 +455,10 @@ export default {
       }
       this.chart.update(0)
     },
-
     choosePalette() {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
     },
-
     changeTheme(theme) {
       this.textMention = this.getHexaFromToken('text-mention-grey', theme)
       this.leftColProps.textMention = this.textMention
@@ -490,10 +486,12 @@ export default {
     this.prefixClass = 'FR-' + this.level + '-'
   },
   mounted() {
-    const element = document.documentElement // Reference à l'element <html> du DOM
+    const element = document.documentElement;
     element.addEventListener('dsfr.theme', (e) => {
-      this.changeTheme(e.detail.theme)
-    })
+      if (this.chartId !== '') {
+        this.changeTheme(e.detail.theme);
+      }
+    });
   }
 }
 </script>

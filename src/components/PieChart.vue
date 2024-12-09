@@ -1,6 +1,6 @@
 /* eslint-disable */
 <template>
-  <div class="widget_container fr-grid-row" :id="widgetId">
+  <div class="widget_container fr-grid-row" :ref="widgetId">
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="linechart_tooltip">
@@ -11,7 +11,7 @@
             </div>
           </div>
         </div>
-        <canvas :id="chartId"></canvas>
+        <canvas :ref="chartId"></canvas>
         <div class="chart_legend fr-mb-0 fr-mt-4v">
           <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v">
             <span class="legende_dot" v-bind:style="{ 'background-color': colorParse[index] }"></span>
@@ -71,7 +71,7 @@ export default {
       default: undefined
     },
     fill: {
-      type: Boolean,
+      type: [Boolean, String],
       default: false
     },
     date: {
@@ -149,7 +149,9 @@ export default {
       if (this.chart) this.chart.destroy();
 
       this.getData();
-      const ctx = document.getElementById(this.chartId).getContext('2d');
+
+      const ctx = this.$refs[this.chartId].getContext('2d');
+
       this.chart = new Chart(ctx, {
         type: this.typeGraph,
         data: {
@@ -223,14 +225,16 @@ export default {
                 const value = bodyLines[0][0]; // assuming bodyLines[0][0] contains the value
                 const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
 
-                const nodeName = this.$el.querySelector('.tooltip_dot').attributes[0].nodeName;
+                // Retrieve the node name for tooltip dots
+                const tooltipDotElement = this.$el.querySelector('.tooltip_dot');
+                const nodeName = tooltipDotElement ? tooltipDotElement.attributes[0].nodeName : 'data-attribute';
 
                 divValue.innerHTML = `
                   <div class="tooltip_value-content">
-                      <span ${nodeName}="" class="tooltip_dot" style="background-color:${color};"></span>
-                      ${displayValue}
-                    </div>
-                  `;
+                    <span ${nodeName}="" class="tooltip_dot" style="background-color:${color};"></span>
+                    ${displayValue}
+                  </div>
+                `;
               }
 
               const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;
@@ -291,22 +295,19 @@ export default {
     this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
   },
   mounted() {
-    this.display =
-      document.getElementById(this.widgetId).offsetWidth > 486 ? 'big' : 'small';
-    this.createChart();
-    const element = document.documentElement; // Référence à l'élément <html> du DOM
-    element.addEventListener('dsfr.theme', (e) => {
-      this.changeColors(e.detail.theme);
-    });
-    addEventListener('resize', (event) => {
-      this.isSmall = document.documentElement.clientWidth < 767;
-    });
-  },
-  beforeUpdate() {
     this.resetData();
     this.createChart();
+
+    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
     const element = document.documentElement;
-    this.changeColors(element.getAttribute('data-fr-theme'));
+    element.addEventListener('dsfr.theme', (e) => {
+      if (this.chartId !== '') {
+        this.changeColors(e.detail.theme);
+      }
+    });
+    addEventListener('resize', () => {
+      this.isSmall = document.documentElement.clientWidth < 767;
+    });
   }
 };
 </script>

@@ -51,8 +51,7 @@
     "chartjs-plugin-annotation": "^0.5.7",
     "chroma-js": "^3.1.2",
     "d3-scale": "^4.0.2",
-    "vue": "^2.7.16",
-    "vue-custom-element": "^3.3.0"
+    "vue": "^3.5.13"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.2",
@@ -69,12 +68,12 @@
     "eslint-plugin-storybook": "^0.11.1",
     "lit": "^3.2.1",
     "storybook": "^8.4.6",
-    "vue-template-compiler": "^2.7.14",
+    "vue-template-compiler": "^2.7.16",
     "@vue/cli-service": "^5.0.8",
     "eslint-plugin-vue": "^9.32.0",
     "standard": "^17.1.2",
     "sass": "1.78.0",
-    "sass-loader": "^16.0.3",
+    "sass-loader": "^16.0.4",
     "vue-loader": "^17.4.2"
   },
   "eslintConfig": {

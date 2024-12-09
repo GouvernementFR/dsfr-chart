@@ -1,6 +1,6 @@
 /* eslint-disable */
 <template>
-  <div class="widget_container fr-grid-row" :id="widgetId">
+  <div class="widget_container fr-grid-row" :ref="widgetId">
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="linechart_tooltip">
@@ -11,7 +11,7 @@
             </div>
           </div>
         </div>
-        <canvas :id="chartId"></canvas>
+        <canvas :ref="chartId"></canvas>
         <div class="chart_legend fr-mb-0 fr-mt-4v">
           <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v">
             <span class="legende_dot" :style="{ 'background-color': colorParse[index] }"></span>
@@ -157,7 +157,6 @@ export default {
       this.colorParse = colorParse.map(colors => colors[0]); // Récupère uniquement la première couleur de chaque série
       this.colorHover = colorHover.map(colors => colors[0]); // Idem pour les couleurs de survol
     },
-
     choosePalette() {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
@@ -181,7 +180,9 @@ export default {
       if (this.chart) this.chart.destroy();
 
       this.getData();
-      const ctx = document.getElementById(this.chartId).getContext('2d');
+
+      const ctx = this.$refs[this.chartId].getContext('2d');
+
       this.chart = new Chart(ctx, {
         type: 'radar',
         data: {
@@ -281,7 +282,7 @@ export default {
                     const displayValue = `${line}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
 
                     divValue.innerHTML += `
-                      <div class="tooltip_value-content" style="display: flex; align-items: center;">
+                      <div class="tooltip_value-content">
                         <span ${nodeName}="" class="tooltip_dot" style="background-color:${color};"></span>
                         ${displayValue}
                       </div>
@@ -328,22 +329,19 @@ export default {
     this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
   },
   mounted() {
-    this.display =
-      document.getElementById(this.widgetId).offsetWidth > 486 ? 'big' : 'small';
+    this.resetData();
     this.createChart();
-    const element = document.documentElement; // Référence à l'élément <html> du DOM
+
+    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
+    const element = document.documentElement;
     element.addEventListener('dsfr.theme', (e) => {
-      this.changeColors(e.detail.theme);
+      if (this.chartId !== '') {
+        this.changeColors(e.detail.theme);
+      }
     });
     addEventListener('resize', () => {
       this.isSmall = document.documentElement.clientWidth < 767;
     });
-  },
-  beforeUpdate() {
-    this.resetData();
-    this.createChart();
-    const element = document.documentElement;
-    this.changeColors(element.getAttribute('data-fr-theme'));
   }
 };
 </script>

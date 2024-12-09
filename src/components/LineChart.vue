@@ -1,6 +1,6 @@
 /* eslint-disable */
 <template>
-  <div class="widget_container fr-grid-row" :id="widgetId">
+  <div class="widget_container fr-grid-row" :ref="widgetId">
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="linechart_tooltip" ref="tooltip">
@@ -17,7 +17,7 @@
             </div>
           </div>
         </div>
-        <canvas :id="chartId"></canvas>
+        <canvas :ref="chartId"></canvas>
         <div class="chart_legend fr-mb-0 fr-mt-4v">
           <div class="flex fr-mt-1w fr-mb-0">
             <span class="legende_dot"></span>
@@ -127,7 +127,7 @@ export default {
       default: 2
     },
     formatdate: {
-      type: Boolean,
+      type: [Boolean, String],
       default: false
     },
     selectedPalette: {
@@ -282,12 +282,10 @@ export default {
       this.vlineColorParse = vlineColorParse;
       this.hlineColorParse = hlineColorParse;
     },
-
     choosePalette() {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
     },
-
     changeColors(theme) {
       Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme);
       this.chart.options.scales.xAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
@@ -310,8 +308,10 @@ export default {
       if (this.chart) this.chart.destroy();
 
       this.getData();
-      const ctx = document.getElementById(this.chartId).getContext('2d');
+
+      const ctx = this.$refs[this.chartId].getContext('2d');
       const self = this;
+
       this.chart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -548,8 +548,11 @@ export default {
     this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
   },
   mounted() {
-    const element = document.documentElement; // Référence à l'élément <html> du DOM
+    this.resetData();
     this.createChart();
+
+    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
+    const element = document.documentElement;
     element.addEventListener('dsfr.theme', (e) => {
       if (this.chartId !== '') {
         this.changeColors(e.detail.theme);
@@ -558,12 +561,6 @@ export default {
     addEventListener('resize', () => {
       this.isSmall = document.documentElement.clientWidth < 767;
     });
-  },
-  beforeUpdate() {
-    this.resetData();
-    this.createChart();
-    const element = document.documentElement;
-    this.changeColors(element.getAttribute('data-fr-theme'));
   }
 };
 </script>

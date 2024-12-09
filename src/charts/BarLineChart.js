@@ -1,11 +1,7 @@
-import Vue from 'vue'
+import { defineCustomElement } from 'vue'
 
 import BarLineChart from './components/BarLineChart'
 
-import vueCustomElement from 'vue-custom-element'
+const BarLineChartElement = defineCustomElement(BarLineChart)
 
-Vue.config.productionTip = false
-
-Vue.use(vueCustomElement)
-
-Vue.customElement('bar-line-chart', BarLineChart)
+customElements.define('bar-line-chart', BarLineChartElement, { shadowRoot: false })

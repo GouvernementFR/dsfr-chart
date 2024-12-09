@@ -1,6 +1,6 @@
 /* eslint-disable */
 <template>
-  <div class="widget_container fr-grid-row" :id="widgetId">
+  <div class="widget_container fr-grid-row" :ref="widgetId">
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="linechart_tooltip">
@@ -17,7 +17,7 @@
             </div>
           </div>
         </div>
-        <canvas :id="chartId"></canvas>
+        <canvas :ref="chartId"></canvas>
         <div class="chart_legend fr-mb-0 fr-mt-4v">
           <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v">
             <span class="legende_dot" :style="{ 'background-color': colorParse[index], 'opacity': opacity[index] }"
@@ -138,7 +138,7 @@ export default {
       default: 2
     },
     formatdate: {
-      type: Boolean,
+      type: [Boolean, String],
       default: false
     },
     selectedPalette: {
@@ -360,8 +360,10 @@ export default {
       if (this.chart) this.chart.destroy();
 
       this.getData();
+
       const self = this;
-      const ctx = document.getElementById(self.chartId).getContext('2d');
+      const ctx = this.$refs[self.chartId].getContext('2d');
+
       this.chart = new Chart(ctx, {
         data: {
           labels: self.labels,
@@ -650,23 +652,19 @@ export default {
     this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
   },
   mounted() {
-    document.getElementById(this.widgetId).offsetWidth > 486
-      ? (this.display = 'big')
-      : (this.display = 'small');
-    this.createChart();
-    const element = document.documentElement; // Référence à l'élément <html> du DOM
-    element.addEventListener('dsfr.theme', (e) => {
-      this.changeColors(e.detail.theme);
-    });
-    addEventListener('resize', (event) => {
-      this.isSmall = document.documentElement.clientWidth < 767;
-    });
-  },
-  beforeUpdate() {
     this.resetData();
     this.createChart();
+
+    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
     const element = document.documentElement;
-    this.changeColors(element.getAttribute('data-fr-theme'));
+    element.addEventListener('dsfr.theme', (e) => {
+      if (this.chartId !== '') {
+        this.changeColors(e.detail.theme);
+      }
+    });
+    addEventListener('resize', () => {
+      this.isSmall = document.documentElement.clientWidth < 767;
+    });
   }
 };
 </script>

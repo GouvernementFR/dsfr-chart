@@ -1,6 +1,6 @@
 /* eslint-disable */
 <template>
-  <div class="widget_container fr-grid-row" :id="widgetId">
+  <div class="widget_container fr-grid-row" :ref="widgetId">
     <div class="r_col fr-col-12">
       <div class="chart">
         <!-- Tooltip personnalisé -->
@@ -11,7 +11,7 @@
           </div>
         </div>
         <!-- Canvas pour le graphique -->
-        <canvas :id="chartId"></canvas>
+        <canvas :ref="chartId"></canvas>
         <!-- Légende -->
 
         <div class="chart_legend fr-mb-0 fr-mt-4v">
@@ -78,11 +78,11 @@ export default {
       default: undefined,
     },
     stacked: {
-      type: Boolean,
+      type: [Boolean, String],
       default: false,
     },
     horizontal: {
-      type: Boolean,
+      type: [Boolean, String],
       default: false,
     },
     barsize: {
@@ -98,7 +98,7 @@ export default {
       default: 1,
     },
     formatdate: {
-      type: Boolean,
+      type: [Boolean, String],
       default: false,
     },
     selectedPalette: {
@@ -110,7 +110,7 @@ export default {
       default: () => [3, 4]
     },
     isDescendingOrder: {
-      type: Boolean,
+      type: [Boolean, String],
       default: false, // Default is false; set to true for fixed green-to-red legend order
     },
     unitTooltip: {
@@ -132,7 +132,6 @@ export default {
       this.colorParse = [];
       this.colorHover = [];
     },
-
     getData() {
       this.typeGraph = this.horizontal ? 'horizontalBar' : 'bar';
 
@@ -178,12 +177,10 @@ export default {
         maxBarThickness: 32, // Définissez une épaisseur maximale pour les barres
       }));
     },
-
     choosePalette() {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
     },
-
     loadColors() {
       const { colorParse, colorHover, legendColors } = generateColors({
         yparse: this.yparse,
@@ -197,12 +194,12 @@ export default {
       this.colorHover = colorHover;
       this.legendColors = legendColors;
     },
-
     createChart() {
       if (this.chart) this.chart.destroy();
 
       this.getData();
-      const ctx = document.getElementById(this.chartId).getContext('2d');
+
+      const ctx = this.$refs[this.chartId].getContext('2d');
 
       this.chart = new Chart(ctx, {
         type: this.typeGraph,
@@ -335,7 +332,6 @@ export default {
         },
       });
     },
-
     changeColors(theme) {
       Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme);
       this.loadColors();
@@ -363,23 +359,20 @@ export default {
     this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
   },
   mounted() {
+    this.resetData();
     this.createChart();
 
-    this.display = document.getElementById(this.widgetId).offsetWidth > 486 ? 'big' : 'small';
+    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
     const element = document.documentElement;
-    element.addEventListener('dsfr.theme', e => {
-      this.changeColors(e.detail.theme);
+    element.addEventListener('dsfr.theme', (e) => {
+      if (this.chartId !== '') {
+        this.changeColors(e.detail.theme);
+      }
     });
     addEventListener('resize', () => {
       this.isSmall = document.documentElement.clientWidth < 767;
     });
-  },
-  beforeUpdate() {
-    this.resetData();
-    this.createChart();
-    const element = document.documentElement;
-    this.changeColors(element.getAttribute('data-fr-theme'));
-  },
+  }
 };
 </script>
 

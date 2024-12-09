@@ -90,7 +90,7 @@
                     </div>
 
                     <!-- Graphique -->
-                    <div :id="`chart-section-${widgetId}`" class="databox__content-chart" v-if="shouldDisplayChart">
+                    <div :ref="`chart-section-${widgetId}`" class="databox__content-chart" v-if="shouldDisplayChart">
                         <div class="databox__content-chart-section-canvas">
                             <component :is="component" v-bind="chartProps"></component>
                         </div>
@@ -111,7 +111,7 @@
                         </div>
                     </div>
                     <!-- Tableau -->
-                    <div :id="`table-section-${widgetId}`" v-if="shouldDisplayTable"
+                    <div :ref="`table-section-${widgetId}`" v-if="shouldDisplayTable"
                         class="databox__content-table-responsive">
                         <table-vue :captionTitle="captionTitle" :tablevue_data="serieObj.table"
                             :isMultilineTableHeader="isMultilineTableHeader">
@@ -168,6 +168,7 @@ export default {
         return {
             widgetId: "",
             isDropdownOpen: false,
+            localShowGraph: this.serieObj.showGraph,
         };
     },
     props: {
@@ -183,7 +184,7 @@ export default {
             default: '' // Default to an empty string if not provided
         },
         isMultilineTableHeader: {
-            type: Boolean,
+            type: [Boolean, String],
             default: true, // Défini par défaut
         },
         dataBoxTitle: {
@@ -195,7 +196,7 @@ export default {
             default: "Description de la dataBox.",
         },
         indicator: {
-            type: Boolean,
+            type: [Boolean, String],
             default: false,
         },
         trendValue: {
@@ -211,7 +212,7 @@ export default {
             default: "PieChart", // Composant par défaut
         },
         addSources: {
-            type: Boolean,
+            type: [Boolean, String],
             default: false,
         },
         select_options: {
@@ -292,8 +293,7 @@ export default {
             }
         },
         toggleView(viewType) {
-            this.serieObj.showGraph = viewType === "graphique";
-            this.serieObj.istable = viewType === "tableau";
+            this.showGraph = viewType === "graphique";
             this.updateHeight();
         },
         toggleDropdown() {
@@ -311,7 +311,7 @@ export default {
             this.$emit("select-source-api", selectedOption);
         },
         handleChartSelected(type) {
-            this.serieObj.showGraph = type === "graphique";
+            this.localShowGraph = type === "graphique";
         },
         performAction(action) {
             if (typeof this[action.action] === 'function') {
@@ -358,21 +358,20 @@ export default {
         },
         shouldDisplayLegend() {
             return (
-                this.display_legend &&
-                this.serieObj.showGraph &&
+                this.localShowGraph &&
                 this.component &&
                 !this.indicator
             );
         },
         shouldDisplayChart() {
             return (
-                this.serieObj.showGraph &&
+                this.localShowGraph &&
                 this.component &&
                 !this.indicator
             );
         },
         shouldDisplayTable() {
-            return !this.serieObj.showGraph || this.serieObj.istable;
+            return !this.localShowGraph;
         },
     },
     mounted() {
@@ -389,7 +388,7 @@ export default {
         // Ajout d'un écouteur pour détecter les clics en dehors du dropdown
         document.addEventListener("click", this.handleClickOutside);
     },
-    beforeDestroy() {
+    beforeUnmount() {
         // Retirer l'écouteur de l'événement de clic
         document.removeEventListener("click", this.handleClickOutside);
 

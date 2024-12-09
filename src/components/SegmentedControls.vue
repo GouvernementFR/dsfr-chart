@@ -7,13 +7,11 @@
         <input
           value="1"
           type="radio"
-          :id="idcontrol + '-1'"
+          :ref="idcontrol + '-1'"
           :name="idcontrol + 'segmented-2230'"
-          @click="emitChartSelected(option1Value)"
           :checked="isOption1Checked"
         />
-        <label class="fr-label" :for="idcontrol + '-1'" :title="option1Label">
-          <!-- Affiche l'icône ou le texte en fonction de la propriété 'showIcons' -->
+        <label class="fr-label" :for="idcontrol + '-1'" :title="option1Label" @click="emitChartSelected(option1Value)">
           <span
             v-if="showIcons"
             :class="[option1Icon, 'fr-icon', 'fr-icon--sm']"
@@ -28,13 +26,11 @@
         <input
           value="2"
           type="radio"
-          :id="idcontrol + '-2'"
+          :ref="idcontrol + '-2'"
           :name="idcontrol + 'segmented-2230'"
-          @click="emitChartSelected(option2Value)"
           :checked="isOption2Checked"
         />
-        <label class="fr-label" :for="idcontrol + '-2'" :title="option2Label">
-          <!-- Affiche l'icône ou le texte en fonction de la propriété 'showIcons' -->
+        <label class="fr-label" :for="idcontrol + '-2'" :title="option2Label" @click="emitChartSelected(option2Value)">
           <span
             v-if="showIcons"
             :class="[option2Icon, 'fr-icon', 'fr-icon--sm']"
@@ -56,7 +52,7 @@ export default {
       required: true,
     },
     showIcons: {
-      type: Boolean,
+      type: [Boolean, String],
       default: true, // Par défaut, affiche les icônes
     },
     // Nouvelles props pour personnaliser les options

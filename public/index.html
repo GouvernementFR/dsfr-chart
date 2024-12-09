@@ -196,17 +196,17 @@
                     </ul>
                   </div>
                 </li>
-                <li class="fr-sidemenu__item"></li>
-                <button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-9">
-                  IX. Les composants
-                </button>
-                <div class="fr-collapse" id="sidemenu-9">
-                  <ul class="fr-sidemenu__list">
-                    <li class="fr-sidemenu__item">
-                      <a class="fr-sidemenu__link" id="sidemenu-9" href="#databox" target="_self">1. La Databox</a>
-                    </li>
-                  </ul>
-                </div>
+                <li class="fr-sidemenu__item">
+                  <button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-9">
+                    IX. Les composants
+                  </button>
+                  <div class="fr-collapse" id="sidemenu-9">
+                    <ul class="fr-sidemenu__list">
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-9.1" href="#databox" target="_self">1. La Databox</a>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
                 <li class="fr-sidemenu__item">
                   <a class="fr-sidemenu__link" id="sidemenu-10" href="#colors" target="_self">X. Les couleurs
@@ -245,7 +245,8 @@
             <line-chart
               x="[2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020]"
               y="[51.50, 55.30, 61.50, 70.20, 81.10, 92.60, 100.20, 104.60, 96.90, 98.00, 104.90, 106.80, 104.70, 102.70, 100.20, 100.40, 102.90, 106.00, 109.10, 114.60]"
-              selected-palette="defaultColor" name='Indices des prix des logements anciens'
+              selected-palette="defaultColor"
+              name="Indices des prix des logements anciens"
               unit-tooltip="Points d'indice">
             </line-chart>
           </div>
@@ -265,7 +266,7 @@
                       <span class="token attr-name">selected-palette</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">defaultColor</span><span class="token punctuation">"</span></span>
                       <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">Indices des prix des logements anciens</span><span class="token punctuation">'</span></span>
                       <span class="token attr-name">unit-tooltip</span><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">Points d'indice</span><span class="token punctuation">'</span></span>
-                    <span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>line-chart</span><span class="token punctuation">&gt;</span>
+                    <span class="token punctuation">&gt;</span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>line-chart</span><span class="token punctuation">&gt;</span>
                 </code>
                 </pre>
               </div>
@@ -285,7 +286,8 @@
             <multiline-chart
               x="[[1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020], [1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020]]"
               y="[[54.5, 58.2, 58.1, 59.6, 62.1, 64, 65.9, 67.1, 69, 69.2], [83.9, 83.2, 78.4, 75.9, 74.7, 75.3, 75.2, 75, 75.6, 74.8]]"
-              name='["Femmes", "Hommes"]' unit-tooltip="%">
+              name='["Femmes", "Hommes"]'
+              unit-tooltip="%">
             </multiline-chart>
           </div>
 
@@ -328,9 +330,12 @@
             <p class="fr-text--sm">Population au 1er janvier - Données issues du scénario central des projections de
               population 2013-2070. Insee, 04/11/2024
             </p>
-            <bar-chart x='[["2025", "2030", "2035", "2040", "2050", "2060", "2070"]]'
-              y='[[69.1, 70.3, 71.4, 72.5, 74, 75.2, 76.4]]' name='["Population en millions"]'
-              selected-palette="defaultColor" unit-tooltip="millions">
+            <bar-chart
+              x='[["2025", "2030", "2035", "2040", "2050", "2060", "2070"]]'
+              y="[[69.1, 70.3, 71.4, 72.5, 74, 75.2, 76.4]]"
+              name='["Population en millions"]'
+              selected-palette="defaultColor"
+              unit-tooltip="millions">
             </bar-chart>
           </div>
           <hr>
@@ -341,9 +346,13 @@
               Insee, enquête Technologies de l'information et de la communication auprès
               des ménages, 04/11/2024
             </p>
-            <bar-chart x='[["15 à 29 ans", "30 à 44 ans", "45 à 59 ans", "60 à 74 ans", "75 ans ou plus"]]'
-              y='[[75.4, 80.5, 66.8, 43.4, 12.1]]' name='["Achat sur internet au cours des 12 derniers mois (%)"]'
-              selected-palette="neutral" unit-tooltip="%"></bar-chart>
+            <bar-chart
+              x='[["15 à 29 ans", "30 à 44 ans", "45 à 59 ans", "60 à 74 ans", "75 ans ou plus"]]'
+              y="[[75.4, 80.5, 66.8, 43.4, 12.1]]"
+              name='["Achat sur internet au cours des 12 derniers mois (%)"]'
+              selected-palette="neutral"
+              unit-tooltip="%">
+            </bar-chart>
           </div>
 
           <hr>
@@ -351,13 +360,16 @@
           <div class="chart_container">
             <h3 class="fr-h6 fr-text--bold fr-mb-0">Les régions les plus pluvieuses de France en 2023</h3>
             <p class="fr-text--sm">France métropolitaine uniquement. Météo France, 04/11/2024</p>
-            <bar-chart x='[["Nouvelle-Aquitaine", "Hauts-de-France", "Bourgogne-Franche-Comté",
+            <bar-chart
+              x='[["Nouvelle-Aquitaine", "Hauts-de-France", "Bourgogne-Franche-Comté",
                     "Auvergne-Rhône-Alpes", "Normandie", "Bretagne", "Pays de la Loire",
                     "Occitanie", "Grand Est", "Centre-Val de Loire", "Île-de-France",
                     "Provence-Alpes-Côte d&#39;Azur", "Corse"]]'
-              y='[[1071, 927, 921, 850, 845, 838, 821, 793, 789, 771, 734, 485, 482]]'
-              name='["Hauteur des précipitations (en mm)"]' selected-palette="sequentialDescending"
-              unit-tooltip="mm"></bar-chart>
+              y="[[1071, 927, 921, 850, 845, 838, 821, 793, 789, 771, 734, 485, 482]]"
+              name='["Hauteur des précipitations (en mm)"]'
+              selected-palette="sequentialDescending"
+              unit-tooltip="mm">
+            </bar-chart>
           </div>
 
           <section class="fr-accordion fr-mt-4w fr-mb-6w">
@@ -371,13 +383,13 @@
                 <pre>
                   <code>
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-chart</span>
-                      <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[["Nouvelle-Aquitaine", "Hauts-de-France", "Bourgogne-Franche-Comté", "Auvergne-Rhône-Alpes", "Normandie", "Bretagne", "Pays de la Loire", "Occitanie", "Grand Est", "Centre-Val de Loire", "Île-de-France", "Provence-Alpes-Côte d&#39;Azur", "Corse"]]</span><span class="token punctuation">'</span></span>
+                      <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[["Nouvelle-Aquitaine", "Hauts-de-France", "Bourgogne-Franche-Comté", "Auvergne-Rhône-Alpes", "Normandie", "Bretagne", "Pays de la Loire", "Occitanie", "Grand Est", "Centre-Val de Loire", "Île-de-France", "Provence-Alpes-Côte d&#39;Azur", "Corse"]]</span><span class="token punctuation">'</span></span></span>
                       <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[1071, 927, 921, 850, 845, 838, 821, 793, 789, 771, 734, 485, 482]]</span><span class="token punctuation">'</span></span>
                       <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">["Hauteur des précipitations (en mm)"]</span><span class="token punctuation">'</span></span>
                       <span class="token attr-name">selected-palette</span><span class="token punctuation">=</span><span class="titre_class">"sequentialDescending"</span>
                       <span class="token attr-name">unit-tooltip</span><span class="token punctuation">=</span><span class="titre_class">"mm"</span>
                     <span class="token punctuation">&gt;</span>
-                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span></span>
                   </code>
                 </pre>
               </div>
@@ -394,8 +406,11 @@
             <p class="fr-text--sm">
               En tonnes équivalent CO₂ par habitant. France métropolitaine. Insee, 12/02/2024
             </p>
-            <bar-chart x='[["2000", "2010", "2020"], ["2000", "2010", "2020"]]' y="[[11.1, 10.5, 8.4], [8.8, 7.5, 5.6]]"
-              horizontal="true" name='["Empreinte carbone", "Émission sur le territoire national"]'
+            <bar-chart
+              x='[["2000", "2010", "2020"], ["2000", "2010", "2020"]]'
+              y="[[11.1, 10.5, 8.4], [8.8, 7.5, 5.6]]"
+              horizontal="true"
+              name='["Empreinte carbone", "Émission sur le territoire national"]'
               unit-tooltip="tonnes">
             </bar-chart>
           </div>
@@ -433,7 +448,10 @@
             x='[["Ensemble des Français", "Agglomération parisienne", "Communauté urbaine de province", "Commune rurale"]]'
             y="[[15, 19, 15, 13], [45, 40, 47, 41], [36, 32, 34, 44], [4, 9, 4, 2]]"
             name='["Tout à fait satisfait", "Plutôt satisfait", "Plutôt pas satisfait", "Pas du tout satisfait"]'
-            stacked="true" selected-palette="divergentDescending" :isAscendingOrder="true" unit-tooltip="%">
+            stacked="true"
+            selected-palette="divergentDescending"
+            isAscendingOrder="true"
+            unit-tooltip="%">
           </bar-chart>
           <section class="fr-accordion fr-mt-4w fr-mb-6w">
             <h3 class="fr-accordion__title">
@@ -445,7 +463,7 @@
               <div class="code-toolbar">
                 <pre>
                   <code>
-                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-chart</span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-chart</span></span>
                       <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[["Ensemble des Français", "Agglomération parisienne", "Communauté urbaine de province", "Commune rurale"]]</span><span class="token punctuation">'</span></span>
                       <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[15, 19, 15, 13], [45, 40, 47, 41], [36, 32, 34, 44], [4, 9, 4, 2]]</span><span class="token punctuation">'</span></span>
                       <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">["Tout à fait satisfait", "Plutôt satisfait", "Plutôt pas satisfait", "Pas du tout satisfait"]</span><span class="token punctuation">'</span></span>
@@ -454,7 +472,7 @@
                       <span class="token attr-name">:isAscendingOrder</span><span class="token punctuation">=</span><span class="titre_class">"true"</span>
                       <span class="token attr-name">unit-tooltip</span><span class="token punctuation">=</span><span class="titre_class">"%"</span>
                     <span class="token punctuation">&gt;</span>
-                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span></span>
                   </code>
                 </pre>
               </div>
@@ -481,8 +499,13 @@
             <p class="fr-text--sm">
               France hors Mayotte, naissances en milliers et taux de natalité pour mille femmes. Insee, 16/01/2024
             </p>
-            <bar-line-chart x="[1980, 1990, 2000, 2010]" y="[14.9, 13.4, 13.1, 12.9]"
-              ybar="[826.1, 793.1, 807.4, 832.8]" name="Naissances" nameBar="Taux de natalité" unit-tooltip="‰"
+            <bar-line-chart
+              x="[1980, 1990, 2000, 2010]"
+              y="[14.9, 13.4, 13.1, 12.9]"
+              ybar="[826.1, 793.1, 807.4, 832.8]"
+              name="Naissances"
+              nameBar="Taux de natalité"
+              unit-tooltip="‰"
               unit-tooltip-bar="milliers">
             </bar-line-chart>
           </div>
@@ -537,7 +560,8 @@
             <scatter-chart
               x="[[1995, 2000, 2005, 2010, 2015, 2020, 2022], [1995, 2000, 2005, 2010, 2015, 2020, 2022], [1995, 2000, 2005, 2010, 2015, 2020, 2022]]"
               y="[[175, 155, 149, 130, 111, 107, 130], [177, 168, 159, 130, 116, 109, 131], [176, 162, 152, 130, 111, 97, 103]]"
-              name='["Diesel", "Essence", "Total"]' unit-tooltip="g de CO₂ / km">
+              name='["Diesel", "Essence", "Total"]'
+              unit-tooltip="g de CO₂ / km">
             </scatter-chart>
           </div>
 
@@ -557,7 +581,7 @@
                                 <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[175, 155, 149, 130, 111, 107, 130], [177, 168, 159, 130, 116, 109, 131], [176, 162, 152, 130, 111, 97, 103]]</span><span class="token punctuation">'</span></span>
                                 <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">["Diesel", "Essence", "Total"]</span><span class="token punctuation">'</span></span>
                                 <span class="token attr-name">unit-tooltip</span><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">g de CO₂ / km</span><span class="token punctuation">'</span></span>
-                              <span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>scatter-chart</span><span class="token punctuation">&gt;</span>
+                              <span class="token punctuation">&gt;</span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>scatter-chart</span><span class="token punctuation">&gt;</span>
                           </code>
                           </pre>
                 </div>
@@ -579,7 +603,9 @@
             <scatter-chart
               x="[[1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950], [1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950], [1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950]]"
               y="[[35, 35, 37, 37, 39, 41, 43, 48, 51, 52, 54, 55, 56], [76, 83, 82, 80, 81, 80, 81, 80, 81, 80, 79, 75, 72], [54, 56, 58, 57, 59, 60, 62, 64, 66, 66, 66, 65, 64]]"
-              name='["Femmes", "Hommes", "Ensemble"]' unit-tooltip="%" showline="true">
+              name='["Femmes", "Hommes", "Ensemble"]'
+              unit-tooltip="%"
+              showline="true">
             </scatter-chart>
           </div>
 
@@ -599,8 +625,8 @@
                                 <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[35, 35, 37, 37, 39, 41, 43, 48, 51, 52, 54, 55, 56], [76, 83, 82, 80, 81, 80, 81, 80, 81, 80, 79, 75, 72], [54, 56, 58, 57, 59, 60, 62, 64, 66, 66, 66, 65, 64]]</span><span class="token punctuation">'</span></span>
                                 <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">["Femmes", "Hommes", "Ensemble"]</span><span class="token punctuation">'</span></span>
                                 <span class="token attr-name">unit-tooltip</span><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">%</span><span class="token punctuation">'</span></span>
-                                <span class="token attr-name">showline</span><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">true</span><span class="token punctuation">'</span></span>
-                              <span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>scatter-chart</span><span class="token punctuation">&gt;</span>
+                                <span class="token attr-name">showline</span><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">true</span><span class="token punctuation">'</span>
+                              <span class="token punctuation">&gt;</span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>scatter-chart</span><span class="token punctuation">&gt;</span>
                           </code>
                           </pre>
                 </div>
@@ -632,7 +658,8 @@
               x='["Non-salariés", "Emplois à durée indéterminée", "Contrats à durée déterminée", "Apprentis", "Intérimaires"]'
               y="[11.7, 74.8, 9.3, 1.6, 2.6]"
               name='["Non-salariés", "Emplois à durée indéterminée", "Contrats à durée déterminée", "Apprentis", "Intérimaires"]'
-              unit-tooltip='%'></pie-chart>
+              unit-tooltip="%">
+            </pie-chart>
           </div>
 
           <section class="fr-accordion fr-mt-4w fr-mb-6w">
@@ -645,12 +672,12 @@
               <div class="code-toolbar">
                 <pre>
                   <code>
-                      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pie-chart</span>
+                      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pie-chart</span></span>
                         <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">["Non-salariés", "Emplois à durée indéterminée", "Contrats à durée déterminée", "Apprentis", "Intérimaires"]</span><span class="token punctuation">'</span></span>
                         <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">[11.7, 74.8, 9.3, 1.6, 2.6]</span><span class="token punctuation">"</span></span>
                         <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">["Non-salariés", "Emplois à durée indéterminée", "Contrats à durée déterminée", "Apprentis", "Intérimaires"]</span><span class="token punctuation">'</span></span>
                       <span class="token punctuation">&gt;</span>
-                      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pie-chart</span><span class="token punctuation">&gt;</span>
+                      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pie-chart</span><span class="token punctuation">&gt;</span></span>
                   </code>
                 </pre>
               </div>
@@ -671,7 +698,9 @@
               x='["Protection sociale", "Santé", "Affaires économiques", "Services publics généraux", "Autres", "Enseignement", "Défense"]'
               y="[40.8, 15.6, 11.5, 10.6, 9.4, 9, 3.1]"
               name='["Protection sociale", "Santé", "Affaires économiques", "Services publics généraux", "Autres", "Enseignement", "Défense"]'
-              unit-tooltip='%' fill="true"></pie-chart>
+              unit-tooltip="%"
+              fill="true">
+            </pie-chart>
           </div>
 
           <section class="fr-accordion fr-mt-4w fr-mb-6w">
@@ -714,10 +743,12 @@
             <p class="fr-text--sm">Pour l'année 2018. France hors Mayotte, population des ménages, personnes en emploi. Insee, enquête Emploi, 04/11/2024
             </p>
             <radar-chart
-              x='[["Logement, chauffage, éclairage", "Alimentation, boissons, tabac", "Autres biens et services", "Transports", "Communications, loisirs, culture", "Hôtels, cafés, restaurants", "Habillement et chaussures"], 
+              x='[["Logement, chauffage, éclairage", "Alimentation, boissons, tabac", "Autres biens et services", "Transports", "Communications, loisirs, culture", "Hôtels, cafés, restaurants", "Habillement et chaussures"],
                   ["Logement, chauffage, éclairage", "Alimentation, boissons, tabac", "Autres biens et services", "Transports", "Communications, loisirs, culture", "Hôtels, cafés, restaurants", "Habillement et chaussures"]]'
-              y='[[22.6, 28.9, 8.4, 10.7, 8.5, 5.3, 12.8],[31.3, 15.9, 13.4, 12.9, 10.5, 8.5, 3.0]]'
-              name='["1963", "2023"]' unit-tooltip="%"></radar-chart>
+              y="[[22.6, 28.9, 8.4, 10.7, 8.5, 5.3, 12.8], [31.3, 15.9, 13.4, 12.9, 10.5, 8.5, 3.0]]"
+              name='["1963", "2023"]'
+              unit-tooltip="%">
+            </radar-chart>
           </div>
 
           <section class="fr-accordion fr-mt-4w fr-mb-6w">
@@ -732,7 +763,7 @@
                     <code>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>radar-chart</span>
                         <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[
-                          ["Logement, chauffage, éclairage", "Alimentation, boissons, tabac", "Autres biens et services", "Transports", "Communications, loisirs, culture", "Hôtels, cafés, restaurants", "Habillement et chaussures"], 
+                          ["Logement, chauffage, éclairage", "Alimentation, boissons, tabac", "Autres biens et services", "Transports", "Communications, loisirs, culture", "Hôtels, cafés, restaurants", "Habillement et chaussures"],
                           ["Logement, chauffage, éclairage", "Alimentation, boissons, tabac", "Autres biens et services", "Transports", "Communications, loisirs, culture", "Hôtels, cafés, restaurants", "Habillement et chaussures"]
                         ]</span><span class="token punctuation">'</span></span>
                         <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[
@@ -742,7 +773,7 @@
                         <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">["1963", "2023"]</span><span class="token punctuation">'</span></span>
                         <span class="token attr-name">unit-tooltip</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">%</span><span class="token punctuation">'</span></span>
                       <span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>radar-chart</span><span class="token punctuation">&gt;</span>
-                  </code>           
+                  </code>
                 </pre>
               </div>
             </div>
@@ -759,8 +790,13 @@
           </p>
 
           <div class="chart_container">
-            <gauge-chart value="360000" init="100000" target="2000000" initdate="(en 2022)"
-              targetdate="(en 2026)"></gauge-chart>
+            <gauge-chart
+              value="360000"
+              init="100000"
+              target="2000000"
+              initdate="(en 2022)"
+              targetdate="(en 2026)">
+            </gauge-chart>
           </div>
 
           <section class="fr-accordion fr-mt-4w fr-mb-6w">
@@ -796,7 +832,8 @@
 
           <h3 id="map_chart.1">1. Découpage départemental</h3>
           <div class="chart_container">
-            <map-chart data='{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
+            <map-chart
+              data='{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
               "12": 33, "13": 89, "14": 24, "15": 52, "16": 41, "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,
               "23": 37, "24": 65, "25": 88, "26": 48, "27": 61, "28": 80, "29": 12, "30": 6, "31": 5, "32": 22, "33": 40,
               "34": 19, "35": 13, "36": 32, "37": 0, "38": 82, "39": 13, "40": 78, "41": 92, "42": 10, "43": 22, "44": 70,
@@ -805,8 +842,11 @@
               "67": 56, "68": 19, "69": 44, "70": 92, "71": 96, "72": 51, "73": 32, "74": 19, "75": 96, "76": 91, "77": 21,
               "78": 48, "79": 72, "80": 52, "81": 48, "82": 57, "83": 38, "84": 23, "85": 46, "86": 37, "87": 64, "88": 78,
               "89": 100, "90": 85, "91": 87, "92": 46, "93": 89, "94": 18, "95": 72, "971": 48, "972": 28, "973": 35,
-              "974": 70, "976": 38, "2A": 63, "2B": "16"}' valuenat="10" name="Nom de l'indicateur"
-              date="21/12/2022"></map-chart>
+              "974": 70, "976": 38, "2A": 63, "2B": "16"}'
+              valuenat="10"
+              name="Nom de l'indicateur"
+              date="21/12/2022">
+            </map-chart>
           </div>
 
           <section class="fr-accordion fr-mt-4w fr-mb-6w">
@@ -819,22 +859,22 @@
               <div class="code-toolbar">
                 <pre>
                     <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
-                      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>map-chart</span> <span class="token attr-name">data</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, 
+                      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>map-chart</span> <span class="token attr-name">data</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47,
                         "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
                         "12": 33, "13": 89, "14": 24, "15": 52, "16": 41,
                         "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,
-                        "23": 37, "24": 65, "25": 88, "26": 48, "27": 61, "28": 80, "29": 12, 
-                        "30": 6, "31": 5, "32": 22, "33": 40,"34": 19, "35": 13, "36": 32, 
-                        "37": 0, "38": 82, "39": 13, "40": 78, "41": 92, "42": 10, 
+                        "23": 37, "24": 65, "25": 88, "26": 48, "27": 61, "28": 80, "29": 12,
+                        "30": 6, "31": 5, "32": 22, "33": 40,"34": 19, "35": 13, "36": 32,
+                        "37": 0, "38": 82, "39": 13, "40": 78, "41": 92, "42": 10,
                         "43": 22, "44": 70,"45": 85, "46": 58, "47": 72, "48": 61,
                         "49": 27, "50": 47, "51": 41, "52": 44, "53": 29, "54": 22,
-                        "55": 4,"56": 57, "57": 94, "58": 46, "59": 33, "60": 0, 
+                        "55": 4,"56": 57, "57": 94, "58": 46, "59": 33, "60": 0,
                         "61": 15, "62": 60, "63": 71, "64": 0, "65": 91, "66": 51,
                         "67": 56, "68": 19, "69": 44, "70": 92, "71": 96, "72": 51,
                         "73": 32, "74": 19, "75": 96, "76": 91, "77": 21,
                         "78": 48, "79": 72, "80": 52, "81": 48, "82": 57, "83": 38,
                         "84": 23, "85": 46, "86": 37, "87": 64, "88": 78,
-                        "89": 100, "90": 85, "91": 87, "92": 46, "93": 89, "94": 18, 
+                        "89": 100, "90": 85, "91": 87, "92": 46, "93": 89, "94": 18,
                         "95": 72, "971": 48, "972": 28, "973": 35,
                         "974": 70, "976": 38, "2A": 63, "2B": "16"}</span><span class="token punctuation">"</span></span><span class="token attr-name">valuenat</span><span class="token attr-value"><span class="token punctuation">=</span><span class="titre_class">10</span>
                       <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">Nom de l'indicateur</span><span class="token punctuation">"</span></span></span><span class="token punctuation">&gt;</span></span>
@@ -848,9 +888,13 @@
 
           <h3 id="map_chart.2">2. Découpage régional</h3>
           <div class="chart_container">
-            <map-chart data='{"84": 1, "32": 10, "93": 20, "44": 30, "76": 40, "28": 50, "75": 60, "24": 70,
-              "53": 80, "94": 90, "52": 100, "01": 95, "02": 85, "03": 75, "04": 65, "06": "55", "27": 100, "11": 35}'
-              valuenat="10" name="Nom de l'indicateur" level="reg" date="21/12/2022">
+            <map-chart
+              data='{"84": 1, "32": 10, "93": 20, "44": 30, "76": 40, "28": 50, "75": 60, "24": 70, "53": 80,
+                     "94": 90, "52": 100, "01": 95, "02": 85, "03": 75, "04": 65, "06": "55", "27": 100, "11": 35}'
+              valuenat="10"
+              name="Nom de l'indicateur"
+              level="reg"
+              date="21/12/2022">
             </map-chart>
           </div>
 
@@ -865,7 +909,7 @@
                 <pre>
                     <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>map-chart</span> <span class="token attr-name">data</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">{"84": 1, "32": 10, "93": 20, "44": 30, "76": 40,
-                       "28": 50, "75": 60, "24": 70,"53": 80, 
+                       "28": 50, "75": 60, "24": 70,"53": 80,
                        "94": 90, "52": 100, "01": 95, "02": 85,
                         "03": 75, "04": 65, "06": "55", "27": 100, "11": 35}</span><span class="token punctuation">'</span></span><span class="token attr-name">valuenat</span><span class="token attr-value"><span class="token punctuation">=</span><span class="titre_class">10</span>
                       <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">Nom de l'indicateur</span><span class="token punctuation">"</span><span class="token attr-name">level</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">reg</span><span class="token punctuation">"</span></span></span><span class="token punctuation">&gt;</span></span>
@@ -879,8 +923,9 @@
 
           <h3 id="map_chart.3">3. Régions</h3>
           <div class="chart_container">
-            <map-chart-reg data='{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
-              "12": 33, "13": 89, "14": 24, "15": 52, "16": 41, "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,
+            <map-chart-reg
+              data='{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58,
+              "11": 38, "12": 33, "13": 89, "14": 24, "15": 52, "16": 41, "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,
               "23": 37, "24": 65, "25": 88, "26": 48, "27": 61, "28": 80, "29": 12, "30": 6, "31": 5, "32": 22, "33": 40,
               "34": 19, "35": 13, "36": 32, "37": 0, "38": 82, "39": 13, "40": 78, "41": 92, "42": 10, "43": 22, "44": 70,
               "45": 85, "46": 58, "47": 72, "48": 61, "49": 27, "50": 47, "51": 41, "52": 44, "53": 29, "54": 22, "55": 4,
@@ -888,7 +933,10 @@
               "67": 56, "68": 19, "69": 44, "70": 92, "71": 96, "72": 51, "73": 32, "74": 19, "75": 96, "76": 91, "77": 21,
               "78": 48, "79": 72, "80": 52, "81": 48, "82": 57, "83": 38, "84": 23, "85": 46, "86": 37, "87": 64, "88": 78,
               "89": 100, "90": 85, "91": 87, "92": 46, "93": 89, "94": 18, "95": 72, "971": 48, "972": 28, "973": 35,
-              "974": 70, "976": 38, "2A": 63, "2B": "16"}' valuereg="10" name="Nom de l'indicateur" region="93"
+              "974": 70, "976": 38, "2A": 63, "2B": "16"}'
+              valuereg="10"
+              name="Nom de l'indicateur"
+              region="93"
               date="21/12/2022">
             </map-chart-reg>
           </div>
@@ -908,7 +956,7 @@
                         "06": 96, "07": 77,"08": 75, "09": 57, "10": 58, "11": 38,
                         "12": 33, "13": 89, "14": 24, "15": 52, "16": 41,
                         "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,
-                        "23": 37, "24": 65, "25": 88, "26": 48, "27": 61, 
+                        "23": 37, "24": 65, "25": 88, "26": 48, "27": 61,
                         "28": 80, "29": 12, "30": 6, "31": 5, "32": 22, "33": 40,
                         "34": 19, "35": 13, "36": 32, "37": 0, "38": 82,
                         "39": 13, "40": 78, "41": 92, "42": 10, "43": 22, "44": 70,
@@ -918,7 +966,7 @@
                         "61": 15, "62": 60, "63": 71, "64": 0, "65": 91, "66": 51,
                         "67": 56, "68": 19, "69": 44, "70": 92, "71": 96,
                         "72": 51, "73": 32, "74": 19, "75": 96, "76": 91, "77": 21,
-                        "78": 48, "79": 72, "80": 52, "81": 48, "82": 57, 
+                        "78": 48, "79": 72, "80": 52, "81": 48, "82": 57,
                         "83": 38, "84": 23, "85": 46, "86": 37, "87": 64, "88": 78,
                         "89": 100, "90": 85, "91": 87, "92": 46, "93": 89,
                         "94": 18, "95": 72, "971": 48, "972": 28, "973": 35,
@@ -940,7 +988,7 @@
           <div class="chart_container">
             <data-box data-Box-Title="Titre de votre Databox"
               data-Box-Description="Ceci est une nouvelle description pour la databox." data-Box-Date="2024-10-22"
-              :isMultilineTableHeader="false" unit-tooltip="%" />
+              isMultilineTableHeader="false" unit-tooltip="%" />
           </div>
           <section class="fr-accordion fr-mt-4w fr-mb-6w">
             <h3 class="fr-accordion__title">
@@ -951,14 +999,14 @@
             <div class="fr-collapse" id="accordion-18">
               <div class="code-toolbar">
                 <pre><code>
-                  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>data-box</span> 
-                  <span class="token attr-name">data-Box-Title</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">Titre de votre Databox</span><span class="token punctuation">"</span></span> 
-                  <span class="token attr-name">data-Box-Description</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">Ceci est une nouvelle description pour la databox.</span><span class="token punctuation">"</span></span> 
-                  <span class="token attr-name">data-Box-Date</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">2024-10-22</span><span class="token punctuation">"</span></span> 
-                  <span class="token attr-name">:isMultilineTableHeader</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">false</span><span class="token punctuation">"</span></span> 
-                  <span class="token attr-name">unit-tooltip</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">%</span><span class="token punctuation">"</span> 
-                  <span class="token punctuation">/&gt;</span>       
-            </code></pre>
+                  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>data-box</span></span>
+                  <span class="token attr-name">data-Box-Title</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">Titre de votre Databox</span><span class="token punctuation">"</span></span>
+                  <span class="token attr-name">data-Box-Description</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">Ceci est une nouvelle description pour la databox.</span><span class="token punctuation">"</span></span>
+                  <span class="token attr-name">data-Box-Date</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">2024-10-22</span><span class="token punctuation">"</span></span>
+                  <span class="token attr-name">:isMultilineTableHeader</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">false</span><span class="token punctuation">"</span></span>
+                  <span class="token attr-name">unit-tooltip</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">%</span><span class="token punctuation">"</span></span>
+                  <span class="token punctuation">/&gt;</span>
+                </code></pre>
               </div>
             </div>
           </section>
@@ -976,7 +1024,7 @@
           <h3 class="fr-mt-5w">Graphiques catégoriels</h3>
           <p>Lorsque les formes du graphique doivent être différenciées par des couleurs mais que celles-ci ne sont pas
             porteuses de sens supplémentaire que la catégorisation,
-            la palette catégorielle doit être utilisée : </p>
+            la palette catégorielle doit être utilisée :</p>
           <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #5C68E5"></span> <span
               class="legende_dot" style="background-color: #5C68E5"></span> </div>
           <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #82B5F2"></span> <span
@@ -1037,9 +1085,11 @@
           </p>
 
           <div class="chart_container">
-            <table-chart x='["A","B","C","D","E","F","G","H","I","J"]'
+            <table-chart
+              x='["A","B","C","D","E","F","G","H","I","J"]'
               y="[[1000000, 50,40,39,49,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49]]"
-              varname="Jours"></table-chart>
+              varname="Jours">
+            </table-chart>
           </div>
 
           <section class="fr-accordion fr-mt-4w fr-mb-6w">
@@ -1051,7 +1101,7 @@
             <div class="fr-collapse" id="accordion-23">
               <div class="code-toolbar">
                 <pre><code>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table-chart</span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table-chart</span>
 <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[["A","B","C","D","E","F","G","H","I","J"],
 ["A","B","C","D","E","F","G","H","I","J"]]</span><span class="token punctuation">'</span>
 </span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[40, 50,40,39,49,40, 50,40,39,49],
@@ -1063,6 +1113,7 @@
 [30, 150,340,379,439,40, 50,40,39,49],
 [30, 150,340,379,439,40, 50,40,39,49]]</span><span class="token punctuation">'</span>
 <span class="token attr-name">varname</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">Jours</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>table-chart</span><span class="token punctuation">&gt;</span>
+                </code></pre>
               </div>
             </div>
           </section>
@@ -1166,6 +1217,7 @@
         }
       });
     </script>
+  </div>
 </body>
 
 </html>

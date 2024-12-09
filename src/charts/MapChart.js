@@ -1,11 +1,7 @@
-import Vue from 'vue'
+import { defineCustomElement } from 'vue'
 
 import MapChart from './components/MapChart'
 
-import vueCustomElement from 'vue-custom-element'
+const MapChartElement = defineCustomElement(MapChart)
 
-Vue.config.productionTip = false
-
-Vue.use(vueCustomElement)
-
-Vue.customElement('map-chart', MapChart)
+customElements.define('map-chart', MapChartElement, { shadowRoot: false })

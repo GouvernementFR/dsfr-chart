@@ -1,6 +1,6 @@
 <template>
-  <div class="widget_container fr-grid-row" :id="widgetId">
-    <div class='fr-table scroll' :id="tableId" :style="styleHeight">
+  <div class="widget_container fr-grid-row" :ref="widgetId">
+    <div class='fr-table scroll' :ref="tableId" :style="styleHeight">
       <table aria-labelledby="table-caption">
         <caption id="table-caption">{{varname}}</caption>
         <thead>
@@ -10,7 +10,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, rowIndex) in xparse" :key="rowIndex" :id="'table-row-' + rowIndex">
+          <tr v-for="(item, rowIndex) in xparse" :key="rowIndex" :ref="'table-row-' + rowIndex">
             <td :class="getClass(item)">{{item}}</td>
             <td v-for="(item2, colIndex) in yparse" :key="colIndex" :class="getClass(yparse[colIndex][rowIndex])">{{convertIntToHumanTable(yparse[colIndex][rowIndex])}}</td>
           </tr>
@@ -93,9 +93,6 @@ export default {
     this.tableId = 'table' + Math.floor(Math.random() * (1000))
   },
   mounted () {
-    this.getData()
-  },
-  beforeUpdate () {
     this.resetData()
     this.getData()
   }
