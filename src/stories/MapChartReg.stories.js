@@ -1,8 +1,8 @@
 const meta = {
   component: 'map-chart-reg'
-}
+};
 
-export default meta
+export default meta;
 
 export const Default = {
   args: {
@@ -21,4 +21,4 @@ export const Default = {
     region: '93',
     date: '21/12/2022'
   }
-}
+};

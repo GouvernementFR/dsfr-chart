@@ -1,8 +1,8 @@
 const meta = {
   component: 'gauge-chart'
-}
+};
 
-export default meta
+export default meta;
 
 export const Default = {
   args: {
@@ -12,4 +12,4 @@ export const Default = {
     initdate: '(en 2022)',
     targetdate: '(en 2026)'
   }
-}
+};

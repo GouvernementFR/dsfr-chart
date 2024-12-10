@@ -1,8 +1,8 @@
 const meta = {
   component: 'radar-chart'
-}
+};
 
-export default meta
+export default meta;
 
 export const Default = {
   args: {
@@ -11,4 +11,4 @@ export const Default = {
     name: '["1963", "2023"]',
     unitTooltip: '%'
   }
-}
+};

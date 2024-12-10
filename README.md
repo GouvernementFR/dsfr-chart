@@ -1100,10 +1100,10 @@ Voici la liste des props disponibles pour le composant `DataBox` :
 -   **addSources** `(Boolean)` _(par défaut : false)_  
     Affiche un sélecteur de sources si défini à `true`.
     
--   **select_options** `(Array)` _(par défaut : [{ value: "ubm", label: "Exposition médiatique" }])_  
+-   **selectOptions** `(Array)` _(par défaut : [{ value: "ubm", label: "Exposition médiatique" }])_  
     Liste des options pour le sélecteur de sources.
     
--   **option_default** `(String)` _(par défaut : "ubm")_  
+-   **defaultOption** `(String)` _(par défaut : "ubm")_  
     Valeur par défaut sélectionnée dans le sélecteur de sources.
     
 -   **captionTitle** `(String)` _(par défaut : "Titre du tableau")_  

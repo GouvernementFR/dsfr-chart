@@ -1,21 +1,27 @@
-export default {
-  env: {
-    node: true,
-    es2022: true
+import globals from 'globals';
+import pluginJs from '@eslint/js';
+import pluginVue from 'eslint-plugin-vue';
+import pluginStorybook from 'eslint-plugin-storybook';
+
+/** @type {import('eslint').Linter.Config[]} */
+export default [
+  {
+    files: ['**/*.{js,vue}']
   },
-  extends: ['plugin:vue/essential', 'standard', 'plugin:storybook/recommended'],
-  globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly'
+  {
+    languageOptions: {
+      globals: globals.browser,
+    }
   },
-  parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'module'
+  pluginJs.configs.recommended,
+  ...pluginVue.configs['flat/recommended'],
+  ...pluginStorybook.configs['flat/recommended'],
+  {
+    rules: {
+      'vue/multi-word-component-names': 'off',
+    }
   },
-  plugins: [
-    'vue'
-  ],
-  rules: {
-    'vue/multi-word-component-names': 'off'
-  }
-}
+  {
+    ignores: ['!.storybook']
+  },
+];

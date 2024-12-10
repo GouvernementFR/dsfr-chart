@@ -1,8 +1,8 @@
 const meta = {
   component: 'data-box'
-}
+};
 
-export default meta
+export default meta;
 
 export const Default = {
   args: {
@@ -11,4 +11,4 @@ export const Default = {
     dataBoxDate: '2024-10-22',
     unitTooltip: '%'
   }
-}
+};

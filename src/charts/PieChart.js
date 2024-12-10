@@ -1,7 +1,7 @@
-import { defineCustomElement } from 'vue'
+import { defineCustomElement } from 'vue';
 
-import PieChart from '@/components/PieChart.vue'
+import PieChart from '@/components/PieChart.vue';
 
-const PieChartElement = defineCustomElement(PieChart)
+const PieChartElement = defineCustomElement(PieChart);
 
-customElements.define('pie-chart', PieChartElement, { shadowRoot: false })
+customElements.define('pie-chart', PieChartElement, { shadowRoot: false });

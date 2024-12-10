@@ -1,42 +1,81 @@
-/* eslint-disable */
 <template>
-  <div class="widget_container fr-grid-row" :ref="widgetId">
+  <div
+    :ref="widgetId"
+    class="widget_container fr-grid-row"
+  >
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="linechart_tooltip">
-          <div class="tooltip_header fr-text--sm fr-mb-0"></div>
+          <div class="tooltip_header fr-text--sm fr-mb-0" />
           <div class="tooltip_body">
             <div class="tooltip_value">
-              <span class="tooltip_dot"></span>
+              <span class="tooltip_dot" />
             </div>
           </div>
         </div>
-        <canvas :ref="chartId"></canvas>
+        <canvas :ref="chartId" />
         <!-- Légende pour les séries de données -->
         <div class="chart_legend fr-mb-0 fr-mt-4v">
-          <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v">
-            <span class="legende_dot" :style="{ 'background-color': colorParse[index] }"></span>
-            <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
+          <div
+            v-for="(item, index) in nameParse"
+            :key="item"
+            class="flex fr-mt-3v fr-mb-1v"
+          >
+            <span
+              class="legende_dot"
+              :style="{ 'background-color': colorParse[index] }"
+            />
+            <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
               {{ capitalize(nameParse[index]) }}
             </p>
           </div>
         </div>
         <!-- Légende pour les lignes horizontales -->
-        <div v-for="(item2, index2) in hlineNameParse" :key="item2" class="flex fr-mt-3v"
-          :style="{ 'margin-left': isSmall ? '0px' : style }">
-          <span class="legende_dash_line1" :style="{ 'background-color': hlineColorParse[index2] }"></span>
-          <span class="legende_dash_line2" :style="{ 'background-color': hlineColorParse[index2] }"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(hlineNameParse[index2]) }}</p>
+        <div
+          v-for="(item2, index2) in hlineNameParse"
+          :key="item2"
+          class="flex fr-mt-3v"
+          :style="{ 'margin-left': isSmall ? '0px' : style }"
+        >
+          <span
+            class="legende_dash_line1"
+            :style="{ 'background-color': hlineColorParse[index2] }"
+          />
+          <span
+            class="legende_dash_line2"
+            :style="{ 'background-color': hlineColorParse[index2] }"
+          />
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+            {{ capitalize(hlineNameParse[index2]) }}
+          </p>
         </div>
         <!-- Légende pour les lignes verticales -->
-        <div v-for="(item3, index3) in vlineNameParse" :key="item3" class="flex fr-mt-3v fr-mb-1v"
-          :style="{ 'margin-left': isSmall ? '0px' : style }">
-          <span class="legende_dash_line1" :style="{ 'background-color': vlineColorParse[index3] }"></span>
-          <span class="legende_dash_line2" :style="{ 'background-color': vlineColorParse[index3] }"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index3]) }}</p>
+        <div
+          v-for="(item3, index3) in vlineNameParse"
+          :key="item3"
+          class="flex fr-mt-3v fr-mb-1v"
+          :style="{ 'margin-left': isSmall ? '0px' : style }"
+        >
+          <span
+            class="legende_dash_line1"
+            :style="{ 'background-color': vlineColorParse[index3] }"
+          />
+          <span
+            class="legende_dash_line2"
+            :style="{ 'background-color': vlineColorParse[index3] }"
+          />
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+            {{ capitalize(vlineNameParse[index3]) }}
+          </p>
         </div>
-        <div v-if="date !== undefined" class="flex fr-mt-1w" :style="{ 'margin-left': isSmall ? '0px' : style }">
-          <p class="fr-text--xs">Mise à jour : {{ date }}</p>
+        <div
+          v-if="date !== undefined"
+          class="flex fr-mt-1w"
+          :style="{ 'margin-left': isSmall ? '0px' : style }"
+        >
+          <p class="fr-text--xs">
+            Mise à jour : {{ date }}
+          </p>
         </div>
       </div>
     </div>
@@ -44,8 +83,7 @@
 </template>
 
 <script>
-/* eslint-disable */
-import { Chart } from 'chart.js'
+import { Chart } from 'chart.js';
 import { mixin, choosePalette } from '@/utils/global.js';
 import { generateScatterChartColors } from '@/utils/colors.js';
 import { configureChartDefaults } from '@/utils/configureChartDefaults.js';
@@ -53,6 +91,78 @@ import { configureChartDefaults } from '@/utils/configureChartDefaults.js';
 export default {
   name: 'ScatterChart',
   mixins: [mixin],
+  props: {
+    x: {
+      type: String,
+      required: true,
+    },
+    y: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      default: undefined,
+    },
+    vline: {
+      type: String,
+      default: undefined,
+    },
+    vlinecolor: {
+      type: String,
+      default: undefined,
+    },
+    vlinename: {
+      type: String,
+      default: undefined,
+    },
+    hline: {
+      type: String,
+      default: undefined,
+    },
+    hlinecolor: {
+      type: String,
+      default: undefined,
+    },
+    hlinename: {
+      type: String,
+      default: undefined,
+    },
+    pointradius: {
+      type: Number,
+      default: 5,
+    },
+    showline: {
+      type: [Boolean, String],
+      default: false,
+    },
+    date: {
+      type: String,
+      default: undefined,
+    },
+    aspectratio: {
+      type: Number,
+      default: 2,
+    },
+    formatdate: {
+      type: [Boolean, String],
+      default: false,
+    },
+    // Nouveau paramètre pour choisir la palette de couleurs
+    selectedPalette: {
+      type: String,
+      default: '',
+    },
+    // Index de la série à mettre en avant
+    highlightIndex: {
+      type: Number,
+      default: -1,
+    },
+    unitTooltip: {
+      type: String,
+      default: '', // Default to an empty string if no unit is specified
+    },
+  },
   data() {
     return {
       widgetId: '',
@@ -81,223 +191,171 @@ export default {
       ymax: 0,
       colorPrecisionBar: '#161616',
       colorHover: [],
-      isSmall: false
-    }
-  },
-  props: {
-    x: {
-      type: String,
-      required: true
-    },
-    y: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      default: undefined
-    },
-    vline: {
-      type: String,
-      default: undefined
-    },
-    vlinecolor: {
-      type: String,
-      default: undefined
-    },
-    vlinename: {
-      type: String,
-      default: undefined
-    },
-    hline: {
-      type: String,
-      default: undefined
-    },
-    hlinecolor: {
-      type: String,
-      default: undefined
-    },
-    hlinename: {
-      type: String,
-      default: undefined
-    },
-    pointradius: {
-      type: Number,
-      default: 5
-    },
-    showline: {
-      type: [Boolean, String],
-      default: false
-    },
-    date: {
-      type: String,
-      default: undefined
-    },
-    aspectratio: {
-      type: Number,
-      default: 2
-    },
-    formatdate: {
-      type: [Boolean, String],
-      default: false
-    },
-    // Nouveau paramètre pour choisir la palette de couleurs
-    selectedPalette: {
-      type: String,
-      default: ''
-    },
-    // Index de la série à mettre en avant
-    highlightIndex: {
-      type: Number,
-      default: -1
-    },
-    unitTooltip: {
-      type: String,
-      default: ''  // Default to an empty string if no unit is specified
-    }
+      isSmall: false,
+    };
   },
   computed: {
     style() {
-      return this.legendLeftMargin + 'px'
-    }
+      return this.legendLeftMargin + 'px';
+    },
+  },
+  created() {
+    configureChartDefaults();
+    this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
+    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
+  },
+  mounted() {
+    this.resetData();
+    this.createChart();
+
+    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
+    const element = document.documentElement;
+    element.addEventListener('dsfr.theme', (e) => {
+      if (this.chartId !== '') {
+        this.changeColors(e.detail.theme);
+      }
+    });
+    addEventListener('resize', () => {
+      this.isSmall = document.documentElement.clientWidth < 767;
+    });
   },
   methods: {
     resetData() {
       if (this.chart) {
-        this.chart.destroy()
+        this.chart.destroy();
       }
-      this.legendLeftMargin = 100
-      this.datasets = []
-      this.xAxisType = 'category'
-      this.labels = undefined
-      this.opacity = []
-      this.showPoint = []
-      this.xparse = []
-      this.yparse = []
-      this.nameParse = []
-      this.tmpColorParse = []
-      this.colorParse = []
-      this.vlineParse = []
-      this.vlineColorParse = []
-      this.tmpVlineColorParse = []
-      this.vlineNameParse = []
-      this.hlineParse = []
-      this.hlineColorParse = []
-      this.tmpHlineColorParse = []
-      this.hlineNameParse = []
-      this.ymax = 0
-      this.colorPrecisionBar = '#161616'
-      this.colorHover = []
+      this.legendLeftMargin = 100;
+      this.datasets = [];
+      this.xAxisType = 'category';
+      this.labels = undefined;
+      this.opacity = [];
+      this.showPoint = [];
+      this.xparse = [];
+      this.yparse = [];
+      this.nameParse = [];
+      this.tmpColorParse = [];
+      this.colorParse = [];
+      this.vlineParse = [];
+      this.vlineColorParse = [];
+      this.tmpVlineColorParse = [];
+      this.vlineNameParse = [];
+      this.hlineParse = [];
+      this.hlineColorParse = [];
+      this.tmpHlineColorParse = [];
+      this.hlineNameParse = [];
+      this.ymax = 0;
+      this.colorPrecisionBar = '#161616';
+      this.colorHover = [];
     },
     getData() {
-      const self = this
+      const self = this;
       // Récupération des paramètres
       try {
-        this.xparse = JSON.parse(this.x)
-        this.yparse = JSON.parse(this.y)
+        this.xparse = JSON.parse(this.x);
+        this.yparse = JSON.parse(this.y);
       } catch (error) {
-        console.error('Erreur lors du parsing de x ou y:', error)
-        return
+        console.error('Erreur lors du parsing de x ou y:', error);
+        return;
       }
 
-      let tmpNameParse = []
+      let tmpNameParse = [];
       if (this.name !== undefined) {
         try {
-          tmpNameParse = JSON.parse(self.name)
+          tmpNameParse = JSON.parse(self.name);
         } catch (error) {
-          console.error('Erreur lors du parsing de name:', error)
+          console.error('Erreur lors du parsing de name:', error);
         }
       }
       if (this.color !== undefined) {
         try {
-          this.tmpColorParse = JSON.parse(self.color)
+          this.tmpColorParse = JSON.parse(self.color);
         } catch (error) {
-          console.error('Erreur lors du parsing de color:', error)
+          console.error('Erreur lors du parsing de color:', error);
         }
       }
 
-      this.loadColors()
+      this.loadColors();
 
       for (let i = 0; i < this.yparse.length; i++) {
-        self.showPoint.push(true)
+        self.showPoint.push(true);
         if (tmpNameParse[i] !== undefined) {
-          self.nameParse.push(tmpNameParse[i])
+          self.nameParse.push(tmpNameParse[i]);
         } else {
-          self.nameParse.push('Serie' + (i + 1))
+          self.nameParse.push('Serie' + (i + 1));
         }
       }
 
       // Récupération données Vline
       if (this.vline !== undefined) {
-        this.vlineParse = JSON.parse(this.vline)
-        let tmpVlineNameParse = []
+        this.vlineParse = JSON.parse(this.vline);
+        let tmpVlineNameParse = [];
         if (this.vlinename !== undefined) {
-          tmpVlineNameParse = JSON.parse(self.vlinename)
+          tmpVlineNameParse = JSON.parse(self.vlinename);
         }
         if (this.vlinecolor !== undefined) {
-          this.tmpVlineColorParse = JSON.parse(self.vlinecolor)
+          this.tmpVlineColorParse = JSON.parse(self.vlinecolor);
         }
 
         for (let i = 0; i < this.vlineParse.length; i++) {
           if (tmpVlineNameParse[i] !== undefined) {
-            self.vlineNameParse.push(tmpVlineNameParse[i])
+            self.vlineNameParse.push(tmpVlineNameParse[i]);
           } else {
-            self.vlineNameParse.push('V' + (i + 1))
+            self.vlineNameParse.push('V' + (i + 1));
           }
         }
       }
 
       // Récupération données Hline
       if (this.hline !== undefined) {
-        this.hlineParse = JSON.parse(this.hline)
-        let tmpHlineNameParse = []
+        this.hlineParse = JSON.parse(this.hline);
+        let tmpHlineNameParse = [];
         if (this.hlinename !== undefined) {
-          tmpHlineNameParse = JSON.parse(self.hlinename)
+          tmpHlineNameParse = JSON.parse(self.hlinename);
         }
         if (this.hlinecolor !== undefined) {
-          this.tmpHlineColorParse = JSON.parse(self.hlinecolor)
+          this.tmpHlineColorParse = JSON.parse(self.hlinecolor);
         }
 
         for (let i = 0; i < this.hlineParse.length; i++) {
           if (tmpHlineNameParse[i] !== undefined) {
-            self.hlineNameParse.push(tmpHlineNameParse[i])
+            self.hlineNameParse.push(tmpHlineNameParse[i]);
           } else {
-            self.hlineNameParse.push('H' + (i + 1))
+            self.hlineNameParse.push('H' + (i + 1));
           }
         }
       }
 
       // Formatage des données
-      let data = []
+      let data = [];
       // Cas où x est numérique
       if (typeof self.xparse[0][0] === 'number') {
-        const allX = []
+        const allX = [];
         self.xparse.forEach(function (xj, j) {
-          const dj = []
-          const xsort = xj.map((a) => a).sort((a, b) => a - b)
+          const dj = [];
+          const xsort = xj.map((a) => a).sort((a, b) => a - b);
           xsort.forEach(function (k) {
-            const index = xj.findIndex((element) => element === k)
+            const index = xj.findIndex((element) => element === k);
             dj.push({
               x: k,
-              y: self.yparse[j][index]
-            })
+              y: self.yparse[j][index],
+            });
             if (!allX.includes(k)) {
-              allX.push(k)
+              allX.push(k);
             }
-          })
-          data.push(dj)
-        })
-        self.labels = undefined
-        self.xAxisType = 'linear'
+          });
+          data.push(dj);
+        });
+        self.labels = undefined;
+        self.xAxisType = 'linear';
       } else {
         // Cas où x est non numérique
-        data = self.yparse
-        self.labels = self.xparse[0]
-        self.xAxisType = 'category'
+        data = self.yparse;
+        self.labels = self.xparse[0];
+        self.xAxisType = 'category';
       }
 
       // Set ymax
-      self.ymax = Math.max.apply(null, self.hlineParse)
+      self.ymax = Math.max.apply(null, self.hlineParse);
 
       // Tracé de la courbe
       data.forEach(function (dj, j) {
@@ -312,158 +370,164 @@ export default {
           pointHoverBackgroundColor: self.colorHover[j],
           pointHoverBorderColor: self.colorHover[j],
           showLine: self.showline,
-          borderWidth: 2
-        })
-      })
+          borderWidth: 2,
+        });
+      });
     },
     createChart() {
       if (this.chart) this.chart.destroy();
 
-      this.getData()
+      this.getData();
 
-      const self = this
-      const ctx = this.$refs[self.chartId].getContext('2d')
+      const self = this;
+      const ctx = this.$refs[self.chartId].getContext('2d');
 
       this.chart = new Chart(ctx, {
         type: 'scatter',
         data: {
           labels: self.labels,
-          datasets: self.datasets
+          datasets: self.datasets,
         },
-        plugins: [{
-          afterDatasetDraw: function (chart, args, options) {
-            const ctx = chart.chart.ctx;
-            const xScales = chart.config.options.scales.xAxes;
-            const yScales = chart.config.options.scales.yAxes;
-
-            const xAxisId = xScales[0].id || xScales[0].scaleLabel.labelString;
-            const yAxisId = yScales[0].id || yScales[0].scaleLabel.labelString;
-
-            const xAxis = chart.scales[xAxisId];
-            const yAxis = chart.scales[yAxisId];
-
-            if (self.vlineParse !== undefined) {
-              self.vlineParse.forEach(function (line, j) {
-                const x = xAxis.getPixelForValue(line);
-
-                ctx.beginPath();
-                ctx.moveTo(x, yAxis.top);
-                ctx.strokeStyle = self.vlineColorParse[j];
-                ctx.lineWidth = 3;
-                ctx.setLineDash([10, 5]);
-                ctx.lineTo(x, yAxis.bottom);
-                ctx.stroke();
-              });
-            }
-            if (self.hlineParse !== undefined) {
-              self.hlineParse.forEach(function (line, j) {
-                const y = yAxis.getPixelForValue(line);
-
-                ctx.beginPath();
-                ctx.moveTo(xAxis.left, y);
-                ctx.strokeStyle = self.hlineColorParse[j];
-                ctx.lineWidth = 3;
-                ctx.setLineDash([10, 5]);
-                ctx.lineTo(xAxis.right, y);
-                ctx.stroke();
-              });
-            }
-          }
-        },
-        {
-          // Mise à jour de la méthode beforeDatasetsDraw
-          beforeDatasetsDraw: function (chart, args, options) {
-            if (chart.tooltip._active && chart.tooltip._active.length) {
-              const activePoint = chart.tooltip._active[0];
+        plugins: [
+          {
+            afterDatasetDraw: function (chart) {
               const ctx = chart.chart.ctx;
-              const x = activePoint.tooltipPosition().x;
-              const y = activePoint.tooltipPosition().y;
+              const xScales = chart.config.options.scales.xAxes;
+              const yScales = chart.config.options.scales.yAxes;
 
-              const xScale = activePoint._xScale;
-              const yScale = activePoint._yScale;
+              const xAxisId = xScales[0].id || xScales[0].scaleLabel.labelString;
+              const yAxisId = yScales[0].id || yScales[0].scaleLabel.labelString;
 
-              if (xScale && yScale) {
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(x, yScale.top);
-                ctx.lineTo(x, yScale.bottom);
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = self.colorPrecisionBar;
-                ctx.setLineDash([10, 5]);
-                ctx.stroke();
-                ctx.restore();
+              const xAxis = chart.scales[xAxisId];
+              const yAxis = chart.scales[yAxisId];
 
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(xScale.left, y);
-                ctx.lineTo(xScale.right, y);
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = self.colorPrecisionBar;
-                ctx.setLineDash([10, 5]);
-                ctx.stroke();
-                ctx.restore();
+              if (self.vlineParse !== undefined) {
+                self.vlineParse.forEach(function (line, j) {
+                  const x = xAxis.getPixelForValue(line);
+
+                  ctx.beginPath();
+                  ctx.moveTo(x, yAxis.top);
+                  ctx.strokeStyle = self.vlineColorParse[j];
+                  ctx.lineWidth = 3;
+                  ctx.setLineDash([10, 5]);
+                  ctx.lineTo(x, yAxis.bottom);
+                  ctx.stroke();
+                });
               }
-            }
-          }
-        }],
+              if (self.hlineParse !== undefined) {
+                self.hlineParse.forEach(function (line, j) {
+                  const y = yAxis.getPixelForValue(line);
+
+                  ctx.beginPath();
+                  ctx.moveTo(xAxis.left, y);
+                  ctx.strokeStyle = self.hlineColorParse[j];
+                  ctx.lineWidth = 3;
+                  ctx.setLineDash([10, 5]);
+                  ctx.lineTo(xAxis.right, y);
+                  ctx.stroke();
+                });
+              }
+            },
+          },
+          {
+            // Mise à jour de la méthode beforeDatasetsDraw
+            beforeDatasetsDraw: function (chart) {
+              if (chart.tooltip._active && chart.tooltip._active.length) {
+                const activePoint = chart.tooltip._active[0];
+                const ctx = chart.chart.ctx;
+                const x = activePoint.tooltipPosition().x;
+                const y = activePoint.tooltipPosition().y;
+
+                const xScale = activePoint._xScale;
+                const yScale = activePoint._yScale;
+
+                if (xScale && yScale) {
+                  ctx.save();
+                  ctx.beginPath();
+                  ctx.moveTo(x, yScale.top);
+                  ctx.lineTo(x, yScale.bottom);
+                  ctx.lineWidth = 1;
+                  ctx.strokeStyle = self.colorPrecisionBar;
+                  ctx.setLineDash([10, 5]);
+                  ctx.stroke();
+                  ctx.restore();
+
+                  ctx.save();
+                  ctx.beginPath();
+                  ctx.moveTo(xScale.left, y);
+                  ctx.lineTo(xScale.right, y);
+                  ctx.lineWidth = 1;
+                  ctx.strokeStyle = self.colorPrecisionBar;
+                  ctx.setLineDash([10, 5]);
+                  ctx.stroke();
+                  ctx.restore();
+                }
+              }
+            },
+          },
+        ],
         options: {
           aspectRatio: this.aspectratio,
           animation: {
             duration: 1000,
             easing: 'easeOutBounce',
             animateScale: true,
-            animateRotate: true
+            animateRotate: true,
           },
           scales: {
-            xAxes: [{
-              type: self.xAxisType,
-              gridLines: {
-                zeroLineColor: '#DDDDDD',
-                drawOnChartArea: false,
-                color: '#DDDDDD',
-                lineWidth: 1
+            xAxes: [
+              {
+                type: self.xAxisType,
+                gridLines: {
+                  zeroLineColor: '#DDDDDD',
+                  drawOnChartArea: false,
+                  color: '#DDDDDD',
+                  lineWidth: 1,
+                },
+                ticks: {
+                  callback: function (value) {
+                    if (self.formatdate) {
+                      return value.toString().substring(5, 7) + '/' + value.toString().substring(0, 4);
+                    } else {
+                      return value;
+                    }
+                  },
+                },
               },
-              ticks: {
-                callback: function (value) {
-                  if (self.formatdate) {
-                    return value.toString().substring(5, 7) + '/' + value.toString().substring(0, 4)
-                  } else {
-                    return value
-                  }
-                }
-              }
-            }],
-            yAxes: [{
-              gridLines: {
-                drawTicks: false,
-                zeroLineColor: '#DDDDDD',
-                color: '#DDDDDD',
-                borderDash: [3],
-                lineWidth: 1
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  drawTicks: false,
+                  zeroLineColor: '#DDDDDD',
+                  color: '#DDDDDD',
+                  borderDash: [3],
+                  lineWidth: 1,
+                },
+                ticks: {
+                  padding: 4,
+                  autoSkip: true,
+                  maxTicksLimit: 5,
+                  suggestedMax: self.ymax,
+                  callback: function (value) {
+                    if (value >= 1000000000 || value <= -1000000000) {
+                      return value / 1e9 + 'B';
+                    } else if (value >= 1000000 || value <= -1000000) {
+                      return value / 1e6 + 'M';
+                    } else if (value >= 1000 || value <= -1000) {
+                      return value / 1e3 + 'K';
+                    }
+                    return value;
+                  },
+                },
+                afterFit: function (axis) {
+                  self.legendLeftMargin = axis.width;
+                },
               },
-              ticks: {
-                padding: 4,
-                autoSkip: true,
-                maxTicksLimit: 5,
-                suggestedMax: self.ymax,
-                callback: function (value, index, values) {
-                  if (value >= 1000000000 || value <= -1000000000) {
-                    return value / 1e9 + 'B'
-                  } else if (value >= 1000000 || value <= -1000000) {
-                    return value / 1e6 + 'M'
-                  } else if (value >= 1000 || value <= -1000) {
-                    return value / 1e3 + 'K'
-                  }
-                  return value
-                }
-              },
-              afterFit: function (axis) {
-                self.legendLeftMargin = axis.width
-              }
-            }]
+            ],
           },
           legend: {
-            display: false
+            display: false,
           },
           tooltips: {
             enabled: false,
@@ -471,69 +535,69 @@ export default {
             backgroundColor: '#6b6b6b',
             callbacks: {
               label: function (tooltipItems) {
-                const label = []
+                const label = [];
                 self.datasets.forEach(function (set, i) {
                   if (self.showPoint[i]) {
                     if (self.xAxisType === 'linear') {
-                      const index = self.xparse[i].indexOf(tooltipItems.xLabel)
+                      const index = self.xparse[i].indexOf(tooltipItems.xLabel);
                       if (index !== -1) {
-                        label.push(self.convertIntToHuman(self.yparse[i][index]))
+                        label.push(self.convertIntToHuman(self.yparse[i][index]));
                       } else {
-                        label.push(undefined)
+                        label.push(undefined);
                       }
                     } else {
-                      label.push(self.convertIntToHuman(set.data[tooltipItems.index]))
+                      label.push(self.convertIntToHuman(set.data[tooltipItems.index]));
                     }
                   }
-                })
-                return label
+                });
+                return label;
               },
               title: function (tooltipItems) {
-                return tooltipItems[0].label
+                return tooltipItems[0].label;
               },
-              labelTextColor: function (tooltipItems) {
-                const colors = []
+              labelTextColor: function () {
+                const colors = [];
                 self.showPoint.forEach(function (show, i) {
                   if (show) {
-                    colors.push(self.colorParse[i])
+                    colors.push(self.colorParse[i]);
                   }
-                })
-                return colors
-              }
+                });
+                return colors;
+              },
             },
             custom: function (context) {
               // Tooltip Element
-              const tooltipEl = self.$el.querySelector('.linechart_tooltip')
+              const tooltipEl = self.$el.querySelector('.linechart_tooltip');
 
               // Hide if no tooltip
-              const tooltipModel = context
+              const tooltipModel = context;
               if (tooltipModel.opacity === 0) {
-                tooltipEl.style.opacity = 0
-                return
+                tooltipEl.style.opacity = 0;
+                return;
               }
 
               // Set caret Position
-              tooltipEl.classList.remove('above', 'below', 'no-transform')
+              tooltipEl.classList.remove('above', 'below', 'no-transform');
               if (tooltipModel.yAlign) {
-                tooltipEl.classList.add(tooltipModel.yAlign)
+                tooltipEl.classList.add(tooltipModel.yAlign);
               } else {
-                tooltipEl.classList.add('no-transform')
+                tooltipEl.classList.add('no-transform');
               }
 
               function getBody(bodyItem) {
-                return bodyItem.lines
+                return bodyItem.lines;
               }
               // Set Text
               if (tooltipModel.body) {
-                const titleLines = tooltipModel.title || []
-                const bodyLines = tooltipModel.body.map(getBody)
+                const titleLines = tooltipModel.title || [];
+                const bodyLines = tooltipModel.body.map(getBody);
 
                 const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
-                divDate.innerHTML = titleLines[0]
+                divDate.innerHTML = titleLines[0];
 
-                const divValue = self.$el.querySelector('.tooltip_value')
+                const divValue = self.$el.querySelector('.tooltip_value');
 
-                divValue.innerHTML = ''
+                divValue.innerHTML = '';
                 bodyLines[0].forEach(function (line, i) {
                   const displayValue = `${line}${self.unitTooltip ? ' ' + self.unitTooltip : ''}`;
                   if (line !== undefined) {
@@ -544,66 +608,58 @@ export default {
                       </div>
                     `;
                   }
-                })
+                });
               }
 
-              const {
-                offsetLeft: positionX,
-                offsetTop: positionY
-              } = self.chart.canvas
+              const { offsetLeft: positionX, offsetTop: positionY } = self.chart.canvas;
 
-              const canvasWidth = Number(self.chart.canvas.style.width.replace(/\D/g, ''))
-              const canvasHeight = Number(self.chart.canvas.style.height.replace(/\D/g, ''))
-              tooltipEl.style.position = 'absolute'
-              tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px'
-              tooltipEl.style.pointerEvents = 'none'
-              let tooltipX = positionX + tooltipModel.caretX + 10
-              let tooltipY = positionY + tooltipModel.caretY - 18
+              const canvasWidth = Number(self.chart.canvas.style.width.replace(/\D/g, ''));
+              const canvasHeight = Number(self.chart.canvas.style.height.replace(/\D/g, ''));
+              tooltipEl.style.position = 'absolute';
+              tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+              tooltipEl.style.pointerEvents = 'none';
+              let tooltipX = positionX + tooltipModel.caretX + 10;
+              let tooltipY = positionY + tooltipModel.caretY - 18;
               if (tooltipX + tooltipEl.clientWidth + self.legendLeftMargin > positionX + canvasWidth) {
-                tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10
+                tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10;
               }
               if (tooltipY + tooltipEl.clientHeight > positionY + 0.9 * canvasHeight) {
-                tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 18
+                tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 18;
               }
               if (tooltipX < positionX) {
-                tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2
-                tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 18
+                tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2;
+                tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 18;
               }
-              tooltipEl.style.left = tooltipX + 'px'
-              tooltipEl.style.top = tooltipY + 'px'
-              tooltipEl.style.opacity = 1
-            }
-          }
-        }
-      })
+              tooltipEl.style.left = tooltipX + 'px';
+              tooltipEl.style.top = tooltipY + 'px';
+              tooltipEl.style.opacity = 1;
+            },
+          },
+        },
+      });
     },
     ChangeShowPoint(index) {
-      const self = this
-      this.showPoint[index] = !this.showPoint[index]
+      const self = this;
+      this.showPoint[index] = !this.showPoint[index];
       if (this.showPoint[index]) {
-        this.chart.data.datasets[index].pointRadius = self.pointradius
-        this.chart.data.datasets[index].showLine = self.showline
+        this.chart.data.datasets[index].pointRadius = self.pointradius;
+        this.chart.data.datasets[index].showLine = self.showline;
       } else {
-        this.chart.data.datasets[index].pointRadius = 0
-        this.chart.data.datasets[index].showLine = false
+        this.chart.data.datasets[index].pointRadius = 0;
+        this.chart.data.datasets[index].showLine = false;
       }
-      this.opacity.length = 0
-      this.showPoint.forEach(function (show, j) {
+      this.opacity.length = 0;
+      this.showPoint.forEach(function (show) {
         if (show) {
-          self.opacity.push(1)
+          self.opacity.push(1);
         } else {
-          self.opacity.push(0.3)
+          self.opacity.push(0.3);
         }
-      })
-      this.chart.update(0)
+      });
+      this.chart.update(0);
     },
     loadColors() {
-      const {
-        colorParse,
-        colorHover,
-        vlineColorParse,
-        hlineColorParse
-      } = generateScatterChartColors({
+      const { colorParse, colorHover, vlineColorParse, hlineColorParse } = generateScatterChartColors({
         yparse: this.yparse,
         tmpColorParse: this.tmpColorParse,
         selectedPalette: this.selectedPalette,
@@ -611,7 +667,7 @@ export default {
         vlineParse: this.vlineParse,
         tmpVlineColorParse: this.tmpVlineColorParse,
         hlineParse: this.hlineParse,
-        tmpHlineColorParse: this.tmpHlineColorParse
+        tmpHlineColorParse: this.tmpHlineColorParse,
       });
 
       this.colorParse = colorParse;
@@ -628,43 +684,23 @@ export default {
       this.chart.options.scales.xAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
       this.chart.options.scales.yAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
 
-      this.loadColors()
+      this.loadColors();
       if (theme === 'light') {
-        this.colorPrecisionBar = '#161616'
+        this.colorPrecisionBar = '#161616';
       } else {
-        this.colorPrecisionBar = '#FFFFFF'
+        this.colorPrecisionBar = '#FFFFFF';
       }
 
       for (let i = 0; i < this.yparse.length; i++) {
-        this.chart.data.datasets[i].borderColor = this.colorParse[i]
-        this.chart.data.datasets[i].backgroundColor = this.colorParse[i]
-        this.chart.data.datasets[i].pointHoverBackgroundColor = this.colorHover[i]
-        this.chart.data.datasets[i].pointHoverBorderColor = this.colorHover[i]
+        this.chart.data.datasets[i].borderColor = this.colorParse[i];
+        this.chart.data.datasets[i].backgroundColor = this.colorParse[i];
+        this.chart.data.datasets[i].pointHoverBackgroundColor = this.colorHover[i];
+        this.chart.data.datasets[i].pointHoverBorderColor = this.colorHover[i];
       }
-      this.chart.update(0)
-    }
+      this.chart.update(0);
+    },
   },
-  created() {
-    configureChartDefaults();
-    this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
-    this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
-  },
-  mounted() {
-    this.resetData();
-    this.createChart();
-
-    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
-    const element = document.documentElement;
-    element.addEventListener('dsfr.theme', (e) => {
-      if (this.chartId !== '') {
-        this.changeColors(e.detail.theme);
-      }
-    });
-    addEventListener('resize', () => {
-      this.isSmall = document.documentElement.clientWidth < 767;
-    });
-  }
-}
+};
 </script>
 
 <style scoped lang="scss">

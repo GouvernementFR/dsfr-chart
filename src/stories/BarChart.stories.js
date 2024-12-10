@@ -1,8 +1,8 @@
 const meta = {
   component: 'bar-chart'
-}
+};
 
-export default meta
+export default meta;
 
 export const Vertical = {
   args: {
@@ -12,7 +12,7 @@ export const Vertical = {
     selectedPalette: 'defaultColor',
     unitTooltip: 'millions'
   }
-}
+};
 
 export const Horizontal = {
   args: {
@@ -22,7 +22,7 @@ export const Horizontal = {
     horizontal: 'true',
     unitTooltip: 'tonnes'
   }
-}
+};
 
 export const Stacked = {
   args: {
@@ -33,4 +33,4 @@ export const Stacked = {
     selectedPalette: 'divergentDescending',
     unitTooltip: '%'
   }
-}
+};

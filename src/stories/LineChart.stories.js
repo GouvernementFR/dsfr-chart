@@ -1,8 +1,8 @@
 const meta = {
   component: 'line-chart'
-}
+};
 
-export default meta
+export default meta;
 
 export const Simple = {
   args: {
@@ -12,4 +12,4 @@ export const Simple = {
     selectedPalette: 'defaultColor',
     unitTooltip: "Points d'indice"
   }
-}
+};

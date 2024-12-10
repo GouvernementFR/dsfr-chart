@@ -1,26 +1,40 @@
-/* eslint-disable */
 <template>
-  <div class="widget_container fr-grid-row" :ref="widgetId">
+  <div
+    :ref="widgetId"
+    class="widget_container fr-grid-row"
+  >
     <div class="r_col fr-col-12">
       <div class="chart">
         <div class="linechart_tooltip">
-          <div class="tooltip_header fr-text--sm fr-mb-0"></div>
+          <div class="tooltip_header fr-text--sm fr-mb-0" />
           <div class="tooltip_body">
             <div class="tooltip_value">
-              <span class="tooltip_dot"></span>
+              <span class="tooltip_dot" />
             </div>
           </div>
         </div>
-        <canvas :ref="chartId"></canvas>
+        <canvas :ref="chartId" />
         <div class="chart_legend fr-mb-0 fr-mt-4v">
-          <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v">
-            <span class="legende_dot" v-bind:style="{ 'background-color': colorParse[index] }"></span>
-            <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
+          <div
+            v-for="(item, index) in nameParse"
+            :key="index"
+            class="flex fr-mt-3v fr-mb-1v"
+          >
+            <span
+              class="legende_dot"
+              :style="{ 'background-color': colorParse[index] }"
+            />
+            <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
               {{ capitalize(nameParse[index]) }}
             </p>
           </div>
-          <div v-if="date !== undefined" class="flex fr-mt-1w">
-            <p class="fr-text--xs">Mise à jour : {{ date }}</p>
+          <div
+            v-if="date !== undefined"
+            class="flex fr-mt-1w"
+          >
+            <p class="fr-text--xs">
+              Mise à jour : {{ date }}
+            </p>
           </div>
         </div>
       </div>
@@ -29,7 +43,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { Chart } from 'chart.js';
 import { mixin, choosePalette } from '@/utils/global.js';
 import { generateColors } from '@/utils/colors.js';
@@ -38,6 +51,36 @@ import { configureChartDefaults } from '@/utils/configureChartDefaults.js';
 export default {
   name: 'PieChart',
   mixins: [mixin],
+  props: {
+    x: {
+      type: String,
+      required: true,
+    },
+    y: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      default: undefined,
+    },
+    fill: {
+      type: [Boolean, String],
+      default: false,
+    },
+    date: {
+      type: String,
+      default: undefined,
+    },
+    selectedPalette: {
+      type: String,
+      default: '',
+    },
+    unitTooltip: {
+      type: String,
+      default: '', // Default to an empty string if no unit is specified
+    },
+  },
   data() {
     return {
       widgetId: '',
@@ -57,40 +100,30 @@ export default {
       isSmall: false,
     };
   },
-  props: {
-    x: {
-      type: String,
-      required: true
-    },
-    y: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      default: undefined
-    },
-    fill: {
-      type: [Boolean, String],
-      default: false
-    },
-    date: {
-      type: String,
-      default: undefined
-    },
-    selectedPalette: {
-      type: String,
-      default: ''
-    },
-    unitTooltip: {
-      type: String,
-      default: ''  // Default to an empty string if no unit is specified
-    }
-  },
   computed: {
     style() {
       return this.legendLeftMargin + 'px';
-    }
+    },
+  },
+  created() {
+    configureChartDefaults();
+    this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
+    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
+  },
+  mounted() {
+    this.resetData();
+    this.createChart();
+
+    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
+    const element = document.documentElement;
+    element.addEventListener('dsfr.theme', (e) => {
+      if (this.chartId !== '') {
+        this.changeColors(e.detail.theme);
+      }
+    });
+    addEventListener('resize', () => {
+      this.isSmall = document.documentElement.clientWidth < 767;
+    });
   },
   methods: {
     resetData() {
@@ -136,14 +169,16 @@ export default {
       }
 
       // Formatage des données
-      this.labels = this.xparse
-      this.datasets = [{
-        data: this.yparse,
-        borderColor: this.colorParse,
-        backgroundColor: this.colorParse,
-        hoverBackgroundColor: this.colorHover,
-        hoverBorderColor: this.colorHover,
-      }]
+      this.labels = this.xparse;
+      this.datasets = [
+        {
+          data: this.yparse,
+          borderColor: this.colorParse,
+          backgroundColor: this.colorParse,
+          hoverBackgroundColor: this.colorHover,
+          hoverBorderColor: this.colorHover,
+        },
+      ];
     },
     createChart() {
       if (this.chart) this.chart.destroy();
@@ -156,7 +191,7 @@ export default {
         type: this.typeGraph,
         data: {
           labels: this.labels,
-          datasets: this.datasets
+          datasets: this.datasets,
         },
         options: {
           responsive: true,
@@ -166,15 +201,15 @@ export default {
               left: 50,
               right: 50,
               top: 0,
-              bottom: 0
-            }
+              bottom: 0,
+            },
           },
           animation: {
             easing: 'easeInOutBack',
-            duration: 1000
+            duration: 1000,
           },
           legend: {
-            display: false
+            display: false,
           },
           tooltips: {
             displayColors: false,
@@ -189,7 +224,7 @@ export default {
               },
               labelTextColor: (tooltipItems) => {
                 return this.colorParse[tooltipItems.index];
-              }
+              },
             },
             custom: (context) => {
               // Tooltip Element
@@ -259,56 +294,36 @@ export default {
               tooltipEl.style.left = tooltipX + 'px';
               tooltipEl.style.top = tooltipY + 'px';
               tooltipEl.style.opacity = 1;
-            }
-          }
-        }
+            },
+          },
+        },
       });
     },
     loadColors() {
-        const { colorParse, colorHover, legendColors } = generateColors({
-          yparse: this.yparse,
-          tmpColorParse: this.tmpColorParse,
-          selectedPalette: this.selectedPalette,
-        });
+      const { colorParse, colorHover, legendColors } = generateColors({
+        yparse: this.yparse,
+        tmpColorParse: this.tmpColorParse,
+        selectedPalette: this.selectedPalette,
+      });
 
-        this.colorParse = colorParse;
-        this.colorHover = colorHover;
-        this.legendColors = legendColors;
+      this.colorParse = colorParse;
+      this.colorHover = colorHover;
+      this.legendColors = legendColors;
     },
     choosePalette() {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
     },
     changeColors(theme) {
-      Chart.Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
+      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme);
       this.loadColors();
       this.chart.data.datasets[0].borderColor = this.colorParse;
       this.chart.data.datasets[0].backgroundColor = this.colorParse;
       this.chart.data.datasets[0].hoverBackgroundColor = this.colorHover;
       this.chart.data.datasets[0].hoverBorderColor = this.colorHover;
       this.chart.update(0);
-    }
+    },
   },
-  created() {
-    configureChartDefaults();
-    this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
-    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
-  },
-  mounted() {
-    this.resetData();
-    this.createChart();
-
-    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
-    const element = document.documentElement;
-    element.addEventListener('dsfr.theme', (e) => {
-      if (this.chartId !== '') {
-        this.changeColors(e.detail.theme);
-      }
-    });
-    addEventListener('resize', () => {
-      this.isSmall = document.documentElement.clientWidth < 767;
-    });
-  }
 };
 </script>
 

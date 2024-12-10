@@ -1,7 +1,7 @@
-import { defineCustomElement } from 'vue'
+import { defineCustomElement } from 'vue';
 
-import BarChart from '@/components/BarChart.vue'
+import BarChart from '@/components/BarChart.vue';
 
-const BarChartElement = defineCustomElement(BarChart)
+const BarChartElement = defineCustomElement(BarChart);
 
-customElements.define('bar-chart', BarChartElement, { shadowRoot: false })
+customElements.define('bar-chart', BarChartElement, { shadowRoot: false });

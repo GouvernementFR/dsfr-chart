@@ -1,8 +1,8 @@
 const meta = {
   component: 'scatter-chart'
-}
+};
 
-export default meta
+export default meta;
 
 export const Default = {
   args: {
@@ -11,7 +11,7 @@ export const Default = {
     name: '["Diesel", "Essence", "Total"]',
     unitTooltip: 'g de CO₂ / km'
   }
-}
+};
 
 export const Linked = {
   args: {
@@ -21,4 +21,4 @@ export const Linked = {
     showline: 'true',
     unitTooltip: '%'
   }
-}
+};

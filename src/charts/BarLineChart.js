@@ -1,7 +1,7 @@
-import { defineCustomElement } from 'vue'
+import { defineCustomElement } from 'vue';
 
-import BarLineChart from '@/components/BarLineChart.vue'
+import BarLineChart from '@/components/BarLineChart.vue';
 
-const BarLineChartElement = defineCustomElement(BarLineChart)
+const BarLineChartElement = defineCustomElement(BarLineChart);
 
-customElements.define('bar-line-chart', BarLineChartElement, { shadowRoot: false })
+customElements.define('bar-line-chart', BarLineChartElement, { shadowRoot: false });

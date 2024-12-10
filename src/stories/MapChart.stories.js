@@ -1,8 +1,8 @@
 const meta = {
   component: 'map-chart'
-}
+};
 
-export default meta
+export default meta;
 
 export const Departemental = {
   args: {
@@ -20,7 +20,7 @@ export const Departemental = {
     name: "Nom de l'indicateur",
     date: '21/12/2022'
   }
-}
+};
 
 export const Decoupage = {
   args: {
@@ -29,7 +29,7 @@ export const Decoupage = {
     name: "Nom de l'indicateur",
     date: '21/12/2022'
   }
-}
+};
 
 export const Region = {
   args: {
@@ -48,4 +48,4 @@ export const Region = {
     date: '21/12/2022',
     region: '93'
   }
-}
+};

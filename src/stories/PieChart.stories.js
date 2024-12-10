@@ -1,8 +1,8 @@
 const meta = {
   component: 'pie-chart'
-}
+};
 
-export default meta
+export default meta;
 
 export const Default = {
   args: {
@@ -11,7 +11,7 @@ export const Default = {
     name: '["Non-salariés", "Emplois à durée indéterminée", "Contrats à durée déterminée", "Apprentis", "Intérimaires"]',
     unitTooltip: '%'
   }
-}
+};
 
 export const Fill = {
   args: {
@@ -21,4 +21,4 @@ export const Fill = {
     fill: 'true',
     unitTooltip: '%'
   }
-}
+};
