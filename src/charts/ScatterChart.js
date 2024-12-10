@@ -1,6 +1,6 @@
 import { defineCustomElement } from 'vue'
 
-import ScatterChart from './components/ScatterChart'
+import ScatterChart from '@/components/ScatterChart.vue'
 
 const ScatterChartElement = defineCustomElement(ScatterChart)
 

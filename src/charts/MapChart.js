@@ -1,6 +1,6 @@
 import { defineCustomElement } from 'vue'
 
-import MapChart from './components/MapChart'
+import MapChart from '@/components/MapChart.vue'
 
 const MapChartElement = defineCustomElement(MapChart)
 

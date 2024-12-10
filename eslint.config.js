@@ -1,7 +1,7 @@
-module.exports = {
+export default {
   env: {
-    browser: true,
-    es6: true
+    node: true,
+    es2022: true
   },
   extends: ['plugin:vue/essential', 'standard', 'plugin:storybook/recommended'],
   globals: {

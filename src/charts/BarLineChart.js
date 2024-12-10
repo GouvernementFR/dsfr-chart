@@ -1,6 +1,6 @@
 import { defineCustomElement } from 'vue'
 
-import BarLineChart from './components/BarLineChart'
+import BarLineChart from '@/components/BarLineChart.vue'
 
 const BarLineChartElement = defineCustomElement(BarLineChart)
 

@@ -65,7 +65,7 @@
 <script>
 /* eslint-disable */
 import chroma from 'chroma-js'
-import LeftCol from '@/components/LeftCol'
+import LeftCol from '@/components/LeftCol.vue'
 import maps from '@/components/maps'
 import * as d3 from 'd3-scale'
 import { isMobile, mixin, getColorsByIndex, choosePalette } from '@/utils/global.js'

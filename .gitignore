@@ -11,45 +11,25 @@ node_modules/
 vendor/
 
 # Build output
+DSFRChart/
 BarChart/
 BarLineChart/
-Charts/
+DataBox/
+GaugeChart/
 LineChart/
 MapChart/
+MapChartReg/
 MultiLineChart/
 PieChart/
-ScatterChart/
-GaugeChart/
-MapChartReg/
 RadarChart/
+ScatterChart/
 TableChart/
-DataBox/
 
 # File systems
 .DS_Store
 Thumbs.db
 
-# Env files
-.env
-.env.local
-.env.*.local
-
-# Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-*storybook.log
+# Storybook & playwright
 /test-results/
 /blob-report/
 /storybook-static/

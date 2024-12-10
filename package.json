@@ -4,28 +4,29 @@
   "description": "Système de Design de l'État - Visualisation graphique",
   "repository": "git@github.com:GouvernementFR/dsfr-chart.git",
   "author": "Service d'Information du Gouvernement <missak.keloglanian@pm.gouv.fr>",
-  "private": false,
+  "type": "module",
   "license": "SEE LICENSE IN LICENSE.md",
   "scripts": {
-    "serve": "vue-cli-service serve ./src/mainDev.js",
-    "build": "vue-cli-service build --target lib --dest ./Charts --inline-vue --name dsfr-chart src/main.js",
-    "build-rec": "vue-cli-service build --dest ./docs ./src/mainDev.js",
-    "build-bar": "vue-cli-service build --target lib --dest ./BarChart --inline-vue --name bar-chart src/BarChart.js",
-    "build-barline": "vue-cli-service build --target lib --dest ./BarLineChart --inline-vue --name barline-chart src/BarLineChart.js",
-    "build-line": "vue-cli-service build --target lib --dest ./LineChart --inline-vue --name line-chart src/LineChart.js",
-    "build-map": "vue-cli-service build --target lib --dest ./MapChart --inline-vue --name map-chart src/MapChart.js",
-    "build-multiline": "vue-cli-service build --target lib --dest ./MultiLineChart --inline-vue --name multiline-chart src/MultiLineChart.js",
-    "build-pie": "vue-cli-service build --target lib --dest ./PieChart --inline-vue --name pie-chart src/PieChart.js",
-    "build-scatter": "vue-cli-service build --target lib --dest ./ScatterChart --inline-vue --name scatter-chart src/ScatterChart.js",
-    "build-mapreg": "vue-cli-service build --target lib --dest ./MapChartReg --inline-vue --name map-chart-reg src/MapChartReg.js",
-    "build-gauge": "vue-cli-service build --target lib --dest ./GaugeChart --inline-vue --name gauge-chart src/GaugeChart.js",
-    "build-table": "vue-cli-service build --target lib --dest ./TableChart --inline-vue --name table-chart-reg src/TableChart.js",
-    "build-radar": "vue-cli-service build --target lib --dest ./RadarChart --inline-vue --name radar-chart src/RadarChart.js",
-    "build-databox": "vue-cli-service build --target lib --dest ./DataBox --inline-vue --name data-box src/DataBox.js",
-    "build-all": "npm run build-bar & npm run build-barline & npm run build-line & npm run build-map & npm run build-multiline & npm run build-pie & npm run build-scatter & npm run build-mapreg & npm run build-gauge & npm run build-table & npm run build-radar & npm run build-databox",
-    "lint": "vue-cli-service lint",
+    "dev": "vite",
+    "serve": "vite preview",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
+    "build:docs": "vite build",
+    "build": "vite build --config=vite-components.config.js",
+    "build-bar": "LIBRARY=BarChart vite build --config=vite-components.config.js",
+    "build-barline": "LIBRARY=BarLineChart vite build --config=vite-components.config.js",
+    "build-databox": "LIBRARY=DataBox vite build --config=vite-components.config.js",
+    "build-gauge": "LIBRARY=GaugeChart vite build --config=vite-components.config.js",
+    "build-line": "LIBRARY=LineChart vite build --config=vite-components.config.js",
+    "build-map": "LIBRARY=MapChart vite build --config=vite-components.config.js",
+    "build-mapreg": "LIBRARY=MapChartReg vite build --config=vite-components.config.js",
+    "build-multiline": "LIBRARY=MultiLineChart vite build --config=vite-components.config.js",
+    "build-pie": "LIBRARY=PieChart vite build --config=vite-components.config.js",
+    "build-radar": "LIBRARY=RadarChart vite build --config=vite-components.config.js",
+    "build-scatter": "LIBRARY=ScatterChart vite build --config=vite-components.config.js",
+    "build-table": "LIBRARY=TableChart vite build --config=vite-components.config.js",
+    "build:components": "concurrently npm:build-*",
     "storybook": "NODE_OPTIONS=--max_old_space_size=4096 storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "build:storybook": "storybook build",
     "test": "playwright test",
     "test:update-snapshots": "playwright test --update-snapshots"
   },
@@ -50,6 +51,7 @@
     "chart.js": "^2.9.4",
     "chartjs-plugin-annotation": "^0.5.7",
     "chroma-js": "^3.1.2",
+    "concurrently": "^9.1.0",
     "d3-scale": "^4.0.2",
     "vue": "^3.5.13"
   },
@@ -64,37 +66,14 @@
     "@storybook/web-components": "^8.4.6",
     "@storybook/web-components-webpack5": "^8.4.6",
     "@types/node": "^22.10.1",
-    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "eslint": "^9.16.0",
     "eslint-plugin-storybook": "^0.11.1",
-    "lit": "^3.2.1",
-    "storybook": "^8.4.6",
-    "vue-template-compiler": "^2.7.16",
-    "@vue/cli-service": "^5.0.8",
     "eslint-plugin-vue": "^9.32.0",
-    "standard": "^17.1.2",
+    "lit": "^3.2.1",
     "sass": "1.78.0",
-    "sass-loader": "^16.0.4",
-    "vue-loader": "^17.4.2"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {
-      "no-unused-vars": "off"
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+    "standard": "^17.1.2",
+    "storybook": "^8.4.6",
+    "vite": "^6.0.3"
+  }
 }

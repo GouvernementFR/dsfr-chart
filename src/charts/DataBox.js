@@ -1,6 +1,6 @@
 import { defineCustomElement } from 'vue'
 
-import DataBox from './components/DataBox.vue'
+import DataBox from '@/components/DataBox.vue'
 
 const DataBoxElement = defineCustomElement(DataBox)
 

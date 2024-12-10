@@ -1,6 +1,6 @@
 import { defineCustomElement } from 'vue'
 
-import PieChart from './components/PieChart'
+import PieChart from '@/components/PieChart.vue'
 
 const PieChartElement = defineCustomElement(PieChart)
 

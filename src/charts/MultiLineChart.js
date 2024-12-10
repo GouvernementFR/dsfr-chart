@@ -1,6 +1,6 @@
 import { defineCustomElement } from 'vue'
 
-import MultiLineChart from './components/MultiLineChart'
+import MultiLineChart from '@/components/MultiLineChart.vue'
 
 const MultiLineChartElement = defineCustomElement(MultiLineChart)
 

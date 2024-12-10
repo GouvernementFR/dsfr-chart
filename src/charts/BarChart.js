@@ -1,6 +1,6 @@
 import { defineCustomElement } from 'vue'
 
-import BarChart from './components/BarChart'
+import BarChart from '@/components/BarChart.vue'
 
 const BarChartElement = defineCustomElement(BarChart)
 

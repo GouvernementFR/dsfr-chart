@@ -1,4 +1,15 @@
-<!doctype html><html lang="fr" data-fr-scheme="light"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="icon" href="/favicon.ico"/><title>DSFR Charts</title><style>.code-toolbar {
+<!DOCTYPE html>
+<html lang="fr" data-fr-scheme="light">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <link rel="icon" href="./favicon.ico" />
+
+  <title>DSFR Charts</title>
+  <style>
+    .code-toolbar {
       background-color: #f5f2f0;
       overflow: scroll;
     }
@@ -44,7 +55,212 @@
       position: fixed;
       bottom: 3.5rem;
       right: 2rem;
-    }</style><script defer="defer" src="/js/app.js"></script><link href="/css/app.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but DSFR Charts doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div class="fr-container"><section class="fr-grid-row fr-grid-row--center fr-mt-4w fr-mt-md-8w"><div class="fr-col-12 fr-col-md-10 fr-mb-4w"><h1 class="fr-pt-2w">DSFR Charts</h1><p>Cette page a pour objectif de présenter l'ensemble des représentations graphiques proposées par la librairie <a id="dsfr-charts-github-page" href="https://github.com/GouvernementFR/dsfr-chart" target="_blank">DSFR Charts</a>.<br/>Tous les graphiques proposés sont disponibles dans le thème clair et dans le thème sombre. Il est possible de changer le thème affiché par l'intermédiaire du bouton en bas à droite.</p></div><div class="fr-col-12 fr-col-md-3"><nav class="fr-sidemenu fr-sidemenu--sticky-full-height" role="navigation" aria-labelledby="sidemenu-title-5068"><div class="fr-sidemenu__inner fr-mb-4w"><button class="fr-sidemenu__btn" aria-controls="sidemenu-5069" aria-expanded="false">Dans cette rubrique</button><div class="fr-collapse" id="sidemenu-5069"><p class="fr-sidemenu__title fr-sr-only" id="sidemenu-title-5068">Menu de navigation</p><ul class="fr-sidemenu__list"><li class="fr-sidemenu__item"><button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-1">I. Graphique en ligne</button><div class="fr-collapse" id="sidemenu-1"><ul class="fr-sidemenu__list"><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-1.1" href="#line_chart.1" target="_self">1. Graphique en ligne simple</a></li><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-1.2" href="#line_chart.2" target="_self">2. Graphique en lignes multiples</a></li></ul></div></li><li class="fr-sidemenu__item"><button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-2">II. Diagramme en barres</button><div class="fr-collapse" id="sidemenu-2"><ul class="fr-sidemenu__list"><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-2.1" href="#bar_chart.1" target="_self">1. Barres verticales</a></li><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-2.2" href="#bar_chart.2" target="_self">2. Barres horizontales</a></li><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-2.3" href="#bar_chart.3" target="_self">3. Barres empilées</a></li></ul></div></li><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-3" href="#bar_line_chart" target="_self">III. Graphique en ligne / Diagramme en barres</a></li><li class="fr-sidemenu__item"><button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-4">IV. Nuage de points</button><div class="fr-collapse" id="sidemenu-4"><ul class="fr-sidemenu__list"><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-4.1" href="#scatter_chart.1" target="_self">1. Nuage de points simple</a></li><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-4.2" href="#scatter_chart.2" target="_self">2. Nuage de points reliés</a></li></ul></div></li><li class="fr-sidemenu__item"><button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-5">V. Diagramme circulaire</button><div class="fr-collapse" id="sidemenu-5"><ul class="fr-sidemenu__list"><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-5.1" href="#pie_chart.1" target="_self">1. Diagramme circulaire creux (donut)</a></li><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-5.2" href="#pie_chart.2" target="_self">2. Diagramme circulaire plein</a></li></ul></div></li><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-6" href="#radar_chart" target="_self">VI. Diagramme en étoile</a></li><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-7" href="#gauge_chart" target="_self">VII. Jauge</a></li><li class="fr-sidemenu__item"><button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-8">VIII. Cartes</button><div class="fr-collapse" id="sidemenu-8"><ul class="fr-sidemenu__list"><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-8.1" href="#map_chart.1" target="_self">1. Découpage départemental</a></li><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-8.2" href="#map_chart.2" target="_self">2. Découpage régional</a></li><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-8.3" href="#map_chart.3" target="_self">3. Régions</a></li></ul></div></li><li class="fr-sidemenu__item"><button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-9">IX. Les composants</button><div class="fr-collapse" id="sidemenu-9"><ul class="fr-sidemenu__list"><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-9.1" href="#databox" target="_self">1. La Databox</a></li></ul></div></li><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-10" href="#colors" target="_self">X. Les couleurs</a></li><li class="fr-sidemenu__item"><a class="fr-sidemenu__link" id="sidemenu-11" href="#accessibility" target="_self">XI. Accessibilité</a></li></ul></div></div></nav></div><div class="fr-col-12 fr-col-md-7"><div class="part_container"><h2 id="line_chart">I. Graphique en ligne</h2><p>Un graphique en ligne est un type de visualisation de données qui affiche les valeurs sous forme de points sur une ligne. Elle permet d’affiche une seule ligne ou en présenter plusieurs pour permettre la comparaison.</p><h3 id="line_chart.1">1. Graphique en ligne simple</h3><hr><p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette par défaut</p><div class="chart_container"><h3 class="fr-h6 fr-text--bold fr-mb-0">Évolution du prix des logements anciens entre 2001 et 2020</h3><p class="fr-text--sm">Indices des prix des logements neufs et anciens, France métropolitaine. Base 100 en moyenne en 2015. Insee, 04/11/2024</p><line-chart x="[2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020]" y="[51.50, 55.30, 61.50, 70.20, 81.10, 92.60, 100.20, 104.60, 96.90, 98.00, 104.90, 106.80, 104.70, 102.70, 100.20, 100.40, 102.90, 106.00, 109.10, 114.60]" selected-palette="defaultColor" name="Indices des prix des logements anciens" unit-tooltip="Points d'indice"></line-chart></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-9">Extrait de code</button></h3><div class="fr-collapse" id="accordion-9"><div class="code-toolbar"><pre>
+    }
+  </style>
+  <script type="module" crossorigin src="/index.min.js"></script>
+  <link rel="stylesheet" crossorigin href="/index.css">
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but DSFR Charts doesn't work properly without JavaScript
+      enabled. Please enable it to continue.</strong>
+  </noscript>
+  <div class="fr-container">
+    <section class="fr-grid-row fr-grid-row--center fr-mt-4w fr-mt-md-8w">
+      <div class="fr-col-12 fr-col-md-10 fr-mb-4w">
+        <h1 class="fr-pt-2w">DSFR Charts</h1>
+        <p>
+          Cette page a pour objectif de présenter l'ensemble des
+          représentations graphiques proposées par la librairie
+          <a id="dsfr-charts-github-page" href="https://github.com/GouvernementFR/dsfr-chart" target="_blank">DSFR
+            Charts</a>.<br />
+          Tous les graphiques proposés sont disponibles dans le thème clair et
+          dans le thème sombre. Il est possible de changer le thème affiché
+          par l'intermédiaire du bouton en bas à droite.
+        </p>
+      </div>
+
+      <!-- SIDE MENU -->
+      <div class="fr-col-12 fr-col-md-3">
+        <nav class="fr-sidemenu fr-sidemenu--sticky-full-height" role="navigation"
+          aria-labelledby="sidemenu-title-5068">
+          <div class="fr-sidemenu__inner fr-mb-4w">
+            <button class="fr-sidemenu__btn" aria-controls="sidemenu-5069" aria-expanded="false">
+              Dans cette rubrique
+            </button>
+            <div class="fr-collapse" id="sidemenu-5069">
+              <p class="fr-sidemenu__title fr-sr-only" id="sidemenu-title-5068">
+                Menu de navigation
+              </p>
+              <ul class="fr-sidemenu__list">
+                <li class="fr-sidemenu__item">
+                  <button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-1">
+                    I. Graphique en ligne
+                  </button>
+                  <div class="fr-collapse" id="sidemenu-1">
+                    <ul class="fr-sidemenu__list">
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-1.1" href="#line_chart.1" target="_self">1. Graphique
+                          en ligne simple</a>
+                      </li>
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-1.2" href="#line_chart.2" target="_self">2. Graphique
+                          en lignes multiples</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="fr-sidemenu__item">
+                  <button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-2">
+                    II. Diagramme en barres
+                  </button>
+                  <div class="fr-collapse" id="sidemenu-2">
+                    <ul class="fr-sidemenu__list">
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-2.1" href="#bar_chart.1" target="_self">1. Barres
+                          verticales</a>
+                      </li>
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-2.2" href="#bar_chart.2" target="_self">2. Barres
+                          horizontales</a>
+                      </li>
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-2.3" href="#bar_chart.3" target="_self">3. Barres
+                          empilées</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="fr-sidemenu__item">
+                  <a class="fr-sidemenu__link" id="sidemenu-3" href="#bar_line_chart" target="_self">III. Graphique en
+                    ligne / Diagramme en barres</a>
+                </li>
+                <li class="fr-sidemenu__item">
+                  <button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-4">
+                    IV. Nuage de points
+                  </button>
+                  <div class="fr-collapse" id="sidemenu-4">
+                    <ul class="fr-sidemenu__list">
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-4.1" href="#scatter_chart.1" target="_self">1. Nuage
+                          de points simple</a>
+                      </li>
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-4.2" href="#scatter_chart.2" target="_self">2. Nuage
+                          de points reliés</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="fr-sidemenu__item">
+                  <button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-5">
+                    V. Diagramme circulaire
+                  </button>
+                  <div class="fr-collapse" id="sidemenu-5">
+                    <ul class="fr-sidemenu__list">
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-5.1" href="#pie_chart.1" target="_self">1. Diagramme
+                          circulaire creux (donut)</a>
+                      </li>
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-5.2" href="#pie_chart.2" target="_self">2. Diagramme
+                          circulaire plein</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="fr-sidemenu__item">
+                  <a class="fr-sidemenu__link" id="sidemenu-6" href="#radar_chart" target="_self">VI. Diagramme en
+                    étoile</a>
+                </li>
+                <li class="fr-sidemenu__item">
+                  <a class="fr-sidemenu__link" id="sidemenu-7" href="#gauge_chart" target="_self">VII. Jauge
+                  </a>
+                </li>
+                <li class="fr-sidemenu__item">
+                  <button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-8">
+                    VIII. Cartes
+                  </button>
+                  <div class="fr-collapse" id="sidemenu-8">
+                    <ul class="fr-sidemenu__list">
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-8.1" href="#map_chart.1" target="_self">1. Découpage
+                          départemental</a>
+                      </li>
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-8.2" href="#map_chart.2" target="_self">2. Découpage
+                          régional</a>
+                      </li>
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-8.3" href="#map_chart.3" target="_self">3. Régions</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="fr-sidemenu__item">
+                  <button class="fr-sidemenu__btn" aria-expanded="false" aria-controls="sidemenu-9">
+                    IX. Les composants
+                  </button>
+                  <div class="fr-collapse" id="sidemenu-9">
+                    <ul class="fr-sidemenu__list">
+                      <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" id="sidemenu-9.1" href="#databox" target="_self">1. La Databox</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="fr-sidemenu__item">
+                  <a class="fr-sidemenu__link" id="sidemenu-10" href="#colors" target="_self">X. Les couleurs
+                  </a>
+                </li>
+                <li class="fr-sidemenu__item">
+                  <a class="fr-sidemenu__link" id="sidemenu-11" href="#accessibility" target="_self">XI. Accessibilité
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <div class="fr-col-12 fr-col-md-7">
+        <!-- LINE CHART -->
+        <div class="part_container">
+          <h2 id="line_chart">I. Graphique en ligne</h2>
+          <p>
+            Un graphique en ligne est un type de visualisation de données qui
+            affiche les valeurs sous forme de points sur une ligne. Elle
+            permet d’affiche une seule ligne ou en présenter plusieurs pour
+            permettre la comparaison.
+          </p>
+          <h3 id="line_chart.1">1. Graphique en ligne simple</h3>
+          <hr>
+          <p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette par défaut</p>
+          <div class="chart_container">
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">
+              Évolution du prix des logements anciens entre 2001 et 2020
+            </h3>
+            <p class="fr-text--sm">
+              Indices des prix des logements neufs et anciens, France métropolitaine. Base 100 en moyenne en 2015. Insee, 04/11/2024
+            </p>
+            <line-chart
+              x="[2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020]"
+              y="[51.50, 55.30, 61.50, 70.20, 81.10, 92.60, 100.20, 104.60, 96.90, 98.00, 104.90, 106.80, 104.70, 102.70, 100.20, 100.40, 102.90, 106.00, 109.10, 114.60]"
+              selected-palette="defaultColor"
+              name="Indices des prix des logements anciens"
+              unit-tooltip="Points d'indice">
+            </line-chart>
+          </div>
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-9">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-9">
+              <div class="code-toolbar">
+                <pre>
                   <code>
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>line-chart</span>
                       <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020]</span><span class="token punctuation">'</span></span>
@@ -54,7 +270,38 @@
                       <span class="token attr-name">unit-tooltip</span><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">Points d'indice</span><span class="token punctuation">'</span></span>
                     <span class="token punctuation">&gt;</span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>line-chart</span><span class="token punctuation">&gt;</span>
                 </code>
-                </pre></div></div></section><h3 id="line_chart.2">2. Graphique en lignes multiples</h3><hr><p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p><div class="chart_container"><h3 class="fr-h6 fr-text--bold fr-mb-0">Taux d'activité selon le sexe depuis 1975</h3><p class="fr-text--sm">France hors Mayotte, personnes de 15 à 64 ans vivant en logement ordinaire. Insee, 04/11/2024</p><multiline-chart x="[[1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020], [1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020]]" y="[[54.5, 58.2, 58.1, 59.6, 62.1, 64, 65.9, 67.1, 69, 69.2], [83.9, 83.2, 78.4, 75.9, 74.7, 75.3, 75.2, 75, 75.6, 74.8]]" name='["Femmes", "Hommes"]' unit-tooltip="%"></multiline-chart></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-10">Extrait de code</button></h3><div class="fr-collapse" id="accordion-10"><div class="code-toolbar"><pre><code>
+                </pre>
+              </div>
+            </div>
+          </section>
+
+          <h3 id="line_chart.2">2. Graphique en lignes multiples</h3>
+          <hr>
+          <p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p>
+          <div class="chart_container">
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">
+              Taux d'activité selon le sexe depuis 1975
+            </h3>
+            <p class="fr-text--sm">
+              France hors Mayotte, personnes de 15 à 64 ans vivant en logement ordinaire. Insee, 04/11/2024
+            </p>
+            <multiline-chart
+              x="[[1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020], [1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020]]"
+              y="[[54.5, 58.2, 58.1, 59.6, 62.1, 64, 65.9, 67.1, 69, 69.2], [83.9, 83.2, 78.4, 75.9, 74.7, 75.3, 75.2, 75, 75.6, 74.8]]"
+              name='["Femmes", "Hommes"]'
+              unit-tooltip="%">
+            </multiline-chart>
+          </div>
+
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-10">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-10">
+              <div class="code-toolbar">
+                <pre><code>
                   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>multiline-chart</span>
                     <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[1960, 1970, 1980, 1990, 2000, 2010, 2020], [1960, 1970, 1980, 1990, 2000, 2010, 2020]]</span><span class="token punctuation">'</span></span>
                     <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[154, 239, 338, 379, 416, 450, 461], [156, 233, 303, 327, 336, 354, 348]]</span><span class="token punctuation">'</span></span>
@@ -62,10 +309,80 @@
                     <span class="token attr-name">unit-tooltip</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">€</span><span class="token punctuation">'</span></span>
                   <span class="token punctuation">&gt;</span></span>
                   <span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>multiline-chart</span><span class="token punctuation">&gt;</span>
-              </code></pre></div></div></section></div><div class="part_container"><h2 id="bar_chart">II. Diagramme en barres</h2><p>Un diagramme en barres montre les dénombrements de valeurs pour les niveaux d'une variable catégorielle, séquentielle ou neutre. Les barres peuvent être présentées de manière horizontale, verticale ou être empilées.</p><h3 id="bar_chart.1">1. Barres verticales</h3><hr><p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette par défaut</p><div class="chart_container"><h3 class="fr-h6 fr-text--bold fr-mb-0">Projection de la population française</h3><p class="fr-text--sm">Population au 1er janvier - Données issues du scénario central des projections de population 2013-2070. Insee, 04/11/2024</p><bar-chart x='[["2025", "2030", "2035", "2040", "2050", "2060", "2070"]]' y="[[69.1, 70.3, 71.4, 72.5, 74, 75.2, 76.4]]" name='["Population en millions"]' selected-palette="defaultColor" unit-tooltip="millions"></bar-chart></div><hr><p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette unicolore</p><div class="chart_container"><h3 class="fr-h6 fr-text--bold fr-mb-0">Pratique de l'internet des plus de 60 ans en 2018</h3><p class="fr-text--sm">France hors Mayotte, individus de 15 ans ou plus vivant dans un ménage ordinaire. Insee, enquête Technologies de l'information et de la communication auprès des ménages, 04/11/2024</p><bar-chart x='[["15 à 29 ans", "30 à 44 ans", "45 à 59 ans", "60 à 74 ans", "75 ans ou plus"]]' y="[[75.4, 80.5, 66.8, 43.4, 12.1]]" name='["Achat sur internet au cours des 12 derniers mois (%)"]' selected-palette="neutral" unit-tooltip="%"></bar-chart></div><hr><p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette séquentielle</p><div class="chart_container"><h3 class="fr-h6 fr-text--bold fr-mb-0">Les régions les plus pluvieuses de France en 2023</h3><p class="fr-text--sm">France métropolitaine uniquement. Météo France, 04/11/2024</p><bar-chart x='[["Nouvelle-Aquitaine", "Hauts-de-France", "Bourgogne-Franche-Comté",
+              </code></pre>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- BAR CHART -->
+        <div class="part_container">
+          <h2 id="bar_chart">II. Diagramme en barres</h2>
+          <p>
+            Un diagramme en barres montre les dénombrements de valeurs pour
+            les niveaux d'une variable catégorielle, séquentielle ou neutre. Les barres
+            peuvent être présentées de manière horizontale, verticale ou être
+            empilées.
+          </p>
+          <h3 id="bar_chart.1">1. Barres verticales</h3>
+          <hr>
+          <p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette par défaut</p>
+          <div class="chart_container">
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">Projection de la population française</h3>
+            <p class="fr-text--sm">Population au 1er janvier - Données issues du scénario central des projections de
+              population 2013-2070. Insee, 04/11/2024
+            </p>
+            <bar-chart
+              x='[["2025", "2030", "2035", "2040", "2050", "2060", "2070"]]'
+              y="[[69.1, 70.3, 71.4, 72.5, 74, 75.2, 76.4]]"
+              name='["Population en millions"]'
+              selected-palette="defaultColor"
+              unit-tooltip="millions">
+            </bar-chart>
+          </div>
+          <hr>
+          <p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette unicolore</p>
+          <div class="chart_container">
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">Pratique de l'internet des plus de 60 ans en 2018</h3>
+            <p class="fr-text--sm">France hors Mayotte, individus de 15 ans ou plus vivant dans un ménage ordinaire.
+              Insee, enquête Technologies de l'information et de la communication auprès
+              des ménages, 04/11/2024
+            </p>
+            <bar-chart
+              x='[["15 à 29 ans", "30 à 44 ans", "45 à 59 ans", "60 à 74 ans", "75 ans ou plus"]]'
+              y="[[75.4, 80.5, 66.8, 43.4, 12.1]]"
+              name='["Achat sur internet au cours des 12 derniers mois (%)"]'
+              selected-palette="neutral"
+              unit-tooltip="%">
+            </bar-chart>
+          </div>
+
+          <hr>
+          <p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette séquentielle</p>
+          <div class="chart_container">
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">Les régions les plus pluvieuses de France en 2023</h3>
+            <p class="fr-text--sm">France métropolitaine uniquement. Météo France, 04/11/2024</p>
+            <bar-chart
+              x='[["Nouvelle-Aquitaine", "Hauts-de-France", "Bourgogne-Franche-Comté",
                     "Auvergne-Rhône-Alpes", "Normandie", "Bretagne", "Pays de la Loire",
                     "Occitanie", "Grand Est", "Centre-Val de Loire", "Île-de-France",
-                    "Provence-Alpes-Côte d&#39;Azur", "Corse"]]' y="[[1071, 927, 921, 850, 845, 838, 821, 793, 789, 771, 734, 485, 482]]" name='["Hauteur des précipitations (en mm)"]' selected-palette="sequentialDescending" unit-tooltip="mm"></bar-chart></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-3">Extrait de code</button></h3><div class="fr-collapse" id="accordion-3"><div class="code-toolbar"><pre>
+                    "Provence-Alpes-Côte d&#39;Azur", "Corse"]]'
+              y="[[1071, 927, 921, 850, 845, 838, 821, 793, 789, 771, 734, 485, 482]]"
+              name='["Hauteur des précipitations (en mm)"]'
+              selected-palette="sequentialDescending"
+              unit-tooltip="mm">
+            </bar-chart>
+          </div>
+
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-3">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-3">
+              <div class="code-toolbar">
+                <pre>
                   <code>
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-chart</span>
                       <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[["Nouvelle-Aquitaine", "Hauts-de-France", "Bourgogne-Franche-Comté", "Auvergne-Rhône-Alpes", "Normandie", "Bretagne", "Pays de la Loire", "Occitanie", "Grand Est", "Centre-Val de Loire", "Île-de-France", "Provence-Alpes-Côte d&#39;Azur", "Corse"]]</span><span class="token punctuation">'</span></span></span>
@@ -76,7 +393,39 @@
                     <span class="token punctuation">&gt;</span>
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span></span>
                   </code>
-                </pre></div></div></section><h3 id="bar_chart.2">2. Barres horizontales</h3><hr><p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p><div class="chart_container"><h3 class="fr-h6 fr-text--bold fr-mb-0">Émissions de gaz à effet de serre par habitant en France</h3><p class="fr-text--sm">En tonnes équivalent CO₂ par habitant. France métropolitaine. Insee, 12/02/2024</p><bar-chart x='[["2000", "2010", "2020"], ["2000", "2010", "2020"]]' y="[[11.1, 10.5, 8.4], [8.8, 7.5, 5.6]]" horizontal="true" name='["Empreinte carbone", "Émission sur le territoire national"]' unit-tooltip="tonnes"></bar-chart></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-4">Extrait de code</button></h3><div class="fr-collapse" id="accordion-4"><div class="code-toolbar"><pre>
+                </pre>
+              </div>
+            </div>
+          </section>
+
+          <h3 id="bar_chart.2">2. Barres horizontales</h3>
+          <hr>
+          <p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p>
+          <div class="chart_container">
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">
+              Émissions de gaz à effet de serre par habitant en France
+            </h3>
+            <p class="fr-text--sm">
+              En tonnes équivalent CO₂ par habitant. France métropolitaine. Insee, 12/02/2024
+            </p>
+            <bar-chart
+              x='[["2000", "2010", "2020"], ["2000", "2010", "2020"]]'
+              y="[[11.1, 10.5, 8.4], [8.8, 7.5, 5.6]]"
+              horizontal="true"
+              name='["Empreinte carbone", "Émission sur le territoire national"]'
+              unit-tooltip="tonnes">
+            </bar-chart>
+          </div>
+
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-4">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-4">
+              <div class="code-toolbar">
+                <pre>
                   <code>
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-chart</span>
                       <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[["2000", "2010", "2020"], ["2000", "2010", "2020"]]</span><span class="token punctuation">'</span></span>
@@ -86,7 +435,35 @@
                       <span class="token attr-name">unit-tooltip</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">tonnes</span><span class="token punctuation">"</span></span>
                     <span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span>
                 </code>
-                </pre></div></div></section><h3 id="bar_chart.3">3. Barres empilées</h3><hr><p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette séquentielle divergente</p><h3 class="fr-h6 fr-text--bold fr-mb-0">Satisfaction des français à l'égard des services publics</h3><p class="fr-text--sm">Étude IFOP pour TF1, janvier 2024 - Le regard des Français sur les services publics : satisfaction, jugement sur leur financement par les impôts et attentes. Ifop, enquête Emploi, 04/01/2024</p><bar-chart x='[["Ensemble des Français", "Agglomération parisienne", "Communauté urbaine de province", "Commune rurale"]]' y="[[15, 19, 15, 13], [45, 40, 47, 41], [36, 32, 34, 44], [4, 9, 4, 2]]" name='["Tout à fait satisfait", "Plutôt satisfait", "Plutôt pas satisfait", "Pas du tout satisfait"]' stacked="true" selected-palette="divergentDescending" isascendingorder="true" unit-tooltip="%"></bar-chart><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-5">Extrait de code</button></h3><div class="fr-collapse" id="accordion-5"><div class="code-toolbar"><pre>
+                </pre>
+              </div>
+            </div>
+          </section>
+
+          <h3 id="bar_chart.3">3. Barres empilées</h3>
+          <hr>
+          <p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette séquentielle divergente</p>
+          <h3 class="fr-h6 fr-text--bold fr-mb-0">Satisfaction des français à l'égard des services publics</h3>
+          <p class="fr-text--sm">Étude IFOP pour TF1, janvier 2024 - Le regard des Français sur les services publics :
+            satisfaction, jugement sur leur financement par les impôts et attentes. Ifop, enquête Emploi, 04/01/2024</p>
+          <bar-chart
+            x='[["Ensemble des Français", "Agglomération parisienne", "Communauté urbaine de province", "Commune rurale"]]'
+            y="[[15, 19, 15, 13], [45, 40, 47, 41], [36, 32, 34, 44], [4, 9, 4, 2]]"
+            name='["Tout à fait satisfait", "Plutôt satisfait", "Plutôt pas satisfait", "Pas du tout satisfait"]'
+            stacked="true"
+            selected-palette="divergentDescending"
+            isAscendingOrder="true"
+            unit-tooltip="%">
+          </bar-chart>
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-5">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-5">
+              <div class="code-toolbar">
+                <pre>
                   <code>
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-chart</span></span>
                       <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[["Ensemble des Français", "Agglomération parisienne", "Communauté urbaine de province", "Commune rurale"]]</span><span class="token punctuation">'</span></span>
@@ -99,7 +476,51 @@
                     <span class="token punctuation">&gt;</span>
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bar-chart</span><span class="token punctuation">&gt;</span></span>
                   </code>
-                </pre></div></div></section></div><div class="part_container"><h2 id="bar_line_chart">III. Graphique en ligne / Diagramme en barres</h2><p>Il est également possible de combiner un graphique en ligne et un diagramme en barres, pour permettre la comparaison entre des données présentées différemment.</p><hr><p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p><div class="chart_container"><h3 class="fr-h6 fr-text--bold fr-mb-0">Évolution du nombre de naissances et du taux de natalité</h3><p class="fr-text--sm">France hors Mayotte, naissances en milliers et taux de natalité pour mille femmes. Insee, 16/01/2024</p><bar-line-chart x="[1980, 1990, 2000, 2010]" y="[14.9, 13.4, 13.1, 12.9]" ybar="[826.1, 793.1, 807.4, 832.8]" name="Naissances" namebar="Taux de natalité" unit-tooltip="‰" unit-tooltip-bar="milliers"></bar-line-chart></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-11">Extrait de code</button></h3><div class="fr-collapse" id="accordion-11"><div class="code-toolbar"><pre>
+                </pre>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- BAR-LINE CHART -->
+        <div class="part_container">
+          <h2 id="bar_line_chart">
+            III. Graphique en ligne / Diagramme en barres
+          </h2>
+          <p>
+            Il est également possible de combiner un graphique en ligne et un
+            diagramme en barres, pour permettre la comparaison entre des
+            données présentées différemment.
+          </p>
+          <hr>
+          <p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p>
+          <div class="chart_container">
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">
+              Évolution du nombre de naissances et du taux de natalité
+            </h3>
+            <p class="fr-text--sm">
+              France hors Mayotte, naissances en milliers et taux de natalité pour mille femmes. Insee, 16/01/2024
+            </p>
+            <bar-line-chart
+              x="[1980, 1990, 2000, 2010]"
+              y="[14.9, 13.4, 13.1, 12.9]"
+              ybar="[826.1, 793.1, 807.4, 832.8]"
+              name="Naissances"
+              nameBar="Taux de natalité"
+              unit-tooltip="‰"
+              unit-tooltip-bar="milliers">
+            </bar-line-chart>
+          </div>
+
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-11">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-11">
+              <div class="code-toolbar">
+                <pre>
                   <code>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bar-line-chart</span>
                       <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">[1980, 1990, 2000, 2010]</span><span class="token punctuation">"</span></span>
@@ -111,7 +532,51 @@
                       <span class="token attr-name">unit-tooltip-bar</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">milliers</span><span class="token punctuation">"</span></span>
                       <span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>bar-line-chart</span><span class="token punctuation">&gt;</span>
                 </code>
-                </pre></div></div></section></div><div class="part_container"><h2 id="scatter_chart" class="fr-pt-1w">I. Nuage de points</h2><p>Le nuage de points est largement utilisée pour présenter plusieurs séries de données. C’est une représentation graphique qui est particulièrement utile lorsque les valeurs des données sur l'axe Y dépendent des valeurs d’un autre axe X.</p><h3 id="scatter_chart.1">IV. Nuage de points simple</h3><hr><p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p><div class="chart_container"><h3 class="fr-h6 fr-text--bold fr-mb-0">Évolution du taux moyen d'émissions de CO₂ en France</h3><p class="fr-text--sm">Véhicules particuliers neufs vendus en France. Ademe, 04/11/2024</p><scatter-chart x="[[1995, 2000, 2005, 2010, 2015, 2020, 2022], [1995, 2000, 2005, 2010, 2015, 2020, 2022], [1995, 2000, 2005, 2010, 2015, 2020, 2022]]" y="[[175, 155, 149, 130, 111, 107, 130], [177, 168, 159, 130, 116, 109, 131], [176, 162, 152, 130, 111, 97, 103]]" name='["Diesel", "Essence", "Total"]' unit-tooltip="g de CO₂ / km"></scatter-chart></div><div class="part_container"><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-7">Extrait de code</button></h3><div class="fr-collapse" id="accordion-7"><div class="code-toolbar"><pre>
+                </pre>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- SCATTER CHART -->
+        <div class="part_container">
+          <h2 id="scatter_chart" class="fr-pt-1w">I. Nuage de points</h2>
+          <p>
+            Le nuage de points est largement utilisée pour présenter plusieurs
+            séries de données. C’est une représentation graphique qui est
+            particulièrement utile lorsque les valeurs des données sur l'axe Y
+            dépendent des valeurs d’un autre axe X.
+          </p>
+
+          <h3 id="scatter_chart.1">IV. Nuage de points simple</h3>
+          <hr>
+          <p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p>
+          <div class="chart_container">
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">
+              Évolution du taux moyen d'émissions de CO₂ en France
+            </h3>
+            <p class="fr-text--sm">
+              Véhicules particuliers neufs vendus en France. Ademe, 04/11/2024
+
+            </p>
+            <scatter-chart
+              x="[[1995, 2000, 2005, 2010, 2015, 2020, 2022], [1995, 2000, 2005, 2010, 2015, 2020, 2022], [1995, 2000, 2005, 2010, 2015, 2020, 2022]]"
+              y="[[175, 155, 149, 130, 111, 107, 130], [177, 168, 159, 130, 116, 109, 131], [176, 162, 152, 130, 111, 97, 103]]"
+              name='["Diesel", "Essence", "Total"]'
+              unit-tooltip="g de CO₂ / km">
+            </scatter-chart>
+          </div>
+
+          <div class="part_container">
+            <section class="fr-accordion fr-mt-4w fr-mb-6w">
+              <h3 class="fr-accordion__title">
+                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-7">
+                  Extrait de code
+                </button>
+              </h3>
+              <div class="fr-collapse" id="accordion-7">
+                <div class="code-toolbar">
+                  <pre>
                             <code>
                               <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scatter-chart</span>
                                 <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[1995, 2000, 2005, 2010, 2015, 2020, 2022], [1995, 2000, 2005, 2010, 2015, 2020, 2022], [1995, 2000, 2005, 2010, 2015, 2020, 2022]]</span><span class="token punctuation">'</span></span>
@@ -120,7 +585,42 @@
                                 <span class="token attr-name">unit-tooltip</span><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">g de CO₂ / km</span><span class="token punctuation">'</span></span>
                               <span class="token punctuation">&gt;</span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>scatter-chart</span><span class="token punctuation">&gt;</span>
                           </code>
-                          </pre></div></div></section></div><h3 id="scatter_chart.2">2. Nuage de points reliés</h3><hr><p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p><div class="chart_container"><h3 class="fr-h6 fr-text--bold fr-mb-0">Carrières complètes selon le sexe et la génération en 2016</h3><p class="fr-text--sm">Retraités ayant perçu un droit direct au cours de l’année, résidant en France, vivants au 31 décembre 2016 ; tous régimes confondus. Insee, 09/09/2011</p><scatter-chart x="[[1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950], [1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950], [1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950]]" y="[[35, 35, 37, 37, 39, 41, 43, 48, 51, 52, 54, 55, 56], [76, 83, 82, 80, 81, 80, 81, 80, 81, 80, 79, 75, 72], [54, 56, 58, 57, 59, 60, 62, 64, 66, 66, 66, 65, 64]]" name='["Femmes", "Hommes", "Ensemble"]' unit-tooltip="%" showline="true"></scatter-chart></div><div class="part_container"><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-8">Extrait de code</button></h3><div class="fr-collapse" id="accordion-8"><div class="code-toolbar"><pre>
+                          </pre>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <h3 id="scatter_chart.2">2. Nuage de points reliés</h3>
+          <hr>
+          <p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p>
+          <div class="chart_container">
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">
+              Carrières complètes selon le sexe et la génération en 2016
+            </h3>
+            <p class="fr-text--sm">
+              Retraités ayant perçu un droit direct au cours de l’année, résidant en France, vivants au 31 décembre 2016
+              ; tous régimes confondus. Insee, 09/09/2011
+            </p>
+            <scatter-chart
+              x="[[1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950], [1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950], [1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950]]"
+              y="[[35, 35, 37, 37, 39, 41, 43, 48, 51, 52, 54, 55, 56], [76, 83, 82, 80, 81, 80, 81, 80, 81, 80, 79, 75, 72], [54, 56, 58, 57, 59, 60, 62, 64, 66, 66, 66, 65, 64]]"
+              name='["Femmes", "Hommes", "Ensemble"]'
+              unit-tooltip="%"
+              showline="true">
+            </scatter-chart>
+          </div>
+
+          <div class="part_container">
+            <section class="fr-accordion fr-mt-4w fr-mb-6w">
+              <h3 class="fr-accordion__title">
+                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-8">
+                  Extrait de code
+                </button>
+              </h3>
+              <div class="fr-collapse" id="accordion-8">
+                <div class="code-toolbar">
+                  <pre>
                             <code>
                               <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scatter-chart</span>
                                 <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950], [1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950], [1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950]]</span><span class="token punctuation">'</span></span>
@@ -130,7 +630,49 @@
                                 <span class="token attr-name">showline</span><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">true</span><span class="token punctuation">'</span>
                               <span class="token punctuation">&gt;</span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>scatter-chart</span><span class="token punctuation">&gt;</span>
                           </code>
-                          </pre></div></div></section></div></div><div class="part_container"><h2 id="pie_chart">V. Diagramme circulaire</h2><p>Un diagramme circulaire permet de représenter un petit nombre de valeurs par des angles proportionnels à la fréquence de ces valeurs. Chacune des « parts » représente une catégorie de données qui forment un ensemble, et la taille de chaque « part » est proportionnelle à son poids dans l'ensemble. Le diagramme circulaire peut être plein ou creux.</p><h3 id="pie_chart.1">1. Diagramme circulaire creux (donut)</h3><hr><p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p><div class="chart_container"><h3 class="fr-h6 fr-text--bold fr-mb-0">Statut des emplois en France</h3><p class="fr-text--sm">Pour l'année 2018. France hors Mayotte, population des ménages, personnes en emploi. Insee, enquête Emploi, 04/11/2024</p><pie-chart x='["Non-salariés", "Emplois à durée indéterminée", "Contrats à durée déterminée", "Apprentis", "Intérimaires"]' y="[11.7, 74.8, 9.3, 1.6, 2.6]" name='["Non-salariés", "Emplois à durée indéterminée", "Contrats à durée déterminée", "Apprentis", "Intérimaires"]' unit-tooltip="%"></pie-chart></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-12">Extrait de code</button></h3><div class="fr-collapse" id="accordion-12"><div class="code-toolbar"><pre>
+                          </pre>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- PIE CHART -->
+        <div class="part_container">
+          <h2 id="pie_chart">V. Diagramme circulaire</h2>
+          <p>
+            Un diagramme circulaire permet de représenter un petit nombre de
+            valeurs par des angles proportionnels à la fréquence de ces
+            valeurs. Chacune des « parts » représente une catégorie de données
+            qui forment un ensemble, et la taille de chaque « part » est
+            proportionnelle à son poids dans l'ensemble. Le diagramme
+            circulaire peut être plein ou creux.
+          </p>
+
+          <h3 id="pie_chart.1">1. Diagramme circulaire creux (donut)</h3>
+          <hr>
+          <p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p>
+          <div class="chart_container">
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">Statut des emplois en France</h3>
+            <p class="fr-text--sm">Pour l'année 2018. France hors Mayotte, population des ménages, personnes en emploi. Insee, enquête Emploi, 04/11/2024
+            </p>
+            <pie-chart
+              x='["Non-salariés", "Emplois à durée indéterminée", "Contrats à durée déterminée", "Apprentis", "Intérimaires"]'
+              y="[11.7, 74.8, 9.3, 1.6, 2.6]"
+              name='["Non-salariés", "Emplois à durée indéterminée", "Contrats à durée déterminée", "Apprentis", "Intérimaires"]'
+              unit-tooltip="%">
+            </pie-chart>
+          </div>
+
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-12">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-12">
+              <div class="code-toolbar">
+                <pre>
                   <code>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pie-chart</span></span>
                         <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">["Non-salariés", "Emplois à durée indéterminée", "Contrats à durée déterminée", "Apprentis", "Intérimaires"]</span><span class="token punctuation">'</span></span>
@@ -139,7 +681,39 @@
                       <span class="token punctuation">&gt;</span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pie-chart</span><span class="token punctuation">&gt;</span></span>
                   </code>
-                </pre></div></div></section><h3 id="pie_chart.2">2. Diagramme circulaire plein</h3><hr><p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p><div class="chart_container"><h3 class="fr-h6 fr-text--bold fr-mb-0">Structure des dépenses publiques en France en 2022</h3><p class="fr-text--sm">France métropolitaine. Insee, 30/11/2023</p><pie-chart x='["Protection sociale", "Santé", "Affaires économiques", "Services publics généraux", "Autres", "Enseignement", "Défense"]' y="[40.8, 15.6, 11.5, 10.6, 9.4, 9, 3.1]" name='["Protection sociale", "Santé", "Affaires économiques", "Services publics généraux", "Autres", "Enseignement", "Défense"]' unit-tooltip="%" fill="true"></pie-chart></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-13">Extrait de code</button></h3><div class="fr-collapse" id="accordion-13"><div class="code-toolbar"><pre>
+                </pre>
+              </div>
+            </div>
+          </section>
+
+          <h3 id="pie_chart.2">2. Diagramme circulaire plein</h3>
+          <hr>
+          <p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p>
+          <div class="chart_container">
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">
+              Structure des dépenses publiques en France en 2022
+            </h3>
+            <p class="fr-text--sm">
+              France métropolitaine. Insee, 30/11/2023
+            </p>
+            <pie-chart
+              x='["Protection sociale", "Santé", "Affaires économiques", "Services publics généraux", "Autres", "Enseignement", "Défense"]'
+              y="[40.8, 15.6, 11.5, 10.6, 9.4, 9, 3.1]"
+              name='["Protection sociale", "Santé", "Affaires économiques", "Services publics généraux", "Autres", "Enseignement", "Défense"]'
+              unit-tooltip="%"
+              fill="true">
+            </pie-chart>
+          </div>
+
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-13">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-13">
+              <div class="code-toolbar">
+                <pre>
                   <code>
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pie-chart</span>
                       <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">["Protection sociale", "Santé", "Affaires économiques", "Services publics généraux", "Autres", "Enseignement", "Défense"]</span><span class="token punctuation">'</span></span>
@@ -149,8 +723,45 @@
                       <span class="token attr-name">fill</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">true</span><span class="token punctuation">"</span></span>
                     <span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>pie-chart</span><span class="token punctuation">&gt;</span>
                 </code>
-                </pre></div></div></section></div><div class="part_container"><h2 id="radar_chart">VI. Diagramme en étoile</h2><p>Le diagramme en étoile ou radar chart a été conçu pour représenter une ou plusieurs séries de valeurs sur plusieurs variables quantitatives.</p><div class="chart_container"><hr><p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p><h3 class="fr-h6 fr-text--bold fr-mb-0">Statut des emplois par tranche d'âge</h3><p class="fr-text--sm">Pour l'année 2018. France hors Mayotte, population des ménages, personnes en emploi. Insee, enquête Emploi, 04/11/2024</p><radar-chart x='[["Logement, chauffage, éclairage", "Alimentation, boissons, tabac", "Autres biens et services", "Transports", "Communications, loisirs, culture", "Hôtels, cafés, restaurants", "Habillement et chaussures"],
-                  ["Logement, chauffage, éclairage", "Alimentation, boissons, tabac", "Autres biens et services", "Transports", "Communications, loisirs, culture", "Hôtels, cafés, restaurants", "Habillement et chaussures"]]' y="[[22.6, 28.9, 8.4, 10.7, 8.5, 5.3, 12.8], [31.3, 15.9, 13.4, 12.9, 10.5, 8.5, 3.0]]" name='["1963", "2023"]' unit-tooltip="%"></radar-chart></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-25">Extrait de code</button></h3><div class="fr-collapse" id="accordion-25"><div class="code-toolbar"><pre>
+                </pre>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- RADAR CHART -->
+        <div class="part_container">
+          <h2 id="radar_chart">VI. Diagramme en étoile</h2>
+          <p>
+            Le diagramme en étoile ou radar chart a été conçu pour représenter
+            une ou plusieurs séries de valeurs sur plusieurs variables
+            quantitatives.
+          </p>
+
+          <div class="chart_container">
+            <hr>
+            <p class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w">Palette catégorielle</p>
+            <h3 class="fr-h6 fr-text--bold fr-mb-0">Statut des emplois par tranche d'âge</h3>
+            <p class="fr-text--sm">Pour l'année 2018. France hors Mayotte, population des ménages, personnes en emploi. Insee, enquête Emploi, 04/11/2024
+            </p>
+            <radar-chart
+              x='[["Logement, chauffage, éclairage", "Alimentation, boissons, tabac", "Autres biens et services", "Transports", "Communications, loisirs, culture", "Hôtels, cafés, restaurants", "Habillement et chaussures"],
+                  ["Logement, chauffage, éclairage", "Alimentation, boissons, tabac", "Autres biens et services", "Transports", "Communications, loisirs, culture", "Hôtels, cafés, restaurants", "Habillement et chaussures"]]'
+              y="[[22.6, 28.9, 8.4, 10.7, 8.5, 5.3, 12.8], [31.3, 15.9, 13.4, 12.9, 10.5, 8.5, 3.0]]"
+              name='["1963", "2023"]'
+              unit-tooltip="%">
+            </radar-chart>
+          </div>
+
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-25">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-25">
+              <div class="code-toolbar">
+                <pre>
                     <code>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>radar-chart</span>
                         <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[
@@ -165,13 +776,66 @@
                         <span class="token attr-name">unit-tooltip</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">%</span><span class="token punctuation">'</span></span>
                       <span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"></span><span class="token punctuation">&lt;/</span>radar-chart</span><span class="token punctuation">&gt;</span>
                   </code>
-                </pre></div></div></section></div><div class="part_container"><h2 id="gauge_chart">VII. Jauge</h2><p>La jauge permet d'afficher des valeurs numériques ou des mesures dans une plage, pour visualiser l'avancement d'un objectif par exemple.</p><div class="chart_container"><gauge-chart value="360000" init="100000" target="2000000" initdate="(en 2022)" targetdate="(en 2026)"></gauge-chart></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-22">Extrait de code</button></h3><div class="fr-collapse" id="accordion-22"><div class="code-toolbar"><pre>
+                </pre>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- GAUGE CHART -->
+        <div class="part_container">
+          <h2 id="gauge_chart">VII. Jauge</h2>
+          <p>
+            La jauge permet d'afficher des valeurs numériques ou des mesures
+            dans une plage, pour visualiser l'avancement d'un objectif par
+            exemple.
+          </p>
+
+          <div class="chart_container">
+            <gauge-chart
+              value="360000"
+              init="100000"
+              target="2000000"
+              initdate="(en 2022)"
+              targetdate="(en 2026)">
+            </gauge-chart>
+          </div>
+
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-22">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-22">
+              <div class="code-toolbar">
+                <pre>
                     <code>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
                       <span class="token tag"><span class="token tag"></span><span class="token tag"><span class="token punctuation">&lt;</span>gauge-chart</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="titre_class">16</span> <span class="token attr-name">init</span><span class="token attr-value"><span class="token punctuation">=</span><span class="titre_class">10</span> <span class="token attr-name">target</span><span class="token attr-value"><span class="token punctuation">=</span><span class="titre_class">20</span><span class="token punctuation"></span> <span class="token attr-name">color</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">blue-france</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>gauge-chart</span><span class="token punctuation">&gt;</span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></span></span>
                     </code>
-                  </pre></div></div></section></div><div class="part_container"><h2 id="map_chart">VIII. Cartes</h2><p>Les cartes permettent d’afficher une série de données réparties par département ou région. Les cartes sont actuellement disponibles aux niveaux départemental et régional, et il est également possible d’isoler une région pour en afficher les départements.</p><h3 id="map_chart.1">1. Découpage départemental</h3><div class="chart_container"><map-chart data='{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
+                  </pre>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- MAP CHART 1 -->
+        <div class="part_container">
+          <h2 id="map_chart">VIII. Cartes</h2>
+          <p>
+            Les cartes permettent d’afficher une série de données réparties
+            par département ou région. Les cartes sont actuellement
+            disponibles aux niveaux départemental et régional, et il est
+            également possible d’isoler une région pour en afficher les
+            départements.
+          </p>
+
+          <h3 id="map_chart.1">1. Découpage départemental</h3>
+          <div class="chart_container">
+            <map-chart
+              data='{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
               "12": 33, "13": 89, "14": 24, "15": 52, "16": 41, "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,
               "23": 37, "24": 65, "25": 88, "26": 48, "27": 61, "28": 80, "29": 12, "30": 6, "31": 5, "32": 22, "33": 40,
               "34": 19, "35": 13, "36": 32, "37": 0, "38": 82, "39": 13, "40": 78, "41": 92, "42": 10, "43": 22, "44": 70,
@@ -180,7 +844,22 @@
               "67": 56, "68": 19, "69": 44, "70": 92, "71": 96, "72": 51, "73": 32, "74": 19, "75": 96, "76": 91, "77": 21,
               "78": 48, "79": 72, "80": 52, "81": 48, "82": 57, "83": 38, "84": 23, "85": 46, "86": 37, "87": 64, "88": 78,
               "89": 100, "90": 85, "91": 87, "92": 46, "93": 89, "94": 18, "95": 72, "971": 48, "972": 28, "973": 35,
-              "974": 70, "976": 38, "2A": 63, "2B": "16"}' valuenat="10" name="Nom de l'indicateur" date="21/12/2022"></map-chart></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-15">Extrait de code</button></h3><div class="fr-collapse" id="accordion-15"><div class="code-toolbar"><pre>
+              "974": 70, "976": 38, "2A": 63, "2B": "16"}'
+              valuenat="10"
+              name="Nom de l'indicateur"
+              date="21/12/2022">
+            </map-chart>
+          </div>
+
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-15">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-15">
+              <div class="code-toolbar">
+                <pre>
                     <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>map-chart</span> <span class="token attr-name">data</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47,
                         "06": 96, "07": 77, "08": 75, "09": 57, "10": 58, "11": 38,
@@ -204,8 +883,32 @@
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>map-chart</span><span class="token punctuation">&gt;</span>
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></span>
                   </code>
-                </pre></div></div></section><h3 id="map_chart.2">2. Découpage régional</h3><div class="chart_container"><map-chart data='{"84": 1, "32": 10, "93": 20, "44": 30, "76": 40, "28": 50, "75": 60, "24": 70, "53": 80,
-                     "94": 90, "52": 100, "01": 95, "02": 85, "03": 75, "04": 65, "06": "55", "27": 100, "11": 35}' valuenat="10" name="Nom de l'indicateur" level="reg" date="21/12/2022"></map-chart></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-16">Extrait de code</button></h3><div class="fr-collapse" id="accordion-16"><div class="code-toolbar"><pre>
+                </pre>
+              </div>
+            </div>
+          </section>
+
+          <h3 id="map_chart.2">2. Découpage régional</h3>
+          <div class="chart_container">
+            <map-chart
+              data='{"84": 1, "32": 10, "93": 20, "44": 30, "76": 40, "28": 50, "75": 60, "24": 70, "53": 80,
+                     "94": 90, "52": 100, "01": 95, "02": 85, "03": 75, "04": 65, "06": "55", "27": 100, "11": 35}'
+              valuenat="10"
+              name="Nom de l'indicateur"
+              level="reg"
+              date="21/12/2022">
+            </map-chart>
+          </div>
+
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-16">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-16">
+              <div class="code-toolbar">
+                <pre>
                     <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>map-chart</span> <span class="token attr-name">data</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">{"84": 1, "32": 10, "93": 20, "44": 30, "76": 40,
                        "28": 50, "75": 60, "24": 70,"53": 80,
@@ -215,7 +918,15 @@
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>map-chart</span><span class="token punctuation">&gt;</span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></span></span>
                     </code>
-                  </pre></div></div></section><h3 id="map_chart.3">3. Régions</h3><div class="chart_container"><map-chart-reg data='{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58,
+                  </pre>
+              </div>
+            </div>
+          </section>
+
+          <h3 id="map_chart.3">3. Régions</h3>
+          <div class="chart_container">
+            <map-chart-reg
+              data='{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47, "06": 96, "07": 77, "08": 75, "09": 57, "10": 58,
               "11": 38, "12": 33, "13": 89, "14": 24, "15": 52, "16": 41, "17": 79, "18": 38, "19": 42, "21": 25, "22": 26,
               "23": 37, "24": 65, "25": 88, "26": 48, "27": 61, "28": 80, "29": 12, "30": 6, "31": 5, "32": 22, "33": 40,
               "34": 19, "35": 13, "36": 32, "37": 0, "38": 82, "39": 13, "40": 78, "41": 92, "42": 10, "43": 22, "44": 70,
@@ -224,7 +935,23 @@
               "67": 56, "68": 19, "69": 44, "70": 92, "71": 96, "72": 51, "73": 32, "74": 19, "75": 96, "76": 91, "77": 21,
               "78": 48, "79": 72, "80": 52, "81": 48, "82": 57, "83": 38, "84": 23, "85": 46, "86": 37, "87": 64, "88": 78,
               "89": 100, "90": 85, "91": 87, "92": 46, "93": 89, "94": 18, "95": 72, "971": 48, "972": 28, "973": 35,
-              "974": 70, "976": 38, "2A": 63, "2B": "16"}' valuereg="10" name="Nom de l'indicateur" region="93" date="21/12/2022"></map-chart-reg></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-17">Extrait de code</button></h3><div class="fr-collapse" id="accordion-17"><div class="code-toolbar"><pre>
+              "974": 70, "976": 38, "2A": 63, "2B": "16"}'
+              valuereg="10"
+              name="Nom de l'indicateur"
+              region="93"
+              date="21/12/2022">
+            </map-chart-reg>
+          </div>
+
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-17">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-17">
+              <div class="code-toolbar">
+                <pre>
                     <code>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">part_container</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
                       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>map-chart-reg</span> <span class="token attr-name">data</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">{"01": 72, "02": 83, "03": 67, "04": 36, "05": 47,
@@ -250,7 +977,30 @@
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>map-chart-reg</span><span class="token punctuation">&gt;</span>
                     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></span></span>
                   </code>
-                </pre></div></div></section></div><div class="part_container fr-mb-6w"><h2 id="databox">IX. La Databox</h2><div class="flex fr-mt-3v"></div><div class="chart_container"><data-box data-box-title="Titre de votre Databox" data-box-description="Ceci est une nouvelle description pour la databox." data-box-date="2024-10-22" ismultilinetableheader="false" unit-tooltip="%"/></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-18">Extrait de code</button></h3><div class="fr-collapse" id="accordion-18"><div class="code-toolbar"><pre><code>
+                </pre>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- DATABOX -->
+        <div class="part_container fr-mb-6w">
+          <h2 id="databox">IX. La Databox</h2>
+          <div class="flex fr-mt-3v"></div>
+          <div class="chart_container">
+            <data-box data-Box-Title="Titre de votre Databox"
+              data-Box-Description="Ceci est une nouvelle description pour la databox." data-Box-Date="2024-10-22"
+              isMultilineTableHeader="false" unit-tooltip="%" />
+          </div>
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-18">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-18">
+              <div class="code-toolbar">
+                <pre><code>
                   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>data-box</span></span>
                   <span class="token attr-name">data-Box-Title</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">Titre de votre Databox</span><span class="token punctuation">"</span></span>
                   <span class="token attr-name">data-Box-Description</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">Ceci est une nouvelle description pour la databox.</span><span class="token punctuation">"</span></span>
@@ -258,11 +1008,105 @@
                   <span class="token attr-name">:isMultilineTableHeader</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">false</span><span class="token punctuation">"</span></span>
                   <span class="token attr-name">unit-tooltip</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="titre_class">%</span><span class="token punctuation">"</span></span>
                   <span class="token punctuation">/&gt;</span>
-                </code></pre></div></div></section></div><div class="part_container fr-mb-6w"><h2 id="colors">X. Les couleurs</h2><h3 class="fr-mt-5w">Graphiques unicolores</h3><p>Une représentation graphique n’a pas toujours besoin d’être colorée. Lorsqu’il n’est pas nécessaire de différencier les formes par des couleurs, on affichera les graphes avec la couleur par défaut du DSFR pour les graphes unicolores :</p><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #5C68E5"></span> <span class="legende_dot" style="background-color: #5C68E5"></span></div><h3 class="fr-mt-5w">Graphiques catégoriels</h3><p>Lorsque les formes du graphique doivent être différenciées par des couleurs mais que celles-ci ne sont pas porteuses de sens supplémentaire que la catégorisation, la palette catégorielle doit être utilisée :</p><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #5C68E5"></span> <span class="legende_dot" style="background-color: #5C68E5"></span></div><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #82B5F2"></span> <span class="legende_dot" style="background-color: #699BD6"></span></div><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #29598F"></span> <span class="legende_dot" style="background-color: #4878B1"></span></div><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #31A7AE"></span> <span class="legende_dot" style="background-color: #00828A"></span></div><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #81EEF5"></span> <span class="legende_dot" style="background-color: #51C1C8"></span></div><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #B478F1"></span> <span class="legende_dot" style="background-color: #BC8AF2"></span></div><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #CFB1F5"></span> <span class="legende_dot" style="background-color: #CFB1F5"></span></div><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #CECECE"></span> <span class="legende_dot" style="background-color: #A4A4A4"></span></div><h3 class="fr-mt-5w">Graphiques séquentiels</h3><h4>Palette séquentielle unicolore</h4><p>Lorsque les formes du graphique doivent être différenciées par des couleurs et que ces couleurs matérialisent une gradation, une palette séquentielle doit être utilisée. Il en existe deux versions à utiliser en fonction du besoin, En fonction du nombre de catégories, on appliquera autant de valeurs de couleurs qu’il en existe dans un dégradé allant de la première couleur de cette échelle</p><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #DBDAFF"></span> <span class="legende_dot" style="background-color: #B8B9FF"></span></div><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #00005F"></span> <span class="legende_dot" style="background-color: #3647CA"></span></div><h4 class="fr-mt-5w">Palette séquentielle divergente</h4><p>Cette palette convient également pour matérialiser des échelles numériques mais qui intègrent des valeurs négatives, ou des plages comportant deux extrêmes avec une ligne de base au milieu.<br>Dans la mesure du possible, le nombre de catégories doit refléter cette divergence, à travers 3 ou 5 catégories distinctes.<br>Dans le cas où le nombre de catégories devrait être supérieur à 5, on appliquera autant de valeurs de couleurs qu’il en existe dans un dégradé allant du vert vers le rouge en passant par le jaune. Un nombre impair doit toutefois être conservé pour marquer la valeur médiane.</p><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #298641"></span> <span class="legende_dot" style="background-color: #298641"></span></div><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #79D289"></span> <span class="legende_dot" style="background-color: #449D57"></span></div><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #EFB900"></span> <span class="legende_dot" style="background-color: #AF8800"></span></div><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #FFA373"></span> <span class="legende_dot" style="background-color: #FFA373"></span></div><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #E91719"></span> <span class="legende_dot" style="background-color: #E16834"></span></div><div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #B1B1B1"></span> <span class="legende_dot" style="background-color: #808080"></span></div></div><div class="part_container fr-mb-10w"><h2 id="accessibility">XI. Accessibilité</h2><p>Pour permettre d'offrir une alternative à la visualisation des données et ainsi s'adapter tous les publics, il est possible d’accompagner les graphiques d’une présentation des résultats sous la forme de tableaux.</p><div class="chart_container"><table-chart x='["A","B","C","D","E","F","G","H","I","J"]' y="[[1000000, 50,40,39,49,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49]]" varname="Jours"></table-chart></div><section class="fr-accordion fr-mt-4w fr-mb-6w"><h3 class="fr-accordion__title"><button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-23">Extrait de code</button></h3><div class="fr-collapse" id="accordion-23"><div class="code-toolbar"><pre><code>
+                </code></pre>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- COLORS -->
+        <div class="part_container fr-mb-6w">
+          <h2 id="colors">X. Les couleurs</h2>
+          <h3 class="fr-mt-5w">Graphiques unicolores</h3>
+          <p>Une représentation graphique n’a pas toujours besoin d’être colorée. Lorsqu’il n’est pas nécessaire de
+            différencier les formes par des couleurs,
+            on affichera les graphes avec la couleur par défaut du DSFR pour les graphes unicolores :</p>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #5C68E5"></span> <span
+              class="legende_dot" style="background-color: #5C68E5"></span> </div>
+          <h3 class="fr-mt-5w">Graphiques catégoriels</h3>
+          <p>Lorsque les formes du graphique doivent être différenciées par des couleurs mais que celles-ci ne sont pas
+            porteuses de sens supplémentaire que la catégorisation,
+            la palette catégorielle doit être utilisée :</p>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #5C68E5"></span> <span
+              class="legende_dot" style="background-color: #5C68E5"></span> </div>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #82B5F2"></span> <span
+              class="legende_dot" style="background-color: #699BD6"></span> </div>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #29598F"></span> <span
+              class="legende_dot" style="background-color: #4878B1"></span> </div>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #31A7AE"></span> <span
+              class="legende_dot" style="background-color: #00828A"></span> </div>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #81EEF5"></span> <span
+              class="legende_dot" style="background-color: #51C1C8"></span> </div>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #B478F1"></span> <span
+              class="legende_dot" style="background-color: #BC8AF2"></span> </div>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #CFB1F5"></span> <span
+              class="legende_dot" style="background-color: #CFB1F5"></span> </div>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #CECECE"></span> <span
+              class="legende_dot" style="background-color: #A4A4A4"></span> </div>
+          <h3 class="fr-mt-5w">Graphiques séquentiels</h3>
+          <h4>Palette séquentielle unicolore</h4>
+          <p>Lorsque les formes du graphique doivent être différenciées par des couleurs et que ces couleurs
+            matérialisent une gradation, une palette séquentielle doit être utilisée.
+            Il en existe deux versions à utiliser en fonction du besoin, En fonction du nombre de catégories, on
+            appliquera autant de valeurs de couleurs qu’il en existe dans un dégradé allant de la première couleur de
+            cette échelle </p>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #DBDAFF"></span> <span
+              class="legende_dot" style="background-color: #B8B9FF"></span> </div>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #00005F"></span> <span
+              class="legende_dot" style="background-color: #3647CA"></span> </div>
+          <h4 class="fr-mt-5w">Palette séquentielle divergente</h4>
+          <p>Cette palette convient également pour matérialiser des échelles numériques mais qui intègrent des valeurs
+            négatives, ou des plages comportant deux extrêmes avec une ligne de base au milieu.<br>
+            Dans la mesure du possible, le nombre de catégories doit refléter cette divergence, à travers 3 ou 5
+            catégories distinctes. <br>
+            Dans le cas où le nombre de catégories devrait être supérieur à 5, on appliquera autant de valeurs de
+            couleurs qu’il en existe dans un dégradé allant du vert vers le rouge en passant par le jaune.
+            Un nombre impair doit toutefois être conservé pour marquer la valeur médiane.</p>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #298641"></span> <span
+              class="legende_dot" style="background-color: #298641"></span> </div>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #79D289"></span> <span
+              class="legende_dot" style="background-color: #449D57"></span> </div>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #EFB900"></span> <span
+              class="legende_dot" style="background-color: #AF8800"></span> </div>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #FFA373"></span> <span
+              class="legende_dot" style="background-color: #FFA373"></span> </div>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #E91719"></span> <span
+              class="legende_dot" style="background-color: #E16834"></span> </div>
+          <div class="flex fr-mt-3v"><span class="legende_dot" style="background-color: #B1B1B1"></span> <span
+              class="legende_dot" style="background-color: #808080"></span> </div>
+        </div>
+
+        <!-- Accessibilité -->
+        <div class="part_container fr-mb-10w">
+          <h2 id="accessibility">XI. Accessibilité</h2>
+          <p>
+            Pour permettre d'offrir une alternative à la visualisation des
+            données et ainsi s'adapter tous les publics, il est possible
+            d’accompagner les graphiques d’une présentation des résultats sous
+            la forme de tableaux.
+          </p>
+
+          <div class="chart_container">
+            <table-chart
+              x='["A","B","C","D","E","F","G","H","I","J"]'
+              y="[[1000000, 50,40,39,49,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49],[30, 150,340,379,439,40, 50,40,39,49]]"
+              varname="Jours">
+            </table-chart>
+          </div>
+
+          <section class="fr-accordion fr-mt-4w fr-mb-6w">
+            <h3 class="fr-accordion__title">
+              <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-23">
+                Extrait de code
+              </button>
+            </h3>
+            <div class="fr-collapse" id="accordion-23">
+              <div class="code-toolbar">
+                <pre><code>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table-chart</span>
-<span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[["A","B","C","D","E","F","G","H","I","J"],
+<span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[["A","B","C","D","E","F","G","H","I","J"],
 ["A","B","C","D","E","F","G","H","I","J"]]</span><span class="token punctuation">'</span>
-</span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">[[40, 50,40,39,49,40, 50,40,39,49],
+</span><span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">[[40, 50,40,39,49,40, 50,40,39,49],
 [30, 150,340,379,439,40, 50,40,39,49],
 [30, 150,340,379,439,40, 50,40,39,49],
 [30, 150,340,379,439,40, 50,40,39,49],
@@ -270,9 +1114,112 @@
 [30, 150,340,379,439,40, 50,40,39,49],
 [30, 150,340,379,439,40, 50,40,39,49],
 [30, 150,340,379,439,40, 50,40,39,49]]</span><span class="token punctuation">'</span>
-<span class="token attr-name">varname</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class="titre_class">Jours</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>table-chart</span><span class="token punctuation">&gt;</span>
-                </code></pre></div></div></section></div></div></section><button class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary" aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" id="button-6667" data-fr-js-modal-button="true">Paramètres d'affichage</button><dialog id="fr-theme-modal" class="fr-modal" role="dialog" aria-labelledby="fr-theme-modal-title"><div class="fr-container fr-container--fluid fr-container-md"><div class="fr-grid-row fr-grid-row--center"><div class="fr-col-12 fr-col-md-6 fr-col-lg-4"><div class="fr-modal__body"><div class="fr-modal__header"><button class="fr-btn--close fr-btn" aria-controls="fr-theme-modal" title="Fermer">Fermer</button></div><div class="fr-modal__content"><h2 id="fr-theme-modal-title" class="fr-modal__title">Paramètres d’affichage</h2><div id="fr-display" class="fr-display"><div class="fr-form-group"><fieldset class="fr-fieldset"><legend class="fr-fieldset__legend fr-text--regular" id="-legend">Choisissez un thème pour personnaliser l’apparence du site.</legend><div class="fr-fieldset__content"><div class="fr-radio-group fr-radio-rich"><input value="light" type="radio" id="fr-radios-theme-light" name="fr-radios-theme"/> <label class="fr-label" for="fr-radios-theme-light">Thème clair</label><div class="fr-radio-rich__img"><svg xmlns="http://www.w3.org/2000/svg" class="fr-artwork" width="80px" height="80px" viewBox="0 0 80 80"><use class="fr-artwork-decorative" xlink:href="./img/artwork/light.svg#artwork-decorative"></use><use class="fr-artwork-minor" xlink:href="./img/artwork/light.svg#artwork-minor"></use><use class="fr-artwork-major" xlink:href="./img/artwork/light.svg#artwork-major"></use></svg></div></div><div class="fr-radio-group fr-radio-rich"><input value="dark" type="radio" id="fr-radios-theme-dark" name="fr-radios-theme"/> <label class="fr-label" for="fr-radios-theme-dark">Thème sombre</label><div class="fr-radio-rich__img"><svg xmlns="http://www.w3.org/2000/svg" class="fr-artwork" width="80px" height="80px" viewBox="0 0 80 80"><use class="fr-artwork-decorative" xlink:href="./img/artwork/dark.svg#artwork-decorative"></use><use class="fr-artwork-minor" xlink:href="./img/artwork/dark.svg#artwork-minor"></use><use class="fr-artwork-major" xlink:href="./img/artwork/dark.svg#artwork-major"></use></svg></div></div><div class="fr-radio-group fr-radio-rich"><input value="system" type="radio" id="fr-radios-theme-system" name="fr-radios-theme"/> <label class="fr-label" for="fr-radios-theme-system">Système <span class="fr-hint-text">Utilise les paramètres système.</span></label><div class="fr-radio-rich__img"><svg xmlns="http://www.w3.org/2000/svg" class="fr-artwork" width="80px" height="80px" viewBox="0 0 80 80"><use class="fr-artwork-decorative" xlink:href="./img/artwork/system.svg#artwork-decorative"></use><use class="fr-artwork-minor" xlink:href="./img/artwork/system.svg#artwork-minor"></use><use class="fr-artwork-major" xlink:href="./img/artwork/system.svg#artwork-major"></use></svg></div></div></div></fieldset></div></div></div></div></div></div></div></dialog><script>document.addEventListener('DOMContentLoaded', function () {
+<span class="token attr-name">varname</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span><span class = "titre_class">Jours</span><span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token punctuation">&lt;/</span>table-chart</span><span class="token punctuation">&gt;</span>
+                </code></pre>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- DISPLAY BUTTON -->
+    <button class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary"
+      aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" id="button-6667"
+      data-fr-js-modal-button="true">
+      Paramètres d'affichage
+    </button>
+
+    <!-- SCHEME MODAL -->
+    <dialog id="fr-theme-modal" class="fr-modal" role="dialog" aria-labelledby="fr-theme-modal-title">
+      <div class="fr-container fr-container--fluid fr-container-md">
+        <div class="fr-grid-row fr-grid-row--center">
+          <div class="fr-col-12 fr-col-md-6 fr-col-lg-4">
+            <div class="fr-modal__body">
+              <div class="fr-modal__header">
+                <button class="fr-btn--close fr-btn" aria-controls="fr-theme-modal" title="Fermer">
+                  Fermer
+                </button>
+              </div>
+              <div class="fr-modal__content">
+                <h2 id="fr-theme-modal-title" class="fr-modal__title">
+                  Paramètres d’affichage
+                </h2>
+                <div id="fr-display" class="fr-display">
+                  <div class="fr-form-group">
+                    <fieldset class="fr-fieldset">
+                      <legend class="fr-fieldset__legend fr-text--regular" id="-legend">
+                        Choisissez un thème pour personnaliser l’apparence du
+                        site.
+                      </legend>
+                      <div class="fr-fieldset__content">
+                        <div class="fr-radio-group fr-radio-rich">
+                          <input value="light" type="radio" id="fr-radios-theme-light" name="fr-radios-theme" />
+                          <label class="fr-label" for="fr-radios-theme-light">
+                            Thème clair
+                          </label>
+                          <div class="fr-radio-rich__img">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="fr-artwork" width="80px" height="80px"
+                              viewBox="0 0 80 80">
+                              <use class="fr-artwork-decorative"
+                                xlink:href="./img/artwork/light.svg#artwork-decorative">
+                              </use>
+                              <use class="fr-artwork-minor" xlink:href="./img/artwork/light.svg#artwork-minor"></use>
+                              <use class="fr-artwork-major" xlink:href="./img/artwork/light.svg#artwork-major"></use>
+                            </svg>
+                          </div>
+                        </div>
+                        <div class="fr-radio-group fr-radio-rich">
+                          <input value="dark" type="radio" id="fr-radios-theme-dark" name="fr-radios-theme" />
+                          <label class="fr-label" for="fr-radios-theme-dark">
+                            Thème sombre
+                          </label>
+                          <div class="fr-radio-rich__img">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="fr-artwork" width="80px" height="80px"
+                              viewBox="0 0 80 80">
+                              <use class="fr-artwork-decorative" xlink:href="./img/artwork/dark.svg#artwork-decorative">
+                              </use>
+                              <use class="fr-artwork-minor" xlink:href="./img/artwork/dark.svg#artwork-minor"></use>
+                              <use class="fr-artwork-major" xlink:href="./img/artwork/dark.svg#artwork-major"></use>
+                            </svg>
+                          </div>
+                        </div>
+                        <div class="fr-radio-group fr-radio-rich">
+                          <input value="system" type="radio" id="fr-radios-theme-system" name="fr-radios-theme" />
+                          <label class="fr-label" for="fr-radios-theme-system">
+                            Système
+                            <span class="fr-hint-text">Utilise les paramètres système.</span>
+                          </label>
+                          <div class="fr-radio-rich__img">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="fr-artwork" width="80px" height="80px"
+                              viewBox="0 0 80 80">
+                              <use class="fr-artwork-decorative"
+                                xlink:href="./img/artwork/system.svg#artwork-decorative">
+                              </use>
+                              <use class="fr-artwork-minor" xlink:href="./img/artwork/system.svg#artwork-minor"></use>
+                              <use class="fr-artwork-major" xlink:href="./img/artwork/system.svg#artwork-major"></use>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </dialog>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
         if (window.dsfr && window.dsfr.start) {
           window.dsfr.start();
         }
-      });</script></div></body></html>
+      });
+    </script>
+  </div>
+</body>
+
+</html>

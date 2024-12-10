@@ -1,6 +1,6 @@
 import { defineCustomElement } from 'vue'
 
-import LineChart from './components/LineChart'
+import LineChart from '@/components/LineChart.vue'
 
 const LineChartElement = defineCustomElement(LineChart)
 

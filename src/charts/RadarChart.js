@@ -1,6 +1,6 @@
 import { defineCustomElement } from 'vue'
 
-import RadarChart from './components/RadarChart'
+import RadarChart from '@/components/RadarChart.vue'
 
 const RadarChartElement = defineCustomElement(RadarChart)
 

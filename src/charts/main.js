@@ -1,23 +1,17 @@
 import { defineCustomElement } from 'vue'
 
-import LineChart from './components/LineChart'
-import BarChart from './components/BarChart'
-import MapChart from './components/MapChart'
-import MultiLineChart from './components/MultiLineChart'
-import BarLineChart from './components/BarLineChart'
-import PieChart from './components/PieChart'
-import ScatterChart from './components/ScatterChart'
-import MapChartReg from './components/MapChartReg'
-import GaugeChart from './components/GaugeChart'
-import TableChart from './components/TableChart'
-import RadarChart from './components/RadarChart'
-import DataBox from './components/DataBox.vue'
-
-import '../node_modules/@gouvfr/dsfr/dist/dsfr.module.min.js'
-
-import '../node_modules/@gouvfr/dsfr/dist/dsfr.main.min.css'
-import '../node_modules/@gouvfr/dsfr/dist/utility/utility.main.min.css'
-import '../node_modules/@gouvfr/dsfr/dist/utility/icons/icons-system/icons-system.min.css'
+import LineChart from '@/components/LineChart.vue'
+import BarChart from '@/components/BarChart.vue'
+import MapChart from '@/components/MapChart.vue'
+import MultiLineChart from '@/components/MultiLineChart.vue'
+import BarLineChart from '@/components/BarLineChart.vue'
+import PieChart from '@/components/PieChart.vue'
+import ScatterChart from '@/components/ScatterChart.vue'
+import MapChartReg from '@/components/MapChartReg.vue'
+import GaugeChart from '@/components/GaugeChart.vue'
+import TableChart from '@/components/TableChart.vue'
+import RadarChart from '@/components/RadarChart.vue'
+import DataBox from '@/components/DataBox.vue'
 
 customElements.define('line-chart', defineCustomElement(LineChart, { shadowRoot: false }))
 customElements.define('bar-chart', defineCustomElement(BarChart, { shadowRoot: false }))
