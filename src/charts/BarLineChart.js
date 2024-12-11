@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import BarLineChart from './components/BarLineChart'
+import BarLineChart from '../components/BarLineChart'
 
 import vueCustomElement from 'vue-custom-element'
 

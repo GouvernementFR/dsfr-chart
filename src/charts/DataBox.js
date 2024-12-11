@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import DataBox from './components/DataBox.vue'
+import DataBox from '../components/DataBox.vue'
 
 import vueCustomElement from 'vue-custom-element'
 

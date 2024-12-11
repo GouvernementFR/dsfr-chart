@@ -3,6 +3,7 @@ node_modules
 /BarChart
 /BarLineChart
 /Charts
+/DataBox
 /LineChart
 /MapChart
 /MultiLineChart

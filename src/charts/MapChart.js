@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import MapChart from './components/MapChart'
+import MapChart from '../components/MapChart'
 
 import vueCustomElement from 'vue-custom-element'
 

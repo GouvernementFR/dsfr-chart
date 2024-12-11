@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import BarChart from './components/BarChart'
+import BarChart from '../components/BarChart'
 
 import vueCustomElement from 'vue-custom-element'
 

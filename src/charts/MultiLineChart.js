@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import MultiLineChart from './components/MultiLineChart'
+import MultiLineChart from '../components/MultiLineChart'
 
 import vueCustomElement from 'vue-custom-element'
 

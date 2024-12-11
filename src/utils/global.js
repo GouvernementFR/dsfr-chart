@@ -91,9 +91,6 @@ export function getCategoricalPalette() {
   ];
 }
 
-// Log de vérification final
-console.log("Palette catégorique après chargement :", getCategoricalPalette());
-
 // Palettes séquentielles
 export function getSequentialAscending() {
   const themeColors = getThemeColors();

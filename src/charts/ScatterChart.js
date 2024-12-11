@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import ScatterChart from './components/ScatterChart'
+import ScatterChart from '../components/ScatterChart'
 
 import vueCustomElement from 'vue-custom-element'
 

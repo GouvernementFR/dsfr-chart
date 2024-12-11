@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import LineChart from './components/LineChart'
+import LineChart from '../components/LineChart'
 
 import vueCustomElement from 'vue-custom-element'
 

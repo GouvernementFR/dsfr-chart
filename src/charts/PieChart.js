@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import PieChart from './components/PieChart'
+import PieChart from '../components/PieChart'
 
 import vueCustomElement from 'vue-custom-element'
 
