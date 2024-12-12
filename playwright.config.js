@@ -1,7 +1,7 @@
 // @ts-check
-const { defineConfig, devices } = require('@playwright/test')
+import { defineConfig, devices } from '@playwright/test'
 
-module.exports = defineConfig({
+export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: true,
@@ -14,8 +14,8 @@ module.exports = defineConfig({
   },
 
   webServer: {
-    command: 'npm run serve',
-    url: 'http://localhost:8080'
+    command: 'npm run dev',
+    url: 'http://localhost:5173'
   },
 
   projects: [

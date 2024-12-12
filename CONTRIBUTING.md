@@ -85,6 +85,24 @@ soit en utilisant la commande :
 
 `npm run build-all`
 
+## Test
+
+Les tests de régression visuelle sont exécutés sur les composants build à travers le StoryBook.
+
+Pour les exécuter vous devez dans un premier temps build le projet:
+
+`npm run build`
+
+Lancez le Storybook:
+
+`npm run storybook`
+
+Et enfin lancez les tests:
+
+`npm run test`
+
+*Si vous voulez accepter les régressions visuelles et les considérer comme la nouvelle norme, utilisez la commande `npm run test:update-snapshots`*
+
 ## Publication NPM
 
 La publication du package sur npm nécessite les actions suivantes au niveau du fichier `package.json` :

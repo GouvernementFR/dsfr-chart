@@ -2,8 +2,8 @@ import '../node_modules/@gouvfr/dsfr/dist/dsfr.module.min.js'
 import "../node_modules/@gouvfr/dsfr/dist/dsfr.main.min.css";
 import "../node_modules/@gouvfr/dsfr/dist/utility/icons/icons-system/icons-system.min.css";
 
-import "../Charts/dsfr-chart.common.js";
-import "../Charts/dsfr-chart.css";
+import "../DSFRChart/DSFRChart.js";
+import "../DSFRChart/DSFRChart.css";
 import { html } from 'lit';
 
 document.addEventListener("DOMContentLoaded", function () {

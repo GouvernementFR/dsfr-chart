@@ -1,14 +1,14 @@
 // This test require the project to be build and storybook running to work
 
-const { test, expect } = require('@playwright/test')
-const { readdirSync } = require('fs')
-const { describe } = require('node:test')
+import { test, expect} from '@playwright/test'
+import { readdirSync } from 'fs'
 
-const stories = readdirSync('src/stories')
+const stories = await Promise.all(
+  readdirSync('src/stories')
   .filter((file) => file.endsWith('.stories.js'))
-  .map((file) => ({
+  .map(async (file) => ({
     name: file.split('.')[0],
-    paths: Object.keys(require(`../src/stories/${file}`))
+    paths: Object.keys(await import(`../src/stories/${file}`))
       .filter((x) => x !== 'default')
       .map((exported) => ({
         name: exported,
@@ -17,11 +17,12 @@ const stories = readdirSync('src/stories')
           .toLowerCase()}--${exported}`
       }))
   }))
+)
 
-describe('Charts visual regression', () => {
+test.describe('Charts visual regression', () => {
   stories.forEach((story) => {
     story.paths.forEach((path) => {
-      test(`${story.name} - ${path.name}`, async ({ page }) => {
+      test(`${story.name} - ${path.name}`, async ({ page },testInfo ) => {
         await page.goto(path.url)
         await page.setViewportSize({ width: 1920, height: 1080 })
         // await page.waitForSelector('#storybook-root')
@@ -29,7 +30,7 @@ describe('Charts visual regression', () => {
         const graph = await page.locator('#storybook-preview-iframe')
 
         await expect(graph).toHaveScreenshot(
-          `${story.name.toLowerCase()}-${path.name.toLowerCase()}-${process.platform}.png`,
+          `${story.name.toLowerCase()}-${path.name.toLowerCase()}-${testInfo.snapshotSuffix}.png`,
           {
             animations: 'disabled'
           }
@@ -39,12 +40,12 @@ describe('Charts visual regression', () => {
   })
 })
 
-describe('Dev doc page visual regression', () => {
-  test('Full page', async ({ page }) => {
-    await page.goto('http://localhost:8080/')
+test.describe('Dev doc page visual regression', () => {
+  test('Full page', async ({ page }, testInfo) => {
+    await page.goto('http://localhost:5173/')
     await page.setViewportSize({ width: 1920, height: 1080 })
     await expect(page).toHaveScreenshot(
-      `dev-doc-full-page-${process.platform}.png`,
+      `dev-doc-full-page-${testInfo.snapshotSuffix}.png`,
       {
         animations: 'disabled',
         fullPage: true

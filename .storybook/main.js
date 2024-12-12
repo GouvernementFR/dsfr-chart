@@ -1,13 +1,11 @@
-/** @type { import('@storybook/web-components-webpack5').StorybookConfig } */
+/** @type { import('@storybook/web-components-vite').StorybookConfig } */
 const config = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
-    "@storybook/addon-webpack5-compiler-swc",
-    "@storybook/addon-essentials",
-    "@chromatic-com/storybook",
+    "@storybook/addon-essentials"
   ],
   framework: {
-    name: "@storybook/web-components-webpack5",
+    name: "@storybook/web-components-vite",
     options: {},
   },
 };
