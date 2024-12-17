@@ -1,16 +1,6 @@
 import chroma from 'chroma-js';
 import { getDefaultColor, getColorsByIndex, getNeutralColor, choosePalette } from '@/utils/global.js';
 
-/**
- * Génère des couleurs pour un graphique.
- * @param {Object} options - Options pour configurer les couleurs.
- * @param {Array} options.yparse - Données pour lesquelles les couleurs doivent être générées.
- * @param {Array} options.tmpColorParse - Couleurs personnalisées pour chaque série.
- * @param {Array} options.highlightIndex - Indices des données à mettre en surbrillance.
- * @param {string} options.selectedPalette - Palette sélectionnée pour générer les couleurs.
- * @param {boolean} options.reverseOrder - Indique si les couleurs doivent être inversées.
- * @returns {Object} - Couleurs générées.
- */
 export function generateColors({
   yparse = [],
   tmpColorParse = [],
@@ -165,10 +155,6 @@ export function changeChartColors({
   getHexaFromToken,
   colorPrecisionBarCallback = () => { },
 }) {
-  // console.log('Debug: yparse', yparse);
-  // console.log('Debug: chart.data.datasets', chart.data.datasets);
-  // console.log('Debug: chart.colorParse', chart.colorParse);
-
   if (!Array.isArray(yparse) || yparse.length === 0) {
     console.error('yparse is not a valid array or is empty:', yparse);
     return;
@@ -201,11 +187,6 @@ export function changeChartColors({
       chart.data.datasets[i].backgroundColor = chroma(chart.colorParse[i]).alpha(0.3).hex();
       chart.data.datasets[i].hoverBorderColor = chart.colorHover[i];
       chart.data.datasets[i].hoverBackgroundColor = chart.colorHover[i];
-
-      // console.log('Debug: chart.colorParse', chart.colorParse);
-      // console.log('Debug: chart.colorParse[i]', chart.colorParse[i]);
-      // console.log('Debug: chart.data.datasets', chart.data.datasets);
-      // console.log('Debug: chart.data.datasets[i]', chart.data.datasets[i]);
 
       if (chart.data.datasets[i].pointBackgroundColor !== undefined) {
         chart.data.datasets[i].pointBackgroundColor = chart.colorParse[i];
