@@ -1,19 +1,20 @@
-import '../node_modules/@gouvfr/dsfr/dist/dsfr.module.min.js'
-import "../node_modules/@gouvfr/dsfr/dist/dsfr.main.min.css";
-import "../node_modules/@gouvfr/dsfr/dist/utility/icons/icons-system/icons-system.min.css";
+import '../node_modules/@gouvfr/dsfr/dist/dsfr.module.min.js';
+import '../node_modules/@gouvfr/dsfr/dist/dsfr.main.min.css';
+import '../node_modules/@gouvfr/dsfr/dist/utility/utility.main.min.css';
 
-import "../DSFRChart/DSFRChart.js";
-import "../DSFRChart/DSFRChart.css";
+import '../DSFRChart/DSFRChart.js';
+import '../DSFRChart/DSFRChart.css';
+
 import { html } from 'lit';
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function () {
   if (window.dsfr && window.dsfr.start) {
     window.dsfr.start();
   }
 });
 
 /** @type { import('@storybook/web-components').Preview } */
-const preview = {
+export default {
   parameters: {
     controls: {
       matchers: {
@@ -22,7 +23,5 @@ const preview = {
       },
     },
   },
-  decorators: [(story) => html`<div class="fr-col-12 fr-col-md-7">${story()}</div>`]
+  decorators: [(story) => html`<div class="fr-col-12 fr-col-md-7">${story()}</div>`],
 };
-
-export default preview;
