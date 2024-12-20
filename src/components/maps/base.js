@@ -3,6 +3,6 @@ export default {
     onenter: Function,
     onleave: Function,
     onclick: Function,
-    ondblclick: Function
+    ondblclick: Function,
   }
-}
+};

@@ -1,11 +1,7 @@
-import Vue from 'vue'
+import { defineCustomElement } from 'vue';
 
-import BarChart from './components/BarChart'
+import BarChart from '@/components/BarChart.vue';
 
-import vueCustomElement from 'vue-custom-element'
+const BarChartElement = defineCustomElement(BarChart);
 
-Vue.config.productionTip = false
-
-Vue.use(vueCustomElement)
-
-Vue.customElement('bar-chart', BarChart)
+customElements.define('bar-chart', BarChartElement, { shadowRoot: false });

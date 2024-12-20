@@ -727,16 +727,16 @@ Les diagrammes en étoile (ou RadarChart) sont accessibles à travers la balise 
 ### Obligatoires :
 
 -   **x** : _(String)_ Les noms de chaque groupe sous la forme d’une liste de listes entre crochets.
-    
+   
 -   **y** : _(String)_ Les valeurs de chaque groupe sous la forme d’une liste de listes entre crochets.
-    
+   
 
 ### Optionnels :
 
 -   **name** : _(String)_ Les noms des séries de données sous forme d'une liste entre crochets.
-    
+   
 -   **selectedPalette** : _(String)_ Permet de choisir la palette de couleurs utilisée pour le graphique. Les valeurs possibles sont :
-    
+   
     -   `'categorical'` : Palette catégorielle par défaut.
     -   `'sequentialAscending'` : Palette séquentielle ascendante.
     -   `'sequentialDescending'` : Palette séquentielle descendante.
@@ -746,7 +746,7 @@ Les diagrammes en étoile (ou RadarChart) sont accessibles à travers la balise 
     -   `'defaultColor'` : Couleur par défaut.
     -   _(laisser vide pour utiliser la palette par défaut)_
 -   **unitTooltip** : _(String)_ Permet de spécifier l'unité à afficher dans l'infobulle (tooltip) du graphique. Par exemple, `%`, `€`, `$`, etc.
-    
+   
 
 ----------
 
@@ -770,22 +770,22 @@ Les diagrammes en étoile (ou RadarChart) sont accessibles à travers la balise 
 ## Notes supplémentaires
 
 -   **selectedPalette** : Ce paramètre vous permet de personnaliser les couleurs utilisées dans le graphique. Choisissez parmi les options disponibles pour représenter vos données de manière appropriée.
-    
+   
 -   **unitTooltip** : Ce paramètre vous permet de spécifier l'unité qui sera affichée dans l'infobulle (tooltip) lorsque l'utilisateur survole une valeur du graphique. Cela rend la lecture des valeurs plus intuitive en indiquant l'unité de mesure.
-    
+   
 
 ----------
 
 ## Conseils d'utilisation
 
 -   **Format des données** : Assurez-vous que les valeurs de `x` et `y` sont des chaînes représentant des listes de listes. Par exemple :
-    
+   
     -   Pour `x` : `x='[["Label1", "Label2", "Label3"]]'`
     -   Pour `y` : `y='[[10, 20, 30], [15, 25, 35]]'`
 -   **Combinaison des options** : Vous pouvez combiner plusieurs options pour personnaliser davantage votre graphique, comme utiliser `selectedPalette` avec `unitTooltip`.
-    
+   
 -   **Personnalisation des séries** : Le paramètre `name` est utilisé pour spécifier les noms des séries de données. Si vous avez plusieurs séries (plusieurs listes dans `y`), vous devez fournir une liste de noms correspondante dans `name`.
-    
+   
 
 ----------
 
@@ -851,20 +851,20 @@ Les cartes sont accessibles à travers la balise : `<map-chart>`.
 ### Obligatoires :
 
 -   **data** : _(String)_ Un dictionnaire qui, pour chaque numéro de département ou de région, associe la valeur de l’indicateur dans cette zone géographique.
-    
+   
 -   **valuenat** : _(String | Number)_ La valeur de l'indicateur à l'échelle nationale. Cette valeur sera affichée dans la barre latérale.
-    
+   
 -   **name** : _(String)_ Nom de l'indicateur.
-    
+   
 
 ### Optionnels :
 
 -   **level** : _(String)_ Choix du niveau de zoom. Les valeurs possibles sont :
-    
+   
     -   `'dep'` : Carte avec découpage par départements (par défaut).
     -   `'reg'` : Carte avec découpage par régions.
 -   **selectedPalette** : _(String)_ Permet de choisir la palette de couleurs utilisée pour la carte. Les valeurs possibles sont :
-    
+   
     -   `'categorical'`
     -   `'sequentialAscending'` (par défaut)
     -   `'sequentialDescending'`
@@ -873,7 +873,7 @@ Les cartes sont accessibles à travers la balise : `<map-chart>`.
     -   `'neutral'`
     -   _(laisser vide pour utiliser la palette par défaut)_
 -   **highlightIndex** : _(Number | String | Array)_ Code ou liste des codes géographiques à mettre en avant sur la carte. Si aucune donnée n'est mise en avant, toutes les zones sont affichées avec la couleur neutre. Par défaut, `-1` signifie aucune mise en avant.
-    
+   
 
 ----------
 
@@ -934,17 +934,17 @@ Les cartes par région sont accessibles à travers la balise : `<map-chart-reg>`
 #### Paramètres spécifiques :
 
 -   **data** : _(String)_ Un dictionnaire qui, pour chaque numéro de département, associe la valeur de l’indicateur dans ce département.
-    
+   
 -   **valuereg** : _(String | Number)_ La valeur de l'indicateur à l'échelle régionale. Cette valeur sera affichée dans la barre latérale.
-    
+   
 -   **name** : _(String)_ Nom de l'indicateur.
-    
+   
 -   **region** : _(String)_ Code de la région à afficher.
-    
+   
 -   **selectedPalette** : _(String)_ Palette de couleurs utilisée pour la carte (identique à MapChart).
-    
+   
 -   **highlightIndex** : _(Number | String | Array)_ Code ou liste des codes des départements à mettre en avant.
-    
+   
 
 ## Exemple :
 
@@ -976,22 +976,22 @@ Les cartes par région sont accessibles à travers la balise : `<map-chart-reg>`
 ## Notes supplémentaires
 
 -   **selectedPalette** : Ce paramètre vous permet de personnaliser les couleurs utilisées sur la carte. Les palettes disponibles permettent de représenter les données selon différentes échelles de couleurs.
-    
+   
 -   **highlightIndex** : Vous pouvez mettre en avant certaines zones géographiques en spécifiant leurs codes dans une liste. Les zones mises en avant seront affichées avec une couleur différente pour attirer l'attention.
-    
+   
 -   **level** : Par défaut, la carte affiche le découpage par départements (`'dep'`). En spécifiant `level="reg"`, vous pouvez afficher la carte avec le découpage par régions.
-    
+   
 
 ----------
 
 ## Conseils d'utilisation
 
 -   **Format des données** : Les clés du dictionnaire `data` doivent correspondre aux codes des départements ou régions (par exemple, `"75"` pour Paris, `"84"` pour la région Auvergne-Rhône-Alpes).
-    
+   
 -   **Combinaison des options** : Vous pouvez combiner plusieurs options pour personnaliser votre carte, comme utiliser `selectedPalette` avec `highlightIndex`.
-    
+   
 -   **Personnalisation des couleurs** : Si vous souhaitez mettre en avant certaines zones, utilisez le paramètre `highlightIndex` en combinaison avec une palette appropriée.
-    
+   
 
 ----------
 
@@ -1035,7 +1035,7 @@ Les cartes par région sont accessibles à travers la balise : `<map-chart-reg>`
 | selectedpalette | string           | non             | palette de couleurs utilisée pour la carte
 
 
-# X. Documentation du composant DataBox
+# X. Composant DataBox
 
 Le composant `DataBox` est un composant polyvalent qui permet d'afficher des données sous différentes formes, notamment des indicateurs, des graphiques, des tableaux, etc. Il intègre également des fonctionnalités interactives telles que des sélecteurs de sources, des modales, et des menus déroulants pour des actions supplémentaires.
 
@@ -1043,11 +1043,7 @@ Le composant `DataBox` est un composant polyvalent qui permet d'afficher des don
 
 Pour utiliser le composant `DataBox`, vous devez l'importer dans votre fichier Vue :
 
-javascript
-
-Copier le code
-
-`import DataBox from './DataBox.vue';` 
+`import DataBox from './DataBox.vue';`
 
 ## Utilisation de base
 
@@ -1073,70 +1069,70 @@ Voici la liste des props disponibles pour le composant `DataBox` :
 
 ### **Principales :**
 
--   **dataBoxTitle** `(String)` _(par défaut : "Titre de la dataBox")_  
+-   **dataBoxTitle** `(String)` _(par défaut : "Titre de la dataBox")_ 
     Titre affiché en haut de la DataBox.
-    
--   **dataBoxDescription** `(String)` _(par défaut : "Description de la dataBox.")_  
+   
+-   **dataBoxDescription** `(String)` _(par défaut : "Description de la dataBox.")_ 
     Description affichée dans l'infobulle associée au titre.
-    
--   **indicator** `(Boolean)` _(par défaut : false)_  
+   
+-   **indicator** `(Boolean)` _(par défaut : false)_ 
     Indique si la DataBox affiche un indicateur principal (valeur) avec une tendance.
-    
--   **trendValue** `(String)` _(par défaut : "5")_  
+   
+-   **trendValue** `(String)` _(par défaut : "5")_ 
     Valeur de la tendance (hausse ou baisse) affichée à côté de l'indicateur principal.
-    
--   **value** `(String)` _(par défaut : "1500")_  
+   
+-   **value** `(String)` _(par défaut : "1500")_ 
     Valeur de l'indicateur principal affichée dans la DataBox.
-    
--   **component** `(String)` _(par défaut : "PieChart")_  
+   
+-   **component** `(String)` _(par défaut : "PieChart")_ 
     Nom du composant de graphique à afficher dans la DataBox. Les options possibles sont : `"PieChart"`, `"BarChart"`, `"MultiLineChart"`, `"MapChart"`, etc.
-    
--   **serieObj** `(Object)`  
+   
+-   **serieObj** `(Object)` 
     Objet contenant les données à afficher dans le graphique ou le tableau. Voir la section [Structure de `serieObj`](#structure-de-serieobj).
-    
+   
 
 ### **Options supplémentaires :**
 
--   **addSources** `(Boolean)` _(par défaut : false)_  
+-   **addSources** `(Boolean)` _(par défaut : false)_ 
     Affiche un sélecteur de sources si défini à `true`.
-    
--   **select_options** `(Array)` _(par défaut : [{ value: "ubm", label: "Exposition médiatique" }])_  
+   
+-   **selectOptions** `(Array)` _(par défaut : [{ value: "ubm", label: "Exposition médiatique" }])_ 
     Liste des options pour le sélecteur de sources.
-    
--   **option_default** `(String)` _(par défaut : "ubm")_  
+   
+-   **defaultOption** `(String)` _(par défaut : "ubm")_ 
     Valeur par défaut sélectionnée dans le sélecteur de sources.
-    
--   **captionTitle** `(String)` _(par défaut : "Titre du tableau")_  
+   
+-   **captionTitle** `(String)` _(par défaut : "Titre du tableau")_ 
     Titre du tableau si un tableau est affiché.
-    
--   **isMultilineTableHeader** `(Boolean)` _(par défaut : true)_  
+   
+-   **isMultilineTableHeader** `(Boolean)` _(par défaut : true)_ 
     Indique si l'en-tête du tableau peut être sur plusieurs lignes.
-    
--   **dataBoxDate** `(String)` _(par défaut : "2024-04-22")_  
+   
+-   **dataBoxDate** `(String)` _(par défaut : "2024-04-22")_ 
     Date des données affichées, formatée en `YYYY-MM-DD`.
-    
--   **source** `(String)` _(par défaut : "SIG")_  
+   
+-   **source** `(String)` _(par défaut : "SIG")_ 
     Source des données affichées dans la DataBox.
-    
--   **modalSettings** `(Object)`  
+   
+-   **modalSettings** `(Object)` 
     Paramètres pour la modale associée à la DataBox.
-    
-    -   **hasModal** `(Boolean)` _(par défaut : false)_  
+   
+    -   **hasModal** `(Boolean)` _(par défaut : false)_ 
         Indique si une modale est associée à la DataBox.
-        
-    -   **modalId** `(String)` _(par défaut : "fr-modal-1")_  
+       
+    -   **modalId** `(String)` _(par défaut : "fr-modal-1")_ 
         Identifiant unique de la modale.
-        
--   **dropdownActions** `(Array)`  
+       
+-   **dropdownActions** `(Array)` 
     Liste des actions disponibles dans le menu déroulant.
-    
+   
     -   Chaque action est un objet avec les propriétés suivantes :
         -   **id** `(String)` : Identifiant unique de l'action.
         -   **ariaLabel** `(String)` : Label pour l'accessibilité.
         -   **action** `(String)` : Nom de la méthode à exécuter lors du clic.
--   **unitTooltip** `(String)` _(par défaut : "")_  
+-   **unitTooltip** `(String)` _(par défaut : "")_ 
     Unité à afficher dans l'infobulle du graphique.
-    
+   
 
 ## Structure de `serieObj`
 
@@ -1161,7 +1157,7 @@ javascript
   ],
   istable: false, // Indique si le tableau doit être affiché
   id_accordion: "uniqueId", // Identifiant pour les contrôles segmentés
-}` 
+}`
 
 ### Notes sur `serieObj` :
 
@@ -1247,7 +1243,7 @@ Le composant utilise des styles spécifiques définis dans `dataBox.scss`. Il im
   source="Base de données interne"
   dataBoxDate="2023-09-15"
 ></data-box>
-``` 
+```
 
 ### DataBox avec tableau uniquement
 
@@ -1267,7 +1263,7 @@ Le composant utilise des styles spécifiques définis dans `dataBox.scss`. Il im
   source="Système d'inscription"
   dataBoxDate="2023-08-20"
 ></data-box>
-``` 
+```
 
 ## Interactivité et personnalisation
 

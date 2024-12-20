@@ -1,30 +1,47 @@
-/* eslint-disable */
 <template>
-  <div class="widget_container fr-grid-row" :id="widgetId">
+  <div
+    :ref="widgetId"
+    class="widget_container fr-grid-row"
+  >
     <div class="r_col fr-col-12">
       <div class="chart">
         <!-- Tooltip personnalisé -->
-        <div class="linechart_tooltip" style="opacity: 0; position: absolute;">
-          <div class="tooltip_header fr-text--sm fr-mb-0"></div>
+        <div
+          class="linechart_tooltip"
+          :style="{ opacity: 0, position: 'absolute' }"
+        >
+          <div class="tooltip_header fr-text--sm fr-mb-0" />
           <div class="tooltip_body">
-            <div class="tooltip_value"></div>
+            <div class="tooltip_value" />
           </div>
         </div>
         <!-- Canvas pour le graphique -->
-        <canvas :id="chartId"></canvas>
+        <canvas :ref="chartId" />
         <!-- Légende -->
 
         <div class="chart_legend fr-mb-0 fr-mt-4v">
-          <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v">
-            <span class="legende_dot" :style="{ 'background-color': legendColors[index] }"></span>
+          <div
+            v-for="(item, index) in nameParse"
+            :key="item"
+            class="flex fr-mt-3v fr-mb-1v"
+          >
+            <span
+              class="legende_dot"
+              :style="{ 'background-color': legendColors[index] }"
+            />
             <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
               {{ capitalize(nameParse[index]) }}
             </p>
           </div>
         </div>
         <!-- Date de mise à jour -->
-        <div v-if="date !== undefined" class="flex fr-mt-1w">
-          <p class="fr-text--xs">Mise à jour : {{ date }}</p>
+        <div
+          v-if="date !== undefined"
+          class="flex fr-mt-1w"
+        >
+          <p class="fr-text--xs">
+            Mise à jour : {{ date }}
+          </p>
         </div>
       </div>
     </div>
@@ -32,14 +49,10 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { Chart } from 'chart.js';
-import {
-  mixin,
-  choosePalette
-} from '../utils/global.js';
-import { generateColors } from '../utils/colors.js'; // Adaptez le chemin si nécessaire
-import { configureChartDefaults } from '../utils/configureChartDefaults.js';
+import { mixin, choosePalette } from '@/utils/global.js';
+import { generateColors } from '@/utils/colors.js';
+import { configureChartDefaults } from '@/utils/configureChartDefaults.js';
 
 import annotationPlugin from 'chartjs-plugin-annotation';
 
@@ -48,6 +61,60 @@ Chart.pluginService.register(annotationPlugin);
 export default {
   name: 'BarChart',
   mixins: [mixin],
+  props: {
+    x: {
+      type: String,
+      required: true,
+    },
+    y: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      default: undefined,
+    },
+    stacked: {
+      type: [Boolean, String],
+      default: false,
+    },
+    horizontal: {
+      type: [Boolean, String],
+      default: false,
+    },
+    barsize: {
+      type: Number,
+      default: undefined,
+    },
+    date: {
+      type: String,
+      default: undefined,
+    },
+    aspectratio: {
+      type: Number,
+      default: 1,
+    },
+    formatdate: {
+      type: [Boolean, String],
+      default: false,
+    },
+    selectedPalette: {
+      type: String,
+      default: '',
+    },
+    highlightIndex: {
+      type: Array,
+      default: () => [3, 4],
+    },
+    isDescendingOrder: {
+      type: [Boolean, String],
+      default: false, // Default is false; set to true for fixed green-to-red legend order
+    },
+    unitTooltip: {
+      type: String,
+      default: '', // Default to an empty string if no unit is specified
+    },
+  },
   data() {
     return {
       widgetId: '',
@@ -67,59 +134,25 @@ export default {
       legendColors: [], // Ajoutez cette ligne
     };
   },
-  props: {
-    x: {
-      type: String,
-      required: true,
-    },
-    y: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      default: undefined,
-    },
-    stacked: {
-      type: Boolean,
-      default: false,
-    },
-    horizontal: {
-      type: Boolean,
-      default: false,
-    },
-    barsize: {
-      type: Number,
-      default: undefined,
-    },
-    date: {
-      type: String,
-      default: undefined,
-    },
-    aspectratio: {
-      type: Number,
-      default: 1,
-    },
-    formatdate: {
-      type: Boolean,
-      default: false,
-    },
-    selectedPalette: {
-      type: String,
-      default: '',
-    },
-    highlightIndex: {
-      type: Array,
-      default: () => [3, 4]
-    },
-    isDescendingOrder: {
-      type: Boolean,
-      default: false, // Default is false; set to true for fixed green-to-red legend order
-    },
-    unitTooltip: {
-      type: String,
-      default: ''  // Default to an empty string if no unit is specified
-    }
+  created() {
+    configureChartDefaults();
+    this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
+    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
+  },
+  mounted() {
+    this.resetData();
+    this.createChart();
+
+    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
+    const element = document.documentElement;
+    element.addEventListener('dsfr.theme', (e) => {
+      if (this.chartId !== '') {
+        this.changeColors(e.detail.theme);
+      }
+    });
+    addEventListener('resize', () => {
+      this.isSmall = document.documentElement.clientWidth < 767;
+    });
   },
   methods: {
     resetData() {
@@ -135,7 +168,6 @@ export default {
       this.colorParse = [];
       this.colorHover = [];
     },
-
     getData() {
       this.typeGraph = this.horizontal ? 'horizontalBar' : 'bar';
 
@@ -181,12 +213,10 @@ export default {
         maxBarThickness: 32, // Définissez une épaisseur maximale pour les barres
       }));
     },
-
     choosePalette() {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
     },
-
     loadColors() {
       const { colorParse, colorHover, legendColors } = generateColors({
         yparse: this.yparse,
@@ -194,18 +224,18 @@ export default {
         highlightIndex: this.highlightIndex,
         selectedPalette: this.selectedPalette,
         reverseOrder: this.selectedPalette === 'divergentDescending',
-      })
+      });
 
       this.colorParse = colorParse;
       this.colorHover = colorHover;
       this.legendColors = legendColors;
     },
-
     createChart() {
       if (this.chart) this.chart.destroy();
 
       this.getData();
-      const ctx = document.getElementById(this.chartId).getContext('2d');
+
+      const ctx = this.$refs[this.chartId].getContext('2d');
 
       this.chart = new Chart(ctx, {
         type: this.typeGraph,
@@ -215,8 +245,8 @@ export default {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: true,  // Changez à true pour maintenir le ratio
-          aspectRatio: 2, // Ajustez ce ratio pour gérer la hauteur/largeur du graphique        
+          maintainAspectRatio: true, // Changez à true pour maintenir le ratio
+          aspectRatio: 2, // Ajustez ce ratio pour gérer la hauteur/largeur du graphique
           animation: {
             easing: 'easeInOutBack',
             duration: 1000,
@@ -261,20 +291,20 @@ export default {
             displayColors: false,
             backgroundColor: '#6b6b6b',
             callbacks: {
-              label: tooltipItems => {
+              label: (tooltipItems) => {
                 const datasetIndex = tooltipItems.datasetIndex;
                 const index = tooltipItems.index;
                 const value = this.datasets[datasetIndex].data[index];
                 return this.convertIntToHuman(value);
               },
-              title: tooltipItems => tooltipItems[0].label,
-              labelTextColor: tooltipItems => {
+              title: (tooltipItems) => tooltipItems[0].label,
+              labelTextColor: (tooltipItems) => {
                 const datasetIndex = tooltipItems.datasetIndex;
                 const index = tooltipItems.index;
                 return this.colorParse[datasetIndex][index];
               },
             },
-            custom: tooltipModel => {
+            custom: (tooltipModel) => {
               const tooltipEl = this.$el.querySelector('.linechart_tooltip');
 
               if (!tooltipEl) return;
@@ -294,7 +324,6 @@ export default {
 
               // Update tooltip content
               const titleLines = tooltipModel.title || [];
-              const bodyLines = tooltipModel.body.map(item => item.lines);
 
               const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
               divDate.innerHTML = titleLines[0];
@@ -303,7 +332,7 @@ export default {
               divValue.innerHTML = '';
 
               // Iterate over each data point to set the color and value in the tooltip
-              tooltipModel.dataPoints.forEach(dataPoint => {
+              tooltipModel.dataPoints.forEach((dataPoint) => {
                 const datasetIndex = dataPoint.datasetIndex;
                 const index = dataPoint.index;
 
@@ -333,12 +362,11 @@ export default {
               tooltipEl.style.left = `${tooltipX}px`;
               tooltipEl.style.top = `${tooltipY}px`;
               tooltipEl.style.opacity = 1;
-            }
+            },
           },
         },
       });
     },
-
     changeColors(theme) {
       Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme);
       this.loadColors();
@@ -360,34 +388,11 @@ export default {
       this.chart.update(0);
     },
   },
-  created() {
-    configureChartDefaults();
-    this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
-    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
-  },
-  mounted() {
-    this.createChart();
-
-    this.display = document.getElementById(this.widgetId).offsetWidth > 486 ? 'big' : 'small';
-    const element = document.documentElement;
-    element.addEventListener('dsfr.theme', e => {
-      this.changeColors(e.detail.theme);
-    });
-    addEventListener('resize', () => {
-      this.isSmall = document.documentElement.clientWidth < 767;
-    });
-  },
-  beforeUpdate() {
-    this.resetData();
-    this.createChart();
-    const element = document.documentElement;
-    this.changeColors(element.getAttribute('data-fr-theme'));
-  },
 };
 </script>
 
 <style lang="scss">
-@import './Style/Tooltip.scss';
-@import './Style/Rcol.scss';
-@import './Style/WidgetContainer.scss';
+@import '@/styles/Tooltip.scss';
+@import '@/styles/Rcol.scss';
+@import '@/styles/WidgetContainer.scss';
 </style>

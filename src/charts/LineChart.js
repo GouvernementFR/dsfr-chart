@@ -1,11 +1,7 @@
-import Vue from 'vue'
+import { defineCustomElement } from 'vue';
 
-import LineChart from './components/LineChart'
+import LineChart from '@/components/LineChart.vue';
 
-import vueCustomElement from 'vue-custom-element'
+const LineChartElement = defineCustomElement(LineChart);
 
-Vue.config.productionTip = false
-
-Vue.use(vueCustomElement)
-
-Vue.customElement('line-chart', LineChart)
+customElements.define('line-chart', LineChartElement, { shadowRoot: false });

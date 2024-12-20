@@ -1,11 +1,7 @@
-import Vue from 'vue'
+import { defineCustomElement } from 'vue';
 
-import MultiLineChart from './components/MultiLineChart'
+import MultiLineChart from '@/components/MultiLineChart.vue';
 
-import vueCustomElement from 'vue-custom-element'
+const MultiLineChartElement = defineCustomElement(MultiLineChart);
 
-Vue.config.productionTip = false
-
-Vue.use(vueCustomElement)
-
-Vue.customElement('multiline-chart', MultiLineChart)
+customElements.define('multiline-chart', MultiLineChartElement, { shadowRoot: false });

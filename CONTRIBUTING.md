@@ -2,31 +2,31 @@
 
 ## Installation
 
-Le **DSFR Chart** est basé sur une architecture [NodeJS](https://nodejs.org/), il est donc nécessaire d’installer une version récente de nodeJs. Dans le terminal nous utiliserons les commandes de **npm**.
+Le **DSFR Chart** est basé sur une architecture [NodeJS](https://nodejs.org/), il est donc nécessaire d’installer une version récente de NodeJS. Dans le terminal nous utiliserons les commandes de **npm**.
 
-Le dépôt est disponible à cette adresse: https://github.com/GouvernementFR/dsfr-chart
+Le dépôt est disponible à cette adresse : https://github.com/GouvernementFR/dsfr-chart
 
-Afin de pouvoir commencer à développer et contribuer au DSFR, assurez-vous tout d'abord de faire un fork du projet depuis votre compte GitHub (https://help.github.com/articles/fork-a-repo/)
+Afin de pouvoir commencer à développer et contribuer au DSFR, il faut tout d'abord de faire un fork du projet depuis votre compte GitHub (https://help.github.com/articles/fork-a-repo/)
 
-Il suffit ensuite de cloner votre fork, en téléchargeant les sources depuis le bouton “clone” de github, ou via un terminal avec commande :
+Il suffit ensuite de cloner votre fork, en téléchargeant les sources depuis le bouton “clone” de GitHub, ou via un terminal avec commande :
 
 ```
-git clone https://github.com/VOTRE_NOM_UTILISATEUR_GITHUB/dsfr-chart
+git clone https://github.com/<VOTRE_NOM_UTILISATEUR_GITHUB>/dsfr-chart
 ```
 
 Une fois le projet récupéré, il est nécessaire d'installer les dépendances (node_modules) avec :
 
 `npm install`
 
-Enfin, il est nécessaire de lancez un serveur local pour visualiser la page d'exemple index.html :
+Enfin, il est nécessaire de lancer un serveur local pour visualiser la page d'exemple index.html :
 
-`npm run serve`
+`npm run dev`
 
-Un serveur local sera alors lancé sur l'adresse localhost:8080. Accéder à http://localhost:8080 pour visualiser la liste des exemples.
+Un serveur local sera alors lancé sur l'adresse [localhost:5173](http://localhost:5173) avec la documentation et des exemples.
 
 ## GitFlow
 
-Se referer au fichier [CONTRIBUTING-gitflow.md](./CONTRIBUTING-gitflow.md) qui décrit le modèle de branches à suivre pour contribuer au DSFR Chart.
+Se référer au fichier [CONTRIBUTING-gitflow.md](./CONTRIBUTING-gitflow.md) qui décrit le modèle de branches à suivre pour contribuer au DSFR Chart.
 
 ## Ajouter un type de graphique
 
@@ -34,38 +34,33 @@ Cette partie décrit les étapes à suivre pour l'ajout d'une nouvelle représen
 
 ### Création du composant vue
 
-La première étape consiste à créer le composant _vue_ de cette nouvelle visualisation. Ce fichier doit se trouver dans `src/components` et reprendre la même structure que les autres composants. Par exemple : **NewChart.vue**
+La première étape consiste à créer le composant Vue de cette nouvelle visualisation. Ce fichier doit se trouver dans `src/components/` et reprendre la même structure que les autres composants. Par exemple : **NewChart.vue**
 
 ### Création du script de compilation
 
-Ensuite, il faut créer le fichier js qui permettra de créer le web-component à partir de la vue. Ce fichier doit se trouver dans `src/` et avoir la structure suivante :
+Ensuite, il faut créer le fichier js qui permettra de créer le web-component à partir de la vue. Ce fichier doit se trouver dans `src/charts/` et avoir la structure suivante :
 
 _NewChart.js_
 
 ```javascript
-import Vue from 'vue';
-import NewChart from './components/NewChart';
-import vueCustomElement from 'vue-custom-element';
-Vue.config.productionTip = false;
-Vue.use(vueCustomElement);
-Vue.customElement('new-chart', NewChart);
+import { defineCustomElement } from 'vue';
+
+import NewChart from '@/components/NewChart.vue';
+
+const NewChartElement = defineCustomElement(NewChart);
+
+customElements.define('bar-line-chart', NewChartElement, { shadowRoot: false });
 ```
 
-Il est également important de rajouter cela dans le fichier `main.js` et `mainDev.js` qui permettent la compilation de tous les web-components, respectivement pour la production et le développement.
+Il est également important de rajouter cela dans le fichier `src/charts/main.js` qui permet de l'inclure dans la compilation de tous les web-components ainsi que dans le fichier `src/main.js` pour l'utiliser dans la documentation du `index.html`.
 
 ### Ajout de la commande de build
 
-Finalement il faut créer la commande "build" du composants dans le fichier `package.json`. Dans la partie "scripts", ajouter:
+Finalement il faut créer la commande de build du composant dans le fichier `package.json`. Dans la partie "scripts", ajouter :
 
-`"build-new": "vue-cli-service build --target lib --dest ./NewChart --inline-vue --name new-chart src/NewChart.js"`
+`"build-new": "LIBRARY=NewChart vite build --config=vite-components.config.js"`
 
--   **--dest** permet de choisir le dossier de destination des fichiers compilés
--   **--name** permet de choisir le nom du web-component
--   **src/NewChart.js** correspond au fichier js à exécuter
-
-Il est également nécessaire de rajouter la commande nouvellement créée dans la commande `build-all` de la manière suivante :
-
-`"build all": npm run build-bar & ... & npm run build-new`
+/!\ Seule la variable **LIBRARY** est nécessaire définit le nom du web-component à traiter.
 
 ## Compilation
 
@@ -73,28 +68,38 @@ Compiler le fichier permettant d'obtenir le distribuable comportant tous les gra
 
 `npm run build`
 
-Compiler les fichiers permettant d'obtenir un distribuable par graphique soit en exécutant les commandes une par une :
+Compiler les fichiers permettant d'obtenir un distribuable par graphique :
 
-`npm run build-line`
+`npm run build-line` OU `npm run build-map` OU etc...
 
-`npm run build-map`
+Compiler tous les fichiers permettant d'obtenir un distribuable par graphique séparément :
 
-etc...
+`npm run build:components`
 
-soit en utilisant la commande :
+## Test
 
-`npm run build-all`
+Les tests de régression visuelle sont exécutés sur les composants build à travers le StoryBook.
+
+Pour les exécuter il faut dans un premier temps build le projet :
+
+`npm run build`
+
+Puis lancez les tests:
+
+`npm run test`
+
+_Si vous voulez accepter les régressions visuelles et les considérer comme la nouvelle norme, utilisez la commande `npm run test:update-snapshots`_
 
 ## Publication NPM
 
 La publication du package sur npm nécessite les actions suivantes au niveau du fichier `package.json` :
 
 -   renseigner le nom dans la partie **name** et la **version**. La combinaison de ces deux paramètres doit être inédite pour être publiée (On ne peut pas publier une version existante)
--   choisir l'ensemble des dossiers/fichiers à intégrer au package et qui seront disponibles lors de l'installation par un utilisateur. Cette liste doit être renseignée au niveau de la partie **files** du `package.json`. Elle doit contenir, a minima, le dossier comprenant le distribuable de tous les graphiques (`/Charts`), les dossiers de distribuables unitaires de chaque graphiques (ex : `/BarChart`) et la documentation (`README.md` et `CONTRIBUTING.md`).
+-   choisir l'ensemble des dossiers/fichiers à intégrer au package et qui seront disponibles lors de l'installation par un utilisateur. Cette liste doit être renseignée au niveau de la partie **files** du `package.json`. Elle doit contenir, a minima, le dossier comprenant le distribuable de tous les graphiques (`/DSFRChart`), les dossiers de distribuables unitaires de chaque graphiques (ex : `/BarChart`) et la documentation (`README.md` et `CONTRIBUTING.md`).
 
-Le fichier `package.json` permet aussi de définir une description (**description**), un auteur (**author**) et de lier le package au repo github du projet (**repository**).
+Le fichier `package.json` permet aussi de définir une description (**description**), un auteur (**author**) et de lier le package au repo GitHub du projet (**repository**).
 
-Vous pouvez ensuite lancer la publication :
+On peut ensuite lancer la publication sur npmjs :
 
 `npm publish`
 
@@ -102,11 +107,16 @@ Une connexion au compte npm sur lequel doit être publié le package sera demand
 
 ## Déploiement d'une page de démonstration
 
-Github permet le déploiement de pages web statiques via la fonctionnalité **Github Pages**.
+GitHub permet le déploiement de pages web statiques via la fonctionnalité **GitHub Pages**.
 
-1. Compléter le fichier `src/mainDev.js` si nécessaire. Ce fichier doit contenir la compilation de toutes les représentations graphiques que l'on souhaite afficher sur la page de démonstration. Il doit aussi contenir les dépendances au dsfr nécessaires au bon fonctionnement du projet.
-2. Compléter la page d'exemple (`public/index.html`) en utilisant les représentations à afficher.
-3. Visualiser la page en local : `npm run serve`.
-4. Lancer le build de la page : `npm run build-rec`. Les fichiers nécessaires au déploiement de la page seront créés dans le dossier `docs`.
-5. Pusher le dossier `docs`sur le repository github.
-6. Sur le repository github, se rendre dans **Settings** --> **Pages**. Dans la section **Build and deployment**, choisir **Deploy from a branch** pour la source. Choisir ensuite la branche qui sera associée à la page et le dossier `docs` dans _branch_
+1. Compléter le fichier `src/charts/main.js` si nécessaire. Ce fichier doit contenir la configuration de toutes les représentations graphiques que l'on souhaite afficher sur la page de démonstration. Il doit aussi contenir les dépendances au dsfr nécessaires au bon fonctionnement du projet.
+
+2. Compléter la page d'exemple (`index.html`) en utilisant les représentations à afficher.
+
+3. Lancer le build de la page : `npm run build:docs`. Les fichiers nécessaires au déploiement de la page seront créés dans le dossier `docs`.
+
+4. Visualiser la page en local : `npm run serve`.
+
+5. Pusher le dossier `docs` sur le repository GitHub si cela convient.
+
+6. Sur le repository GitHub, se rendre dans **Settings** --> **Pages**. Dans la section **Build and deployment**, choisir **Deploy from a branch** pour la source. Choisir ensuite la branche qui sera associée à la page et le dossier `docs` comme dossier source.

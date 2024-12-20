@@ -1,27 +1,26 @@
-body{
+body {
   background-color: white;
 }
 
-.chart_container{
+.chart_container {
   max-width: 750px;
-  margin:0 auto 50px;
+  margin: 0 auto 50px;
 }
 
-.box_container{
+.box_container {
   max-width: 270px;
-  margin:0 auto 50px;
+  margin: 0 auto 50px;
 }
 
-.geo_container{
+.geo_container {
   max-width: 200px;
-  margin:0 auto 50px;
+  margin: 0 auto 50px;
 }
 
 .full-screen-overlay {
-  background-color: rgba(204,204,204,0.6);
+  background-color: rgba(204, 204, 204, 0.6);
   height: 100%;
   width: 100%;
   position: fixed;
   z-index: 999;
 }
-

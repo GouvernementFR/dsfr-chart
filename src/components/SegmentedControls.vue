@@ -1,24 +1,26 @@
-/* eslint-disable */
 <template>
   <fieldset class="fr-segmented fr-segmented--no-legend fr-segmented--sm">
     <div class="fr-segmented__elements">
       <!-- Première option -->
       <div class="fr-segmented__element">
         <input
+          :ref="idcontrol + '-1'"
           value="1"
           type="radio"
-          :id="idcontrol + '-1'"
           :name="idcontrol + 'segmented-2230'"
-          @click="emitChartSelected(option1Value)"
           :checked="isOption1Checked"
-        />
-        <label class="fr-label" :for="idcontrol + '-1'" :title="option1Label">
-          <!-- Affiche l'icône ou le texte en fonction de la propriété 'showIcons' -->
+        >
+        <label
+          class="fr-label"
+          :for="idcontrol + '-1'"
+          :title="option1Label"
+          @click="emitChartSelected(option1Value)"
+        >
           <span
             v-if="showIcons"
             :class="[option1Icon, 'fr-icon', 'fr-icon--sm']"
             aria-hidden="true"
-          ></span>
+          />
           <span v-else>{{ option1Label }}</span>
         </label>
       </div>
@@ -26,20 +28,23 @@
       <!-- Deuxième option -->
       <div class="fr-segmented__element">
         <input
+          :ref="idcontrol + '-2'"
           value="2"
           type="radio"
-          :id="idcontrol + '-2'"
           :name="idcontrol + 'segmented-2230'"
-          @click="emitChartSelected(option2Value)"
           :checked="isOption2Checked"
-        />
-        <label class="fr-label" :for="idcontrol + '-2'" :title="option2Label">
-          <!-- Affiche l'icône ou le texte en fonction de la propriété 'showIcons' -->
+        >
+        <label
+          class="fr-label"
+          :for="idcontrol + '-2'"
+          :title="option2Label"
+          @click="emitChartSelected(option2Value)"
+        >
           <span
             v-if="showIcons"
             :class="[option2Icon, 'fr-icon', 'fr-icon--sm']"
             aria-hidden="true"
-          ></span>
+          />
           <span v-else>{{ option2Label }}</span>
         </label>
       </div>
@@ -48,7 +53,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 export default {
   props: {
     idcontrol: {
@@ -56,7 +60,7 @@ export default {
       required: true,
     },
     showIcons: {
-      type: Boolean,
+      type: [Boolean, String],
       default: true, // Par défaut, affiche les icônes
     },
     // Nouvelles props pour personnaliser les options
@@ -89,6 +93,7 @@ export default {
       default: 'graphique', // Définit le type de graphique par défaut
     },
   },
+  emits: ['chart-selected'],
   data() {
     return {
       selectedChart: this.defaultChart,
@@ -114,17 +119,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Cache le texte pour les lecteurs d'écran, si nécessaire */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-}
-</style>

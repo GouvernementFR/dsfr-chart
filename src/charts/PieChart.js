@@ -1,11 +1,7 @@
-import Vue from 'vue'
+import { defineCustomElement } from 'vue';
 
-import PieChart from './components/PieChart'
+import PieChart from '@/components/PieChart.vue';
 
-import vueCustomElement from 'vue-custom-element'
+const PieChartElement = defineCustomElement(PieChart);
 
-Vue.config.productionTip = false
-
-Vue.use(vueCustomElement)
-
-Vue.customElement('pie-chart', PieChart)
+customElements.define('pie-chart', PieChartElement, { shadowRoot: false });

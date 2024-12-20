@@ -1,11 +1,7 @@
-import Vue from 'vue'
+import { defineCustomElement } from 'vue';
 
-import DataBox from './components/DataBox.vue'
+import DataBox from '@/components/DataBox.vue';
 
-import vueCustomElement from 'vue-custom-element'
+const DataBoxElement = defineCustomElement(DataBox);
 
-Vue.config.productionTip = false
-
-Vue.use(vueCustomElement)
-
-Vue.customElement('data-box', DataBox)
+customElements.define('data-box', DataBoxElement, { shadowRoot: false });

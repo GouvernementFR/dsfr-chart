@@ -1,43 +1,89 @@
-/* eslint-disable */
 <template>
-  <div class="widget_container fr-grid-row" :id="widgetId">
+  <div
+    :ref="widgetId"
+    class="widget_container fr-grid-row"
+  >
     <div class="r_col fr-col-12">
       <div class="chart">
-        <div class="linechart_tooltip" ref="tooltip">
-          <div class="tooltip_header fr-text--sm fr-mb-0"></div>
+        <div
+          ref="tooltip"
+          class="linechart_tooltip"
+        >
+          <div class="tooltip_header fr-text--sm fr-mb-0" />
           <div class="tooltip_body">
             <div class="tooltip_value">
-              <div v-for="(item, index) in nameParse" :key="item" class="flex fr-mt-3v fr-mb-1v"
-                :style="{ 'border-bottom': '1px solid #e0e0e0' }">
+              <div
+                v-for="(item, index) in nameParse"
+                :key="item"
+                class="flex fr-mt-3v fr-mb-1v"
+                :style="{ 'border-bottom': '1px solid #e0e0e0' }"
+              >
                 <div class="tooltip_value-content">
-                  <span class="tooltip_dot" :style="{ 'background-color': colorParse[index] }"></span>
-                  <p class='tooltip_place'>{{ capitalize(nameParse[index]) }}</p>
+                  <span
+                    class="tooltip_dot"
+                    :style="{ 'background-color': colorParse[index] }"
+                  />
+                  <p class="tooltip_place">
+                    {{ capitalize(nameParse[index]) }}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <canvas :id="chartId"></canvas>
+        <canvas :ref="chartId" />
         <div class="chart_legend fr-mb-0 fr-mt-4v">
           <div class="flex fr-mt-1w fr-mb-0">
-            <span class="legende_dot"></span>
-            <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(name) }}</p>
+            <span class="legende_dot" />
+            <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+              {{ capitalize(name) }}
+            </p>
           </div>
         </div>
-        <div v-for="(item, index) in hlineNameParse" :key="item" class="flex fr-mt-3v"
-          :style="{ 'margin-left': isSmall ? '0px' : style }">
-          <span class="legende_dash_line1" :style="{ 'background-color': hlineColorParse[index] }"></span>
-          <span class="legende_dash_line2" :style="{ 'background-color': hlineColorParse[index] }"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(hlineNameParse[index]) }}</p>
+        <div
+          v-for="(item, index) in hlineNameParse"
+          :key="item"
+          class="flex fr-mt-3v"
+          :style="{ 'margin-left': isSmall ? '0px' : style }"
+        >
+          <span
+            class="legende_dash_line1"
+            :style="{ 'background-color': hlineColorParse[index] }"
+          />
+          <span
+            class="legende_dash_line2"
+            :style="{ 'background-color': hlineColorParse[index] }"
+          />
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+            {{ capitalize(hlineNameParse[index]) }}
+          </p>
         </div>
-        <div v-for="(item2, index2) in vlineParse" :key="item2" class="flex fr-mt-3v fr-mb-1v"
-          :style="{ 'margin-left': isSmall ? '0px' : style }">
-          <span class="legende_dash_line1" :style="{ 'background-color': vlineColorParse[index2] }"></span>
-          <span class="legende_dash_line2" :style="{ 'background-color': vlineColorParse[index2] }"></span>
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">{{ capitalize(vlineNameParse[index2]) }}</p>
+        <div
+          v-for="(item2, index2) in vlineParse"
+          :key="item2"
+          class="flex fr-mt-3v fr-mb-1v"
+          :style="{ 'margin-left': isSmall ? '0px' : style }"
+        >
+          <span
+            class="legende_dash_line1"
+            :style="{ 'background-color': vlineColorParse[index2] }"
+          />
+          <span
+            class="legende_dash_line2"
+            :style="{ 'background-color': vlineColorParse[index2] }"
+          />
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+            {{ capitalize(vlineNameParse[index2]) }}
+          </p>
         </div>
-        <div v-if="date !== undefined" class="flex fr-mt-1w" :style="{ 'margin-left': isSmall ? '0px' : style }">
-          <p class="fr-text--xs">Mise à jour : {{ date }}</p>
+        <div
+          v-if="date !== undefined"
+          class="flex fr-mt-1w"
+          :style="{ 'margin-left': isSmall ? '0px' : style }"
+        >
+          <p class="fr-text--xs">
+            Mise à jour : {{ date }}
+          </p>
         </div>
       </div>
     </div>
@@ -45,18 +91,76 @@
 </template>
 
 <script>
-/* eslint-disable */
 import Chart from 'chart.js';
-import { generateBarLineChartColors } from '../utils/colors.js';
-import {
-  mixin,
-  choosePalette
-} from '@/utils/global.js';
-import { configureChartDefaults } from '../utils/configureChartDefaults.js';
+import { generateBarLineChartColors } from '@/utils/colors.js';
+import { mixin, choosePalette } from '@/utils/global.js';
+import { configureChartDefaults } from '@/utils/configureChartDefaults.js';
 
 export default {
   name: 'LineChart',
   mixins: [mixin],
+  props: {
+    x: {
+      type: String,
+      required: true,
+    },
+    y: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      default: 'S1',
+    },
+    vline: {
+      type: String,
+      default: undefined,
+    },
+    vlinecolor: {
+      type: String,
+      default: undefined,
+    },
+    vlinename: {
+      type: String,
+      default: undefined,
+    },
+    hline: {
+      type: String,
+      default: undefined,
+    },
+    hlinecolor: {
+      type: String,
+      default: undefined,
+    },
+    hlinename: {
+      type: String,
+      default: undefined,
+    },
+    date: {
+      type: String,
+      default: undefined,
+    },
+    aspectratio: {
+      type: Number,
+      default: 2,
+    },
+    formatdate: {
+      type: [Boolean, String],
+      default: false,
+    },
+    selectedPalette: {
+      type: String,
+      default: '',
+    },
+    highlightIndex: {
+      type: Number,
+      default: -1,
+    },
+    unitTooltip: {
+      type: String,
+      default: '', // Default to an empty string if no unit is specified
+    },
+  },
   data() {
     return {
       widgetId: '',
@@ -81,75 +185,33 @@ export default {
       colorParse: '',
       colorPrecisionBar: '',
       colorHover: '',
-      isSmall: false
+      isSmall: false,
     };
-  },
-  props: {
-    x: {
-      type: String,
-      required: true
-    },
-    y: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      default: 'S1'
-    },
-    vline: {
-      type: String,
-      default: undefined
-    },
-    vlinecolor: {
-      type: String,
-      default: undefined
-    },
-    vlinename: {
-      type: String,
-      default: undefined
-    },
-    hline: {
-      type: String,
-      default: undefined
-    },
-    hlinecolor: {
-      type: String,
-      default: undefined
-    },
-    hlinename: {
-      type: String,
-      default: undefined
-    },
-    date: {
-      type: String,
-      default: undefined
-    },
-    aspectratio: {
-      type: Number,
-      default: 2
-    },
-    formatdate: {
-      type: Boolean,
-      default: false
-    },
-    selectedPalette: {
-      type: String,
-      default: ''
-    },
-    highlightIndex: {
-      type: Number,
-      default: -1
-    },
-    unitTooltip: {
-      type: String,
-      default: ''  // Default to an empty string if no unit is specified
-    },
   },
   computed: {
     style() {
       return this.legendLeftMargin + 'px';
-    }
+    },
+  },
+  created() {
+    configureChartDefaults();
+    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
+    this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
+  },
+  mounted() {
+    this.resetData();
+    this.createChart();
+
+    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
+    const element = document.documentElement;
+    element.addEventListener('dsfr.theme', (e) => {
+      if (this.chartId !== '') {
+        this.changeColors(e.detail.theme);
+      }
+    });
+    addEventListener('resize', () => {
+      this.isSmall = document.documentElement.clientWidth < 767;
+    });
   },
   methods: {
     resetData() {
@@ -230,7 +292,7 @@ export default {
           const index = this.xparse.findIndex((element) => element === k);
           dataLine.push({
             x: k,
-            y: this.yparse[index]
+            y: this.yparse[index],
           });
         });
         this.labels = undefined;
@@ -260,23 +322,18 @@ export default {
           pointHoverBackgroundColor: this.colorHover,
           pointHoverBorderColor: this.colorHover,
           borderWidth: 2,
-          fill: false
-        }
+          fill: false,
+        },
       ];
     },
     loadColors() {
-      const {
-        colorParse,
-        colorHover,
-        vlineColorParse,
-        hlineColorParse
-      } = generateBarLineChartColors({
+      const { colorParse, colorHover, vlineColorParse, hlineColorParse } = generateBarLineChartColors({
         vlineParse: this.vlineParse,
         hlineParse: this.hlineParse,
         tmpVlineColorParse: this.tmpVlineColorParse,
         tmpHlineColorParse: this.tmpHlineColorParse,
         colorbar: this.color,
-        selectedPalette: this.selectedPalette
+        selectedPalette: this.selectedPalette,
       });
 
       // Assignation des couleurs générées
@@ -285,12 +342,10 @@ export default {
       this.vlineColorParse = vlineColorParse;
       this.hlineColorParse = hlineColorParse;
     },
-
     choosePalette() {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
     },
-
     changeColors(theme) {
       Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme);
       this.chart.options.scales.xAxes[0].ticks.fontColor = this.getHexaFromToken('text-mention-grey', theme);
@@ -313,13 +368,15 @@ export default {
       if (this.chart) this.chart.destroy();
 
       this.getData();
-      const ctx = document.getElementById(this.chartId).getContext('2d');
+
+      const ctx = this.$refs[this.chartId].getContext('2d');
       const self = this;
+
       this.chart = new Chart(ctx, {
         type: 'line',
         data: {
           labels: this.labels,
-          datasets: this.datasets
+          datasets: this.datasets,
         },
         options: {
           responsive: true,
@@ -327,7 +384,7 @@ export default {
           aspectRatio: this.aspectratio,
           animation: {
             easing: 'easeInOutBack',
-            duration: 1000
+            duration: 1000,
           },
           scales: {
             xAxes: [
@@ -341,7 +398,7 @@ export default {
                   drawOnChartArea: false,
                   color: '#DDDDDD',
                   borderDash: [3],
-                  lineWidth: 1
+                  lineWidth: 1,
                 },
                 ticks: {
                   padding: 10, // Espace supplémentaire autour des étiquettes
@@ -354,9 +411,9 @@ export default {
                     } else {
                       return value;
                     }
-                  }
-                }
-              }
+                  },
+                },
+              },
             ],
             yAxes: [
               {
@@ -374,7 +431,7 @@ export default {
                   suggestedMax: this.ymax,
                   autoSkip: true,
                   maxTicksLimit: 5,
-                  callback: function (value, index, values) {
+                  callback: function (value) {
                     if (value >= 1e9 || value <= -1e9) {
                       return value / 1e9 + 'B';
                     } else if (value >= 1e6 || value <= -1e6) {
@@ -383,16 +440,16 @@ export default {
                       return value / 1e3 + 'K';
                     }
                     return value;
-                  }
+                  },
                 },
                 afterFit: function (axis) {
                   self.legendLeftMargin = axis.width;
-                }
-              }
-            ]
+                },
+              },
+            ],
           },
           legend: {
-            display: false
+            display: false,
           },
           tooltips: {
             enabled: false,
@@ -470,8 +527,8 @@ export default {
               tooltipEl.style.left = tooltipX + 'px';
               tooltipEl.style.top = tooltipY + 'px';
               tooltipEl.style.opacity = 1;
-            }
-          }
+            },
+          },
         },
         plugins: [
           {
@@ -539,40 +596,17 @@ export default {
                 ctx.stroke();
                 ctx.restore();
               }
-            }
-          }
-        ]
+            },
+          },
+        ],
       });
-    }
+    },
   },
-  created() {
-    configureChartDefaults();
-    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
-    this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
-  },
-  mounted() {
-    const element = document.documentElement; // Référence à l'élément <html> du DOM
-    this.createChart();
-    element.addEventListener('dsfr.theme', (e) => {
-      if (this.chartId !== '') {
-        this.changeColors(e.detail.theme);
-      }
-    });
-    addEventListener('resize', () => {
-      this.isSmall = document.documentElement.clientWidth < 767;
-    });
-  },
-  beforeUpdate() {
-    this.resetData();
-    this.createChart();
-    const element = document.documentElement;
-    this.changeColors(element.getAttribute('data-fr-theme'));
-  }
 };
 </script>
 
 <style scoped lang="scss">
-@import './Style/Tooltip.scss';
-@import './Style/Rcol.scss';
-@import './Style/WidgetContainer.scss';
+@import '@/styles/Tooltip.scss';
+@import '@/styles/Rcol.scss';
+@import '@/styles/WidgetContainer.scss';
 </style>

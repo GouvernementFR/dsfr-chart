@@ -1,6 +1,7 @@
-import Vue from 'vue'
-import RadarChart from './components/RadarChart'
-import vueCustomElement from 'vue-custom-element'
-Vue.config.productionTip = false
-Vue.use(vueCustomElement)
-Vue.customElement('radar-chart', RadarChart)
+import { defineCustomElement } from 'vue';
+
+import RadarChart from '@/components/RadarChart.vue';
+
+const RadarChartElement = defineCustomElement(RadarChart);
+
+customElements.define('radar-chart', RadarChartElement, { shadowRoot: false });

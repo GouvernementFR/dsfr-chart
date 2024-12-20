@@ -1,6 +1,7 @@
-import Vue from 'vue'
-import GaugeChart from './components/GaugeChart'
-import vueCustomElement from 'vue-custom-element'
-Vue.config.productionTip = false
-Vue.use(vueCustomElement)
-Vue.customElement('gauge-chart', GaugeChart)
+import { defineCustomElement } from 'vue';
+
+import GaugeChart from '@/components/GaugeChart.vue';
+
+const GaugeChartElement = defineCustomElement(GaugeChart);
+
+customElements.define('gauge-chart', GaugeChartElement, { shadowRoot: false });
