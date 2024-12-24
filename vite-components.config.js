@@ -5,6 +5,9 @@ const library = process.env.LIBRARY || 'DSFRChart';
 
 /** @type {import('vite').UserConfig} */
 export default {
+  define: {
+    'process.env': {},
+  },
   appType: 'custom',
   resolve: {
     alias: {
@@ -13,10 +16,11 @@ export default {
   },
   publicDir: '',
   build: {
-    outDir: library,
+    minify: true,
+    outDir: path.resolve('dist/' + library),
     emptyOutDir: true,
     lib: {
-      entry: library === 'DSFRChart' ? `src/charts/main.js` : `src/charts/${library}.js`,
+      entry: library === 'DSFRChart' ? 'src/charts/main.js' : `src/charts/${library}.js`,
       name: library,
       fileName: library,
     },

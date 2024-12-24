@@ -19,7 +19,7 @@ export const Horizontal = {
     x: '[["2000", "2010", "2020"], ["2000", "2010", "2020"]]',
     y: '[[11.1, 10.5, 8.4], [8.8, 7.5, 5.6]]',
     name: '["Empreinte carbone", "Émission sur le territoire national"]',
-    horizontal: 'true',
+    horizontal: true,
     unitTooltip: 'tonnes'
   }
 };
@@ -29,7 +29,7 @@ export const Stacked = {
     x: '[["Ensemble des Français", "Agglomération parisienne", "Communauté urbaine de province", "Commune rurale"]]',
     y: '[[15, 19, 15, 13], [45, 40, 47, 41], [36, 32, 34, 44], [4, 9, 4, 2]]',
     name: '["Tout à fait satisfait", "Plutôt satisfait", "Plutôt pas satisfait", "Pas du tout satisfait"]',
-    stacked: 'true',
+    stacked: true,
     selectedPalette: 'divergentDescending',
     unitTooltip: '%'
   }

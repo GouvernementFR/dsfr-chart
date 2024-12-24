@@ -1,7 +1,6 @@
 <template>
   <fieldset class="fr-segmented fr-segmented--no-legend fr-segmented--sm">
     <div class="fr-segmented__elements">
-      <!-- Première option -->
       <div class="fr-segmented__element">
         <input
           :ref="idcontrol + '-1'"
@@ -25,7 +24,6 @@
         </label>
       </div>
 
-      <!-- Deuxième option -->
       <div class="fr-segmented__element">
         <input
           :ref="idcontrol + '-2'"
@@ -61,9 +59,8 @@ export default {
     },
     showIcons: {
       type: [Boolean, String],
-      default: true, // Par défaut, affiche les icônes
+      default: true,
     },
-    // Nouvelles props pour personnaliser les options
     option1Label: {
       type: String,
       default: 'Graphique',
@@ -74,7 +71,7 @@ export default {
     },
     option1Icon: {
       type: String,
-      default: 'fr-icon-pie-chart-2-fill', // Icône par défaut pour l'option 1
+      default: 'fr-icon-pie-chart-2-fill',
     },
     option2Label: {
       type: String,
@@ -86,11 +83,11 @@ export default {
     },
     option2Icon: {
       type: String,
-      default: 'fr-icon-table-2', // Icône par défaut pour l'option 2
+      default: 'fr-icon-table-2',
     },
     defaultChart: {
       type: String,
-      default: 'graphique', // Définit le type de graphique par défaut
+      default: 'graphique',
     },
   },
   emits: ['chart-selected'],
@@ -108,7 +105,6 @@ export default {
     },
   },
   mounted() {
-    // Émet le type de graphique par défaut lors du montage du composant
     this.emitChartSelected(this.defaultChart);
   },
   methods: {

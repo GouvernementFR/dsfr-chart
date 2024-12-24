@@ -27,14 +27,14 @@
           </p>
         </div>
         <div
-          v-if="initdate !== undefined && targetdate !== undefined"
+          v-if="initDate !== undefined && targetDate !== undefined"
           class="gauge-container"
         >
           <p class="fr-text--xs fr-text-mention--grey">
-            {{ initdate }}
+            {{ initDate }}
           </p>
           <p class="fr-text--xs fr-text-mention--grey r-align">
-            {{ targetdate }}
+            {{ targetDate }}
           </p>
         </div>
         <div
@@ -79,7 +79,7 @@ export default {
       type: Number,
       default: undefined,
     },
-    percentvalue: {
+    percent: {
       type: Number,
       default: undefined,
     },
@@ -91,11 +91,11 @@ export default {
       type: Number,
       required: true,
     },
-    targetdate: {
+    initDate: {
       type: String,
       default: undefined,
     },
-    initdate: {
+    targetDate: {
       type: String,
       default: undefined,
     },
@@ -135,10 +135,10 @@ export default {
   },
   methods: {
     createChart() {
-      if (this.percentvalue === undefined) {
+      if (this.percent === undefined) {
         this.percentage = Math.round((100 * (this.value - this.init)) / (this.target - this.init));
       } else {
-        this.percentage = Math.round(this.percentvalue);
+        this.percentage = Math.round(this.percent);
       }
       this.width = Math.min(100, this.percentage);
     },

@@ -9,7 +9,7 @@ export const Default = {
     value: '360000',
     init: '100000',
     target: '2000000',
-    initdate: '(en 2022)',
-    targetdate: '(en 2026)'
+    initDate: '(en 2022)',
+    targetDate: '(en 2026)'
   }
 };

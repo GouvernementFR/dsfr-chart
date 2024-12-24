@@ -63,7 +63,6 @@
                     {{ column }}
                   </div>
 
-                  <!-- première colonne tableau graph -->
                   <div
                     v-else-if="columnIndex === 0 && !tableData[0].includes('Axes') && !tableData[0].includes('Portée')"
                     class="cell-multiline-with-hover"
@@ -87,7 +86,6 @@
                     </div>
                   </div>
 
-                  <!-- deuxième colonne tableau graph -->
                   <div
                     v-else
                     class="cells-tab-segment-graph"
@@ -118,7 +116,7 @@ export default {
     },
     isMultilineTableHeader: {
       type: [Boolean, String],
-      default: true, // Défini par défaut à true
+      default: true,
     },
   },
   computed: {

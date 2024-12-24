@@ -10,7 +10,7 @@ Afin de pouvoir commencer à développer et contribuer au DSFR, il faut tout d'a
 
 Il suffit ensuite de cloner votre fork, en téléchargeant les sources depuis le bouton “clone” de GitHub, ou via un terminal avec commande :
 
-```
+```bash
 git clone https://github.com/<VOTRE_NOM_UTILISATEUR_GITHUB>/dsfr-chart
 ```
 
@@ -84,18 +84,20 @@ Pour les exécuter il faut dans un premier temps build le projet :
 
 `npm run build`
 
-Puis lancez les tests:
+Puis lancer les tests:
 
 `npm run test`
 
-_Si vous voulez accepter les régressions visuelles et les considérer comme la nouvelle norme, utilisez la commande `npm run test:update-snapshots`_
+_Note 1: Pour accepter les régressions visuelles et les considérer comme la nouvelle norme, utiliser la commande `npm run test:update-snapshots`_
+
+_Note 2: Playwright échoue parfois à charger les stories de Storybook, ce qui fait échouer les tests. Pour palier à ce problème, augmenter le temps (en ms) attendu par la fonction `sleep` dans le fichier `visual-regression.test.js`._
 
 ## Publication NPM
 
 La publication du package sur npm nécessite les actions suivantes au niveau du fichier `package.json` :
 
 -   renseigner le nom dans la partie **name** et la **version**. La combinaison de ces deux paramètres doit être inédite pour être publiée (On ne peut pas publier une version existante)
--   choisir l'ensemble des dossiers/fichiers à intégrer au package et qui seront disponibles lors de l'installation par un utilisateur. Cette liste doit être renseignée au niveau de la partie **files** du `package.json`. Elle doit contenir, a minima, le dossier comprenant le distribuable de tous les graphiques (`/DSFRChart`), les dossiers de distribuables unitaires de chaque graphiques (ex : `/BarChart`) et la documentation (`README.md` et `CONTRIBUTING.md`).
+-   choisir l'ensemble des dossiers / fichiers à intégrer au package et qui seront disponibles lors de l'installation par un utilisateur. Cette liste doit être renseignée au niveau de la partie **files** du `package.json`. Elle doit contenir, a minima, le dossier comprenant le distribuable de tous les graphiques (`dist/DSFRChart`), les dossiers de distribuables unitaires de chaque graphiques (ex : `dist/BarChart`) et la documentation (`README.md` et `CONTRIBUTING.md`).
 
 Le fichier `package.json` permet aussi de définir une description (**description**), un auteur (**author**) et de lier le package au repo GitHub du projet (**repository**).
 
