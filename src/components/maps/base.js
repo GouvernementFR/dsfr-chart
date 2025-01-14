@@ -4,5 +4,5 @@ export default {
     onleave: Function,
     onclick: Function,
     ondblclick: Function,
-  }
+  },
 };

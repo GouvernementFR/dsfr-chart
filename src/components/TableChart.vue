@@ -6,16 +6,16 @@
     <div
       :ref="tableId"
       class="fr-table scroll"
-      :style="{ maxHeight: maxheight }"
+      :style="{ maxHeight: '25rem' }"
     >
       <table aria-labelledby="table-caption">
         <caption id="table-caption">
-          {{ varname }}
+          {{ tableName }}
         </caption>
         <thead>
           <tr>
             <th scope="col">
-              {{ varname }}
+              {{ tableName }}
             </th>
             <th
               v-for="(item, index) in nameParse"
@@ -28,19 +28,18 @@
         </thead>
         <tbody>
           <tr
-            v-for="(item, rowIndex) in xparse"
+            v-for="(rowItem, rowIndex) in xparse"
             :key="rowIndex"
-            :ref="'table-row-' + rowIndex"
           >
-            <td :class="getClass(item)">
-              {{ item }}
+            <td :class="getClass(rowItem)">
+              {{ rowItem }}
             </td>
             <td
-              v-for="(item2, colIndex) in yparse"
+              v-for="(colItem, colIndex) in yparse"
               :key="colIndex"
-              :class="getClass(yparse[colIndex][rowIndex])"
+              :class="getClass(colItem[rowIndex])"
             >
-              {{ convertIntToHumanTable(yparse[colIndex][rowIndex]) }}
+              {{ convertIntToHumanTable(colItem[rowIndex]) }}
             </td>
           </tr>
         </tbody>
@@ -68,13 +67,9 @@ export default {
       type: String,
       default: undefined,
     },
-    varname: {
+    tableName: {
       type: String,
       default: undefined,
-    },
-    maxheight: {
-      type: String,
-      default: '25rem',
     },
   },
   data() {
@@ -101,20 +96,23 @@ export default {
       this.nameParse = [];
     },
     getData() {
-      const self = this;
       this.xparse = JSON.parse(this.x);
       this.yparse = JSON.parse(this.y);
 
       let tmpNameParse = [];
       if (this.name !== undefined) {
-        tmpNameParse = JSON.parse(self.name);
+        try {
+          tmpNameParse = JSON.parse(this.name);
+        } catch (error) {
+          console.error('Erreur lors du parsing de name:', error);
+        }
       }
 
       for (let i = 0; i < this.yparse.length; i++) {
         if (tmpNameParse[i] !== undefined) {
-          self.nameParse.push(tmpNameParse[i]);
+          this.nameParse.push(tmpNameParse[i]);
         } else {
-          self.nameParse.push('Serie' + (i + 1));
+          this.nameParse.push('Serie' + (i + 1));
         }
       }
     },

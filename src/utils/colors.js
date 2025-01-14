@@ -1,5 +1,5 @@
 import chroma from 'chroma-js';
-import { getDefaultColor, getColorsByIndex, getNeutralColor, choosePalette } from '@/utils/global.js';
+import colors from '@/assets/colors.json';
 
 export function generateColors({
   yparse = [],
@@ -77,16 +77,14 @@ export function generateBarLineChartColors({
   hlineParse = [],
   tmpVlineColorParse = [],
   tmpHlineColorParse = [],
-  colorbar = undefined,
-  color = undefined,
   selectedPalette = '',
 }) {
   const palette = choosePalette(selectedPalette);
 
-  const colorBarParse = colorbar || getColorsByIndex(0, palette);
-  const colorbarHover = chroma(colorBarParse).darken(0.8).hex();
+  const colorBarParse = getColorsByIndex(0, palette);
+  const colorBarHover = chroma(colorBarParse).darken(0.8).hex();
 
-  const colorParse = color || getColorsByIndex(1, palette);
+  const colorParse = getColorsByIndex(1, palette);
   const colorHover = chroma(colorParse).darken(0.8).hex();
 
   const vlineColorParse = vlineParse.map((_, i) => (tmpVlineColorParse[i] !== undefined ? tmpVlineColorParse[i] : getNeutralColor()));
@@ -95,7 +93,7 @@ export function generateBarLineChartColors({
 
   return {
     colorBarParse,
-    colorbarHover,
+    colorBarHover,
     colorParse,
     colorHover,
     vlineColorParse,
@@ -147,58 +145,91 @@ export function generateScatterChartColors({
   };
 }
 
-export function changeChartColors({
-  chart,
-  theme,
-  yparse,
-  loadColors,
-  getHexaFromToken,
-  colorPrecisionBarCallback = () => { },
-}) {
-  if (!Array.isArray(yparse) || yparse.length === 0) {
-    console.error('yparse is not a valid array or is empty:', yparse);
-    return;
+function getThemeColors() {
+  const currentTheme = document.documentElement.getAttribute('data-fr-theme') || 'light';
+  return colors[currentTheme] || colors['light'];
+}
+
+export function getCategoricalPalette() {
+  const themeColors = getThemeColors();
+  return [
+    themeColors['dsfr-chart-colors-01'],
+    themeColors['dsfr-chart-colors-02'],
+    themeColors['dsfr-chart-colors-03'],
+    themeColors['dsfr-chart-colors-04'],
+    themeColors['dsfr-chart-colors-05'],
+    themeColors['dsfr-chart-colors-06'],
+    themeColors['dsfr-chart-colors-07'],
+    themeColors['dsfr-chart-colors-08'],
+  ];
+}
+
+// Palettes séquentielles
+export function getSequentialAscending() {
+  const themeColors = getThemeColors();
+  return chroma.scale([
+    themeColors['dsfr-chart-colors-09'],
+    themeColors['dsfr-chart-colors-10'],
+  ]).colors(10);
+}
+
+export function getSequentialDescending() {
+  const themeColors = getThemeColors();
+  return chroma.scale([
+    themeColors['dsfr-chart-colors-10'],
+    themeColors['dsfr-chart-colors-09'],
+  ]).colors(10);
+}
+
+export function getDivergentAscending() {
+  const themeColors = getThemeColors();
+  return chroma.scale([
+    themeColors['dsfr-chart-colors-11'],
+    themeColors['dsfr-chart-colors-13'],
+    themeColors['dsfr-chart-colors-15'],
+  ]).colors(4);
+}
+
+export function getDivergentDescending() {
+  const themeColors = getThemeColors();
+  return chroma.scale([
+    themeColors['dsfr-chart-colors-15'],
+    themeColors['dsfr-chart-colors-13'],
+    themeColors['dsfr-chart-colors-11'],
+  ]).colors(4);
+}
+
+export function getColorsByIndex(index, palette = getCategoricalPalette()) {
+  return palette[index % palette.length];
+}
+
+export function getDefaultColor() {
+  const themeColors = getThemeColors();
+  return themeColors['dsfr-chart-colors-default'];
+}
+
+export function getNeutralColor() {
+  const themeColors = getThemeColors();
+  return themeColors['dsfr-chart-colors-neutral'];
+}
+
+export function choosePalette(selectedPalette) {
+  switch (selectedPalette) {
+    case 'categorical':
+      return getCategoricalPalette();
+    case 'sequentialAscending':
+      return getSequentialAscending();
+    case 'sequentialDescending':
+      return getSequentialDescending();
+    case 'divergentAscending':
+      return getDivergentAscending();
+    case 'divergentDescending':
+      return getDivergentDescending();
+    case 'neutral':
+      return [getNeutralColor()];
+    case 'defaultColor':
+      return [getDefaultColor()];
+    default:
+      return getCategoricalPalette();
   }
-  // Met à jour les options des axes
-  if (chart.options.scales) {
-    if (chart.options.scales.xAxes) {
-      chart.options.scales.xAxes[0].ticks.fontColor = getHexaFromToken('text-mention-grey', theme);
-    }
-    if (chart.options.scales.yAxes) {
-      chart.options.scales.yAxes[0].ticks.fontColor = getHexaFromToken('text-mention-grey', theme);
-    }
-  }
-
-  if (chart.options.scale && chart.options.scale.gridLines) {
-    chart.options.scale.gridLines.color = getHexaFromToken('border-default-grey', theme);
-  }
-
-  // Charge les couleurs
-  loadColors();
-
-  // Définir `colorPrecisionBar`
-  const colorPrecisionBar = theme === 'light' ? '#161616' : '#FFFFFF';
-  colorPrecisionBarCallback(colorPrecisionBar);
-
-  // Mise à jour des datasets
-  for (let i = 0; i < yparse.length; i++) {
-    if (chart.data.datasets[i]) {
-      chart.data.datasets[i].borderColor = chart.colorParse[i];
-      chart.data.datasets[i].backgroundColor = chroma(chart.colorParse[i]).alpha(0.3).hex();
-      chart.data.datasets[i].hoverBorderColor = chart.colorHover[i];
-      chart.data.datasets[i].hoverBackgroundColor = chart.colorHover[i];
-
-      if (chart.data.datasets[i].pointBackgroundColor !== undefined) {
-        chart.data.datasets[i].pointBackgroundColor = chart.colorParse[i];
-      }
-      if (chart.data.datasets[i].pointHoverBackgroundColor !== undefined) {
-        chart.data.datasets[i].pointHoverBackgroundColor = chart.colorHover[i];
-      }
-      if (chart.data.datasets[i].pointHoverBorderColor !== undefined) {
-        chart.data.datasets[i].pointHoverBorderColor = chart.colorHover[i];
-      }
-    }
-  }
-  // Mise à jour du graphique
-  chart.update(0);
 }

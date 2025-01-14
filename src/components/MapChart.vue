@@ -14,7 +14,6 @@
       </button>
       <div class="map m-lg">
         <div
-          ref="mapTooltip"
           class="map_tooltip"
           :style="{ top: tooltip.top, left: tooltip.left, visibility: tooltip.visibility }"
         >
@@ -159,7 +158,8 @@
 import chroma from 'chroma-js';
 import LeftCol from '@/components/LeftCol.vue';
 import maps from '@/components/maps';
-import { isMobile, mixin, getColorsByIndex, choosePalette } from '@/utils/global.js';
+import { mixin, isMobile } from '@/utils/global.js';
+import { choosePalette, getColorsByIndex } from '@/utils/colors.js';
 
 export default {
   name: 'MapChart',
@@ -173,13 +173,13 @@ export default {
       type: String,
       required: true,
     },
-    valuenat: {
+    value: {
       type: Number,
       default: undefined,
     },
     date: {
       type: String,
-      default: undefined,
+      required: true,
     },
     level: {
       type: String,
@@ -191,17 +191,14 @@ export default {
     },
     selectedPalette: {
       type: String,
-      default: 'sequentialAscending', // Aucune palette définie par défaut
-    },
-    highlightIndex: {
-      type: Number,
-      default: -1, // Si aucune donnée n'est mise en avant, on met tout en neutre
+      default: 'sequentialAscending',
     },
   },
   data() {
+    this.chart = undefined;
+
     return {
       dataParse: {},
-      chart: undefined,
       widgetId: '',
       chartId: '',
       scaleMin: 0,
@@ -222,8 +219,6 @@ export default {
         colMax: '',
         value: 0,
         valueNat: 0,
-        levelNat: false,
-        locaParent: 'en France',
         date: '',
         textMention: '',
         borderDefault: '',
@@ -259,6 +254,8 @@ export default {
     this.prefixClass = 'FR-' + this.level + '-';
   },
   mounted() {
+    this.createChart();
+
     const element = document.documentElement;
     element.addEventListener('dsfr.theme', (e) => {
       if (this.chartId !== '') {
@@ -268,29 +265,33 @@ export default {
   },
   methods: {
     createChart() {
-      const palette = this.choosePalette();
-
-      // Choisir les couleurs extrêmes basées sur la palette
-      this.colLeft = palette[0]; // La couleur minimale
-      this.colRight = palette[palette.length - 1]; // La couleur maximale
-
-      this.leftColProps.date = this.date;
-      this.leftColProps.colMin = this.colLeft; // Colonne gauche, couleur minimale
-      this.leftColProps.colMax = this.colRight; // Colonne droite, couleur maximale
-      this.leftColProps.names = this.name;
-      this.leftColProps.min = this.scaleMin;
-      this.leftColProps.max = this.scaleMax;
       const parentWidget = this.$refs[this.widgetId];
       const self = this;
 
-      // Parse the data
-      this.dataParse = JSON.parse(this.data);
-      const values = [];
+      // Parsing des données
+      try {
+        this.dataParse = JSON.parse(this.data);
+      } catch (error) {
+        console.error('Erreur lors du parsing des données x ou y:', error);
+        return;
+      }
 
-      // Remplir la carte avec les départements/régions
+      const palette = this.choosePalette();
+
+      // Choisir les couleurs extrêmes basées sur la palette
+      this.colLeft = palette[0];
+      this.colRight = palette[palette.length - 1];
+      this.leftColProps.colMin = this.colLeft;
+      this.leftColProps.colMax = this.colRight;
+      this.leftColProps.date = this.date;
+      this.leftColProps.names = this.name;
+
+      const values = [];
       let listDep = [];
+
       self.FranceProps.displayDep = {};
 
+      // Remplir la carte avec les départements/régions
       if (this.zoomDep !== undefined) {
         if (this.level === 'dep') {
           const a = this.getDep(this.zoomDep).region_value;
@@ -300,9 +301,10 @@ export default {
         } else {
           listDep = [this.getAcad(this.zoomDep).value];
         }
-        listDep.forEach(function (key) {
+
+        for (const key of listDep) {
           values.push(self.dataParse[key]);
-        });
+        }
       } else {
         for (const key in self.dataParse) {
           values.push(self.dataParse[key]);
@@ -310,8 +312,8 @@ export default {
       }
 
       // Calcul des min et max pour l'échelle
-      this.scaleMin = Math.min.apply(null, values);
-      this.scaleMax = Math.max.apply(null, values);
+      this.scaleMin = Math.min(...values);
+      this.scaleMax = Math.max(...values);
 
       let xmin = [],
         xmax = [],
@@ -370,9 +372,8 @@ export default {
         } else {
           this.leftColProps.localisation = this.getAcad(this.zoomDep).label;
         }
-        this.leftColProps.value = this.dataParse[this.zoomDep];
-        this.leftColProps.levelNat = this.valuenat !== undefined;
-        this.leftColProps.valueNat = this.valuenat;
+        this.leftColProps.value = this.value;
+        this.leftColProps.valueNat = this.dataParse[this.zoomDep];
 
         if (this.level === 'dep') {
           this.displayFrance = 'none';
@@ -398,8 +399,8 @@ export default {
         }
       } else {
         this.leftColProps.localisation = 'France';
-        this.leftColProps.value = this.valuenat;
-        this.leftColProps.levelNat = false;
+        this.leftColProps.value = this.value;
+        this.leftColProps.valueNat = 0;
         if (this.level === 'dep') {
           this.FranceProps.viewBox = '0 0 262 262';
         } else if (this.level === 'reg') {

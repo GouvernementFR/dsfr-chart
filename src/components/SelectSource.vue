@@ -41,7 +41,7 @@ export default {
   emits: ['select-source'],
   data() {
     return {
-      selectedOption: this.optiondefault, // Initialise la sélection par défaut
+      selectedOption: this.optiondefault,
     };
   },
   watch: {

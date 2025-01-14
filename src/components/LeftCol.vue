@@ -1,9 +1,6 @@
 <template>
   <div class="l_col fr-col-12 fr-col-lg-3">
-    <div
-      v-if="props['levelNat']"
-      data-box="number"
-    >
+    <div v-if="props['valueNat'] || props['valueReg']">
       <p
         class="fr-text--xs fr-mb-1v"
         :style="{ color: props['textMention'] }"
@@ -14,18 +11,15 @@
         class="fr-text--xs fr-text--bold fr-mb-1v"
         :style="{ color: props['textMention'] }"
       >
-        {{ props['names'] }}, {{ props['locaParent'] }}
+        {{ props['names'] }}, en France
       </p>
       <p
         class="fr-text--xs fr-text--bold fr-mb-2w"
         :style="{ color: props['textMention'] }"
       >
-        {{ convertFloatToHuman(props['valueNat']) }}
+        {{ convertFloatToHuman(props['value']) }}
       </p>
-      <div
-        v-if="props['levelNat']"
-        class="sep fr-mb-2w"
-      />
+      <div class="sep fr-mb-2w" />
     </div>
     <div>
       <p
@@ -47,7 +41,7 @@
         {{ props['names'] }}
       </p>
       <p class="fr-text--md fr-text--bold fr-my-0">
-        {{ convertFloatToHuman(props['value']) }}
+        {{ convertFloatToHuman(props['valueNat'] || props['valueReg'] || props['value']) }}
       </p>
     </div>
     <div class="scale">

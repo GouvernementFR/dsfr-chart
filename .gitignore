@@ -11,19 +11,7 @@ node_modules/
 vendor/
 
 # Build output
-DSFRChart/
-BarChart/
-BarLineChart/
-DataBox/
-GaugeChart/
-LineChart/
-MapChart/
-MapChartReg/
-MultiLineChart/
-PieChart/
-RadarChart/
-ScatterChart/
-TableChart/
+dist/
 
 # File systems
 .DS_Store

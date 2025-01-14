@@ -14,7 +14,6 @@
       </button>
       <div class="map m-lg">
         <div
-          ref="mapTooltip"
           class="map_tooltip"
           :style="{ top: tooltip.top, left: tooltip.left, visibility: tooltip.visibility }"
         >
@@ -50,7 +49,8 @@
 import LeftCol from '@/components/LeftCol.vue';
 import maps from '@/components/maps';
 import * as d3 from 'd3-scale';
-import { isMobile, mixin, choosePalette } from '@/utils/global.js';
+import { mixin, isMobile } from '@/utils/global.js';
+import { choosePalette } from '@/utils/colors.js';
 
 export default {
   name: 'MapChartReg',
@@ -64,6 +64,10 @@ export default {
       type: String,
       required: true,
     },
+    value: {
+      type: Number,
+      default: undefined,
+    },
     date: {
       type: String,
       required: true,
@@ -72,27 +76,20 @@ export default {
       type: String,
       required: true,
     },
-    valuereg: {
-      type: Number,
-      default: undefined,
-    },
     name: {
       type: String,
       default: 'Data',
     },
     selectedPalette: {
       type: String,
-      default: 'sequentialAscending', // Aucune palette définie par défaut
-    },
-    highlightIndex: {
-      type: Number,
-      default: -1, // Si aucune donnée n'est mise en avant, on met tout en neutre
+      default: 'sequentialAscending',
     },
   },
   data() {
+    this.chart = undefined;
+
     return {
       dataParse: {},
-      chart: undefined,
       widgetId: '',
       chartId: '',
       scaleMin: 0,
@@ -108,8 +105,7 @@ export default {
         colMin: '',
         colMax: '',
         value: 0,
-        levelNat: false,
-        locaParent: '',
+        valueReg: 0,
         date: '',
       },
       FranceProps: {
@@ -138,6 +134,8 @@ export default {
     this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
   },
   mounted() {
+    this.createChart();
+
     const element = document.documentElement;
     element.addEventListener('dsfr.theme', (e) => {
       if (this.chartId !== '') {
@@ -147,13 +145,20 @@ export default {
   },
   methods: {
     createChart() {
-      // Initialize region data
       const parentWidget = this.$refs[this.widgetId];
       const self = this;
-      this.dataParse = JSON.parse(this.data);
 
-      // Define color scale
+      // Parsing des données
+      try {
+        this.dataParse = JSON.parse(this.data);
+      } catch (error) {
+        console.error('Erreur lors du parsing des données x ou y:', error);
+        return;
+      }
+
+      // Choisir les couleurs extrêmes basées sur la palette
       const palette = this.choosePalette();
+
       this.colLeft = palette[0];
       this.colRight = palette[palette.length - 1];
       this.leftColProps.colMin = this.colLeft;
@@ -164,16 +169,19 @@ export default {
       const values = [];
       let listDep = [];
 
-      // Display only departments within the selected region
       self.FranceProps.displayDep = {};
-      listDep = this.getDepsFromReg(this.region); // Get departments for the specified region
+
+      // Afficher uniquement les départements de la région sélectionnée
+      listDep = this.getDepsFromReg(this.region);
       listDep.forEach((key) => {
         values.push(self.dataParse[key]);
       });
 
-      // Define color scale based on regional values
+      // Calcul des min et max pour l'échelle
       this.scaleMin = Math.min(...values);
       this.scaleMax = Math.max(...values);
+
+      // Define color scale based on regional values
       const colorScale = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colLeft, this.colRight]);
 
       let xmin = [],
@@ -214,9 +222,10 @@ export default {
         this.FranceProps.viewBox = `${xminValue} ${yminValue} ${size} ${size}`;
       }
 
-      // Update left column properties for region-specific display
+      // Remplir les colonnes de gauche
       this.leftColProps.localisation = this.getReg(this.region).label;
-      this.leftColProps.value = this.valuereg;
+      this.leftColProps.value = this.value;
+      this.leftColProps.valueReg = this.dataParse[this.zoomDep];
       this.leftColProps.min = this.scaleMin;
       this.leftColProps.max = this.scaleMax;
     },

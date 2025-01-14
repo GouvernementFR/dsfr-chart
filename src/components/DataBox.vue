@@ -52,8 +52,7 @@
               class="dropdown-wrapper"
             >
               <button
-                ref="dropdown"
-                title="dropdown"
+                title="Dropdown"
                 type="button"
                 class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0"
                 aria-label="Afficher le menu déroulant"
@@ -275,15 +274,15 @@ export default {
     },
     unitTooltip: {
       type: String,
-      default: '', // Default to an empty string if not provided
+      default: '',
     },
     isMultilineTableHeader: {
       type: [Boolean, String],
-      default: true, // Défini par défaut
+      default: true,
     },
     dataBoxTitle: {
       type: String,
-      default: 'Titre de la dataBox', // Valeur par défaut
+      default: 'Titre de la dataBox',
     },
     dataBoxDescription: {
       type: String,
@@ -303,7 +302,7 @@ export default {
     },
     component: {
       type: String,
-      default: 'PieChart', // Composant par défaut
+      default: 'PieChart',
     },
     addSources: {
       type: [Boolean, String],
@@ -315,7 +314,7 @@ export default {
     },
     captionTitle: {
       type: String,
-      default: 'Titre du tableau', // Définissez une valeur par défaut
+      default: 'Titre du tableau',
     },
     defaultOption: {
       type: String,
@@ -349,8 +348,8 @@ export default {
         showGraph: true,
         unitTooltip: '%',
         serie_values: {
-          x: ['Serie 1', 'Serie 2', 'Serie 3'],
-          y: [100, 200, 300],
+          x: [['Serie 1', 'Serie 2', 'Serie 3']],
+          y: [[100, 200, 300]],
         },
         table: [
           ['Serie 1', '100'],
