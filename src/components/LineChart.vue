@@ -1,90 +1,98 @@
 <template>
-  <div
-    :ref="widgetId"
-    class="widget_container fr-grid-row"
+  <Teleport
+    :disabled="!databoxId && !databoxType && databoxSource === 'default'"
+    :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
-    <div class="r_col fr-col-12">
-      <div class="chart">
-        <div class="linechart_tooltip">
-          <div class="tooltip_header fr-text--sm fr-mb-0" />
-          <div class="tooltip_body">
-            <div class="tooltip_value">
-              <div
-                v-for="(item, index) in nameParse"
-                :key="index"
-                class="flex fr-mt-3v fr-mb-1v"
-                :style="{ 'border-bottom': '1px solid #e0e0e0' }"
-              >
-                <div class="tooltip_value-content">
-                  <span
-                    class="tooltip_dot"
-                    :style="{ 'background-color': colorParse[index] }"
-                  />
-                  <p class="tooltip_place">
-                    {{ capitalize(item) }}
-                  </p>
+    <div
+      :ref="widgetId"
+      class="widget_container fr-grid-row"
+    >
+      <div class="fr-col-12">
+        <div class="chart">
+          <div class="tooltip">
+            <div class="tooltip_header fr-text--sm fr-mb-0" />
+            <div class="tooltip_body">
+              <div class="tooltip_value">
+                <div
+                  v-for="(item, index) in nameParse"
+                  :key="index"
+                  class="flex fr-mt-3v fr-mb-1v"
+                  :style="{ 'border-bottom': '1px solid #e0e0e0' }"
+                >
+                  <div class="tooltip_value-content">
+                    <span
+                      class="tooltip_dot"
+                      :style="{ 'background-color': colorParse[index] }"
+                    />
+                    <p class="tooltip_place">
+                      {{ capitalize(item) }}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <canvas :ref="chartId" />
-        <div class="chart_legend fr-mb-0 fr-mt-4v">
-          <div class="flex fr-mt-1w fr-mb-0">
-            <span class="legende_dot" />
+          <canvas :ref="chartId" />
+          <div class="chart_legend fr-mb-0 fr-mt-4v">
+            <div class="flex fr-mt-1w fr-mb-0">
+              <span
+                class="legende_dot"
+                :style="{ 'background-color': colorParse }"
+              />
+              <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+                {{ capitalize(name) }}
+              </p>
+            </div>
+          </div>
+          <div
+            v-for="(item, index) in hlineNameParse"
+            :key="index"
+            class="flex fr-mt-3v"
+            :style="{ 'margin-left': isSmall ? '0px' : style }"
+          >
+            <span
+              class="legende_dash_line"
+              :style="{ 'background-color': hlineColorParse[index] }"
+            />
+            <span
+              class="legende_dash_line legende_dash_line_end"
+              :style="{ 'background-color': hlineColorParse[index] }"
+            />
             <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-              {{ capitalize(name) }}
+              {{ capitalize(item) }}
+            </p>
+          </div>
+          <div
+            v-for="(item, index) in vlineNameParse"
+            :key="index"
+            class="flex fr-mt-3v fr-mb-1v"
+            :style="{ 'margin-left': isSmall ? '0px' : style }"
+          >
+            <span
+              class="legende_dash_line"
+              :style="{ 'background-color': vlineColorParse[index] }"
+            />
+            <span
+              class="legende_dash_line legende_dash_line_end"
+              :style="{ 'background-color': vlineColorParse[index] }"
+            />
+            <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+              {{ capitalize(item) }}
+            </p>
+          </div>
+          <div
+            v-if="date !== undefined"
+            class="flex fr-mt-1w"
+            :style="{ 'margin-left': isSmall ? '0px' : style }"
+          >
+            <p class="fr-text--xs">
+              Mise à jour : {{ date }}
             </p>
           </div>
         </div>
-        <div
-          v-for="(item, index) in hlineNameParse"
-          :key="index"
-          class="flex fr-mt-3v"
-          :style="{ 'margin-left': isSmall ? '0px' : style }"
-        >
-          <span
-            class="legende_dash_line1"
-            :style="{ 'background-color': hlineColorParse[index] }"
-          />
-          <span
-            class="legende_dash_line2"
-            :style="{ 'background-color': hlineColorParse[index] }"
-          />
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-            {{ capitalize(item) }}
-          </p>
-        </div>
-        <div
-          v-for="(item, index) in vlineNameParse"
-          :key="index"
-          class="flex fr-mt-3v fr-mb-1v"
-          :style="{ 'margin-left': isSmall ? '0px' : style }"
-        >
-          <span
-            class="legende_dash_line1"
-            :style="{ 'background-color': vlineColorParse[index] }"
-          />
-          <span
-            class="legende_dash_line2"
-            :style="{ 'background-color': vlineColorParse[index] }"
-          />
-          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-            {{ capitalize(item) }}
-          </p>
-        </div>
-        <div
-          v-if="date !== undefined"
-          class="flex fr-mt-1w"
-          :style="{ 'margin-left': isSmall ? '0px' : style }"
-        >
-          <p class="fr-text--xs">
-            Mise à jour : {{ date }}
-          </p>
-        </div>
       </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <script>
@@ -98,6 +106,18 @@ export default {
   name: 'LineChart',
   mixins: [mixin],
   props: {
+    databoxId: {
+      type: String,
+      default: null,
+    },
+    databoxType: {
+      type: String,
+      default: null,
+    },
+    databoxSource: {
+      type: String,
+      default: 'default',
+    },
     x: {
       type: String,
       required: true,
@@ -377,7 +397,7 @@ export default {
         plugins: [
           {
             afterDraw: (chart) => {
-              if (chart.tooltip._active && chart.tooltip._active.length) {
+              if (chart.tooltip?._active && chart.tooltip?._active.length) {
                 const { ctx } = chart;
                 const activePoint = chart.tooltip.getActiveElements()[0];
                 const x = activePoint.element.tooltipPosition().x;
@@ -475,7 +495,9 @@ export default {
               intersect: false,
               external: (context) => {
                 // Tooltip Element
-                const tooltipEl = this.$el.querySelector('.linechart_tooltip');
+                const dom = this.databoxId ? document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) : this.$el.nextElementSibling;
+
+                const tooltipEl = dom.querySelector('.tooltip');
 
                 const tooltipModel = context.tooltip;
 
@@ -563,7 +585,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/Tooltip.scss';
-@import '@/styles/Rcol.scss';
-@import '@/styles/WidgetContainer.scss';
+
 </style>

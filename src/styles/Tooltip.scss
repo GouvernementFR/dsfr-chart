@@ -1,4 +1,4 @@
-.linechart_tooltip {
+.tooltip {
   opacity: 0;
   width: auto;
   height: auto;
@@ -15,14 +15,15 @@
   .tooltip_header {
     width: 100%;
     font-size: .75rem;
-    max-height: 3.5rem; // Hauteur pour 2 lignes
+    max-height: 3.5rem;
     color: var(--text-default-grey);
     font-weight: bold;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
     display: -webkit-box;
-    -webkit-line-clamp: 2; // Limite à 2 lignes
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     background-color: var(--grey-975-75);
     padding-top: .55rem;
@@ -43,7 +44,6 @@
       min-width: 1.25rem;
       width: 1.25rem;
       height: 1.25rem;
-      background-color: var(--blue-france-sun-113-625);
       display: inline-block;
       margin-top: .25rem;
       margin-right: .25rem;

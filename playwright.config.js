@@ -18,10 +18,12 @@ export default defineConfig({
     {
       command: 'BROWSER=false storybook dev -p 6006',
       url: 'http://localhost:6006',
+      reuseExistingServer: true,
     },
     {
       command: 'npm run dev',
       url: 'http://localhost:5173',
+      reuseExistingServer: true,
     },
   ],
   projects: [

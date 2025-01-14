@@ -1,83 +1,44 @@
 <template>
-  <div
-    :ref="widgetId"
-    class="widget_container fr-grid-row"
+  <Teleport
+    :disabled="!databoxId && !databoxType && databoxSource === 'default'"
+    :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
-    <LeftCol :props="leftColProps" />
-    <div class="r_col fr-col-12 fr-col-lg-9">
-      <button
-        v-if="zoomDep !== undefined"
-        class="fr-btn fr-btn--sm fr-icon-arrow-go-back-fill fr-btn--icon-left fr-btn--tertiary-no-outline fr-ml-4w"
-        @click="resetGeoFilters"
-      >
-        Retour
-      </button>
-      <div class="map m-lg">
-        <div
-          class="map_tooltip"
-          :style="{ top: tooltip.top, left: tooltip.left, visibility: tooltip.visibility }"
+    <div
+      :ref="widgetId"
+      class="widget_container fr-grid-row"
+    >
+      <LeftCol :props="leftColProps" />
+      <div class="fr-col-12 fr-col-lg-9 align-stretch">
+        <button
+          v-if="zoomDep !== undefined"
+          class="fr-btn fr-btn--sm fr-icon-arrow-go-back-fill fr-btn--icon-left fr-btn--tertiary-no-outline fr-ml-4w"
+          @click="resetGeoFilters"
         >
-          <div class="tooltip_header fr-text--sm fr-mb-0">
-            {{ tooltip.place }}
-          </div>
-          <div class="tooltip_body">
-            <div class="tooltip_value-content">
-              <div class="tooltip_value">
-                {{ convertStringToLocaleNumber(tooltip.value) }}
+          Retour
+        </button>
+        <div class="map">
+          <div
+            class="map_tooltip"
+            :style="{ top: tooltip.top, left: tooltip.left, visibility: tooltip.visibility }"
+          >
+            <div class="tooltip_header fr-text--sm fr-mb-0">
+              {{ tooltip.place }}
+            </div>
+            <div class="tooltip_body">
+              <div class="tooltip_value-content">
+                <div class="tooltip_value">
+                  {{ convertStringToLocaleNumber(tooltip.value) }}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          v-if="isDep"
-          class="france_container no_select"
-          :style="{ display: displayFrance }"
-        >
-          <france
-            :props="FranceProps"
-            :onclick="changeGeoLevel"
-            :ondblclick="resetGeoFilters"
-            :onenter="displayTooltip"
-            :onleave="hideTooltip"
-          />
-        </div>
-        <div
-          v-if="isReg"
-          class="france_container no_select"
-          :style="{ display: displayFrance }"
-        >
-          <france-reg
-            :props="FranceProps"
-            :onclick="changeGeoLevel"
-            :ondblclick="resetGeoFilters"
-            :onenter="displayTooltip"
-            :onleave="hideTooltip"
-          />
-        </div>
-        <div
-          v-if="isAcad"
-          class="france_container no_select"
-          :style="{ display: displayFrance }"
-        >
-          <france-acad
-            :props="FranceProps"
-            :onclick="changeGeoLevel"
-            :ondblclick="resetGeoFilters"
-            :onenter="displayTooltip"
-            :onleave="hideTooltip"
-          />
-        </div>
-        <div class="om_container fr-grid-row no_select">
           <div
-            class="om fr-col-4 fr-col-sm"
-            :style="{ display: displayGuadeloupe }"
+            v-if="isDep"
+            class="france_container no_select"
+            :style="{ display: displayFrance }"
           >
-            <span
-              class="fr-text--xs fr-my-1w"
-              :style="{ color: textMention }"
-            >Guadeloupe</span>
-            <guadeloupe
-              :props="colorStrokeDOM"
+            <france
+              :props="FranceProps"
               :onclick="changeGeoLevel"
               :ondblclick="resetGeoFilters"
               :onenter="displayTooltip"
@@ -85,15 +46,12 @@
             />
           </div>
           <div
-            class="om fr-col-4 fr-col-sm fr-ml-1v"
-            :style="{ display: displayMartinique }"
+            v-if="isReg"
+            class="france_container no_select"
+            :style="{ display: displayFrance }"
           >
-            <span
-              class="fr-text--xs fr-my-1w"
-              :style="{ color: textMention }"
-            >Martinique</span>
-            <martinique
-              :props="colorStrokeDOM"
+            <france-reg
+              :props="FranceProps"
               :onclick="changeGeoLevel"
               :ondblclick="resetGeoFilters"
               :onenter="displayTooltip"
@@ -101,57 +59,104 @@
             />
           </div>
           <div
-            class="om fr-col-4 fr-col-sm fr-ml-1v"
-            :style="{ display: displayGuyanne }"
+            v-if="isAcad"
+            class="france_container no_select"
+            :style="{ display: displayFrance }"
           >
-            <span
-              class="fr-text--xs fr-my-1w"
-              :style="{ color: textMention }"
-            >Guyane</span>
-            <guyane
-              :props="colorStrokeDOM"
+            <france-acad
+              :props="FranceProps"
               :onclick="changeGeoLevel"
               :ondblclick="resetGeoFilters"
               :onenter="displayTooltip"
               :onleave="hideTooltip"
             />
           </div>
-          <div
-            class="om fr-col-4 fr-col-sm fr-ml-1v"
-            :style="{ display: displayReunion }"
-          >
-            <span
-              class="fr-text--xs fr-my-1w"
-              :style="{ color: textMention }"
-            >La Réunion</span>
-            <reunion
-              :props="colorStrokeDOM"
-              :onclick="changeGeoLevel"
-              :ondblclick="resetGeoFilters"
-              :onenter="displayTooltip"
-              :onleave="hideTooltip"
-            />
-          </div>
-          <div
-            class="om fr-col-4 fr-col-sm fr-ml-1v"
-            :style="{ display: displayMayotte }"
-          >
-            <span
-              class="fr-text--xs fr-my-1w"
-              :style="{ color: textMention }"
-            >Mayotte</span>
-            <mayotte
-              :props="colorStrokeDOM"
-              :onclick="changeGeoLevel"
-              :ondblclick="resetGeoFilters"
-              :onenter="displayTooltip"
-              :onleave="hideTooltip"
-            />
+          <div class="om_container fr-grid-row no_select">
+            <div
+              class="om fr-col-4 fr-col-sm"
+              :style="{ display: displayGuadeloupe }"
+            >
+              <span
+                class="fr-text--xs fr-my-1w"
+                :style="{ color: textMention }"
+              >Guadeloupe</span>
+              <guadeloupe
+                :props="colorStrokeDOM"
+                :onclick="changeGeoLevel"
+                :ondblclick="resetGeoFilters"
+                :onenter="displayTooltip"
+                :onleave="hideTooltip"
+              />
+            </div>
+            <div
+              class="om fr-col-4 fr-col-sm fr-ml-1v"
+              :style="{ display: displayMartinique }"
+            >
+              <span
+                class="fr-text--xs fr-my-1w"
+                :style="{ color: textMention }"
+              >Martinique</span>
+              <martinique
+                :props="colorStrokeDOM"
+                :onclick="changeGeoLevel"
+                :ondblclick="resetGeoFilters"
+                :onenter="displayTooltip"
+                :onleave="hideTooltip"
+              />
+            </div>
+            <div
+              class="om fr-col-4 fr-col-sm fr-ml-1v"
+              :style="{ display: displayGuyanne }"
+            >
+              <span
+                class="fr-text--xs fr-my-1w"
+                :style="{ color: textMention }"
+              >Guyane</span>
+              <guyane
+                :props="colorStrokeDOM"
+                :onclick="changeGeoLevel"
+                :ondblclick="resetGeoFilters"
+                :onenter="displayTooltip"
+                :onleave="hideTooltip"
+              />
+            </div>
+            <div
+              class="om fr-col-4 fr-col-sm fr-ml-1v"
+              :style="{ display: displayReunion }"
+            >
+              <span
+                class="fr-text--xs fr-my-1w"
+                :style="{ color: textMention }"
+              >La Réunion</span>
+              <reunion
+                :props="colorStrokeDOM"
+                :onclick="changeGeoLevel"
+                :ondblclick="resetGeoFilters"
+                :onenter="displayTooltip"
+                :onleave="hideTooltip"
+              />
+            </div>
+            <div
+              class="om fr-col-4 fr-col-sm fr-ml-1v"
+              :style="{ display: displayMayotte }"
+            >
+              <span
+                class="fr-text--xs fr-my-1w"
+                :style="{ color: textMention }"
+              >Mayotte</span>
+              <mayotte
+                :props="colorStrokeDOM"
+                :onclick="changeGeoLevel"
+                :ondblclick="resetGeoFilters"
+                :onenter="displayTooltip"
+                :onleave="hideTooltip"
+              />
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <script>
@@ -169,6 +174,18 @@ export default {
   },
   mixins: [mixin],
   props: {
+    databoxId: {
+      type: String,
+      default: null,
+    },
+    databoxType: {
+      type: String,
+      default: null,
+    },
+    databoxSource: {
+      type: String,
+      default: 'default',
+    },
     data: {
       type: String,
       required: true,
