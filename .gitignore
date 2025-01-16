@@ -12,6 +12,7 @@ vendor/
 
 # Build output
 dist/
+docs/
 
 # File systems
 .DS_Store
