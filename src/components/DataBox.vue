@@ -1,479 +1,423 @@
 <template>
-  <div class="box">
-    <div :class="['databox-card', 'databox__group', { 'databox__group--height': indicator }]">
-      <div class="databox__header fr-p-2w">
-        <div class="databox__header-title">
-          <div class="fr-col databox__header-icon">
-            <h4 class="databox__header-serietitle fr-h6 fr-mb-0">
-              <span id="tooltip-target">{{ dataBoxTitle }}</span>
-            </h4>
-          </div>
-          <div class="fr-col-3 databox__header-fullScreenIcon">
-            <button
-              id="button-tooltip"
-              class="infobulle-btn fr-btn fr-btn--tertiary-no-outline fr-p-0"
-              type="button"
-              aria-describedby="tooltip-btn"
-              aria-label="Afficher plus d'informations"
-            >
-              <span
-                class="fr-icon-question-line fr-icon--sm"
-                aria-hidden="true"
-              />
-            </button>
-            <span
-              id="tooltip-btn"
-              class="fr-tooltip fr-placement"
-              role="tooltip"
-              aria-hidden="true"
-            >
-              <p class="tooltip__title">
-                <span id="tooltip-target">{{ dataBoxTitle }}</span>
-              </p>
-              <p class="tooltip__description">{{ dataBoxDescription }}</p>
-            </span>
-            <!-- Bouton pour ouvrir la modale -->
-            <button
-              v-if="modalSettings.hasModal"
-              type="button"
-              class="fr-btn fr-btn--tertiary-no-outline fr-p-0"
-              :aria-controls="modalSettings.modalId"
-              aria-label="Afficher la modale"
-              @click="$emit('open-modal')"
-            >
-              <span
-                class="fr-icon-modal-fill fr-icon--sm"
-                aria-label="Afficher la modale"
-                aria-hidden="true"
-              />
-            </button>
-            <div
-              ref="dropdownContainer"
-              class="dropdown-wrapper"
-            >
-              <button
-                title="Dropdown"
-                type="button"
-                class="dropdown-toggle fr-btn fr-btn--tertiary-no-outline fr-p-0"
-                aria-label="Afficher le menu déroulant"
-                @click="toggleDropdown"
-              >
-                <span
-                  class="fr-icon-more-line fr-icon--sm"
-                  aria-hidden="true"
-                />
-              </button>
-              <div
-                class="dropdown-menu"
-                :class="{ show: isDropdownOpen }"
-              >
-                <div
-                  class="dropdown-menu"
-                  :class="{ show: isDropdownOpen }"
-                >
-                  <button
-                    v-for="action in dropdownActions"
-                    :key="action.id"
-                    class="dropdown-item"
-                    :aria-label="action.ariaLabel"
-                    :title="action.ariaLabel"
-                    type="submit"
-                    @click="performAction(action)"
-                  >
-                    {{ action.ariaLabel }}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Description et indicateur de tendance -->
-        <div
-          v-if="indicator"
-          class="databox__header-subSection"
+  <div
+    :id="'container-' + id"
+    class="fr-card fr-card--shadow databox"
+  >
+    <!-- Header -->
+    <div class="fr-p-2w databox__header">
+      <h3 class="fr-h6 fr-mb-0">
+        {{ title }}
+      </h3>
+
+      <div :class="'flex screenshot-hide-' + id">
+        <!-- Tooltip -->
+        <button
+          class="fr-btn--tooltip fr-btn"
+          type="button"
+          :aria-describedby="'tooltip-' + id"
+          title="Informations complémentaires sur le graphique"
         >
-          <div class="up-down__container">
-            <p
-              v-if="trendValue.includes('-')"
-              class="fr-text--xs fr-m-0"
-            >
-              En baisse de
-              <span
-                class="fr-badge fr-badge--brown-caramel fr-badge--sm fr-ml-1v"
-                :aria-label="'Baisse de ' + trendValue.replace('-', '').trim()"
-              >
-                <span
-                  class="fr-pr-1v"
-                  aria-hidden="true"
-                >↘ </span>
-                {{ trendValue.replace('-', '').trim() }} %
-              </span>
-            </p>
-            <p
-              v-else
-              class="fr-text--xs fr-m-0"
-            >
-              En hausse de
-              <span
-                class="fr-badge fr-badge--green-emeraude fr-badge--sm fr-ml-1v"
-                :aria-label="'Hausse de ' + trendValue.trim()"
-              >
-                <span
-                  class="fr-pr-1v"
-                  aria-hidden="true"
-                >↗ </span>
-                {{ trendValue.trim() }} %
-              </span>
-            </p>
-          </div>
+          Informations complémentaires sur le graphique
+        </button>
+
+        <div
+          v-if="tooltipTitle || tooltipContent"
+          :id="'tooltip-' + id"
+          class="fr-tooltip fr-placement"
+          role="tooltip"
+          aria-hidden="true"
+        >
+          <p
+            v-if="tooltipTitle"
+            class="fr-text--xs fr-mb-0 bold"
+          >
+            {{ tooltipTitle }}
+          </p>
+          <p
+            v-if="tooltipContent"
+            class="fr-text--xs fr-mb-0"
+          >
+            {{ tooltipContent }}
+          </p>
         </div>
 
-        <!-- Sélecteur de source -->
-        <div
-          v-if="addSources && selectOptions.length > 0"
-          class="databox__content-selectSection fr-pt-2w"
-        >
-          <select-source
-            :id-select="widgetId"
-            :optiondefault="defaultOption"
-            :ls-options="selectOptions"
-            @select-source="transfertSourceOption"
+        <!-- Modal -->
+        <button
+          v-if="fullscreen"
+          type="button"
+          class="fr-btn fr-btn--sm fr-icon-fullscreen-line fr-btn--tertiary-no-outline square"
+          data-fr-opened="false"
+          :aria-controls="'modal-' + id"
+          title="Afficher la modale"
+        />
+
+        <Teleport to="body">
+          <dialog-modal
+            :id="id"
+            :modal-title="modalTitle"
+            :modal-content="modalContent"
           />
-        </div>
-      </div>
+        </Teleport>
 
-      <!-- Contenu de la DataBox -->
-      <transition
-        name="fade-slide"
-        mode="out-in"
-      >
-        <div
-          v-if="shouldDisplayChart || shouldDisplayTable"
-          ref="chartContainer"
-          class="databox__content fr-p-2w"
+        <!-- More actions -->
+        <nav
+          v-if="screenshot || download"
+          role="navigation"
+          class="fr-translate fr-nav"
         >
-          <!-- Affichage de la valeur de l'indicateur -->
-          <div
-            v-if="indicator"
-            class="databox__content-indicator"
-          >
-            <p class="fr-display--xs fr-mb-0 databox__content-indicator-text">
-              {{ value }}
-            </p>
-          </div>
-
-          <!-- Graphique -->
-          <div
-            v-if="shouldDisplayChart"
-            :ref="`chart-section-${widgetId}`"
-            class="databox__content-chart"
-          >
-            <div class="databox__content-chart-section-canvas">
-              <component
-                :is="component"
-                v-bind="chartProps"
-              />
-            </div>
-          </div>
-
-          <!-- Légende du graphique -->
-          <div
-            v-if="shouldDisplayLegend"
-            class="databox__content-legendContainer"
-          >
-            <div
-              v-for="(name, index) in serieObj.serie_values.name"
-              :key="index"
-              class="databox__content-legend"
-            >
-              <div
-                class="databox__content-legend-icon fr-mr-1w"
-                :style="{ 'background-color': getHexaFromName(serieObj.serie_values.color[index]) }"
-              />
-              <div>
-                <p class="fr-m-0 fr-text--xs">
-                  {{ name }}
-                </p>
-              </div>
-            </div>
-          </div>
-          <!-- Tableau -->
-          <div
-            v-if="shouldDisplayTable"
-            :ref="`table-section-${widgetId}`"
-            class="databox__content-table-responsive"
-          >
-            <table-vue
-              :caption-title="captionTitle"
-              :table-data="serieObj.table"
-              :is-multiline-table-header="isMultilineTableHeader"
+          <div class="fr-nav__item">
+            <button
+              class="fr-btn fr-btn--sm fr-icon-more-line fr-btn--tertiary-no-outline square"
+              :aria-controls="'translate-' + id"
+              aria-expanded="false"
+              title="Plus d'actions"
             />
-          </div>
-        </div>
-      </transition>
-
-      <!-- Pied de page : Source, mise à jour et icônes -->
-      <div class="databox__footer">
-        <div class="databox__footer-content fr-p-2w">
-          <div class="databox__footer-content-text">
-            <p class="fr-text--xs fr-mb-0">
-              {{ source }}, {{ changeDateFormat(dataBoxDate) }}
-            </p>
-          </div>
-          <div
-            v-if="!indicator"
-            class="fr-ml-md-6w databox__footer-content-icon"
-          >
             <div
-              v-if="component"
-              class="databox__footer-content-segmented-controls"
+              :id="'translate-' + id"
+              class="fr-collapse fr-translate__menu fr-menu"
             >
-              <div class="databox__footer-content-calltoaction fr-pr-1w" />
-              <segmented-controls
-                :show-icons="true"
-                :idcontrol="serieObj.id_accordion + '1'"
-                @chart-selected="handleChartSelected"
-              />
+              <ul class="fr-menu__list">
+                <li v-if="screenshot">
+                  <button
+                    class="fr-translate__language fr-nav__link"
+                    title="Prendre une capture d'écran"
+                    @click="screenshotChart()"
+                  >
+                    Capture d'écran
+                  </button>
+                </li>
+                <li v-if="download">
+                  <button
+                    class="fr-translate__language fr-nav__link"
+                    title="Télécharger les données en CSV"
+                    @click="downloadCSV(selectedView)"
+                  >
+                    Télécharger en CSV
+                  </button>
+                </li>
+              </ul>
             </div>
           </div>
+        </nav>
+      </div>
+    </div>
+
+    <div class="fr-px-2w databox__data">
+      <!-- Source -->
+      <div
+        v-if="chartSources.length > 1"
+        class="databox__source"
+      >
+        <div class="fr-select-group">
+          <label
+            class="fr-label fr-text--xs fr-mb-0"
+            :for="'select-' + id"
+          > 
+            Choisir une source de données
+          </label>
+
+          <select
+            :id="'select-' + id"
+            v-model="currentSource"
+            name="select"
+            class="fr-select fr-mt-0"
+          >
+            <option
+              v-for="option in generateOptions(chartSources)"
+              :key="option.value"
+              :value="option.value"
+            >
+              {{ option.label }}
+            </option>
+          </select>
         </div>
       </div>
+
+      <!-- Tendency -->
+      <div
+        v-if="trend"
+        class="databox__tendency"
+      >
+        <p
+          v-if="trend.includes('-')"
+          class="fr-text--xs fr-m-0"
+        >
+          En baisse
+          <span
+            class="fr-badge fr-badge--error fr-badge--no-icon fr-badge--sm fr-ml-1v"
+            :aria-label="'Baisse de ' + trend.replace('-', '').trim()"
+          >
+            <span
+              :class="'fr-pr-1v screenshot-hide-' + id"
+              aria-hidden="true"
+            >↘ </span>
+            {{ trend.replace('-', '').trim() }}
+          </span>
+        </p>
+        <p
+          v-else
+          class="fr-text--xs fr-m-0"
+        >
+          En hausse
+          <span
+            class="fr-badge fr-badge--success fr-badge--no-icon fr-badge--sm fr-ml-1v"
+            :aria-label="'Hausse de ' + trend.trim()"
+          >
+            <span
+              :class="'fr-pr-1v screenshot-hide-' + id"
+              aria-hidden="true"
+            >↗ </span>
+            {{ trend.trim() }}
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="fr-p-2w databox__content">
+      <div
+        :class="selectedView === 'table' ? 'fr-hidden' : 'w-full'"
+        :aria-hidden="selectedView === 'chart'"
+      >
+        <!-- Bulk create all source divs for teleport -->
+        <div
+          v-for="(chartSource, i) in chartSources"
+          :id="id + '-chart-' + chartSource"
+          :key="i"
+          :class="currentSource !== chartSource ? 'fr-hidden' : ''"
+        />
+      </div>
+      <div
+        :class="selectedView === 'chart' ? 'fr-hidden' : 'w-full'"
+        :aria-hidden="selectedView === 'table'"
+      >
+        <!-- Bulk create all source divs for teleport -->
+        <div
+          v-for="(tableSource, i) in tableSources.filter((s) => s !== 'global')"
+          :id="id + '-table-' + tableSource"
+          :key="i"
+          :class="currentSource !== tableSource ? 'fr-hidden' : ''"
+        />
+        <!-- Also create a global chart in case only one table is provided -->
+        <div
+          v-if="tableSources.includes('global')"
+          :id="id + '-table-global'"
+          :class="tableSources.includes(currentSource) ? 'fr-hidden' : ''"
+        />
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="fr-p-2w databox__footer">
+      <p class="fr-text--xs fr-mb-0">
+        {{ source }}, {{ date }}
+      </p>
+
+      <fieldset
+        v-if="segmentedControl"
+        :class="'fr-segmented fr-segmented--no-legend fr-segmented--sm screenshot-hide-' + id"
+      >
+        <legend class="fr-segmented__legend">
+          Choisir votre vue
+        </legend>
+        <div class="fr-segmented__elements">
+          <div class="fr-segmented__element">
+            <input
+              :id="'segmented-chart-' + id"
+              value="1"
+              type="radio"
+              checked
+              :name="'segmented-' + id"
+              @change="changeView('chart')"
+            >
+            <label
+              class="fr-label"
+              :for="'segmented-chart-' + id"
+            >
+              <span
+                class="fr-icon-pie-chart-2-fill fr-icon--sm"
+                aria-hidden="true"
+              />
+              <span class="fr-sr-only">Vue graphique</span>
+            </label>
+          </div>
+          <div class="fr-segmented__element">
+            <input
+              :id="'segmented-table-' + id"
+              value="2"
+              type="radio"
+              :name="'segmented-' + id"
+              @change="changeView('table')"
+            >
+            <label
+              class="fr-label"
+              :for="'segmented-table-' + id"
+            >
+              <span
+                class="fr-icon-table-2 fr-icon fr-icon--sm"
+                aria-hidden="true"
+              />
+              <span class="fr-sr-only">Vue tableau</span>
+            </label>
+          </div>
+        </div>
+      </fieldset>
     </div>
   </div>
 </template>
 
-<script>
-import PieChart from './PieChart.vue';
-import BarChart from './BarChart.vue';
-import MapChart from './MapChart.vue';
-import MultiLineChart from './MultiLineChart.vue';
-import SelectSource from './SelectSource.vue';
-import SegmentedControls from './SegmentedControls.vue';
-import TableVue from './TableVue.vue';
-import { mixin, changeDateFormat } from '@/utils/global.js';
+<script setup>
+import { computed, ref } from 'vue';
+import html2canvas from 'html2canvas';
+import DialogModal from '@/components/DialogModal.vue';
 
-export default {
-  name: 'DataBox',
-  components: {
-    PieChart,
-    BarChart,
-    MultiLineChart,
-    SelectSource,
-    SegmentedControls,
-    TableVue,
-    MapChart,
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
   },
-  mixins: [mixin],
-  props: {
-    dropdownActions: {
-      type: Array,
-      default: () => [
-        { id: '1', ariaLabel: "Capture d'écran", action: 'actionBtn1' },
-        { id: '2', ariaLabel: 'Télécharger CSV', action: 'actionBtn2' },
-      ],
-    },
-    unitTooltip: {
-      type: String,
-      default: '',
-    },
-    isMultilineTableHeader: {
-      type: [Boolean, String],
-      default: true,
-    },
-    dataBoxTitle: {
-      type: String,
-      default: 'Titre de la dataBox',
-    },
-    dataBoxDescription: {
-      type: String,
-      default: 'Description de la dataBox.',
-    },
-    indicator: {
-      type: [Boolean, String],
-      default: false,
-    },
-    trendValue: {
-      type: String,
-      default: '5',
-    },
-    value: {
-      type: String,
-      default: '1500',
-    },
-    component: {
-      type: String,
-      default: 'PieChart',
-    },
-    addSources: {
-      type: [Boolean, String],
-      default: false,
-    },
-    selectOptions: {
-      type: Array,
-      default: () => [{ value: 'ubm', label: 'Exposition médiatique' }],
-    },
-    captionTitle: {
-      type: String,
-      default: 'Titre du tableau',
-    },
-    defaultOption: {
-      type: String,
-      default: 'ubm',
-    },
-    dataBoxDate: {
-      type: String,
-      default: '2024-04-22',
-    },
-    source: {
-      type: String,
-      default: 'SIG',
-    },
-    modalSettings: {
-      type: Object,
-      default: () => ({
-        hasModal: false,
-        modalId: 'fr-modal-1',
-      }),
-      validator(value) {
-        if (typeof value.hasModal !== 'boolean' || typeof value.modalId !== 'string') {
-          return false;
-        }
-        return true;
-      },
-    },
-    serieObj: {
-      type: Object,
-      required: false,
-      default: () => ({
-        showGraph: true,
-        unitTooltip: '%',
-        serie_values: {
-          x: [['Serie 1', 'Serie 2', 'Serie 3']],
-          y: [[100, 200, 300]],
-        },
-        table: [
-          ['Serie 1', '100'],
-          ['Serie 2', '200'],
-          ['Serie 3', '300'],
-        ],
-      }),
-      validator() {
-        return true;
-      },
-    },
+  title: {
+    type: String,
+    required: true,
   },
-  emits: ['open-modal', 'select-source-api'],
-  data() {
-    return {
-      widgetId: '',
-      isDropdownOpen: false,
-      localShowGraph: this.serieObj.showGraph,
-    };
+  tooltipTitle: {
+    type: String,
+    default: '',
   },
-  computed: {
-    chartProps() {
-      const result = {};
-      const keysToStringify = ['x', 'y', 'name', 'color', 'vline', 'vlinecolor', 'vlinename', 'hline', 'hlinecolor', 'hlinename'];
+  tooltipContent: {
+    type: String,
+    default: '',
+  },
+  source: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: String,
+    required: true,
+  },
+  defaultSource: {
+    type: String,
+    default: null,
+  },
+  trend: {
+    type: String,
+    default: null,
+  },
+  segmentedControl: {
+    type: [Boolean, String],
+    default: true,
+  },
+  fullscreen: {
+    type: [Boolean, String],
+    default: false,
+  },
+  screenshot: {
+    type: [Boolean, String],
+    default: false,
+  },
+  download: {
+    type: [Boolean, String],
+    default: false,
+  },
+  modalTitle: {
+    type: String,
+    default: '',
+  },
+  modalContent: {
+    type: String,
+    default: '',
+  },
+});
 
-      keysToStringify.forEach((key) => {
-        if (this.serieObj.serie_values && this.serieObj.serie_values[key]) {
-          result[key] = JSON.stringify(this.serieObj.serie_values[key]);
-        }
-      });
+const chartSources = ref([]);
+const tableSources = ref([]);
 
-      result.unitTooltip = this.serieObj.unitTooltip || '';
+chartSources.value = [...document.querySelectorAll(`[databox-id="${props.id}"][databox-type="chart"]`)].map((el) => el.getAttribute('databox-source') || 'default');
 
-      return result;
-    },
-    shouldDisplayLegend() {
-      return this.localShowGraph && this.component && !this.indicator;
-    },
-    shouldDisplayChart() {
-      return this.localShowGraph && this.component && !this.indicator;
-    },
-    shouldDisplayTable() {
-      return !this.localShowGraph;
-    },
-  },
-  mounted() {
-    // Utiliser ResizeObserver sans modifier directement les dimensions dans le callback
-    this.resizeObserver = new ResizeObserver(() => {
-      this.updateHeight(); // Appel de la méthode pour ajuster la hauteur
-    });
+tableSources.value = [...document.querySelectorAll(`[databox-id="${props.id}"][databox-type="table"]`)].map((el) => el.getAttribute('databox-source') || 'global');
 
-    // Observer le container du graphique
-    if (this.$refs.chartContainer) {
-      this.resizeObserver.observe(this.$refs.chartContainer);
-    }
+const currentSource = ref(chartSources.value.includes(props.defaultSource) ? props.defaultSource : chartSources.value[0]);
 
-    // Ajout d'un écouteur pour détecter les clics en dehors du dropdown
-    document.addEventListener('click', this.handleClickOutside);
-  },
-  beforeUnmount() {
-    // Retirer l'écouteur de l'événement de clic
-    document.removeEventListener('click', this.handleClickOutside);
+const generateOptions = (source) => {
+  return source.map((option) => ({
+    label: option.charAt(0).toUpperCase() + option.slice(1).replace(/-/g, ' '),
+    value: option,
+  }));
+};
 
-    // Nettoyage du ResizeObserver
-    if (this.resizeObserver) {
-      this.resizeObserver.disconnect(); // Arrête l'observation
-    }
-  },
-  methods: {
-    changeDateFormat,
-    emitOpenModal() {
-      this.$emit('open-modal');
-    },
-    updateHeight() {
-      const chartContainer = this.$refs.chartContainer;
-      if (chartContainer) {
-        // Utilisation de requestAnimationFrame pour éviter la boucle d'updates
-        requestAnimationFrame(() => {
-          const parentHeight = chartContainer.parentElement.offsetHeight;
-          const parentWidth = chartContainer.parentElement.offsetWidth;
-          // Ajuster la hauteur du conteneur de manière appropriée
-          const newHeight = Math.min(parentHeight, parentWidth * 0.6); // Par exemple, 60% de la largeur
-          this.$el.style.setProperty('--chart-height', `${newHeight}px`);
-        });
-      }
-    },
-    toggleView(viewType) {
-      this.showGraph = viewType === 'graphique';
-      this.updateHeight();
-    },
-    toggleDropdown() {
-      this.isDropdownOpen = !this.isDropdownOpen;
-    },
-    handleClickOutside(event) {
-      if (this.$refs.dropdownContainer && !this.$refs.dropdownContainer.contains(event.target)) {
-        this.isDropdownOpen = false;
-      }
-    },
-    transfertSourceOption(selectedOption) {
-      this.$emit('select-source-api', selectedOption);
-    },
-    handleChartSelected(type) {
-      this.localShowGraph = type === 'graphique';
-    },
-    performAction(action) {
-      if (typeof this[action.action] === 'function') {
-        this[action.action](); // Exécute la méthode correspondante
-      } else {
-        console.warn(`Action ${action.action} non définie`);
-      }
-      this.isDropdownOpen = false;
-    },
-    actionBtn1() {
-      // Ici, logique pour la première action (par exemple, capture d'écran)
-      alert('Action 1 effectuée !');
-    },
-    actionBtn2() {
-      // Ici, logique pour la deuxième action (par exemple, télécharger CSV)
-      alert('Action 2 effectuée !');
-    },
-  },
+// Cast props to boolean
+const segmentedControl = computed(() => [true, 'true', ''].includes(props.segmentedControl));
+const fullscreen = computed(() => [true, 'true', ''].includes(props.fullscreen));
+const screenshot = computed(() => [true, 'true', ''].includes(props.screenshot));
+const download = computed(() => [true, 'true', ''].includes(props.download));
+
+const selectedView = ref('chart');
+
+const changeView = (view) => {
+  selectedView.value = view;
+};
+
+const downloadCSV = (mode) => {
+  const dom = document.querySelector(`[databox-id="${props.id}"][databox-type="${mode}"][databox-source="${currentSource.value}"]`);
+  const x = JSON.parse(dom.getAttribute('x'));
+  const y = JSON.parse(dom.getAttribute('y'));
+  const name = JSON.parse(dom.getAttribute('name'));
+  const tableName = dom.getAttribute('table-name') ?? '';
+
+  let csv = [];
+  
+  csv.push(tableName + ',' + name.join(',') + '\n');
+  
+  const rows = mode === 'chart' ? x[0] : x;
+
+  rows.forEach((x, i) => {
+    csv.push(`${x},${y.map((y) => y[i]).join(',')}\n`);
+  });
+
+  const blob = new Blob(csv, { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'data.csv';
+  a.click();
+  window.URL.revokeObjectURL(url);
+};
+
+const screenshotChart = () => {
+  const databox = document.getElementById(`container-${props.id}`);
+
+  const dom = databox.querySelectorAll('.screenshot-hide-' + props.id);
+  dom.forEach((item) => (item.style.display = 'none'));
+
+  const data = databox.querySelector('.databox__data');
+  const select = databox.querySelector(`#select-${props.id}`);
+  const tendency = databox.querySelector('.databox__tendency');
+
+  // Do not remove above lines. Needed for image custom CSS
+  data.style.display = 'block';
+  select.style.boxShadow = 'none';
+  select.style.appearance = 'none';
+  tendency.style.marginTop = '20px';
+
+  // Transform databox to canvas to screenshot it
+  html2canvas(databox).then(function (canvas) {
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL('image/png');
+    a.download = 'chart.png';
+    a.click();
+
+    dom.forEach((item) => item.style.removeProperty('display'));
+
+    // Do not remove above lines. Needed for resetting image custom CSS
+    data.style.removeProperty('display');
+    select.style.removeProperty('box-shadow');
+    select.style.removeProperty('appearance');
+    tendency.style.removeProperty('margin-top');
+  });
 };
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/dataBox.scss';
+@import '@/styles/DataBox.scss';
 </style>

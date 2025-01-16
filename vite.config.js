@@ -25,5 +25,13 @@ export default {
       },
     },
   },
-  plugins: [vue()],
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => ['data-box', 'bar-chart', 'bar-line-chart', 'gauge-chart', 'line-chart', 'map-chart', 'map-chart-reg', 'multiline-chart', 'pie-chart', 'radar-chart', 'scatter-chart', 'table-chart'].includes(tag),
+        },
+      },
+    }),
+  ],
 };

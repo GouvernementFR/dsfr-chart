@@ -32,32 +32,22 @@
     }
   }
 
-  .r_col {
-    align-self: center;
+  .legende_dot {
+    margin-left: 0px;
+    min-width: 0.8rem;
+    width: 0.8rem;
+    height: 0.8rem;
+    min-width: 0.8rem;
+    display: inline-block;
+    margin-top: 0.25rem;
+  }
 
-    .flex {
-      display: flex;
-      width: 100%;
-      margin: auto;
+  .target_legend {
+    border: 1px solid var(--border-default-grey);
+    background-color: var(--background-raised-grey);
+  }
 
-      .legende_dot {
-        margin-left: 0px;
-        min-width: 0.8rem;
-        width: 0.8rem;
-        height: 0.8rem;
-        min-width: 0.8rem;
-        display: inline-block;
-        margin-top: 0.25rem;
-      }
-    }
-
-    .target_legend {
-      border: 1px solid var(--border-default-grey);
-      background-color: var(--background-raised-grey);
-    }
-
-    .actual_legend {
-      background-color: var(--blue-france-850-200);
-    }
+  .actual_legend {
+    background-color: var(--blue-france-850-200);
   }
 }
