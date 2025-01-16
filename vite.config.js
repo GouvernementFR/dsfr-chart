@@ -8,6 +8,7 @@ export default {
       '@': path.resolve(__dirname, './src'),
     },
   },
+  base: './',
   build: {
     outDir: 'docs',
     rollupOptions: {
