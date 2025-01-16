@@ -31,7 +31,7 @@
         :component="[{name: 'data-box'}, {name: 'pie-chart'}, {name: 'table-chart'}]"
         :attributes="[
           chartData.dataBox.simple,
-          chartData.pieChart.doughnut,
+          {dataBoxId: 'simple', dataBoxType: 'chart', ...chartData.pieChart.doughnut},
           {dataBoxId: 'simple', dataBoxType: 'table', x: JSON.stringify(JSON.parse(chartData.pieChart.doughnut.x)[0]), y: chartData.pieChart.doughnut.y, name: '[&quot;Pourcentage&quot;]', tableName: 'Catégories'}
         ]"
       />
@@ -103,7 +103,7 @@ import CodeBlock from './CodeBlock.vue';
 
 const scatterData = JSON.parse(chartData.scatterChart.linked.y);
 
-const defaultScatterData = JSON.stringify(scatterData)
-const sortedScatterData = JSON.stringify(scatterData.map(arr => arr.sort((a, b) => a - b)))
-const reversedScatterData = JSON.stringify(scatterData.map(arr => arr.reverse()))
+const defaultScatterData = JSON.stringify(scatterData);
+const sortedScatterData = JSON.stringify(scatterData.map((arr) => arr.sort((a, b) => a - b)));
+const reversedScatterData = JSON.stringify(scatterData.map((arr) => arr.reverse()));
 </script>
