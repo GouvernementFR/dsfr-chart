@@ -51,7 +51,7 @@
     "chart.js": "^4.4.7",
     "chroma-js": "^3.1.2",
     "d3-scale": "^4.0.2",
-    "html2canvas": "^1.4.1",
+    "html-to-image": "^1.11.11",
     "vue": "^3.5.13"
   },
   "devDependencies": {

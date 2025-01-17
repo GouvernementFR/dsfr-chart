@@ -112,7 +112,7 @@
           <label
             class="fr-label fr-text--xs fr-mb-0"
             :for="'select-' + id"
-          > 
+          >
             Choisir une source de données
           </label>
 
@@ -268,7 +268,7 @@
 
 <script setup>
 import { computed, ref } from 'vue';
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 import DialogModal from '@/components/DialogModal.vue';
 
 const props = defineProps({
@@ -366,9 +366,9 @@ const downloadCSV = (mode) => {
   const tableName = dom.getAttribute('table-name') ?? '';
 
   let csv = [];
-  
+
   csv.push(tableName + ',' + name.join(',') + '\n');
-  
+
   const rows = mode === 'chart' ? x[0] : x;
 
   rows.forEach((x, i) => {
@@ -401,20 +401,25 @@ const screenshotChart = () => {
   tendency.style.marginTop = '20px';
 
   // Transform databox to canvas to screenshot it
-  html2canvas(databox).then(function (canvas) {
-    const a = document.createElement('a');
-    a.href = canvas.toDataURL('image/png');
-    a.download = 'chart.png';
-    a.click();
+  toPng(databox)
+    .then((dataUrl) => {
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = 'chart.png';
+      a.click();
+    })
+    .catch((error) => {
+      console.error('Error while taking screenshot', error);
+    })
+    .finally(() => {
+      dom.forEach((item) => item.style.removeProperty('display'));
 
-    dom.forEach((item) => item.style.removeProperty('display'));
-
-    // Do not remove above lines. Needed for resetting image custom CSS
-    data.style.removeProperty('display');
-    select.style.removeProperty('box-shadow');
-    select.style.removeProperty('appearance');
-    tendency.style.removeProperty('margin-top');
-  });
+      // Do not remove above lines. Needed for resetting image custom CSS
+      data.style.removeProperty('display');
+      select.style.removeProperty('box-shadow');
+      select.style.removeProperty('appearance');
+      tendency.style.removeProperty('margin-top');
+    });
 };
 </script>
 
