@@ -1,0 +1,6 @@
+services:
+  playwright:
+    build: .
+    volumes:
+      - .:/usr/src/app
+      - ./tests/__snapshots__:/usr/src/app/tests/__snapshots__

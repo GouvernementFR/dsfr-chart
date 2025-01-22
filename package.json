@@ -28,7 +28,7 @@
     "storybook": "NODE_OPTIONS=--max_old_space_size=4096 storybook dev -p 6006",
     "build:storybook": "storybook build",
     "test": "playwright test",
-    "test:update-snapshots": "playwright test --update-snapshots"
+    "test:update-snapshots": "playwright test --update-snapshots --reporter=line"
   },
   "files": [
     "/dist/BarChart",
