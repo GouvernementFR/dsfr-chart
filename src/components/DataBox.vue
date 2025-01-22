@@ -29,7 +29,7 @@
         >
           <p
             v-if="tooltipTitle"
-            class="fr-text--xs fr-mb-0 bold"
+            class="fr-text--xs fr-mb-0 fr-text--bold"
           >
             {{ tooltipTitle }}
           </p>
@@ -45,7 +45,7 @@
         <button
           v-if="fullscreen"
           type="button"
-          class="fr-btn fr-btn--sm fr-icon-fullscreen-line fr-btn--tertiary-no-outline square"
+          class="fr-btn fr-btn--sm fr-icon-fullscreen-line fr-btn--tertiary-no-outline fr-ratio-1x1"
           data-fr-opened="false"
           :aria-controls="'modal-' + id"
           title="Afficher la modale"
@@ -67,7 +67,7 @@
         >
           <div class="fr-nav__item">
             <button
-              class="fr-btn fr-btn--sm fr-icon-more-line fr-btn--tertiary-no-outline square"
+              class="fr-btn fr-btn--sm fr-icon-more-line fr-btn--tertiary-no-outline fr-ratio-1x1"
               :aria-controls="'translate-' + id"
               aria-expanded="false"
               title="Plus d'actions"

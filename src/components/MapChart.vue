@@ -77,7 +77,7 @@
               :style="{ display: displayGuadeloupe }"
             >
               <span
-                class="fr-text--xs fr-my-1w"
+                class="om_title fr-text--xs fr-my-1w"
                 :style="{ color: textMention }"
               >Guadeloupe</span>
               <guadeloupe
@@ -106,7 +106,7 @@
             </div>
             <div
               class="om fr-col-4 fr-col-sm fr-ml-1v"
-              :style="{ display: displayGuyanne }"
+              :style="{ display: displayGuyane }"
             >
               <span
                 class="fr-text--xs fr-my-1w"
@@ -257,7 +257,7 @@ export default {
       displayMartinique: '',
       displayMayotte: '',
       displayReunion: '',
-      displayGuyanne: '',
+      displayGuyane: '',
       colorStrokeDOM: '#FFFFFF',
       textMention: '',
     };
@@ -398,14 +398,14 @@ export default {
           this.displayMartinique = 'none';
           this.displayMayotte = 'none';
           this.displayReunion = 'none';
-          this.displayGuyanne = 'none';
+          this.displayGuyane = 'none';
           // Setting visibility for DOM regions
           if ((self.zoomDep === '971' && self.level === 'dep') || (self.zoomDep === '01' && self.level === 'reg')) {
             this.displayGuadeloupe = '';
           } else if ((self.zoomDep === '972' && self.level === 'dep') || (self.zoomDep === '02' && self.level === 'reg')) {
             this.displayMartinique = '';
           } else if ((self.zoomDep === '973' && self.level === 'dep') || (self.zoomDep === '03' && self.level === 'reg')) {
-            this.displayGuyanne = '';
+            this.displayGuyane = '';
           } else if ((self.zoomDep === '974' && self.level === 'dep') || (self.zoomDep === '04' && self.level === 'reg')) {
             this.displayReunion = '';
           } else if ((self.zoomDep === '976' && self.level === 'dep') || (self.zoomDep === '06' && self.level === 'reg')) {
@@ -430,7 +430,7 @@ export default {
         this.displayMartinique = '';
         this.displayMayotte = '';
         this.displayReunion = '';
-        this.displayGuyanne = '';
+        this.displayGuyane = '';
       }
 
       // Remplir les colonnes de gauche

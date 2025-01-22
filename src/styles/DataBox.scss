@@ -1,3 +1,17 @@
+.fr-grid-row {
+  $var: 12;
+
+  [class^="fr-col"] {
+    @for $i from 1 through $var {
+      &:nth-child(#{$var - $i + 1}) {
+        .databox {
+          z-index: #{$i};
+        }
+      }
+    }
+  }
+}
+
 .databox__header,
 .databox__data,
 .databox__footer {
@@ -19,22 +33,10 @@
   margin: auto 0;
 }
 
-.fr-tooltip {
-  max-width: 220px;
-}
-
 .flex {
   display: flex;
 }
 
 .w-full {
   width: 100%;
-}
-
-.bold {
-  font-weight: bold;
-}
-
-.square {
-  aspect-ratio: 1;
 }

@@ -2,18 +2,8 @@
   display: flex;
   flex-direction: column;
 
-  .sep, .sep-viz {
+  .sep {
     border-bottom: 1px solid var(--border-default-grey);
-  }
-
-  @media (min-width: 62em) {
-    .sep-viz {
-      display: none;
-    }
-  }
-
-  .l_box_title {
-    color: border-default-blue-france;
   }
 
   .flex {
@@ -30,42 +20,14 @@
     }
   }
 
-  .l_box_number_container {
-    display: flex;
-    justify-content: space-between;
-
-    .l_box_trend {
-      &.down {
-        .trend_ico {
-          transform: rotate(90deg);
-        }
-      }
-
-      &.horizontal {
-        .trend_ico {
-          transform: rotate(45deg);
-        }
-      }
-    }
-  }
-
   .scale {
-    margin-top: auto;
-
-    .scale_container {
+    &_container {
       height: 1.5rem;
     }
 
-    div:last-child {
+    &_values {
       display: flex;
       justify-content: space-between;
-    }
-  }
-
-  @media (min-width: 36em) {
-    .l_box_number_container {
-      display: block;
-      justify-content: unset;
     }
   }
 }

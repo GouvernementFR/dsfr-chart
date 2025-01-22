@@ -26,7 +26,7 @@
             <p class="fr-text--xs fr-text-mention--grey fr-mt-1w fr-mb-0">
               {{ convertIntToHuman(init) }}
             </p>
-            <p class="fr-text--xs fr-text-mention--grey fr-mt-1w r-align fr-mb-0">
+            <p class="fr-text--xs fr-text-mention--grey fr-mt-1w fr-mb-0 fr-ml-auto fr-mr-0">
               {{ convertIntToHuman(target) }}
             </p>
           </div>
@@ -37,7 +37,7 @@
             <p class="fr-text--xs fr-text-mention--grey">
               {{ initDate }}
             </p>
-            <p class="fr-text--xs fr-text-mention--grey r-align">
+            <p class="fr-text--xs fr-text-mention--grey fr-ml-auto fr-mr-0">
               {{ targetDate }}
             </p>
           </div>

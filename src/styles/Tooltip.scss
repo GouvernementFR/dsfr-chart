@@ -12,7 +12,7 @@
   min-width: 7rem;
   max-width: 18rem;
 
-  .tooltip_header {
+  &_header {
     width: 100%;
     font-size: .75rem;
     max-height: 3.5rem;
@@ -33,7 +33,7 @@
     line-height: 1.2;
   }
 
-  .tooltip_body {
+  &_body {
     line-height: 1.67;
     display: flex;
     justify-content: space-between;

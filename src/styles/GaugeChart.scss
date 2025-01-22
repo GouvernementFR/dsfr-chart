@@ -7,28 +7,23 @@
       border: 1px solid var(--border-default-grey);
       background-color: var(--background-raised-grey);
       width: 100%;
-    }
 
-    .jauge-fill {
-      height: 100%;
-      background-color: var(--blue-france-850-200);
-      box-sizing: border-box;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+      &-fill {
+        height: 100%;
+        background-color: var(--blue-france-850-200);
+        box-sizing: border-box;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-    .jauge-text {
-      position: absolute;
-      left: 0;
-      margin-top: auto;
-      margin-bottom: auto;
-    }
-
-    .r-align {
-      margin-left: auto;
-      margin-right: 0;
+      &-text {
+        position: absolute;
+        left: 0;
+        margin-top: auto;
+        margin-bottom: auto;
+      }
     }
   }
 
