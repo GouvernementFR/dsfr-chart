@@ -396,8 +396,10 @@ const screenshotChart = () => {
 
   // Do not remove above lines. Needed for image custom CSS
   data.style.display = 'block';
-  select.style.boxShadow = 'none';
-  select.style.appearance = 'none';
+  if (select) {
+    select.style.boxShadow = 'none';
+    select.style.appearance = 'none';
+  }
   tendency.style.marginTop = '20px';
 
   // Transform databox to canvas to screenshot it
@@ -416,8 +418,10 @@ const screenshotChart = () => {
 
       // Do not remove above lines. Needed for resetting image custom CSS
       data.style.removeProperty('display');
-      select.style.removeProperty('box-shadow');
-      select.style.removeProperty('appearance');
+      if (select) {
+        select.style.removeProperty('box-shadow');
+        select.style.removeProperty('appearance');
+      }
       tendency.style.removeProperty('margin-top');
     });
 };
