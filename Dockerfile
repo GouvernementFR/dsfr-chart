@@ -1,12 +1,12 @@
 FROM node:22-slim
 
-WORKDIR /usr/src/app
+RUN npx playwright install --with-deps chromium
+
+COPY package*.json ./
+
+RUN npm ci
 
 COPY . .
-
-RUN npm install
-
-RUN npx playwright install --with-deps chromium
 
 RUN npm run build
 
