@@ -90,6 +90,8 @@ Puis lancer les tests:
 
 _Note 1: Pour accepter les régressions visuelles et les considérer comme la nouvelle norme, utiliser la commande `npm run test:update-snapshots`_
 
+___Il est conseillé de régénérer les snapshots via Docker pour une meilleure conformité avec la commande `docker composer run playwright`___
+
 _Note 2: Playwright échoue parfois à charger les stories de Storybook, ce qui fait échouer les tests. Pour palier à ce problème, augmenter le temps (en ms) attendu par la fonction `sleep` dans le fichier `visual-regression.test.js`._
 
 ## Publication NPM
