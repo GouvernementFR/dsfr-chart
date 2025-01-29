@@ -1,71 +1,76 @@
 <template>
-  <div
-    :ref="widgetId"
-    class="widget_container fr-grid-row"
+  <Teleport
+    :disabled="!databoxId && !databoxType && databoxSource === 'default'"
+    :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
-    <div class="r_col fr-col-12">
-      <div class="chart">
-        <div class="gauge-container">
-          <div
-            class="jauge"
-            :style="{ height: height }"
-          >
+    <div
+      :ref="widgetId"
+      class="widget_container fr-grid-row"
+    >
+      <div class="fr-col-12">
+        <div class="chart">
+          <div class="gauge-container">
             <div
-              class="jauge-fill"
-              :style="{ width: width + '%' }"
+              class="jauge"
+              :style="{ height: height }"
             >
-              <span class="jauge-text fr-text fr-text--sm fr-text-title--blue-france fr-pl-1w">{{ percentage }}%</span>
+              <div
+                class="jauge-fill"
+                :style="{ width: width + '%' }"
+              >
+                <span class="jauge-text fr-text fr-text--sm fr-text-title--blue-france fr-pl-1w">{{ percentage }}%</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="gauge-container">
-          <p class="fr-text--xs fr-text-mention--grey fr-mt-1w fr-mb-0">
-            {{ convertIntToHuman(init) }}
-          </p>
-          <p class="fr-text--xs fr-text-mention--grey fr-mt-1w r-align fr-mb-0">
-            {{ convertIntToHuman(target) }}
-          </p>
-        </div>
-        <div
-          v-if="initDate !== undefined && targetDate !== undefined"
-          class="gauge-container"
-        >
-          <p class="fr-text--xs fr-text-mention--grey">
-            {{ initDate }}
-          </p>
-          <p class="fr-text--xs fr-text-mention--grey r-align">
-            {{ targetDate }}
-          </p>
-        </div>
-        <div
-          v-if="legend"
-          class="flex"
-        >
-          <span class="legende_dot target_legend" />
-          <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">
-            Valeur cible
-          </p>
-        </div>
-        <div
-          v-if="legend"
-          class="flex fr-mt-3v"
-        >
-          <span class="legende_dot actual_legend" />
-          <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">
-            Valeur actuelle
-          </p>
-        </div>
-        <div
-          v-if="date !== undefined"
-          class="flex fr-mt-1w"
-        >
-          <p class="fr-text--xs">
-            Mise à jour : {{ date }}
-          </p>
+          <div class="gauge-container">
+            <p class="fr-text--xs fr-text-mention--grey fr-mt-1w fr-mb-0">
+              {{ convertIntToHuman(init) }}
+            </p>
+            <p class="fr-text--xs fr-text-mention--grey fr-mt-1w fr-mb-0 fr-ml-auto fr-mr-0">
+              {{ convertIntToHuman(target) }}
+            </p>
+          </div>
+          <div
+            v-if="initDate !== undefined && targetDate !== undefined"
+            class="gauge-container"
+          >
+            <p class="fr-text--xs fr-text-mention--grey">
+              {{ initDate }}
+            </p>
+            <p class="fr-text--xs fr-text-mention--grey fr-ml-auto fr-mr-0">
+              {{ targetDate }}
+            </p>
+          </div>
+          <div
+            v-if="legend"
+            class="flex"
+          >
+            <span class="legende_dot target_legend" />
+            <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">
+              Valeur cible
+            </p>
+          </div>
+          <div
+            v-if="legend"
+            class="flex fr-mt-3v fr-mb-1v"
+          >
+            <span class="legende_dot actual_legend" />
+            <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">
+              Valeur actuelle
+            </p>
+          </div>
+          <div
+            v-if="date !== undefined"
+            class="flex fr-mt-1w"
+          >
+            <p class="fr-text--xs">
+              Mise à jour : {{ date }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <script>
@@ -75,6 +80,18 @@ export default {
   name: 'GaugeChart',
   mixins: [mixin],
   props: {
+    databoxId: {
+      type: String,
+      default: null,
+    },
+    databoxType: {
+      type: String,
+      default: null,
+    },
+    databoxSource: {
+      type: String,
+      default: 'default',
+    },
     value: {
       type: Number,
       default: undefined,

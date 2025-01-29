@@ -78,19 +78,43 @@ Compiler tous les fichiers permettant d'obtenir un distribuable par graphique s�
 
 ## Test
 
+### Test en local (dev only, plus rapide)
+
 Les tests de régression visuelle sont exécutés sur les composants build à travers le StoryBook.
 
 Pour les exécuter il faut dans un premier temps build le projet :
 
 `npm run build`
 
+Et si ce n'est pas déjà fait, installer le navigateur utilisé par playwright :
+
+`npx playwright install --with-deps chromium`
+
 Puis lancer les tests:
 
 `npm run test`
 
-_Note 1: Pour accepter les régressions visuelles et les considérer comme la nouvelle norme, utiliser la commande `npm run test:update-snapshots`_
+_Note 1 : Pour accepter les régressions visuelles et les considérer comme la nouvelle norme, utiliser la commande `npm run test:update-snapshots`_
 
-_Note 2: Playwright échoue parfois à charger les stories de Storybook, ce qui fait échouer les tests. Pour palier à ce problème, augmenter le temps (en ms) attendu par la fonction `sleep` dans le fichier `visual-regression.test.js`._
+_Note 2 : Playwright échoue parfois à charger les stories de Storybook, ce qui fait échouer les tests. Pour palier à ce problème, augmenter le temps (en ms) attendu par la fonction `sleep` dans le fichier `visual-regression.test.js`._
+
+### Test avec Docker (recommandé, plus stable)
+
+Afin d'avoir un résultat conforme selon les différentes configurations, il est recommandé d'utiliser Docker pour les tests de régression visuelle.
+
+Pour cela, il faut d'abord build l'image Docker :
+
+`docker compose build`
+
+Puis lancer les tests :
+
+`docker compose up test`
+
+Ou pour lancer les tests de régression visuelle :
+
+`docker compose up snapshots`
+
+_Note : il reste conseiller d'analyser les différences à la main pour vérifier que les changements sont bien ceux attendus. Il peut y avoir malgré tout des pixels qui diffèrent._
 
 ## Publication NPM
 

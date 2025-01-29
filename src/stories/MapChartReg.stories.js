@@ -20,5 +20,10 @@ export const Default = {
     name: "Nom de l'indicateur",
     region: '93',
     date: '21/12/2022'
+  },
+  argTypes: {
+    date: {
+      control: 'text'
+    }
   }
 };

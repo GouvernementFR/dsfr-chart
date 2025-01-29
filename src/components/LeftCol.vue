@@ -44,7 +44,7 @@
         {{ convertFloatToHuman(props['valueNat'] || props['valueReg'] || props['value']) }}
       </p>
     </div>
-    <div class="scale">
+    <div class="scale fr-mt-auto">
       <div class="sep fr-my-2w" />
       <p
         class="fr-text--xs fr-mb-1w"
@@ -56,7 +56,7 @@
         class="scale_container"
         :style="{ background: gradient }"
       />
-      <div>
+      <div class="scale_values">
         <span class="min fr-text--sm fr-text--bold fr-mb-0">{{ convertFloatToHuman(props['min']) }}</span>
         <span class="max fr-text--sm fr-text--bold fr-mb-0">{{ convertFloatToHuman(props['max']) }}</span>
       </div>

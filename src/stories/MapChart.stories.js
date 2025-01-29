@@ -20,6 +20,11 @@ export const Departemental = {
     name: "Nom de l'indicateur",
     level: 'dep',
     date: '21/12/2022'
+  },
+  argTypes: {
+    date: {
+      control: 'text'
+    }
   }
 };
 
@@ -31,5 +36,10 @@ export const Regional = {
     name: "Nom de l'indicateur",
     level: 'reg',
     date: '21/12/2022'
+  },
+  argTypes: {
+    date: {
+      control: 'text'
+    }
   }
 };
