@@ -332,6 +332,10 @@ export default {
                 const divValue = tooltipEl.querySelector('.tooltip_value');
                 divValue.innerHTML = '';
 
+																// List series names for the tooltip
+																const series = JSON.parse(this.name)
+
+
                 // Iterate over each data point to set the color and value in the tooltip
                 tooltipModel.dataPoints.forEach((dataPoint) => {
                   const datasetIndex = dataPoint.datasetIndex;
@@ -346,8 +350,11 @@ export default {
 
                   divValue.innerHTML += `
                   <div class="tooltip_value-content" style="display: flex; align-items: center;">
-                    <span class="tooltip_dot" style="background-color:${color};"></span>
-                    <p class="tooltip_place fr-mb-0">${displayValue}</p>
+                   <span style="display: flex; align-items: left;">
+																				<span class="tooltip_dot" style="background-color:${color};"></span>
+                    ${series.length > 1 ? `<p class="tooltip_place fr-mb-0">${series[datasetIndex]} : </p>` : ''}
+																			</span>
+                   <p class="tooltip_place fr-mb-0">${displayValue}</p>
                   </div>
                 `;
                 });
