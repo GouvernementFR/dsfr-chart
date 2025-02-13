@@ -1,4 +1,4 @@
-.l_col {
+.map_info {
   display: flex;
   flex-direction: column;
 
@@ -8,16 +8,6 @@
 
   .flex {
     display: inline-flex;
-
-    .legende_dot {
-      min-width: 0.7rem;
-      width: 0.7rem;
-      height: 0.7rem;
-      display: inline-block;
-      margin-top: 0.4rem;
-      align-items: left;
-      margin-right: 0.1rem;
-    }
   }
 
   .scale {

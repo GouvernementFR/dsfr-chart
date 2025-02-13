@@ -61,11 +61,11 @@
 
         <!-- More actions -->
         <nav
-          v-if="screenshot || download"
+          v-if="screenshot || download || actions.length"
           role="navigation"
-          class="fr-translate fr-nav"
+          class="fr-translate fr-nav more-actions-menu"
         >
-          <div class="fr-nav__item">
+          <div class="fr-nav__item fr-nav__item--align-right">
             <button
               class="fr-btn fr-btn--sm fr-icon-more-line fr-btn--tertiary-no-outline fr-ratio-1x1"
               :aria-controls="'translate-' + id"
@@ -93,6 +93,18 @@
                     @click="downloadCSV(selectedView)"
                   >
                     Télécharger en CSV
+                  </button>
+                </li>
+                <li
+                  v-for="(action, i) in actions"
+                  :key="i"
+                >
+                  <button
+                    :id="slugify(action)"
+                    class="fr-translate__language fr-nav__link"
+                    :title="action"
+                  >
+                    {{ action }}
                   </button>
                 </li>
               </ul>
@@ -179,7 +191,7 @@
         :class="selectedView === 'table' ? 'fr-hidden' : 'w-full'"
         :aria-hidden="selectedView === 'chart'"
       >
-        <!-- Bulk create all source divs for teleport -->
+        <!-- Bulk create all charts source divs for teleport -->
         <div
           v-for="(chartSource, i) in chartSources"
           :id="id + '-chart-' + chartSource"
@@ -191,7 +203,7 @@
         :class="selectedView === 'chart' ? 'fr-hidden' : 'w-full'"
         :aria-hidden="selectedView === 'table'"
       >
-        <!-- Bulk create all source divs for teleport -->
+        <!-- Bulk create all table source divs for teleport -->
         <div
           v-for="(tableSource, i) in tableSources.filter((s) => s !== 'global')"
           :id="id + '-table-' + tableSource"
@@ -214,7 +226,7 @@
       </p>
 
       <fieldset
-        v-if="segmentedControl"
+        v-if="segmentedControl && chartSources.length > 0"
         :class="'fr-segmented fr-segmented--no-legend fr-segmented--sm screenshot-hide-' + id"
       >
         <legend class="fr-segmented__legend">
@@ -269,6 +281,7 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { toPng } from 'html-to-image';
+import { slugify } from '@/utils/global.js';
 import DialogModal from '@/components/DialogModal.vue';
 
 const props = defineProps({
@@ -285,6 +298,14 @@ const props = defineProps({
     default: '',
   },
   tooltipContent: {
+    type: String,
+    default: '',
+  },
+  modalTitle: {
+    type: String,
+    default: '',
+  },
+  modalContent: {
     type: String,
     default: '',
   },
@@ -320,13 +341,9 @@ const props = defineProps({
     type: [Boolean, String],
     default: false,
   },
-  modalTitle: {
-    type: String,
-    default: '',
-  },
-  modalContent: {
-    type: String,
-    default: '',
+  actions: {
+    type: [Array, String],
+    default: () => [],
   },
 });
 
@@ -351,8 +368,9 @@ const segmentedControl = computed(() => [true, 'true', ''].includes(props.segmen
 const fullscreen = computed(() => [true, 'true', ''].includes(props.fullscreen));
 const screenshot = computed(() => [true, 'true', ''].includes(props.screenshot));
 const download = computed(() => [true, 'true', ''].includes(props.download));
+const actions = computed(() => (typeof props.actions === 'string' ? JSON.parse(props.actions) : props.actions));
 
-const selectedView = ref('chart');
+const selectedView = ref(chartSources.value.length > 0 ? 'chart' : 'table');
 
 const changeView = (view) => {
   selectedView.value = view;

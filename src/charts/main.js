@@ -10,7 +10,6 @@ import GaugeChart from '@/components/GaugeChart.vue';
 import LineChart from '@/components/LineChart.vue';
 import MapChart from '@/components/MapChart.vue';
 import MapChartReg from '@/components/MapChartReg.vue';
-import MultiLineChart from '@/components/MultiLineChart.vue';
 import PieChart from '@/components/PieChart.vue';
 import RadarChart from '@/components/RadarChart.vue';
 import ScatterChart from '@/components/ScatterChart.vue';
@@ -24,7 +23,6 @@ customElements.define('gauge-chart', defineCustomElement(GaugeChart, { shadowRoo
 customElements.define('line-chart', defineCustomElement(LineChart, { shadowRoot: false }));
 customElements.define('map-chart-reg', defineCustomElement(MapChartReg, { shadowRoot: false }));
 customElements.define('map-chart', defineCustomElement(MapChart, { shadowRoot: false }));
-customElements.define('multiline-chart', defineCustomElement(MultiLineChart, { shadowRoot: false }));
 customElements.define('pie-chart', defineCustomElement(PieChart, { shadowRoot: false }));
 customElements.define('radar-chart', defineCustomElement(RadarChart, { shadowRoot: false }));
 customElements.define('scatter-chart', defineCustomElement(ScatterChart, { shadowRoot: false }));

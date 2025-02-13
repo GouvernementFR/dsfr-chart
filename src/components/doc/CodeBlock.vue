@@ -47,7 +47,11 @@ const props = defineProps({
 const components = Array.isArray(props.component) ? props.component : [props.component];
 const attributes = Array.isArray(props.attributes) ? props.attributes : [props.attributes];
 
-const toKebabCase = (str) => str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`).replace(/^-/, '');
+const toKebabCase = (str) =>
+  str
+    .replace('dataBox', 'databox')
+    .replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
+    .replace(/^-/, '');
 
 const tag = toKebabCase(components[0]?.name);
 const id = Math.floor(Math.random() * 1000);

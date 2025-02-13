@@ -1,6 +1,6 @@
 <template>
   <Teleport
-    :disabled="!databoxId && !databoxType && databoxSource === 'global'"
+    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'global')"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
     <div
@@ -21,7 +21,10 @@
                 </caption>
                 <thead>
                   <tr>
-                    <th scope="col">
+                    <th
+                      v-if="xparse.length"
+                      scope="col"
+                    >
                       {{ tableName }}
                     </th>
                     <th
@@ -46,8 +49,21 @@
                       :key="colIndex"
                       :class="getClass(colItem[rowIndex])"
                     >
-                      {{ convertIntToHumanTable(colItem[rowIndex]) }}
+                      {{ formatNumber(colItem[rowIndex]) }}
                     </td>
+                  </tr>
+                  <tr
+                    v-for="(rowItem, rowIndex) in lineParse"
+                    :key="rowIndex"
+                  >
+                    <!-- eslint-disable vue/no-v-html -->
+                    <td
+                      v-for="(cellItem, cellIndex) in rowItem"
+                      :key="cellIndex"
+                      :class="getClass(cellItem)"
+                      v-html="cellItem"
+                    />
+                    <!-- eslint-enable vue/no-v-html -->
                   </tr>
                 </tbody>
               </table>
@@ -60,11 +76,11 @@
 </template>
 
 <script>
-import { mixin } from '@/utils/global.js';
+import { chartMixins } from '@/utils/global.js';
 
 export default {
   name: 'TableChart',
-  mixins: [mixin],
+  mixins: [chartMixins],
   props: {
     databoxId: {
       type: String,
@@ -80,19 +96,23 @@ export default {
     },
     x: {
       type: String,
-      required: true,
+      default: '',
     },
     y: {
       type: String,
-      required: true,
+      default: '',
+    },
+    line: {
+      type: String,
+      default: '',
     },
     name: {
       type: String,
-      default: undefined,
+      default: '',
     },
     tableName: {
       type: String,
-      default: undefined,
+      default: '',
     },
   },
   data() {
@@ -101,12 +121,13 @@ export default {
       tableId: '',
       xparse: [],
       yparse: [],
+      lineParse: [],
       nameParse: [],
     };
   },
   created() {
-    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
-    this.tableId = 'table' + Math.floor(Math.random() * 1000);
+    this.tableId = 'dsfr-table-' + Math.floor(Math.random() * 1000);
+    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
   },
   mounted() {
     this.resetData();
@@ -116,14 +137,32 @@ export default {
     resetData() {
       this.xparse = [];
       this.yparse = [];
+      this.lineParse = [];
       this.nameParse = [];
     },
     getData() {
-      this.xparse = JSON.parse(this.x);
-      this.yparse = JSON.parse(this.y);
+      // Parsing des données
+      if (this.x && this.y) {
+        try {
+          this.xparse = JSON.parse(this.x ?? '[]');
+          this.yparse = JSON.parse(this.y ?? '[]');
+        } catch (error) {
+          console.error('Erreur lors du parsing des données x ou y:', error);
+          return;
+        }
+      }
+
+      if (this.line) {
+        try {
+          this.lineParse = JSON.parse(this.line ?? '[]');
+        } catch (error) {
+          console.error('Erreur lors du parsing des données line:', error);
+          return;
+        }
+      }
 
       let tmpNameParse = [];
-      if (this.name !== undefined) {
+      if (this.name) {
         try {
           tmpNameParse = JSON.parse(this.name);
         } catch (error) {
@@ -132,7 +171,15 @@ export default {
       }
 
       for (let i = 0; i < this.yparse.length; i++) {
-        if (tmpNameParse[i] !== undefined) {
+        if (tmpNameParse[i]) {
+          this.nameParse.push(tmpNameParse[i]);
+        } else {
+          this.nameParse.push('Série ' + (i + 1));
+        }
+      }
+
+      for (let i = 0; i < (this.lineParse.length ? this.lineParse[0].length : 0); i++) {
+        if (tmpNameParse[i]) {
           this.nameParse.push(tmpNameParse[i]);
         } else {
           this.nameParse.push('Série ' + (i + 1));
@@ -140,7 +187,17 @@ export default {
       }
     },
     getClass(value) {
-      return typeof value === 'number' ? 'text-right' : 'text-left';
+      let classes = '';
+      if (typeof value === 'string' && value.replace(/<[^>]*>/g, '').length > 132) {
+        classes += 'text-overflow ';
+      }
+      if (typeof value === 'number') {
+        classes += 'text-right ';
+      } else {
+        classes += 'text-left ';
+      }
+
+      return classes;
     },
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <Teleport
-    :disabled="!databoxId && !databoxType && databoxSource === 'default'"
+    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
     <div
@@ -24,14 +24,14 @@
           </div>
           <div class="gauge-container">
             <p class="fr-text--xs fr-text-mention--grey fr-mt-1w fr-mb-0">
-              {{ convertIntToHuman(init) }}
+              {{ formatNumber(init) }}
             </p>
             <p class="fr-text--xs fr-text-mention--grey fr-mt-1w fr-mb-0 fr-ml-auto fr-mr-0">
-              {{ convertIntToHuman(target) }}
+              {{ formatNumber(target) }}
             </p>
           </div>
           <div
-            v-if="initDate !== undefined && targetDate !== undefined"
+            v-if="initDate && targetDate"
             class="gauge-container"
           >
             <p class="fr-text--xs fr-text-mention--grey">
@@ -60,7 +60,7 @@
             </p>
           </div>
           <div
-            v-if="date !== undefined"
+            v-if="date"
             class="flex fr-mt-1w"
           >
             <p class="fr-text--xs">
@@ -74,11 +74,11 @@
 </template>
 
 <script>
-import { mixin } from '@/utils/global.js';
+import { chartMixins } from '@/utils/global.js';
 
 export default {
   name: 'GaugeChart',
-  mixins: [mixin],
+  mixins: [chartMixins],
   props: {
     databoxId: {
       type: String,
@@ -93,28 +93,28 @@ export default {
       default: 'default',
     },
     value: {
-      type: Number,
-      default: undefined,
+      type: [Number, String],
+      default: '',
     },
     percent: {
-      type: Number,
-      default: undefined,
+      type: [Number, String],
+      default: '',
     },
     init: {
-      type: Number,
+      type: [Number, String],
       required: true,
     },
     target: {
-      type: Number,
+      type: [Number, String],
       required: true,
     },
     initDate: {
       type: String,
-      default: undefined,
+      default: '',
     },
     targetDate: {
       type: String,
-      default: undefined,
+      default: '',
     },
     height: {
       type: String,
@@ -126,7 +126,7 @@ export default {
     },
     date: {
       type: String,
-      default: undefined,
+      default: '',
     },
   },
   data() {
@@ -139,11 +139,11 @@ export default {
       styleLegendUnder: '',
       colorOver: '',
       colorUnder: '',
-      width: undefined,
+      width: '',
     };
   },
   created() {
-    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
+    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
   },
   mounted() {
     this.createChart();
@@ -152,7 +152,7 @@ export default {
   },
   methods: {
     createChart() {
-      if (this.percent === undefined) {
+      if (!this.percent) {
         this.percentage = Math.round((100 * (this.value - this.init)) / (this.target - this.init));
       } else {
         this.percentage = Math.round(this.percent);

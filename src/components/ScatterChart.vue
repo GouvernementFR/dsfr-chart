@@ -1,6 +1,6 @@
 <template>
   <Teleport
-    :disabled="!databoxId && !databoxType && databoxSource === 'default'"
+    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
     <div
@@ -17,6 +17,7 @@
               </div>
             </div>
           </div>
+
           <canvas :ref="chartId" />
 
           <div class="chart_legend fr-mb-0 fr-mt-4v">
@@ -39,7 +40,6 @@
             v-for="(item, index) in hlineNameParse"
             :key="index"
             class="flex fr-mt-3v"
-            :style="{ 'margin-left': isSmall ? '0px' : style }"
           >
             <span
               class="legende_dash_line"
@@ -58,7 +58,6 @@
             v-for="(item, index) in vlineNameParse"
             :key="index"
             class="flex fr-mt-3v fr-mb-1v"
-            :style="{ 'margin-left': isSmall ? '0px' : style }"
           >
             <span
               class="legende_dash_line"
@@ -73,9 +72,8 @@
             </p>
           </div>
           <div
-            v-if="date !== undefined"
+            v-if="date"
             class="flex fr-mt-1w"
-            :style="{ 'margin-left': isSmall ? '0px' : style }"
           >
             <p class="fr-text--xs">
               Mise à jour : {{ date }}
@@ -89,14 +87,14 @@
 
 <script>
 import { Chart, ScatterController } from 'chart.js';
-import { mixin, configureChartDefaults } from '@/utils/global.js';
+import { chartMixins, configureChartDefaults } from '@/utils/global.js';
 import { choosePalette, generateScatterChartColors } from '@/utils/colors.js';
 
 Chart.register(ScatterController);
 
 export default {
   name: 'ScatterChart',
-  mixins: [mixin],
+  mixins: [chartMixins],
   props: {
     databoxId: {
       type: String,
@@ -118,37 +116,49 @@ export default {
       type: String,
       required: true,
     },
+    xMin: {
+      type: [Number, String],
+      default: '',
+    },
+    xMax: {
+      type: [Number, String],
+      default: '',
+    },
+    yMin: {
+      type: [Number, String],
+      default: '',
+    },
+    yMax: {
+      type: [Number, String],
+      default: '',
+    },
     name: {
       type: String,
-      default: undefined,
+      default: '',
     },
     vline: {
       type: String,
-      default: undefined,
+      default: '',
     },
     vlinecolor: {
       type: String,
-      default: undefined,
+      default: '',
     },
     vlinename: {
       type: String,
-      default: undefined,
+      default: '',
     },
     hline: {
       type: String,
-      default: undefined,
+      default: '',
     },
     hlinecolor: {
       type: String,
-      default: undefined,
+      default: '',
     },
     hlinename: {
       type: String,
-      default: undefined,
-    },
-    pointRadius: {
-      type: Number,
-      default: 5,
+      default: '',
     },
     showLine: {
       type: [Boolean, String],
@@ -156,10 +166,10 @@ export default {
     },
     date: {
       type: String,
-      default: undefined,
+      default: '',
     },
     aspectRatio: {
-      type: Number,
+      type: [Number, String],
       default: 2,
     },
     formatDate: {
@@ -169,10 +179,6 @@ export default {
     selectedPalette: {
       type: String,
       default: '',
-    },
-    highlightIndex: {
-      type: Number,
-      default: -1,
     },
     unitTooltip: {
       type: String,
@@ -185,12 +191,10 @@ export default {
     return {
       widgetId: '',
       chartId: '',
-      legendLeftMargin: 100,
       display: '',
       datasets: [],
       xAxisType: 'category',
-      labels: undefined,
-      opacity: [],
+      labels: [],
       xparse: [],
       yparse: [],
       nameParse: [],
@@ -204,20 +208,13 @@ export default {
       hlineColorParse: [],
       tmpHlineColorParse: [],
       hlineNameParse: [],
-      ymax: 0,
       colorHover: [],
-      isSmall: false,
     };
-  },
-  computed: {
-    style() {
-      return this.legendLeftMargin + 'px';
-    },
   },
   created() {
     configureChartDefaults();
-    this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
-    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
+    this.chartId = 'dsfr-chart-' + Math.floor(Math.random() * 1000);
+    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
   },
   mounted() {
     this.resetData();
@@ -230,20 +227,15 @@ export default {
         this.changeColors(e.detail.theme);
       }
     });
-    addEventListener('resize', () => {
-      this.isSmall = document.documentElement.clientWidth < 767;
-    });
   },
   methods: {
     resetData() {
       if (this.chart) {
         this.chart.destroy();
       }
-      this.legendLeftMargin = 100;
       this.datasets = [];
       this.xAxisType = 'category';
-      this.labels = undefined;
-      this.opacity = [];
+      this.labels = [];
       this.xparse = [];
       this.yparse = [];
       this.nameParse = [];
@@ -257,7 +249,6 @@ export default {
       this.hlineColorParse = [];
       this.tmpHlineColorParse = [];
       this.hlineNameParse = [];
-      this.ymax = 0;
       this.colorHover = [];
     },
     getData() {
@@ -271,7 +262,7 @@ export default {
       }
 
       let tmpNameParse = [];
-      if (this.name !== undefined) {
+      if (this.name) {
         try {
           tmpNameParse = JSON.parse(this.name);
         } catch (error) {
@@ -280,7 +271,7 @@ export default {
       }
 
       for (let i = 0; i < this.yparse.length; i++) {
-        if (tmpNameParse[i] !== undefined) {
+        if (tmpNameParse[i]) {
           this.nameParse.push(tmpNameParse[i]);
         } else {
           this.nameParse.push('Série ' + (i + 1));
@@ -288,18 +279,18 @@ export default {
       }
 
       // Récupération données Vline
-      if (this.vline !== undefined) {
+      if (this.vline) {
         this.vlineParse = JSON.parse(this.vline);
         let tmpVlineNameParse = [];
-        if (this.vlinename !== undefined) {
+        if (this.vlinename) {
           tmpVlineNameParse = JSON.parse(this.vlinename);
         }
-        if (this.vlinecolor !== undefined) {
+        if (this.vlinecolor) {
           this.tmpVlineColorParse = JSON.parse(this.vlinecolor);
         }
 
         for (let i = 0; i < this.vlineParse.length; i++) {
-          if (tmpVlineNameParse[i] !== undefined) {
+          if (tmpVlineNameParse[i]) {
             this.vlineNameParse.push(tmpVlineNameParse[i]);
           } else {
             this.vlineNameParse.push('V' + (i + 1));
@@ -308,18 +299,18 @@ export default {
       }
 
       // Récupération données Hline
-      if (this.hline !== undefined) {
+      if (this.hline) {
         this.hlineParse = JSON.parse(this.hline);
         let tmpHlineNameParse = [];
-        if (this.hlinename !== undefined) {
+        if (this.hlinename) {
           tmpHlineNameParse = JSON.parse(this.hlinename);
         }
-        if (this.hlinecolor !== undefined) {
+        if (this.hlinecolor) {
           this.tmpHlineColorParse = JSON.parse(this.hlinecolor);
         }
 
         for (let i = 0; i < this.hlineParse.length; i++) {
-          if (tmpHlineNameParse[i] !== undefined) {
+          if (tmpHlineNameParse[i]) {
             this.hlineNameParse.push(tmpHlineNameParse[i]);
           } else {
             this.hlineNameParse.push('H' + (i + 1));
@@ -332,14 +323,14 @@ export default {
       // Cas où x est numérique
       if (typeof this.xparse[0][0] === 'number') {
         const allX = [];
-        this.xparse.forEach((xj, j) => {
+        this.xparse.forEach((x, i) => {
           const dj = [];
-          const xsort = xj.map((a) => a).sort((a, b) => a - b);
+          const xsort = x.map((a) => a).sort((a, b) => a - b);
           xsort.forEach((k) => {
-            const index = xj.findIndex((element) => element === k);
+            const index = x.findIndex((element) => element === k);
             dj.push({
               x: k,
-              y: this.yparse[j][index],
+              y: this.yparse[i][index],
             });
             if (!allX.includes(k)) {
               allX.push(k);
@@ -347,7 +338,7 @@ export default {
           });
           data.push(dj);
         });
-        this.labels = undefined;
+        this.labels = [];
         this.xAxisType = 'linear';
       } else {
         // Cas où x est non numérique
@@ -355,8 +346,6 @@ export default {
         this.labels = this.xparse[0];
         this.xAxisType = 'category';
       }
-
-      this.ymax = Math.max.apply(null, this.hlineParse);
 
       // Chargement des couleurs
       this.loadColors();
@@ -367,8 +356,8 @@ export default {
         fill: false,
         borderColor: this.colorParse[index],
         backgroundColor: this.colorParse[index],
-        pointRadius: this.pointRadius,
-        pointHoverRadius: this.pointRadius,
+        pointRadius: 5,
+        pointHoverRadius: 5,
         pointHoverBackgroundColor: this.colorHover[index],
         pointHoverBorderColor: this.colorHover[index],
         showLine: this.showLine,
@@ -407,8 +396,8 @@ export default {
                 ctx.stroke();
                 ctx.restore();
 
-                this.yparse.forEach((yj) => {
-                  let y = chart.scales.y.getPixelForValue(yj[index]);
+                this.yparse.forEach((i) => {
+                  let y = chart.scales.y.getPixelForValue(i[index]);
                   ctx.save();
                   ctx.beginPath();
                   ctx.moveTo(chart.scales.x.left, y);
@@ -427,34 +416,27 @@ export default {
           aspectRatio: this.aspectRatio,
           scales: {
             x: {
+              offset: true,
               type: this.xAxisType,
               grid: {
                 drawOnChartArea: false,
-                lineWidth: 1,
               },
               ticks: {
-                callback: (value) => {
-                  if (this.formatDate) {
-                    return value.toString().substring(5, 7) + '/' + value.toString().substring(0, 4);
-                  } else {
-                    return value;
-                  }
-                },
+                padding: 10,
               },
+              ...(this.xMin ? { suggestedMin: this.xMin } : {}),
+              ...(this.xMax ? { suggestedMax: this.xMax } : {}),
             },
             y: {
               grid: {
                 drawTicks: false,
-                lineWidth: 1,
               },
               border: {
                 dash: [3],
               },
               ticks: {
-                padding: 4,
-                autoSkip: true,
+                padding: 5,
                 maxTicksLimit: 5,
-                suggestedMax: this.ymax,
                 callback: (value) => {
                   if (value >= 1000000000 || value <= -1000000000) {
                     return value / 1e9 + 'B';
@@ -466,9 +448,8 @@ export default {
                   return value;
                 },
               },
-              afterFit: (axis) => {
-                this.legendLeftMargin = axis.width;
-              },
+              ...(this.yMin ? { suggestedMin: this.yMin } : {}),
+              ...(this.yMax ? { suggestedMax: this.yMax } : {}),
             },
           },
           plugins: {
@@ -486,12 +467,10 @@ export default {
                     if (this.xAxisType === 'linear') {
                       const index = this.xparse[i].indexOf(tooltipItems.parsed.x);
                       if (index !== -1) {
-                        label.push(this.convertIntToHuman(this.yparse[i][index]));
-                      } else {
-                        label.push(undefined);
+                        label.push(this.formatNumber(this.yparse[i][index]));
                       }
                     } else {
-                      label.push(this.convertIntToHuman(set.data[tooltipItems.dataIndex]));
+                      label.push(this.formatNumber(set.data[tooltipItems.dataIndex]));
                     }
                   });
                   return label;
@@ -505,7 +484,7 @@ export default {
               },
               external: (context) => {
                 // Tooltip Element
-                const dom = this.databoxId ? document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) : this.$el.nextElementSibling;
+                const dom = document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) || this.$el.nextElementSibling;
 
                 const tooltipEl = dom.querySelector('.tooltip');
 
@@ -538,40 +517,43 @@ export default {
                   divDate.innerHTML = titleLines[0];
 
                   const divValue = tooltipEl.querySelector('.tooltip_value');
-
                   divValue.innerHTML = '';
+
                   bodyLines[0].forEach((line, i) => {
                     const displayValue = `${line}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
-                    if (line !== undefined) {
+                    if (line) {
                       divValue.innerHTML += `
-                      <div class="tooltip_value-content">
-                        <span class="tooltip_dot" style="background-color:${this.colorParse[i]};"></span>
-                        <p class="tooltip_place fr-mb-0">${displayValue}</p>
-                      </div>
-                    `;
+                        <div class="tooltip_value-content">
+                          <span class="tooltip_dot" style="background-color:${this.colorParse[i]};"></span>
+                          <p class="tooltip_place fr-mb-0">${displayValue}</p>
+                        </div>
+                      `;
                     }
                   });
                 }
 
+                // Position the tooltip
                 const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;
 
                 const canvasWidth = Number(this.chart.canvas.style.width.replace(/\D/g, ''));
                 const canvasHeight = Number(this.chart.canvas.style.height.replace(/\D/g, ''));
-                tooltipEl.style.position = 'absolute';
-                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
-                tooltipEl.style.pointerEvents = 'none';
+
                 let tooltipX = positionX + tooltipModel.caretX + 10;
-                let tooltipY = positionY + tooltipModel.caretY - 18;
-                if (tooltipX + tooltipEl.clientWidth + this.legendLeftMargin > positionX + canvasWidth) {
+                let tooltipY = positionY + tooltipModel.caretY - 20;
+                if (tooltipX + tooltipEl.clientWidth > positionX + canvasWidth) {
                   tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10;
                 }
                 if (tooltipY + tooltipEl.clientHeight > positionY + 0.9 * canvasHeight) {
-                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 18;
+                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 20;
                 }
                 if (tooltipX < positionX) {
                   tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2;
-                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 18;
+                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 20;
                 }
+
+                tooltipEl.style.position = 'absolute';
+                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+                tooltipEl.style.pointerEvents = 'none';
                 tooltipEl.style.left = tooltipX + 'px';
                 tooltipEl.style.top = tooltipY + 'px';
                 tooltipEl.style.opacity = 1;
@@ -586,7 +568,6 @@ export default {
         yparse: this.yparse,
         tmpColorParse: this.tmpColorParse,
         selectedPalette: this.selectedPalette,
-        highlightIndex: this.highlightIndex,
         vlineParse: this.vlineParse,
         tmpVlineColorParse: this.tmpVlineColorParse,
         hlineParse: this.hlineParse,
@@ -602,7 +583,6 @@ export default {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
     },
-    // eslint-disable-next-line no-unused-vars
     changeColors(theme) {
       this.loadColors();
 
@@ -617,6 +597,9 @@ export default {
         dataset.pointHoverBorderColor = this.colorHover[i];
         dataset.pointHoverBackgroundColor = this.colorHover[i];
       });
+
+      this.chart.options.scales.x.ticks.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;
+      this.chart.options.scales.y.ticks.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;
 
       this.chart.update('none');
     },

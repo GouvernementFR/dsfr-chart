@@ -1,6 +1,6 @@
 <template>
   <Teleport
-    :disabled="!databoxId && !databoxType && databoxSource === 'default'"
+    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
     <div
@@ -35,7 +35,7 @@
           </div>
 
           <div
-            v-if="date !== undefined"
+            v-if="date"
             class="flex fr-mt-1w"
           >
             <p class="fr-text--xs">
@@ -50,14 +50,14 @@
 
 <script>
 import { BarController, BarElement, Chart } from 'chart.js';
-import { mixin, configureChartDefaults } from '@/utils/global.js';
+import { chartMixins, configureChartDefaults } from '@/utils/global.js';
 import { choosePalette, generateColors } from '@/utils/colors.js';
 
 Chart.register(BarController, BarElement);
 
 export default {
   name: 'BarChart',
-  mixins: [mixin],
+  mixins: [chartMixins],
   props: {
     databoxId: {
       type: String,
@@ -79,9 +79,25 @@ export default {
       type: String,
       required: true,
     },
+    xMin: {
+      type: [Number, String],
+      default: '',
+    },
+    xMax: {
+      type: [Number, String],
+      default: '',
+    },
+    yMin: {
+      type: [Number, String],
+      default: '',
+    },
+    yMax: {
+      type: [Number, String],
+      default: '',
+    },
     name: {
       type: String,
-      default: undefined,
+      default: '',
     },
     stacked: {
       type: [Boolean, String],
@@ -92,15 +108,19 @@ export default {
       default: false,
     },
     barSize: {
-      type: Number,
-      default: undefined,
+      type: [Number, String],
+      default: 'flex',
+    },
+    maxBarSize: {
+      type: [Number, String],
+      default: 32,
     },
     date: {
       type: String,
-      default: undefined,
+      default: '',
     },
     aspectRatio: {
-      type: Number,
+      type: [Number, String],
       default: 2,
     },
     selectedPalette: {
@@ -122,23 +142,21 @@ export default {
     return {
       widgetId: '',
       chartId: '',
-      legendLeftMargin: 100,
       datasets: [],
-      labels: undefined,
+      labels: [],
       xparse: [],
       yparse: [],
       nameParse: [],
       tmpColorParse: [],
       colorParse: [],
       colorHover: [],
-      isSmall: false,
       legendColors: [],
     };
   },
   created() {
     configureChartDefaults();
-    this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
-    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
+    this.chartId = 'dsfr-chart-' + Math.floor(Math.random() * 1000);
+    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
   },
   mounted() {
     this.resetData();
@@ -150,9 +168,6 @@ export default {
       if (this.chartId !== '') {
         this.changeColors(e.detail.theme);
       }
-    });
-    addEventListener('resize', () => {
-      this.isSmall = document.documentElement.clientWidth < 767;
     });
   },
   methods: {
@@ -180,7 +195,7 @@ export default {
       }
 
       let tmpNameParse = [];
-      if (this.name !== undefined) {
+      if (this.name) {
         try {
           tmpNameParse = JSON.parse(this.name);
         } catch (error) {
@@ -190,7 +205,7 @@ export default {
 
       // Assignation des noms de séries
       for (let i = 0; i < this.yparse.length; i++) {
-        if (tmpNameParse[i] !== undefined) {
+        if (tmpNameParse[i]) {
           this.nameParse.push(tmpNameParse[i]);
         } else {
           this.nameParse.push('Série ' + (i + 1));
@@ -211,8 +226,8 @@ export default {
         borderColor: this.colorParse[index],
         hoverBackgroundColor: this.colorHover[index],
         hoverBorderColor: this.colorHover[index],
-        barThickness: this.barSize || (this.stacked ? 32 : this.horizontal ? 20 : 32),
-        maxBarThickness: 32,
+        barThickness: this.barSize,
+        ...(this.maxBarSize ? { maxBarThickness: this.maxBarSize } : {}),
       }));
     },
     choosePalette() {
@@ -247,35 +262,38 @@ export default {
         },
         options: {
           indexAxis: this.horizontal ? 'y' : 'x',
-          responsive: true,
           aspectRatio: this.aspectRatio,
           scales: {
             x: {
-              offset: true, // Remove any offset from the X-axis
+              offset: !this.horizontal,
               stacked: this.stacked,
               grid: {
-                display: false,
-                borderColor: 'transparent',
+                drawTicks: false,
+                drawOnChartArea: this.horizontal,
               },
               ticks: {
                 beginAtZero: true,
-                padding: 15, // Espace supplémentaire autour des étiquettes
+                padding: this.horizontal ? 5 : 15,
               },
+              ...(this.xMin ? { suggestedMin: this.xMin } : {}),
+              ...(this.xMax ? { suggestedMax: this.xMax } : {}),
             },
             y: {
               stacked: this.stacked,
-              offset: true,
+              offset: this.horizontal,
               grid: {
                 drawTicks: false,
-                lineWidth: 1,
+                drawOnChartArea: !this.horizontal,
               },
               border: {
                 dash: [3],
               },
               ticks: {
                 beginAtZero: true,
-                padding: 5, // Espace supplémentaire autour des étiquettes
+                padding: 5,
               },
+              ...(this.yMin ? { suggestedMin: this.yMin } : {}),
+              ...(this.yMax ? { suggestedMax: this.yMax } : {}),
             },
           },
           plugins: {
@@ -290,7 +308,7 @@ export default {
               callbacks: {
                 label: (tooltipItems) => {
                   const value = this.datasets[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
-                  return this.convertIntToHuman(value);
+                  return this.formatNumber(value);
                 },
                 title: (tooltipItems) => {
                   return tooltipItems[0].label;
@@ -301,7 +319,7 @@ export default {
               },
               external: (context) => {
                 // Tooltip Element
-                const dom = this.databoxId ? document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) : this.$el.nextElementSibling;
+                const dom = document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) || this.$el.nextElementSibling;
 
                 const tooltipEl = dom.querySelector('.tooltip');
 
@@ -339,29 +357,43 @@ export default {
 
                   // Ensure the color is correctly referenced
                   const colorArray = this.colorParse[datasetIndex];
-                  const color = colorArray ? colorArray[index] : '#000'; // Fallback to black if color is undefined
+                  const color = colorArray ? colorArray[index] : '#000';
 
-                  const value = this.convertIntToHuman(this.datasets[datasetIndex].data[index]);
+                  const value = this.formatNumber(this.datasets[datasetIndex].data[index]);
                   const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
 
                   divValue.innerHTML += `
-                  <div class="tooltip_value-content" style="display: flex; align-items: center;">
-                    <span class="tooltip_dot" style="background-color:${color};"></span>
-                    <p class="tooltip_place fr-mb-0">${displayValue}</p>
-                  </div>
-                `;
+                    <div class="tooltip_value-content">
+                      <span class="tooltip_dot" style="background-color:${color};"></span>
+                      <p class="tooltip_place fr-mb-0">${displayValue}</p>
+                    </div>
+                  `;
                 });
 
                 // Position the tooltip
-                const position = this.chart.canvas.getBoundingClientRect();
+                const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;
+
+                const canvasWidth = Number(this.chart.canvas.style.width.replace(/\D/g, ''));
+                const canvasHeight = Number(this.chart.canvas.style.height.replace(/\D/g, ''));
+
+                let tooltipX = positionX + tooltipModel.caretX + 10;
+                let tooltipY = positionY + tooltipModel.caretY - 20;
+                if (tooltipX + tooltipEl.clientWidth > positionX + canvasWidth) {
+                  tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10;
+                }
+                if (tooltipY + tooltipEl.clientHeight > positionY + 0.9 * canvasHeight) {
+                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 20;
+                }
+                if (tooltipX < positionX) {
+                  tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2;
+                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 20;
+                }
+
                 tooltipEl.style.position = 'absolute';
+                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
                 tooltipEl.style.pointerEvents = 'none';
-
-                let tooltipX = position.left + window.scrollX + tooltipModel.caretX + 10;
-                let tooltipY = position.top + window.scrollY + tooltipModel.caretY - 18;
-
-                tooltipEl.style.left = `${tooltipX}px`;
-                tooltipEl.style.top = `${tooltipY}px`;
+                tooltipEl.style.left = tooltipX + 'px';
+                tooltipEl.style.top = tooltipY + 'px';
                 tooltipEl.style.opacity = 1;
               },
             },
@@ -369,7 +401,6 @@ export default {
         },
       });
     },
-    // eslint-disable-next-line no-unused-vars
     changeColors(theme) {
       this.loadColors();
 
@@ -380,6 +411,9 @@ export default {
         dataset.hoverBorderColor = this.colorHover[i];
         dataset.hoverBackgroundColor = this.colorHover[i];
       });
+
+      this.chart.options.scales.x.ticks.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;
+      this.chart.options.scales.y.ticks.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;
 
       this.chart.update('none');
     },

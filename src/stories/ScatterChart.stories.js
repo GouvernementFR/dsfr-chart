@@ -1,24 +1,13 @@
-const meta = {
-  component: 'scatter-chart'
+import { chartData } from '../assets/data';
+
+export default {
+  component: 'scatter-chart',
 };
 
-export default meta;
-
 export const Default = {
-  args: {
-    x: '[[1995, 2000, 2005, 2010, 2015, 2020, 2022], [1995, 2000, 2005, 2010, 2015, 2020, 2022], [1995, 2000, 2005, 2010, 2015, 2020, 2022]]',
-    y: '[[175, 155, 149, 130, 111, 107, 130], [177, 168, 159, 130, 116, 109, 131], [176, 162, 152, 130, 111, 97, 103]]',
-    name: '["Diesel", "Essence", "Total"]',
-    unitTooltip: 'g de CO₂ / km'
-  }
+  args: chartData.scatterChart.default,
 };
 
 export const Linked = {
-  args: {
-    x: '[[1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950], [1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950], [1926, 1928, 1930, 1932, 1934, 1936, 1938, 1940, 1942, 1944, 1946, 1948, 1950]]',
-    y: '[[35, 35, 37, 37, 39, 41, 43, 48, 51, 52, 54, 55, 56], [76, 83, 82, 80, 81, 80, 81, 80, 81, 80, 79, 75, 72], [54, 56, 58, 57, 59, 60, 62, 64, 66, 66, 66, 65, 64]]',
-    name: '["Femmes", "Hommes", "Ensemble"]',
-    showLine: true,
-    unitTooltip: '%'
-  }
+  args: chartData.scatterChart.linked,
 };
