@@ -86,8 +86,8 @@ Il existe deux possibilités :
 Pour importer la librairie dans un projet utilisant un bundler comme Vite, il est nécessaire d'importer les fichiers JavaScript et CSS dans votre fichier principal.
 
 ```javascript
-import '@gouvfr/dsfr-chart/Charts/DSFRChart.js';
-import '@gouvfr/dsfr-chart/Charts/DSFRChart.css';
+import '@gouvfr/dsfr-chart/dist/DSFRChart/DSFRChart.js';
+import '@gouvfr/dsfr-chart/dist/DSFRChart/DSFRChart.css';
 ```
 
 # Graphiques disponibles
