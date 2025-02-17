@@ -609,7 +609,7 @@ export default {
                   // Access color arrays for different datasets
                   const colors = [this.colorBarParse, this.colorParse]; // Adjust to match your color variables
 
-                  // Iterate over bodyLines to set each line with the correct color and value
+                  // Iterate over bodyLines to set the color and value in the tooltip
                   bodyLines[0].forEach((line, i) => {
                     if (line) {
                       const color = colors[i] ? colors[i] : '#000';

@@ -579,19 +579,20 @@ export default {
 
                 // Set Text
                 if (tooltipModel.body) {
-                  const titleLines = tooltipModel.dataPoints || [];
+                  const titleLines = tooltipModel.title || [];
                   const bodyLines = tooltipModel.body.map((bodyItem) => {
                     return bodyItem.lines;
                   });
 
                   // Set the tooltip header
                   const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
-                  divDate.innerHTML = titleLines[0].raw.x;
+                  divDate.innerHTML = titleLines[0];
 
                   // Clear the existing tooltip content
                   const divValue = tooltipEl.querySelector('.tooltip_value');
                   divValue.innerHTML = '';
 
+                  // Iterate over bodyLines to set the color and value in the tooltip
                   bodyLines[0].forEach((line, i) => {
                     const displayValue = `${line}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
                     if (line) {

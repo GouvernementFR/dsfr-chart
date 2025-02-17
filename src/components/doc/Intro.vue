@@ -4,7 +4,7 @@
       DSFR Chart
     </h1>
     <p>
-      Cette page a pour objectif de présenter l'ensemble des représentations graphiques proposées par la librairie
+      Cette page a pour objectif de présenter l'ensemble des graphiques proposés par la librairie
       <a
         id="dsfr-charts-github-page"
         href="https://github.com/GouvernementFR/dsfr-chart"

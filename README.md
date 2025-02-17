@@ -90,7 +90,7 @@ import '@gouvfr/dsfr-chart/Charts/DSFRChart.js';
 import '@gouvfr/dsfr-chart/Charts/DSFRChart.css';
 ```
 
-### Les différentes représentations graphiques
+# Graphiques disponibles
 
 Ce catalogue présente l'ensemble des graphiques disponibles dans le module complémentaire au Système de design de l'État (DSFR) pour la visualisation de données. Les différents types de graphiques sont disponibles en thème clair et thème sombre. Par ailleurs, les options de chacun des graphiques sont également présentés dans ce document.
 
@@ -369,12 +369,6 @@ Sur tous les graphiques présentés ci-dessus, il est possible d'ajouter des lig
 
 ### Optionnels :
 
-- **vline** : _(String)_ Les positions des lignes verticales sur l’axe des abscisses sous forme d’une liste entre crochets.
-- **vlinename** : _(String)_ Les noms des lignes verticales sous forme d’une liste entre crochets.
-- **vlinecolor** : _(String)_ Les couleurs des lignes verticales sous forme d’une liste entre crochets. Vous pouvez utiliser les noms de couleurs prédéfinies ou des codes hexadécimaux.
-- **hline** : _(String)_ Les positions des lignes horizontales sur l’axe des ordonnées sous forme d’une liste entre crochets.
-- **hlinename** : _(String)_ Les noms des lignes horizontales sous forme d’une liste entre crochets.
-- **hlinecolor** : _(String)_ Les couleurs des lignes horizontales sous forme d’une liste entre crochets. Vous pouvez utiliser les noms de couleurs prédéfinies ou des codes hexadécimaux.
 - **selected-palette** : _(String)_ Permet de choisir la palette de couleurs utilisée pour le graphique principal (barres et lignes). Les valeurs possibles sont les mêmes que précédemment.
 - **unit-tooltip** : _(String)_ Permet de spécifier l'unité à afficher dans l'infobulle (tooltip) du graphique.
 
@@ -386,12 +380,6 @@ Sur tous les graphiques présentés ci-dessus, il est possible d'ajouter des lig
 <line-chart
   x="[1, 2, 3]"
   y="[10, 20, 30]"
-  hline="[15, 25]"
-  hlinename='["hmin", "hmax"]'
-  vline="[1.6, 2.3]"
-  vlinename='["vmin","vmax"]'
-  vlinecolor='["green-archipel", "orange-terre-battue"]'
-  hlinecolor='["blue-ecume", "red-marianne"]'
   selected-palette="categorical"
   unit-tooltip="units"
 ></line-chart>
@@ -401,19 +389,12 @@ Sur tous les graphiques présentés ci-dessus, il est possible d'ajouter des lig
 
 ## Notes supplémentaires
 
-- **vline** et **hline** : Ces paramètres permettent d'ajouter des lignes de référence verticales et horizontales sur le graphique. Les valeurs doivent être des nombres correspondant aux positions sur les axes.
-- **vlinename** et **hlinename** : Vous pouvez fournir des noms pour ces lignes qui seront affichés sur le graphique.
-- **vlinecolor** et **hlinecolor** : Spécifiez les couleurs des lignes de référence. Vous pouvez utiliser les noms de couleurs prédéfinies du thème ou des codes hexadécimaux (par exemple, `"#FF5733"`).
 - **selected-palette** : Comme précédemment, ce paramètre vous permet de personnaliser les couleurs du graphique principal.
 - **unit-tooltip** : Spécifiez l'unité à afficher dans l'infobulle du graphique principal. Les infobulles des lignes de référence ne sont généralement pas affectées par ce paramètre.
 
 ---
 
 ## Conseils d'utilisation
-
-- **Correspondance des listes** : Assurez-vous que les listes pour les positions, les noms et les couleurs des lignes ont le même nombre d'éléments.
-
-  - Par exemple, si vous avez deux valeurs dans `hline`, vous devez avoir deux valeurs dans `hlinename` et `hlinecolor`.
 
 - **Personnalisation des couleurs** : Si vous n'indiquez pas de couleurs spécifiques pour les lignes, des couleurs par défaut seront utilisées.
 - **Visualisation des seuils** : L'ajout de lignes de référence est utile pour visualiser des seuils, des moyennes ou d'autres valeurs importantes sur le graphique.
@@ -434,12 +415,6 @@ Les graphiques en ligne et barres sont accessibles à travers la balise : `<bar-
 
 ### Optionnels :
 
-- **hline** : _(String)_ Les positions des lignes horizontales sur l’axe des ordonnées sous forme d’une liste entre crochets.
-- **hlinename** : _(String)_ Les noms des lignes horizontales sous forme d’une liste entre crochets.
-- **hlinecolor** : _(String)_ Les couleurs des lignes horizontales sous forme d’une liste entre crochets. Vous pouvez utiliser les noms de couleurs prédéfinies ou des codes hexadécimaux.
-- **vline** : _(String)_ Les positions des lignes verticales sur l’axe des abscisses sous forme d’une liste entre crochets.
-- **vlinename** : _(String)_ Les noms des lignes verticales sous forme d’une liste entre crochets.
-- **vlinecolor** : _(String)_ Les couleurs des lignes verticales sous forme d’une liste entre crochets. Vous pouvez utiliser les noms de couleurs prédéfinies ou des codes hexadécimaux.
 - **selected-palette** : _(String)_ Permet de choisir la palette de couleurs utilisée pour le graphique principal (barres et lignes). Les valeurs possibles sont les mêmes que précédemment.
 - **unit-tooltip-bar** : _(String)_ Permet de spécifier l'unité à afficher dans l'infobulle (tooltip) des barres.
 - **unit-tooltip-line** : _(String)_ Permet de spécifier l'unité à afficher dans l'infobulle (tooltip) de la ligne.
@@ -459,12 +434,6 @@ Les graphiques en ligne et barres sont accessibles à travers la balise : `<bar-
   x="[1, 2, 3, 4, 5]"
   y="[20, 25, 30, 35, 40]"
   y-bar="[15, 18, 22, 28, 33]"
-  hline="[25]"
-  hlinename='["Moyenne"]'
-  hlinecolor='["#FF0000"]'
-  vline="[3]"
-  vlinename='["Point Milieu"]'
-  vlinecolor='["#0000FF"]'
   selected-palette="sequentialAscending"
   unit-tooltip="kW"
   unit-tooltip-bar="kWh"
@@ -1104,8 +1073,8 @@ Une représentation graphique n’a pas toujours besoin d’être colorée. Lors
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #5C68E5     | #5C68E5      |
-| Etat de survol | #2846bc     | #2846bc      |
+| État initial   | #5C68E5     | #5C68E5      |
+| État de survol | #2846bc     | #2846bc      |
 
 `neutral Catégorie 1`
 
@@ -1113,8 +1082,8 @@ Pour mettre en évidence une donnée d'un ensemble de données, utilisez la coul
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #B1B1B1     | #808080      |
-| Etat de survol | #8b8b8b     | #5c5c5c      |
+| État initial   | #B1B1B1     | #808080      |
+| État de survol | #8b8b8b     | #5c5c5c      |
 
 ### Graphiques catégoriels
 
@@ -1126,57 +1095,57 @@ La palette catégorielle ne comprend que 8 teintes de couleurs pour limiter le n
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #5C68E5     | #5C68E5      |
-| Etat de survol | #2846bc     | #2846bc      |
+| État initial   | #5C68E5     | #5C68E5      |
+| État de survol | #2846bc     | #2846bc      |
 
 `Catégorie 2`
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #82B5F2     | #699BD6      |
-| Etat de survol | #598fc9     | #3f76ae      |
+| État initial   | #82B5F2     | #699BD6      |
+| État de survol | #598fc9     | #3f76ae      |
 
 `Catégorie 3`
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #29598F     | #4878B1      |
-| Etat de survol | #00386a     | #18558b      |
+| État initial   | #29598F     | #4878B1      |
+| État de survol | #00386a     | #18558b      |
 
 `Catégorie 4`
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #31A7AE     | #00828A      |
-| Etat de survol | #008188     | #005e66      |
+| État initial   | #31A7AE     | #00828A      |
+| État de survol | #008188     | #005e66      |
 
 `Catégorie 5`
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #81EEF5     | #51C1C8      |
-| Etat de survol | #55c5cc     | #199aa1      |
+| État initial   | #81EEF5     | #51C1C8      |
+| État de survol | #55c5cc     | #199aa1      |
 
 `Catégorie 6`
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #B478F1     | #BC8AF2      |
-| Etat de survol | #8b53c8     | #9465c9      |
+| État initial   | #B478F1     | #BC8AF2      |
+| État de survol | #8b53c8     | #9465c9      |
 
 `Catégorie 7`
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #CFB1F5     | #CFB1F5      |
-| Etat de survol | #a78bcc     | #a78bcc      |
+| État initial   | #CFB1F5     | #CFB1F5      |
+| État de survol | #a78bcc     | #a78bcc      |
 
 `Catégorie 8`
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #CECECE     | #A4A4A4      |
-| Etat de survol | #a7a7a7     | #7e7e7e      |
+| État initial   | #CECECE     | #A4A4A4      |
+| État de survol | #a7a7a7     | #7e7e7e      |
 
 ### Graphiques séquentiels
 
@@ -1192,15 +1161,15 @@ En fonction du nombre de catégories, on appliquera autant de valeurs de couleur
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #DBDAFF     | #B8B9FF      |
-| Etat de survol | #b3b2d6     | #9093d6      |
+| État initial   | #DBDAFF     | #B8B9FF      |
+| État de survol | #b3b2d6     | #9093d6      |
 
 `Catégorie 2`
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #00005F     | #3647CA      |
-| Etat de survol | #00003d     | #0027a2      |
+| État initial   | #00005F     | #3647CA      |
+| État de survol | #00003d     | #0027a2      |
 
 ### Palette séquentielle divergente
 
@@ -1214,22 +1183,22 @@ Dans le cas où le nombre de catégories devrait être supérieur à 5, on appli
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #298641     | #298641      |
-| Etat de survol | #00611f     | #00611f      |
+| État initial   | #298641     | #298641      |
+| État de survol | #00611f     | #00611f      |
 
 `Catégorie 2`
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #EFB900     | #AF8800      |
-| Etat de survol | #c39300     | #856400      |
+| État initial   | #EFB900     | #AF8800      |
+| État de survol | #c39300     | #856400      |
 
 `Catégorie 3`
 
 |                | Thème clair | Thème sombre |
 |----------------|-------------|--------------|
-| Etat initial   | #E91719     | #E16834      |
-| Etat de survol | #b90000     | #b4420f      |
+| État initial   | #E91719     | #E16834      |
+| État de survol | #b90000     | #b4420f      |
 
 ---
 

@@ -3,8 +3,8 @@
     <h2 id="Accessibilité">
       Accessibilité
     </h2>
-    <div class="fr-callout fr-callout--brown-caramel fr-icon-information-line">
-      <p class="fr-callout__text">
+    <div class="fr-alert fr-alert--error fr-mb-5v">
+      <p>
         Utilisés seuls, les graphiques du DSFR Charts sont inaccessibles aux personnes aveugles, déficientes visuelles et aux personnes handicapées motrices. Il conviendra donc d’apporter une alternative textuelle pertinente à chaque fois qu’un graphique est affiché.
       </p>
     </div>
@@ -25,8 +25,8 @@
 
     <h4>Alternative 1 : utiliser un tableau</h4>
     <p>Présenter les résultats sous forme de tableau est sans doute l’option la plus simple, surtout s’il y a beaucoup de données à présenter. On privilégiera dans le cas des contenus les plus complexes la création de plusieurs tableaux simples et non de tableaux avec des cellules fusionnées pour faciliter la lecture.</p>
-    <div class="fr-callout fr-icon-information-line">
-      <p class="fr-callout__text">
+    <div class="fr-alert fr-alert--info fr-mb-6v">
+      <p>
         Le composant databox embarque par défaut une alternative sous forme de tableau.
       </p>
     </div>
@@ -57,10 +57,11 @@
         v-bind="chartData.gaugeChart.default"
       />
     </div>
-    <p>Ainsi, sur la jauge ci-dessus, l’alternative pourrait être : "En 2022, nous avons atteint les 100 000 utilisateurs. Cela correspond à 14 % de l’objectif 2026, fixé à 2 millions d’utilisateurs."</p>
+    <p>Ainsi, sur la jauge ci-dessus, l’alternative pourrait être :</p>
+    <p>En 2022, nous avons atteint les 100 000 utilisateurs. Cela correspond à 14 % de l’objectif 2026, fixé à 2 millions d’utilisateurs.</p>
 
     <h3>Affichage de l’alternative</h3>
-    <p>L’alternative ou un moyen d’accéder à l’alternative (lien/bouton) doit être adjacente au graphique. La #databox présente ainsi systématiquement l’alternative textuelle dans le contrôle segmenté en bas à droite du composant.</p>
+    <p>L’alternative ou un moyen d’accéder à l’alternative (lien/bouton) doit être adjacente au graphique. La databox présente ainsi systématiquement l’alternative textuelle dans le contrôle segmenté en bas à droite du composant.</p>
     <p>
       Lorsqu’un graphique est utilisé seul, sans la databox, l’alternative textuelle peut être affichée dans un
       <a
@@ -71,11 +72,11 @@
       </a>
       présenté sous le graphique.
     </p>
-    <div class="fr-callout fr-icon-information-line">
-      <h4 class="fr-callout__title">
+    <div class="fr-alert fr-alert--info fr-mb-6v">
+      <h4 class="fr-alert__title">
         Important
       </h4>
-      <p class="fr-callout__text">
+      <p>
         Il conviendra de documenter cette approche dans la déclaration d’accessibilité pour que les personnes handicapées concernées sachent qu’une alternative accessible est systématiquement fournie.
       </p>
     </div>

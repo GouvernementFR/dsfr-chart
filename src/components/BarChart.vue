@@ -341,34 +341,35 @@ export default {
                   tooltipEl.classList.add('no-transform');
                 }
 
-                // Update tooltip content
-                const titleLines = tooltipModel.title || [];
+                // Set Text
+                if (tooltipModel.body) {
+                  const titleLines = tooltipModel.title || [];
 
-                const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
-                divDate.innerHTML = titleLines[0];
+                  const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
+                  divDate.innerHTML = titleLines[0];
 
-                const divValue = tooltipEl.querySelector('.tooltip_value');
-                divValue.innerHTML = '';
+                  const divValue = tooltipEl.querySelector('.tooltip_value');
+                  divValue.innerHTML = '';
 
-                // Iterate over each data point to set the color and value in the tooltip
-                tooltipModel.dataPoints.forEach((dataPoint) => {
-                  const datasetIndex = dataPoint.datasetIndex;
-                  const index = dataPoint.dataIndex;
+                  // Iterate over each data point to set the color and value in the tooltip
+                  tooltipModel.dataPoints.forEach((dataPoint) => {
+                    const datasetIndex = dataPoint.datasetIndex;
+                    const index = dataPoint.dataIndex;
 
-                  // Ensure the color is correctly referenced
-                  const colorArray = this.colorParse[datasetIndex];
-                  const color = colorArray ? colorArray[index] : '#000';
+                    // Ensure the color is correctly referenced
+                    const color = this.colorParse[datasetIndex] ? this.colorParse[datasetIndex][index] : '#000';
 
-                  const value = this.formatNumber(this.datasets[datasetIndex].data[index]);
-                  const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
+                    const value = this.formatNumber(this.datasets[datasetIndex].data[index]);
+                    const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
 
-                  divValue.innerHTML += `
+                    divValue.innerHTML += `
                     <div class="tooltip_value-content">
                       <span class="tooltip_dot" style="background-color:${color};"></span>
                       <p class="tooltip_place fr-mb-0">${displayValue}</p>
                     </div>
                   `;
-                });
+                  });
+                }
 
                 // Position the tooltip
                 const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;

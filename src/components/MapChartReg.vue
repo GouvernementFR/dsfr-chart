@@ -147,6 +147,8 @@ export default {
   },
   mounted() {
     this.createChart();
+    // The template is not retriggered in maps, force update to process after other elements
+    this.$forceUpdate();
 
     const element = document.documentElement;
     element.addEventListener('dsfr.theme', (e) => {

@@ -5,7 +5,9 @@
   >
     <div class="color-box-sample" />
     <p class="fr-my-2v">
-      <strong class="block">{{ title }}</strong>
+      <strong class="block">
+        {{ title }}
+      </strong>
       <strong
         v-if="isLightTheme"
         class="block"

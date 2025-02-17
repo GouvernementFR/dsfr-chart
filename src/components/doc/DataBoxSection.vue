@@ -100,13 +100,13 @@
       >
         la grille proposée par le DSFR
       </a>
-      , et peut s’afficher selon vos besoins, sur une ou plusieurs colonnes de la grille, grâce à la classe <strong>fr-col</strong>. Pensez toutefois à utiliser un <strong>fr-grid-row</strong> par ligne pour permettre le bon fonctionnement des infobulles du composant.
+      , et peut s’afficher selon vos besoins, sur une ou plusieurs colonnes de la grille, grâce à la classe <strong>fr-col-*</strong>. Pensez toutefois à utiliser un <strong>fr-grid-row</strong> par ligne pour permettre le bon fonctionnement des infobulles du composant.
     </p>
     <p>Vous pourrez ainsi construire des dashboard en donnant aux databox la taille nécessaire, en fonction de vos besoins métiers et de l’aspect souhaité pour vos graphiques :</p>
 
-    <div class="fr-mb-6w">
+    <div class="fr-my-6w">
       <div class="fr-grid-row fr-grid-row--gutters">
-        <div class="fr-col">
+        <div class="fr-col-6">
           <data-box
             v-bind="chartData.dataBox.simple"
             id="grid-left"
@@ -125,44 +125,46 @@
             table-name="Catégories"
           />
         </div>
-        <div class="fr-col">
+        <div class="fr-col-6">
           <data-box
-            v-bind="chartData.dataBox.simple"
+            v-bind="chartData.dataBox.modal"
             id="grid-right"
           />
           <pie-chart
-            v-bind="chartData.pieChart.doughnut"
+            v-bind="chartData.pieChart.pie"
             databox-id="grid-right"
             databox-type="chart"
           />
           <table-chart
             databox-id="grid-right"
             databox-type="table"
-            :x="tableParse(chartData.pieChart.doughnut.x)"
-            :y="chartData.pieChart.doughnut.y"
+            :x="tableParse(chartData.pieChart.pie.x)"
+            :y="chartData.pieChart.pie.y"
             name="[&quot;Pourcentage&quot;]"
             table-name="Catégories"
           />
         </div>
       </div>
       <div class="fr-grid-row fr-grid-row--gutters">
-        <div class="fr-col">
+        <div class="fr-col-12">
           <data-box
-            v-bind="chartData.dataBox.simple"
+            v-bind="chartData.dataBox.complete"
             id="grid-full"
+            source="INSEE"
+            actions="[]"
           />
-          <pie-chart
-            v-bind="chartData.pieChart.doughnut"
+          <scatter-chart
+            v-bind="chartData.scatterChart.linked"
             databox-id="grid-full"
             databox-type="chart"
           />
           <table-chart
             databox-id="grid-full"
             databox-type="table"
-            :x="tableParse(chartData.pieChart.doughnut.x)"
-            :y="chartData.pieChart.doughnut.y"
-            name="[&quot;Pourcentage&quot;]"
-            table-name="Catégories"
+            :x="tableParse(chartData.scatterChart.linked.x)"
+            :y="chartData.scatterChart.linked.y"
+            :name="chartData.scatterChart.linked.name"
+            table-name="Années"
           />
         </div>
       </div>

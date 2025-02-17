@@ -321,15 +321,14 @@ export default {
                   const divValue = tooltipEl.querySelector('.tooltip_value');
                   divValue.innerHTML = '';
 
-                  // Process each line in bodyLines to display in the tooltip
+                  // Iterate over bodyLines to set the color and value in the tooltip
                   bodyLines[0].forEach((line, i) => {
                     if (line && tooltipModel.dataPoints[i]) {
-                      // Get the color for the specific dataset index safely
                       const dataPoint = tooltipModel.dataPoints[i];
                       const datasetIndex = dataPoint.datasetIndex;
 
                       // Ensure that colorParse and datasetIndex are valid
-                      const color = this.colorParse[datasetIndex] ? this.colorParse[datasetIndex] : '#000'; // Default to black if not found
+                      const color = this.colorParse[datasetIndex] ? this.colorParse[datasetIndex] : '#000';
 
                       // Include unitTooltip if provided
                       const displayValue = `${line}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;

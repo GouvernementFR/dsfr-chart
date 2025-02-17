@@ -519,6 +519,7 @@ export default {
                   const divValue = tooltipEl.querySelector('.tooltip_value');
                   divValue.innerHTML = '';
 
+                  // Iterate over bodyLines to set the color and value in the tooltip
                   bodyLines[0].forEach((line, i) => {
                     const displayValue = `${line}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
                     if (line) {
