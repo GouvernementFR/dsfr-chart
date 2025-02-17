@@ -15,6 +15,7 @@
               class="fr-sidemenu__btn"
               aria-controls="sidemenu"
               aria-expanded="false"
+              aria-current="true"
             >
               Dans cette rubrique
             </button>
@@ -29,82 +30,32 @@
                 Menu de navigation
               </p>
               <ul class="fr-sidemenu__list">
-                <li
-                  v-for="(section, i) in chartExamples"
-                  :key="section.title"
-                  class="fr-sidemenu__item"
-                >
-                  <template v-if="section.graphs.length === 1">
-                    <a
-                      class="fr-sidemenu__link"
-                      :href="'#' + encodeURIComponent(section.title.replace(/ /g, '-'))"
-                      target="_self"
-                    >
-                      {{ section.title }}
-                    </a>
-                  </template>
-                  <template v-else>
-                    <button
-                      class="fr-sidemenu__btn"
-                      aria-expanded="false"
-                      :aria-controls="`sidemenu-${i}`"
-                    >
-                      {{ section.title }}
-                    </button>
-                    <div
-                      :id="`sidemenu-${i}`"
-                      class="fr-collapse"
-                    >
-                      <ul class="fr-sidemenu__list">
-                        <template v-for="(graph, j) in section.graphs">
-                          <li
-                            v-if="graph.heading"
-                            :key="graph.heading"
-                            class="fr-sidemenu__item"
-                          >
-                            <a
-                              :id="`sidemenu-${i}.${j}`"
-                              class="fr-sidemenu__link"
-                              :href="'#' + encodeURIComponent(graph.heading.replace(/ /g, '-'))"
-                              target="_self"
-                            >{{ graph.heading }}</a>
-                          </li>
-                        </template>
-                      </ul>
-                    </div>
-                  </template>
-                </li>
                 <li class="fr-sidemenu__item">
                   <button
                     class="fr-sidemenu__btn"
-                    aria-expanded="false"
-                    aria-controls="sidemenu-99"
+                    aria-controls="sidemenu-representations-graphiques"
+                    aria-expanded="true"
+                    :aria-current="!['Databox', 'Couleurs', 'Accessibilité'].map(encodeURIComponent).includes(currentPage)"
                   >
-                    IX. Databox
+                    Graphiques disponibles
                   </button>
                   <div
-                    id="sidemenu-99"
-                    class="fr-collapse"
+                    id="sidemenu-representations-graphiques"
+                    class="fr-collapse fr-collapse--expanded"
                   >
                     <ul class="fr-sidemenu__list">
-                      <li class="fr-sidemenu__item">
+                      <li
+                        v-for="(section, i) in chartExamples"
+                        :key="i"
+                        class="fr-sidemenu__item"
+                      >
                         <a
-                          id="sidemenu-99.1"
                           class="fr-sidemenu__link"
-                          href="#IX.-Databox-simple"
+                          :href="'#' + encodeURIComponent(section.title.replace(/ /g, '-'))"
                           target="_self"
+                          :aria-current="currentPage === encodeURIComponent(section.title.replace(/ /g, '-'))"
                         >
-                          1. Databox simple
-                        </a>
-                      </li>
-                      <li class="fr-sidemenu__item">
-                        <a
-                          id="sidemenu-99.2"
-                          class="fr-sidemenu__link"
-                          href="#IX.-Databox-complète-multi-source"
-                          target="_self"
-                        >
-                          2. Databox complète multi source
+                          {{ section.title }}
                         </a>
                       </li>
                     </ul>
@@ -113,19 +64,28 @@
                 <li class="fr-sidemenu__item">
                   <a
                     class="fr-sidemenu__link"
-                    href="#X.-Couleurs"
-                    target="_self"
+                    href="#Databox"
+                    :aria-current="currentPage === encodeURIComponent('Databox')"
                   >
-                    X. Les couleurs
+                    Databox
                   </a>
                 </li>
                 <li class="fr-sidemenu__item">
                   <a
                     class="fr-sidemenu__link"
-                    href="#XI.-Accessibilité"
-                    target="_self"
+                    href="#Couleurs"
+                    :aria-current="currentPage === encodeURIComponent('Couleurs')"
                   >
-                    XI. Accessibilité
+                    Les couleurs
+                  </a>
+                </li>
+                <li class="fr-sidemenu__item">
+                  <a
+                    class="fr-sidemenu__link"
+                    href="#Accessibilité"
+                    :aria-current="currentPage === encodeURIComponent('Accessibilité')"
+                  >
+                    Accessibilité
                   </a>
                 </li>
               </ul>
@@ -135,6 +95,12 @@
       </div>
 
       <div class="fr-col-12 fr-col-md-7">
+        <h2 class="fr-h1">Graphiques disponibles</h2>
+
+        <p>
+          Ce catalogue présente l'ensemble des graphiques disponibles dans le module complémentaire au Système de design de l'État (DSFR) pour la visualisation de données. Les options de chacun des graphiques sont également présentés dans ce document.
+        </p>
+
         <div
           v-for="section in chartExamples"
           :key="section.title"
@@ -149,7 +115,6 @@
           <div
             v-for="graph in section.graphs"
             :key="graph.title"
-            class="chart_container"
           >
             <h3
               v-if="graph.heading"
@@ -157,7 +122,6 @@
             >
               {{ graph.heading }}
             </h3>
-            <hr>
             <p
               v-if="!graph.noPalette"
               class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w"
@@ -192,13 +156,14 @@
         <AccessibilitySection />
       </div>
     </section>
-    
+
     <DisplayMode />
   </div>
 </template>
 
 <script setup>
-import { chartExamples } from '@/assets/data';
+import { ref } from 'vue';
+import { chartExamples } from './examples.js';
 import Intro from './Intro.vue';
 import CodeBlock from './CodeBlock.vue';
 import DisplayMode from './DisplayMode.vue';
@@ -207,9 +172,14 @@ import ColorsSection from './ColorsSection.vue';
 import AccessibilitySection from './AccessibilitySection.vue';
 
 const PALETTE_LABELS = {
-  defaultColor: 'Palette par défaut',
+  default: 'Palette par défaut',
   neutral: 'Palette unicolore',
   sequentialDescending: 'Palette séquentielle',
   divergentDescending: 'Palette séquentielle divergente',
 };
+
+const currentPage = ref(window.location.hash.slice(1));
+window.addEventListener('hashchange', () => {
+  currentPage.value = window.location.hash.slice(1);
+})
 </script>

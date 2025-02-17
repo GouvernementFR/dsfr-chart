@@ -8,6 +8,11 @@ export default {
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    watch: {
+      usePolling: true
+    },
+  },
   base: './',
   build: {
     outDir: 'docs',
@@ -30,7 +35,7 @@ export default {
     vue({
       template: {
         compilerOptions: {
-          isCustomElement: (tag) => ['data-box', 'bar-chart', 'bar-line-chart', 'gauge-chart', 'line-chart', 'map-chart', 'map-chart-reg', 'multiline-chart', 'pie-chart', 'radar-chart', 'scatter-chart', 'table-chart'].includes(tag),
+          isCustomElement: (tag) => ['data-box', 'bar-chart', 'bar-line-chart', 'gauge-chart', 'line-chart', 'map-chart', 'map-chart-reg', 'pie-chart', 'radar-chart', 'scatter-chart', 'table-chart'].includes(tag),
         },
       },
     }),

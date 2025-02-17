@@ -1,6 +1,6 @@
 <template>
   <Teleport
-    :disabled="!databoxId && !databoxType && databoxSource === 'default'"
+    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
     <div
@@ -17,7 +17,9 @@
               </div>
             </div>
           </div>
+
           <canvas :ref="chartId" />
+
           <div class="chart_legend fr-mb-0 fr-mt-4v">
             <div
               v-for="(item, index) in nameParse"
@@ -33,7 +35,7 @@
               </p>
             </div>
             <div
-              v-if="date !== undefined"
+              v-if="date"
               class="flex fr-mt-1w"
             >
               <p class="fr-text--xs">
@@ -49,14 +51,14 @@
 
 <script>
 import { ArcElement, Chart, DoughnutController, PieController } from 'chart.js';
-import { mixin, configureChartDefaults } from '@/utils/global.js';
+import { chartMixins, configureChartDefaults } from '@/utils/global.js';
 import { choosePalette, generateColors } from '@/utils/colors.js';
 
 Chart.register(DoughnutController, PieController, ArcElement);
 
 export default {
   name: 'PieChart',
-  mixins: [mixin],
+  mixins: [chartMixins],
   props: {
     databoxId: {
       type: String,
@@ -80,7 +82,7 @@ export default {
     },
     name: {
       type: String,
-      default: undefined,
+      default: '',
     },
     fill: {
       type: [Boolean, String],
@@ -88,10 +90,10 @@ export default {
     },
     date: {
       type: String,
-      default: undefined,
+      default: '',
     },
     aspectRatio: {
-      type: Number,
+      type: [Number, String],
       default: 2,
     },
     selectedPalette: {
@@ -109,28 +111,21 @@ export default {
     return {
       widgetId: '',
       chartId: '',
-      legendLeftMargin: 100,
       display: '',
       datasets: [],
-      labels: undefined,
+      labels: [],
       xparse: [],
       yparse: [],
       nameParse: [],
       tmpColorParse: [],
       colorParse: [],
       colorHover: [],
-      isSmall: false,
     };
-  },
-  computed: {
-    style() {
-      return this.legendLeftMargin + 'px';
-    },
   },
   created() {
     configureChartDefaults();
-    this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
-    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
+    this.chartId = 'dsfr-chart-' + Math.floor(Math.random() * 1000);
+    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
   },
   mounted() {
     this.resetData();
@@ -143,19 +138,15 @@ export default {
         this.changeColors(e.detail.theme);
       }
     });
-    addEventListener('resize', () => {
-      this.isSmall = document.documentElement.clientWidth < 767;
-    });
   },
   methods: {
     resetData() {
       if (this.chart) {
         this.chart.destroy();
       }
-      this.legendLeftMargin = 100;
       this.display = '';
       this.datasets = [];
-      this.labels = undefined;
+      this.labels = [];
       this.xparse = [];
       this.yparse = [];
       this.nameParse = [];
@@ -174,7 +165,7 @@ export default {
       }
 
       let tmpNameParse = [];
-      if (this.name !== undefined) {
+      if (this.name) {
         try {
           tmpNameParse = JSON.parse(this.name);
         } catch (error) {
@@ -183,7 +174,7 @@ export default {
       }
 
       for (let i = 0; i < this.yparse[0].length; i++) {
-        if (tmpNameParse[i] !== undefined) {
+        if (tmpNameParse[i]) {
           this.nameParse.push(tmpNameParse[i]);
         } else {
           this.nameParse.push('Série ' + (i + 1));
@@ -219,7 +210,6 @@ export default {
           datasets: this.datasets,
         },
         options: {
-          responsive: true,
           aspectRatio: this.aspectRatio,
           layout: {
             padding: {
@@ -240,7 +230,7 @@ export default {
               callbacks: {
                 label: (tooltipItems) => {
                   const value = this.datasets[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
-                  return this.convertIntToHuman(value);
+                  return this.formatNumber(value);
                 },
                 title: (tooltipItems) => {
                   return tooltipItems[0].label;
@@ -251,7 +241,7 @@ export default {
               },
               external: (context) => {
                 // Tooltip Element
-                const dom = this.databoxId ? document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) : this.$el.nextElementSibling;
+                const dom = document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) ?? this.$el.nextElementSibling;
 
                 const tooltipEl = dom.querySelector('.tooltip');
 
@@ -280,44 +270,49 @@ export default {
                     return bodyItem.lines;
                   });
 
+                  // Set the tooltip header
                   const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                   divDate.innerHTML = titleLines;
+
                   const color = tooltipModel.labelTextColors[0];
+
+                  // Clear the existing tooltip content
                   const divValue = tooltipEl.querySelector('.tooltip_value');
-                  const value = bodyLines[0][0]; // assuming bodyLines[0][0] contains the value
+                  divValue.innerHTML = '';
+
+                  const value = bodyLines[0][0];
                   const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
 
-                  // Retrieve the node name for tooltip dots
-                  const tooltipDotElement = tooltipEl.querySelector('.tooltip_dot');
-                  const nodeName = tooltipDotElement ? tooltipDotElement.attributes[0].nodeName : 'data-attribute';
-
-                  divValue.innerHTML = `
-                  <div class="tooltip_value-content">
-                    <span ${nodeName}="" class="tooltip_dot" style="background-color:${color};"></span>
-                    ${displayValue}
-                  </div>
-                `;
+                  divValue.innerHTML += `
+                    <div class="tooltip_value-content">
+                      <span class="tooltip_dot" style="background-color:${color};"></span>
+                      <p class="tooltip_place fr-mb-0">${displayValue}</p>
+                    </div>
+                  `;
                 }
 
+                // Position the tooltip
                 const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;
 
                 const canvasWidth = Number(this.chart.canvas.style.width.replace(/\D/g, ''));
                 const canvasHeight = Number(this.chart.canvas.style.height.replace(/\D/g, ''));
-                tooltipEl.style.position = 'absolute';
-                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
-                tooltipEl.style.pointerEvents = 'none';
+
                 let tooltipX = positionX + tooltipModel.caretX + 10;
-                let tooltipY = positionY + tooltipModel.caretY - 18;
-                if (tooltipX + tooltipEl.clientWidth + this.legendLeftMargin > positionX + canvasWidth) {
+                let tooltipY = positionY + tooltipModel.caretY - 20;
+                if (tooltipX + tooltipEl.clientWidth > positionX + canvasWidth) {
                   tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10;
                 }
                 if (tooltipY + tooltipEl.clientHeight > positionY + 0.9 * canvasHeight) {
-                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 18;
+                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 20;
                 }
                 if (tooltipX < positionX) {
                   tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2;
-                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 18;
+                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 20;
                 }
+
+                tooltipEl.style.position = 'absolute';
+                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+                tooltipEl.style.pointerEvents = 'none';
                 tooltipEl.style.left = tooltipX + 'px';
                 tooltipEl.style.top = tooltipY + 'px';
                 tooltipEl.style.opacity = 1;

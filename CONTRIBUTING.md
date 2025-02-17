@@ -135,14 +135,14 @@ Une connexion au compte npm sur lequel doit être publié le package sera demand
 
 GitHub permet le déploiement de pages web statiques via la fonctionnalité **GitHub Pages**.
 
-1. Compléter le fichier `src/charts/main.js` si nécessaire. Ce fichier doit contenir la configuration de toutes les représentations graphiques que l'on souhaite afficher sur la page de démonstration. Il doit aussi contenir les dépendances au dsfr nécessaires au bon fonctionnement du projet.
+1. Compléter le fichier `src/charts/main.js` si nécessaire. Ce fichier doit contenir la configuration de tous les graphiques que l'on souhaite afficher sur la page de démonstration. Il doit aussi contenir les dépendances au dsfr nécessaires au bon fonctionnement du projet.
 
-2. Compléter la page d'exemple (`index.html`) en utilisant les représentations à afficher.
+2. Ajouter si besoin les graphiques, titres et textes dans le fichier `src/components/doc/examples.js`. Ajuster aussi la page de documentation (`src/components/doc/Documentation.vue`) pour des changements globaux au projets.
 
-3. Lancer le build de la page : `npm run build:docs`. Les fichiers nécessaires au déploiement de la page seront créés dans le dossier `docs`.
+3. Visualiser la page en local : `npm run dev`.
 
-4. Visualiser la page en local : `npm run serve`.
+4. Lancer le build de la page avec `npm run build:docs`. Les fichiers nécessaires au déploiement de la page seront créés dans le dossier `docs/`.
 
-5. Pusher le dossier `docs` sur le repository GitHub si cela convient.
+5. Publier le code sur le repository GitHub si cela convient, un GitHub Action va générer la documentation dans une nouvelle branche `docs` avec la création d'un nouveau tag (ex: `v2.0.0`).
 
-6. Sur le repository GitHub, se rendre dans **Settings** --> **Pages**. Dans la section **Build and deployment**, choisir **Deploy from a branch** pour la source. Choisir ensuite la branche qui sera associée à la page et le dossier `docs` comme dossier source.
+6. Sur le repository GitHub, se rendre dans **Settings** --> **Pages**. Dans la section **Build and deployment**, choisir **Deploy from a branch** pour la source. Choisir ensuite la branche `docs` qui sera associée à la documentation comme source.

@@ -1,6 +1,6 @@
 import France from './France.vue';
 import FranceReg from './FranceReg.vue';
-import FranceAcad from './FranceAcad.vue';
+// import FranceAcad from './FranceAcad.vue';
 import Guadeloupe from './Guadeloupe.vue';
 import Martinique from './Martinique.vue';
 import Guyane from './Guyane.vue';
@@ -10,7 +10,7 @@ import Mayotte from './Mayotte.vue';
 export default {
   France,
   FranceReg,
-  FranceAcad,
+  // FranceAcad,
   Guadeloupe,
   Martinique,
   Guyane,

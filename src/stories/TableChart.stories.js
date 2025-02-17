@@ -1,13 +1,9 @@
-const meta = {
-  component: 'table-chart'
+import { chartData } from '../assets/data';
+
+export default {
+  component: 'table-chart',
 };
 
-export default meta;
-
 export const Default = {
-  args: {
-    x: '["A","B","C","D","E","F","G","H","I","J"]',
-    y: '[[40, 50, 40, 39, 49, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49]]',
-    tableName: 'Jours'
-  }
+  args: chartData.tableChart.default,
 };

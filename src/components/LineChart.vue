@@ -1,6 +1,6 @@
 <template>
   <Teleport
-    :disabled="!databoxId && !databoxType && databoxSource === 'default'"
+    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
     <div
@@ -32,15 +32,21 @@
               </div>
             </div>
           </div>
+
           <canvas :ref="chartId" />
+
           <div class="chart_legend fr-mb-0 fr-mt-4v">
-            <div class="flex fr-mt-1w fr-mb-0">
+            <div
+              v-for="(item, index) in nameParse"
+              :key="index"
+              class="flex fr-mt-3v fr-mb-1v"
+            >
               <span
                 class="legende_dot"
-                :style="{ 'background-color': colorParse }"
+                :style="{ 'background-color': colorParse[index] }"
               />
               <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-                {{ capitalize(name) }}
+                {{ capitalize(item) }}
               </p>
             </div>
           </div>
@@ -48,7 +54,6 @@
             v-for="(item, index) in hlineNameParse"
             :key="index"
             class="flex fr-mt-3v"
-            :style="{ 'margin-left': isSmall ? '0px' : style }"
           >
             <span
               class="legende_dash_line"
@@ -66,7 +71,6 @@
             v-for="(item, index) in vlineNameParse"
             :key="index"
             class="flex fr-mt-3v fr-mb-1v"
-            :style="{ 'margin-left': isSmall ? '0px' : style }"
           >
             <span
               class="legende_dash_line"
@@ -81,9 +85,8 @@
             </p>
           </div>
           <div
-            v-if="date !== undefined"
+            v-if="date"
             class="flex fr-mt-1w"
-            :style="{ 'margin-left': isSmall ? '0px' : style }"
           >
             <p class="fr-text--xs">
               Mise à jour : {{ date }}
@@ -97,14 +100,15 @@
 
 <script>
 import { Chart, LineController, LineElement } from 'chart.js';
-import { mixin, configureChartDefaults } from '@/utils/global.js';
-import { choosePalette, generateBarLineChartColors } from '@/utils/colors.js';
+import chroma from 'chroma-js';
+import { chartMixins, configureChartDefaults } from '@/utils/global.js';
+import { choosePalette, getColorsByIndex, getNeutralColor } from '@/utils/colors.js';
 
 Chart.register(LineController, LineElement);
 
 export default {
   name: 'LineChart',
-  mixins: [mixin],
+  mixins: [chartMixins],
   props: {
     databoxId: {
       type: String,
@@ -126,40 +130,56 @@ export default {
       type: String,
       required: true,
     },
+    xMin: {
+      type: [Number, String],
+      default: '',
+    },
+    xMax: {
+      type: [Number, String],
+      default: '',
+    },
+    yMin: {
+      type: [Number, String],
+      default: '',
+    },
+    yMax: {
+      type: [Number, String],
+      default: '',
+    },
     name: {
       type: String,
-      default: 'S1',
+      default: '',
     },
     vline: {
       type: String,
-      default: undefined,
+      default: '',
     },
     vlinecolor: {
       type: String,
-      default: undefined,
+      default: '',
     },
     vlinename: {
       type: String,
-      default: undefined,
+      default: '',
     },
     hline: {
       type: String,
-      default: undefined,
+      default: '',
     },
     hlinecolor: {
       type: String,
-      default: undefined,
+      default: '',
     },
     hlinename: {
       type: String,
-      default: undefined,
+      default: '',
     },
     date: {
       type: String,
-      default: undefined,
+      default: '',
     },
     aspectRatio: {
-      type: Number,
+      type: [Number, String],
       default: 2,
     },
     formatDate: {
@@ -181,36 +201,30 @@ export default {
     return {
       widgetId: '',
       chartId: '',
-      legendLeftMargin: 0,
+      display: '',
       datasets: [],
       xAxisType: 'category',
-      labels: undefined,
+      labels: [],
       xparse: [],
       yparse: [],
+      nameParse: [],
+      tmpColorParse: [],
+      colorParse: [],
       vlineParse: [],
       vlineColorParse: [],
       tmpVlineColorParse: [],
       vlineNameParse: [],
-      nameParse: [],
       hlineParse: [],
       hlineColorParse: [],
       tmpHlineColorParse: [],
       hlineNameParse: [],
-      ymax: 0,
-      colorParse: '',
-      colorHover: '',
-      isSmall: false,
+      colorHover: [],
     };
-  },
-  computed: {
-    style() {
-      return this.legendLeftMargin + 'px';
-    },
   },
   created() {
     configureChartDefaults();
-    this.widgetId = 'widget' + Math.floor(Math.random() * 1000);
-    this.chartId = 'myChart' + Math.floor(Math.random() * 1000);
+    this.chartId = 'dsfr-chart-' + Math.floor(Math.random() * 1000);
+    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
   },
   mounted() {
     this.resetData();
@@ -223,21 +237,21 @@ export default {
         this.changeColors(e.detail.theme);
       }
     });
-    addEventListener('resize', () => {
-      this.isSmall = document.documentElement.clientWidth < 767;
-    });
   },
   methods: {
     resetData() {
       if (this.chart) {
         this.chart.destroy();
       }
-      this.legendLeftMargin = 0;
+      this.display = '';
       this.datasets = [];
-      this.xAxisType = 'category';
-      this.labels = undefined;
+      this.xAxisType = '';
+      this.labels = [];
       this.xparse = [];
       this.yparse = [];
+      this.nameParse = [];
+      this.tmpColorParse = [];
+      this.colorParse = [];
       this.vlineParse = [];
       this.vlineColorParse = [];
       this.tmpVlineColorParse = [];
@@ -246,9 +260,7 @@ export default {
       this.hlineColorParse = [];
       this.tmpHlineColorParse = [];
       this.hlineNameParse = [];
-      this.ymax = 0;
-      this.colorParse = '';
-      this.colorHover = '';
+      this.colorHover = [];
     },
     getData() {
       // Parsing des données
@@ -260,19 +272,36 @@ export default {
         return;
       }
 
+      let tmpNameParse = [];
+      if (this.name) {
+        try {
+          tmpNameParse = JSON.parse(this.name);
+        } catch (error) {
+          console.error('Erreur lors du parsing de name:', error);
+        }
+      }
+
+      for (let i = 0; i < this.yparse.length; i++) {
+        if (tmpNameParse[i]) {
+          this.nameParse.push(tmpNameParse[i]);
+        } else {
+          this.nameParse.push('Série ' + (i + 1));
+        }
+      }
+
       // Récupération données Vline
-      if (this.vline !== undefined) {
+      if (this.vline) {
         this.vlineParse = JSON.parse(this.vline);
         let tmpVlineNameParse = [];
-        if (this.vlinename !== undefined) {
+        if (this.vlinename) {
           tmpVlineNameParse = JSON.parse(this.vlinename);
         }
-        if (this.vlinecolor !== undefined) {
+        if (this.vlinecolor) {
           this.tmpVlineColorParse = JSON.parse(this.vlinecolor);
         }
 
         for (let i = 0; i < this.vlineParse.length; i++) {
-          if (tmpVlineNameParse[i] !== undefined) {
+          if (tmpVlineNameParse[i]) {
             this.vlineNameParse.push(tmpVlineNameParse[i]);
           } else {
             this.vlineNameParse.push('V' + (i + 1));
@@ -281,18 +310,18 @@ export default {
       }
 
       // Récupération données Hline
-      if (this.hline !== undefined) {
+      if (this.hline) {
         this.hlineParse = JSON.parse(this.hline);
         let tmpHlineNameParse = [];
-        if (this.hlinename !== undefined) {
+        if (this.hlinename) {
           tmpHlineNameParse = JSON.parse(this.hlinename);
         }
-        if (this.hlinecolor !== undefined) {
+        if (this.hlinecolor) {
           this.tmpHlineColorParse = JSON.parse(this.hlinecolor);
         }
 
         for (let i = 0; i < this.hlineParse.length; i++) {
-          if (tmpHlineNameParse[i] !== undefined) {
+          if (tmpHlineNameParse[i]) {
             this.hlineNameParse.push(tmpHlineNameParse[i]);
           } else {
             this.hlineNameParse.push('H' + (i + 1));
@@ -300,84 +329,110 @@ export default {
         }
       }
 
-      let dataLine = [];
+      // Formatage des données
+      let data = [];
       // Cas où x est numérique
-      if (typeof this.xparse[0] === 'number') {
-        const xsort = this.xparse.map((a) => a).sort((a, b) => a - b);
-        xsort.forEach((k) => {
-          const index = this.xparse.findIndex((element) => element === k);
-          dataLine.push({
-            x: k,
-            y: this.yparse[index],
+      if (typeof this.xparse[0][0] === 'number') {
+        const allX = [];
+        this.xparse.forEach((x, i) => {
+          const dj = [];
+          const xsort = x.map((a) => a).sort((a, b) => a - b);
+          xsort.forEach((k) => {
+            const index = x.findIndex((element) => element === k);
+            dj.push({
+              x: k,
+              y: this.yparse[i][index],
+            });
+            if (!allX.includes(k)) {
+              allX.push(k);
+            }
           });
+          data.push(dj);
         });
-        this.labels = xsort;
+        this.labels = [];
         this.xAxisType = 'linear';
       } else {
         // Cas où x est non numérique
-        dataLine = this.yparse;
-        this.labels = this.xparse;
+        data = this.yparse;
+        this.labels = this.xparse[0];
         this.xAxisType = 'category';
       }
-
-      this.ymax = Math.max.apply(null, this.hlineParse);
 
       // Chargement des couleurs
       this.loadColors();
 
       // Préparation des datasets
-      this.datasets = [
-        {
-          label: this.name,
-          data: dataLine,
-          borderColor: this.colorParse,
-          backgroundColor: 'rgba(0, 0, 0, 0)',
-          pointRadius: 5,
-          pointHoverRadius: 5,
-          pointBackgroundColor: this.colorParse,
-          pointBorderColor: this.colorParse,
-          pointHoverBackgroundColor: this.colorHover,
-          pointHoverBorderColor: this.colorHover,
-          borderWidth: 2,
-          fill: false,
-          tension: 0.4,
-        },
-      ];
+      this.datasets = data.map((dataSet, index) => ({
+        data: dataSet,
+        fill: false,
+        borderColor: this.colorParse[index],
+        pointRadius: 5,
+        pointHoverRadius: 5,
+        pointBackgroundColor: this.colorParse[index],
+        pointBorderColor: this.colorParse[index],
+        pointHoverBackgroundColor: this.colorHover[index],
+        pointHoverBorderColor: this.colorHover[index],
+        borderWidth: 2,
+        tension: 0.4,
+      }));
     },
     loadColors() {
-      const { colorParse, colorHover, vlineColorParse, hlineColorParse } = generateBarLineChartColors({
-        vlineParse: this.vlineParse,
-        hlineParse: this.hlineParse,
-        tmpVlineColorParse: this.tmpVlineColorParse,
-        tmpHlineColorParse: this.tmpHlineColorParse,
-        selectedPalette: this.selectedPalette,
-      });
+      this.colorParse = [];
+      this.colorHover = [];
+      const palette = this.choosePalette();
+      for (let i = 0; i < this.yparse.length; i++) {
+        if (this.tmpColorParse[i]) {
+          const color = this.tmpColorParse[i];
+          this.colorParse.push(color);
+          this.colorHover.push(chroma(color).brighten(0.5).hex());
+        } else {
+          const color = getColorsByIndex(i, palette);
+          this.colorParse.push(color);
+          this.colorHover.push(chroma(color).brighten(0.5).hex());
+        }
+      }
 
-      // Assignation des couleurs générées
-      this.colorParse = colorParse;
-      this.colorHover = colorHover;
-      this.vlineColorParse = vlineColorParse;
-      this.hlineColorParse = hlineColorParse;
+      // Couleurs pour les lignes verticales (vlines)
+      this.vlineColorParse = [];
+      for (let i = 0; i < this.vlineParse.length; i++) {
+        if (this.tmpVlineColorParse[i]) {
+          this.vlineColorParse.push(this.tmpVlineColorParse[i]);
+        } else {
+          this.vlineColorParse.push(getNeutralColor());
+        }
+      }
+
+      // Couleurs pour les lignes horizontales (hlines)
+      this.hlineColorParse = [];
+      for (let i = 0; i < this.hlineParse.length; i++) {
+        if (this.tmpHlineColorParse[i]) {
+          this.hlineColorParse.push(this.tmpHlineColorParse[i]);
+        } else {
+          this.hlineColorParse.push(getNeutralColor());
+        }
+      }
     },
     choosePalette() {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
     },
-    // eslint-disable-next-line no-unused-vars
     changeColors(theme) {
       this.loadColors();
 
       // Mise à jour des couleurs dans le graphique
-      this.chart.data.datasets.forEach((dataset) => {
-        dataset.borderColor = this.colorParse;
-        dataset.backgroundColor = this.colorParse;
-        dataset.pointBorderColor = this.colorParse;
-        dataset.pointBackgroundColor = this.colorParse;
-        dataset.hoverBorderColor = this.colorHover;
-        dataset.hoverBackgroundColor = this.colorHover;
-        dataset.pointHoverBorderColor = this.colorHover;
-        dataset.pointHoverBackgroundColor = this.colorHover;
+      this.chart.data.datasets.forEach((dataset, i) => {
+        dataset.borderColor = this.colorParse[i];
+        dataset.backgroundColor = this.colorParse[i];
+        dataset.pointBorderColor = this.colorParse[i];
+        dataset.pointBackgroundColor = this.colorParse[i];
+        dataset.hoverBorderColor = this.colorHover[i];
+        dataset.hoverBackgroundColor = this.colorHover[i];
+        dataset.pointHoverBorderColor = this.colorHover[i];
+        dataset.pointHoverBackgroundColor = this.colorHover[i];
       });
+
+      this.chart.options.scales.x.ticks.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;
+      this.chart.options.scales.y.ticks.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;
 
       this.chart.update('none');
     },
@@ -399,9 +454,8 @@ export default {
             afterDraw: (chart) => {
               if (chart.tooltip?._active && chart.tooltip?._active.length) {
                 const { ctx } = chart;
-                const activePoint = chart.tooltip.getActiveElements()[0];
-                const x = activePoint.element.tooltipPosition().x;
-                const y = activePoint.element.tooltipPosition().y;
+                const x = chart.tooltip.getActiveElements()[0].element.tooltipPosition().x;
+                const index = chart.tooltip._active[0].index;
 
                 ctx.save();
                 ctx.beginPath();
@@ -413,74 +467,60 @@ export default {
                 ctx.stroke();
                 ctx.restore();
 
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(chart.scales.x.left, y);
-                ctx.lineTo(chart.scales.x.right, y);
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = this.colorPrecisionBar;
-                ctx.setLineDash([10, 5]);
-                ctx.stroke();
-                ctx.restore();
+                this.yparse.forEach((i) => {
+                  let y = chart.scales.y.getPixelForValue(i[index]);
+                  ctx.save();
+                  ctx.beginPath();
+                  ctx.moveTo(chart.scales.x.left, y);
+                  ctx.lineTo(chart.scales.x.right, y);
+                  ctx.lineWidth = 1;
+                  ctx.strokeStyle = this.colorPrecisionBar;
+                  ctx.setLineDash([10, 5]);
+                  ctx.stroke();
+                  ctx.restore();
+                });
               }
             },
           },
         ],
         options: {
-          responsive: true,
           aspectRatio: this.aspectRatio,
           scales: {
             x: {
               offset: true,
               type: this.xAxisType,
               grid: {
-                drawTicks: false,
                 drawOnChartArea: false,
-                lineWidth: 1,
-              },
-              border: {
-                dash: [3],
               },
               ticks: {
-                padding: 10, // Espace supplémentaire autour des étiquettes
-                labelOffset: 10,
-                callback: (value) => {
-                  if (this.formatDate) {
-                    const date = new Date(value);
-                    return date.getMonth() + 1 + '/' + date.getFullYear();
-                  } else {
-                    return value;
-                  }
-                },
+                padding: 10,
               },
+              ...(this.xMin ? { suggestedMin: this.xMin } : {}),
+              ...(this.xMax ? { suggestedMax: this.xMax } : {}),
             },
             y: {
               grid: {
                 drawTicks: false,
-                lineWidth: 1,
               },
               border: {
                 dash: [3],
               },
-              suggestedMax: this.ymax,
               ticks: {
-                position: 'left',
-                padding: 10, // Espace supplémentaire autour des étiquettes
+                padding: 5,
                 maxTicksLimit: 5,
                 callback: (value) => {
-                  if (value >= 1e9 || value <= -1e9) {
+                  if (value >= 1000000000 || value <= -1000000000) {
                     return value / 1e9 + 'B';
-                  } else if (value >= 1e6 || value <= -1e6) {
+                  } else if (value >= 1000000 || value <= -1000000) {
                     return value / 1e6 + 'M';
-                  } else if (value >= 1e3 || value <= -1e3) {
+                  } else if (value >= 1000 || value <= -1000) {
                     return value / 1e3 + 'K';
                   }
                   return value;
                 },
               },
-              afterFit: (axis) => {
-                this.legendLeftMargin = axis.width;
-              },
+              ...(this.yMin ? { suggestedMin: this.yMin } : {}),
+              ...(this.yMax ? { suggestedMax: this.yMax } : {}),
             },
           },
           plugins: {
@@ -491,11 +531,31 @@ export default {
               enabled: false,
               displayColors: false,
               backgroundColor: '#6b6b6b',
-              mode: 'index',
-              intersect: false,
+              callbacks: {
+                label: (tooltipItems) => {
+                  const label = [];
+                  this.datasets.forEach((set, i) => {
+                    if (this.xAxisType === 'linear') {
+                      const index = this.xparse[i].indexOf(tooltipItems.parsed.x);
+                      if (index !== -1) {
+                        label.push(this.yparse[i][index]);
+                      }
+                    } else {
+                      label.push(set.data[tooltipItems.dataIndex]);
+                    }
+                  });
+                  return label;
+                },
+                title: (tooltipItems) => {
+                  return tooltipItems[0].label;
+                },
+                labelTextColor: () => {
+                  return this.colorParse;
+                },
+              },
               external: (context) => {
                 // Tooltip Element
-                const dom = this.databoxId ? document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) : this.$el.nextElementSibling;
+                const dom = document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) || this.$el.nextElementSibling;
 
                 const tooltipEl = dom.querySelector('.tooltip');
 
@@ -517,60 +577,57 @@ export default {
                   tooltipEl.classList.add('no-transform');
                 }
 
+                // Set Text
                 if (tooltipModel.body) {
                   const titleLines = tooltipModel.title || [];
                   const bodyLines = tooltipModel.body.map((bodyItem) => {
                     return bodyItem.lines;
                   });
 
-                  // Set tooltip header
+                  // Set the tooltip header
                   const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                   divDate.innerHTML = titleLines[0];
 
-                  // Clear existing tooltip content
+                  // Clear the existing tooltip content
                   const divValue = tooltipEl.querySelector('.tooltip_value');
                   divValue.innerHTML = '';
 
-                  // Iterate through each line in the body and add formatted HTML
-                  bodyLines.forEach((line, i) => {
-                    if (line !== undefined) {
-                      const color = Array.isArray(this.colorParse) ? this.colorParse[i] : this.colorParse;
-
-                      // Extraire uniquement la valeur numérique sans le texte "Prix moyen en euros"
-                      const valueOnly = line[0].replace(this.name + ': ', ''); // Enlever le nom depuis le prop `name`
-
+                  // Iterate over bodyLines to set the color and value in the tooltip
+                  bodyLines[0].forEach((line, i) => {
+                    const displayValue = `${line}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
+                    if (line) {
                       divValue.innerHTML += `
-                        <div class="tooltip_value-content" style="display: flex; justify-content: space-between; align-items: center;">
-                          <span class="tooltip_dot" style="background-color: ${color};"></span>
-                          <p class="tooltip_place fr-mb-0">${valueOnly}${this.unitTooltip ? ' ' + this.unitTooltip : ''}</p>
+                        <div class="tooltip_value-content">
+                          <span class="tooltip_dot" style="background-color:${this.colorParse[i]};"></span>
+                          <p class="tooltip_place fr-mb-0">${displayValue}</p>
                         </div>
                       `;
                     }
                   });
                 }
 
-                const positionX = this.chart.canvas.offsetLeft;
-                const positionY = this.chart.canvas.offsetTop;
+                // Position the tooltip
+                const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;
 
-                tooltipEl.style.position = 'absolute';
-                tooltipEl.style.pointerEvents = 'none';
+                const canvasWidth = Number(this.chart.canvas.style.width.replace(/\D/g, ''));
+                const canvasHeight = Number(this.chart.canvas.style.height.replace(/\D/g, ''));
 
                 let tooltipX = positionX + tooltipModel.caretX + 10;
-                let tooltipY = positionY + tooltipModel.caretY - 18;
-
-                const canvasWidth = this.chart.canvas.clientWidth;
-                const canvasHeight = this.chart.canvas.clientHeight;
-
-                if (tooltipX + tooltipEl.clientWidth + this.legendLeftMargin > positionX + canvasWidth) {
+                let tooltipY = positionY + tooltipModel.caretY - 20;
+                if (tooltipX + tooltipEl.clientWidth > positionX + canvasWidth) {
                   tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10;
                 }
                 if (tooltipY + tooltipEl.clientHeight > positionY + 0.9 * canvasHeight) {
-                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 18;
+                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 20;
                 }
                 if (tooltipX < positionX) {
                   tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2;
-                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 18;
+                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 20;
                 }
+
+                tooltipEl.style.position = 'absolute';
+                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+                tooltipEl.style.pointerEvents = 'none';
                 tooltipEl.style.left = tooltipX + 'px';
                 tooltipEl.style.top = tooltipY + 'px';
                 tooltipEl.style.opacity = 1;
