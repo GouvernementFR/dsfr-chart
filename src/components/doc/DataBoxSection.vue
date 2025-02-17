@@ -100,13 +100,13 @@
       >
         la grille proposée par le DSFR
       </a>
-      , et peut s’afficher selon vos besoins, sur une ou plusieurs colonnes de la grille, grâce à la classe <strong>fr-col-*</strong>. Pensez toutefois à utiliser un <strong>fr-grid-row</strong> par ligne pour permettre le bon fonctionnement des infobulles du composant.
+      , et peut s’afficher selon vos besoins, sur une ou plusieurs colonnes de la grille, grâce à la classe <code>fr-col-*</code>. Pensez toutefois à utiliser un <code>fr-grid-row</code> par ligne pour permettre le bon fonctionnement des infobulles du composant.
     </p>
     <p>Vous pourrez ainsi construire des dashboard en donnant aux databox la taille nécessaire, en fonction de vos besoins métiers et de l’aspect souhaité pour vos graphiques :</p>
 
     <div class="fr-my-6w">
       <div class="fr-grid-row fr-grid-row--gutters">
-        <div class="fr-col-6">
+        <div class="fr-col-12 fr-col-lg-6">
           <data-box
             v-bind="chartData.dataBox.simple"
             id="grid-left"
@@ -125,7 +125,7 @@
             table-name="Catégories"
           />
         </div>
-        <div class="fr-col-6">
+        <div class="fr-col-12 fr-col-lg-6">
           <data-box
             v-bind="chartData.dataBox.modal"
             id="grid-right"
@@ -206,3 +206,15 @@ const reversedScatterData = JSON.stringify(scatterData.map((arr) => arr.reverse(
 
 const tableParse = (data) => JSON.stringify(JSON.parse(data)[0]);
 </script>
+
+<style scoped>
+code {
+  color: var(--text-default-warning);
+  background-color: var(--background-alt-grey);
+  border: var(--border-default-grey) solid 1px;
+  border-radius: 0.25rem;
+  padding: 0 0.25rem;
+  font-size: 0.9rem;
+  font-family: 'Courier New';
+}
+</style>

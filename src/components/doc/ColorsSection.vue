@@ -271,12 +271,12 @@ import colors from '@/assets/colors.json';
 
 <style scoped>
 code {
+  color: var(--text-default-warning);
   background-color: var(--background-alt-grey);
   border: var(--border-default-grey) solid 1px;
-  color: var(--text-default-warning);
   border-radius: 0.25rem;
   padding: 0 0.25rem;
+  font-size: 0.9rem;
   font-family: 'Courier New';
-  font-size: 0.75rem;
 }
 </style>

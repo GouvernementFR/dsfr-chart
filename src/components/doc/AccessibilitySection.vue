@@ -3,7 +3,7 @@
     <h2 id="Accessibilité">
       Accessibilité
     </h2>
-    <div class="fr-alert fr-alert--error fr-mb-5v">
+    <div class="fr-alert fr-alert--info fr-mb-5v">
       <p>
         Utilisés seuls, les graphiques du DSFR Charts sont inaccessibles aux personnes aveugles, déficientes visuelles et aux personnes handicapées motrices. Il conviendra donc d’apporter une alternative textuelle pertinente à chaque fois qu’un graphique est affiché.
       </p>
