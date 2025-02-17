@@ -1,6 +1,6 @@
 {
   "name": "@gouvfr/dsfr-chart",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Système de Design de l'État - Visualisation graphique",
   "repository": "git@github.com:GouvernementFR/dsfr-chart.git",
   "author": "Service d'Information du Gouvernement <missak.keloglanian@pm.gouv.fr>",
