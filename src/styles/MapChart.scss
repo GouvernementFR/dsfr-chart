@@ -1,0 +1,125 @@
+.no_select {
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  cursor: pointer;
+}
+
+.widget_container {
+  .map {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-left: 0;
+    margin-top: 1.5rem;
+
+    &_tooltip {
+      width: auto;
+      height: auto;
+      background-color: var(--grey-1000-50);
+      position: absolute;
+      z-index: 999;
+      box-shadow: 0px 6px 18px 0px var(--shadow-color);
+      text-align: left;
+      pointer-events: none;
+      font-size: 0.75rem;
+      min-width: 180px;
+      max-width: 300px;
+
+      .tooltip_header {
+        width: 100%;
+        font-size: 12px;
+        max-height: 3.5rem;
+        color: var(--text-default-grey);
+        font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        display: -webkit-box;
+        line-clamp: 2;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        background-color: var(--grey-975-75);
+        padding-top: 8px;
+        padding-left: 12px;
+        padding-right: 8px;
+        padding-bottom: 12px;
+        line-height: 1.2;
+      }
+
+      .tooltip_body {
+        line-height: 1.67;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        width: auto;
+
+        .tooltip_value {
+          width: 100%;
+          display: contents;
+          color: var(--text-default-grey);
+          font-size: 14px;
+
+          &-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 8px;
+            padding-left: 12px;
+            padding-right: 8px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-default-grey);
+
+            &:last-child {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+
+    .france_container {
+      height: 100%;
+
+      svg {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    .om_container {
+      width: 100%;
+
+      .om {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: var(--grey-200-850);
+
+        .om_title {
+          display: block;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+  @media (min-width: 62em) {
+    .map {
+      height: 100%;
+      margin-left: 3rem;
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 62em) {
+    .map {
+      width: 100%;
+    }
+  }
+
+  .align-stretch {
+    align-self: stretch;
+  }
+}

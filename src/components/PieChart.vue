@@ -1,403 +1,364 @@
 <template>
-  <div class="widget_container fr-grid-row" :id="widgetId">
-    <div class="r_col fr-col-12">
-      <div class="chart">
-        <div class="linechart_tooltip">
-          <div class="tooltip_header"></div>
-          <div class="tooltip_body">
-            <div class="tooltip_value">
-              <span class="tooltip_dot"></span>
+  <Teleport
+    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
+    :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
+  >
+    <div
+      :ref="widgetId"
+      class="widget_container fr-grid-row"
+    >
+      <div class="fr-col-12">
+        <div class="chart">
+          <div class="tooltip">
+            <div class="tooltip_header fr-text--sm fr-mb-0" />
+            <div class="tooltip_body">
+              <div class="tooltip_value">
+                <span class="tooltip_dot" />
+              </div>
+            </div>
+          </div>
+
+          <canvas :ref="chartId" />
+
+          <div class="chart_legend fr-mb-0 fr-mt-4v">
+            <div
+              v-for="(item, index) in nameParse"
+              :key="index"
+              class="flex fr-mt-3v fr-mb-1v"
+            >
+              <span
+                class="legende_dot"
+                :style="{ 'background-color': colorParse[0][index] }"
+              />
+              <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+                {{ capitalize(item) }}
+              </p>
+            </div>
+            <div
+              v-if="date"
+              class="flex fr-mt-1w"
+            >
+              <p class="fr-text--xs">
+                Mise à jour : {{ date }}
+              </p>
             </div>
           </div>
         </div>
-        <canvas :id="chartId"></canvas>
-        <div v-for="(item, index) in nameParse" :key="index" class="flex fr-mt-3v fr-mb-1v" :style="{'margin-left': isSmall ? '0px' : style}">
-          <span class="legende_dot" v-bind:style="{'background-color': colorParse[index]}"></span>
-          <p class='fr-text--sm fr-text--bold fr-ml-1w fr-mb-0'>
-            {{capitalize(nameParse[index])}}
-          </p>
-        </div>
-        <div v-if="date!==undefined" class="flex fr-mt-1w" :style="{'margin-left': isSmall ? '0px' : style}">
-          <p class="fr-text--xs">Mise à jour : {{date}}</p>
-        </div>
       </div>
     </div>
-  </div>
+  </Teleport>
 </template>
+
 <script>
-import { Chart } from 'chart.js'
-import { mixin } from '@/utils.js'
-import pattern from 'patternomaly'
+import { ArcElement, Chart, DoughnutController, PieController } from 'chart.js';
+import { chartMixins, configureChartDefaults } from '@/utils/global.js';
+import { choosePalette, generateColors } from '@/utils/colors.js';
+
+Chart.register(DoughnutController, PieController, ArcElement);
+
 export default {
   name: 'PieChart',
-  mixins: [mixin],
-  data () {
+  mixins: [chartMixins],
+  props: {
+    databoxId: {
+      type: String,
+      default: null,
+    },
+    databoxType: {
+      type: String,
+      default: null,
+    },
+    databoxSource: {
+      type: String,
+      default: 'default',
+    },
+    x: {
+      type: String,
+      required: true,
+    },
+    y: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      default: '',
+    },
+    fill: {
+      type: [Boolean, String],
+      default: false,
+    },
+    date: {
+      type: String,
+      default: '',
+    },
+    aspectRatio: {
+      type: [Number, String],
+      default: 2,
+    },
+    selectedPalette: {
+      type: String,
+      default: '',
+    },
+    unitTooltip: {
+      type: String,
+      default: '',
+    },
+  },
+  data() {
+    this.chart = undefined;
+
     return {
       widgetId: '',
       chartId: '',
-      chart: undefined,
-      legendLeftMargin: 100,
       display: '',
       datasets: [],
-      labels: undefined,
-      dicHline: {},
+      labels: [],
       xparse: [],
       yparse: [],
       nameParse: [],
       tmpColorParse: [],
       colorParse: [],
-      listColors: [],
-      listPattern: [],
-      colorPattern: [],
-      colorPatternHover: [],
-      typeGraph: 'doughnut',
       colorHover: [],
-      isSmall: false,
-      pattern: false
-    }
+    };
   },
-  props: {
-    x: {
-      type: String,
-      required: true
-    },
-    y: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      default: undefined
-    },
-    color: {
-      type: String,
-      default: undefined
-    },
-    fill: {
-      type: Boolean,
-      default: false
-    },
-    // pattern: {
-    //   type: Boolean,
-    //   default: false
-    // },
-    date: {
-      type: String,
-      default: undefined
-    }
+  created() {
+    configureChartDefaults();
+    this.chartId = 'dsfr-chart-' + Math.floor(Math.random() * 1000);
+    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
   },
-  computed: {
-    style () {
-      return this.legendLeftMargin + 'px'
-    }
+  mounted() {
+    this.resetData();
+    this.createChart();
+
+    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
+    const element = document.documentElement;
+    element.addEventListener('dsfr.theme', (e) => {
+      if (this.chartId !== '') {
+        this.changeColors(e.detail.theme);
+      }
+    });
   },
   methods: {
-    resetData () {
-      this.chart.destroy()
-      this.legendLeftMargin = 100
-      this.display = ''
-      this.datasets = []
-      this.labels = undefined
-      this.dicHline = {}
-      this.xparse = []
-      this.yparse = []
-      this.nameParse = []
-      this.tmpColorParse = []
-      this.colorParse = []
-      this.listColors = []
-      this.listPattern = []
-      this.colorPattern = []
-      this.colorPatternHover = []
-      this.typeGraph = ''
-      this.colorHover = []
+    resetData() {
+      if (this.chart) {
+        this.chart.destroy();
+      }
+      this.display = '';
+      this.datasets = [];
+      this.labels = [];
+      this.xparse = [];
+      this.yparse = [];
+      this.nameParse = [];
+      this.tmpColorParse = [];
+      this.colorParse = [];
+      this.colorHover = [];
     },
-    getData () {
-      const self = this
-      // Récupération des paramètres
-      if (this.fill) {
-        this.typeGraph = 'pie'
-      } else {
-        this.typeGraph = 'doughnut'
-      }
-      this.listColors = this.getAllColors()
-      this.listPattern = this.getAllPattern()
-      this.xparse = JSON.parse(this.x)
-      this.yparse = JSON.parse(this.y)
-
-      let tmpNameParse = []
-      if (this.name !== undefined) {
-        tmpNameParse = JSON.parse(self.name)
-      }
-      if (this.color !== undefined) {
-        this.tmpColorParse = JSON.parse(self.color)
+    getData() {
+      // Parsing des données
+      try {
+        this.xparse = JSON.parse(this.x);
+        this.yparse = JSON.parse(this.y);
+      } catch (error) {
+        console.error('Erreur lors du parsing des données x ou y:', error);
+        return;
       }
 
-      this.loadColors()
-      for (let i = 0; i < this.yparse.length; i++) {
-        if (tmpNameParse[i] !== undefined) {
-          self.nameParse.push(tmpNameParse[i])
-        } else {
-          self.nameParse.push('Serie' + (i + 1))
+      let tmpNameParse = [];
+      if (this.name) {
+        try {
+          tmpNameParse = JSON.parse(this.name);
+        } catch (error) {
+          console.error('Erreur lors du parsing de name:', error);
         }
       }
 
-      // Formatage des données
-      self.labels = self.xparse
-      self.datasets = [{
-        data: self.yparse,
-        borderColor: self.colorParse,
-        backgroundColor: self.colorParse,
-        hoverBackgroundColor: self.colorHover,
-        hoverBorderColor: self.colorHover
-      }]
-    },
-    createChart () {
-      Chart.defaults.global.defaultFontFamily = 'Marianne'
-      Chart.defaults.global.defaultFontSize = 12
-      Chart.defaults.global.defaultLineHeight = 1.66
+      for (let i = 0; i < this.yparse[0].length; i++) {
+        if (tmpNameParse[i]) {
+          this.nameParse.push(tmpNameParse[i]);
+        } else {
+          this.nameParse.push('Série ' + (i + 1));
+        }
+      }
 
-      this.getData()
-      const self = this
-      const ctx = document.getElementById(self.chartId).getContext('2d')
+      // Assignation des labels
+      this.labels = this.xparse[0];
+
+      // Chargement des couleurs
+      this.loadColors();
+
+      // Préparation des datasets
+      this.datasets = this.yparse.map((dataSet, index) => ({
+        data: dataSet,
+        borderColor: this.colorParse[index],
+        backgroundColor: this.colorParse[index],
+        hoverBorderColor: this.colorHover[index],
+        hoverBackgroundColor: this.colorHover[index],
+      }));
+    },
+    createChart() {
+      if (this.chart) this.chart.destroy();
+
+      this.getData();
+
+      const ctx = this.$refs[this.chartId].getContext('2d');
+
       this.chart = new Chart(ctx, {
-        type: self.typeGraph,
+        type: this.fill ? 'pie' : 'doughnut',
         data: {
-          labels: self.labels,
-          datasets: self.datasets
+          labels: this.labels,
+          datasets: this.datasets,
         },
         options: {
-          animation: {
-            easing: 'easeInOutBack',
-            duration: 1000
-          },
-          legend: {
-            display: false
-          },
-          tooltips: {
-            displayColors: false,
-            backgroundColor: '#6b6b6b',
-            enabled: false,
-            callbacks: {
-              label: function (tooltipItems) {
-                return self.datasets[0].data[tooltipItems.index]
-              },
-              title: function (tooltipItems) {
-                return self.labels[tooltipItems[0].index]
-              },
-              labelTextColor: function (tooltipItems) {
-                return self.colorParse[tooltipItems.index]
-              }
+          aspectRatio: this.aspectRatio,
+          layout: {
+            padding: {
+              left: 50,
+              right: 50,
+              top: 0,
+              bottom: 0,
             },
-            custom: function (context) {
-              // Tooltip Element
-              const tooltipEl = self.$el.querySelector('.linechart_tooltip')
+          },
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              enabled: false,
+              displayColors: false,
+              backgroundColor: '#6b6b6b',
+              callbacks: {
+                label: (tooltipItems) => {
+                  const value = this.datasets[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
+                  return this.formatNumber(value);
+                },
+                title: (tooltipItems) => {
+                  return tooltipItems[0].label;
+                },
+                labelTextColor: (tooltipItems) => {
+                  return this.colorParse[tooltipItems.datasetIndex][tooltipItems.dataIndex];
+                },
+              },
+              external: (context) => {
+                // Tooltip Element
+                const dom = document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) ?? this.$el.nextElementSibling;
 
-              // Hide if no tooltip
-              const tooltipModel = context
-              if (tooltipModel.opacity === 0) {
-                tooltipEl.style.opacity = 0
-                return
-              }
+                const tooltipEl = dom.querySelector('.tooltip');
 
-              // Set caret Position
-              tooltipEl.classList.remove('above', 'below', 'no-transform')
-              if (tooltipModel.yAlign) {
-                tooltipEl.classList.add(tooltipModel.yAlign)
-              } else {
-                tooltipEl.classList.add('no-transform')
-              }
+                const tooltipModel = context.tooltip;
 
-              function getBody (bodyItem) {
-                return bodyItem.lines
-              }
-              // Set Text
-              if (tooltipModel.body) {
-                const titleLines = tooltipModel.title || []
-                const bodyLines = tooltipModel.body.map(getBody)
+                if (!tooltipEl) return;
 
-                const divDate = self.$el.querySelector('.tooltip_header')
-                divDate.innerHTML = titleLines
+                // Hide if no tooltip
+                if (!tooltipModel || tooltipModel.opacity === 0) {
+                  tooltipEl.style.opacity = 0;
+                  return;
+                }
 
-                const color = tooltipModel.labelTextColors[0]
-                const divValue = self.$el.querySelector('.tooltip_value')
+                // Set tooltip position classes
+                tooltipEl.classList.remove('above', 'below', 'no-transform');
+                if (tooltipModel.yAlign) {
+                  tooltipEl.classList.add(tooltipModel.yAlign);
+                } else {
+                  tooltipEl.classList.add('no-transform');
+                }
 
-                const nodeName = self.$el.querySelector('.tooltip_dot').attributes[0].nodeName
-                divValue.innerHTML = '<span ' + nodeName + '= "" class="tooltip_dot" style = "background-color:' + color + '"></span>' + ' ' + bodyLines[0]
-              }
+                // Set Text
+                if (tooltipModel.body) {
+                  const titleLines = tooltipModel.title || [];
+                  const bodyLines = tooltipModel.body.map((bodyItem) => {
+                    return bodyItem.lines;
+                  });
 
-              const {
-                offsetLeft: positionX,
-                offsetTop: positionY
-              } = self.chart.canvas
+                  // Set the tooltip header
+                  const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
+                  divDate.innerHTML = titleLines;
 
-              const canvasWidth = Number(self.chart.canvas.style.width.replace(/\D/g, ''))
-              const canvasHeight = Number(self.chart.canvas.style.height.replace(/\D/g, ''))
-              tooltipEl.style.position = 'absolute'
-              tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px'
-              tooltipEl.style.pointerEvents = 'none'
-              let tooltipX = positionX + tooltipModel.caretX + 10
-              let tooltipY = positionY + tooltipModel.caretY - 18
-              if (tooltipX + tooltipEl.clientWidth + self.legendLeftMargin > positionX + canvasWidth) { // tooltip disappears at the right of the canvas
-                tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10
-              }
-              if (tooltipY + tooltipEl.clientHeight > positionY + 0.9 * canvasHeight) { // tooltip disappears at the bottom of the canvas
-                tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 18
-              }
-              if (tooltipX < positionX) {
-                tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2
-                tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 18
-              }
-              tooltipEl.style.left = tooltipX + 'px'
-              tooltipEl.style.top = tooltipY + 'px'
-              tooltipEl.style.opacity = 1
-            }
-          }
-        }
-      })
+                  const color = tooltipModel.labelTextColors[0];
+
+                  // Clear the existing tooltip content
+                  const divValue = tooltipEl.querySelector('.tooltip_value');
+                  divValue.innerHTML = '';
+
+                  const value = bodyLines[0][0];
+                  const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
+
+                  divValue.innerHTML += `
+                    <div class="tooltip_value-content">
+                      <span class="tooltip_dot" style="background-color:${color};"></span>
+                      <p class="tooltip_place fr-mb-0">${displayValue}</p>
+                    </div>
+                  `;
+                }
+
+                // Position the tooltip
+                const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;
+
+                const canvasWidth = Number(this.chart.canvas.style.width.replace(/\D/g, ''));
+                const canvasHeight = Number(this.chart.canvas.style.height.replace(/\D/g, ''));
+
+                let tooltipX = positionX + tooltipModel.caretX + 10;
+                let tooltipY = positionY + tooltipModel.caretY - 20;
+                if (tooltipX + tooltipEl.clientWidth > positionX + canvasWidth) {
+                  tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10;
+                }
+                if (tooltipY + tooltipEl.clientHeight > positionY + 0.9 * canvasHeight) {
+                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 20;
+                }
+                if (tooltipX < positionX) {
+                  tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2;
+                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 20;
+                }
+
+                tooltipEl.style.position = 'absolute';
+                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+                tooltipEl.style.pointerEvents = 'none';
+                tooltipEl.style.left = tooltipX + 'px';
+                tooltipEl.style.top = tooltipY + 'px';
+                tooltipEl.style.opacity = 1;
+              },
+            },
+          },
+        },
+      });
     },
-    loadColors () {
-      this.colorParse = []
-      this.colorHover = []
-      this.colorPattern = []
-      this.colorPatternHover = []
-      for (let i = 0; i < this.yparse.length; i++) {
-        if (this.tmpColorParse[i] !== undefined) {
-          this.colorParse.push(this.getHexaFromName(this.tmpColorParse[i]))
-          this.colorHover.push(this.getHexaFromName(this.tmpColorParse[i], { hover: true }))
-        } else {
-          this.colorParse.push(this.getHexaFromName(this.listColors[i]))
-          this.colorHover.push(this.getHexaFromName(this.listColors[i], { hover: true }))
-          this.colorPattern.push(pattern.draw(this.listPattern[i], this.getHexaFromName(this.listColors[i])))
-          this.colorPatternHover.push(pattern.draw(this.listPattern[i], this.getHexaFromName(this.listColors[i], { hover: true })))
-        }
+    loadColors() {
+      let yparseSimple = this.yparse;
+      if (this.selectedPalette === '' || this.selectedPalette === 'categorical') {
+        yparseSimple = this.yparse[0];
       }
+
+      const { colorParse, colorHover } = generateColors({
+        yparse: yparseSimple,
+        tmpColorParse: this.tmpColorParse,
+        selectedPalette: this.selectedPalette,
+      });
+
+      this.colorParse = [colorParse.flat()];
+      this.colorHover = [colorHover.flat()];
     },
-    changeColors (theme) {
-      Chart.defaults.global.defaultFontColor = this.getHexaFromToken('text-mention-grey', theme)
-      this.loadColors()
-      this.chart.data.datasets[0].borderColor = this.colorParse
-      if (this.pattern) {
-        this.chart.data.datasets[0].backgroundColor = this.colorPattern
-        this.chart.data.datasets[0].hoverBackgroundColor = this.colorPatternHover
-      } else {
-        this.chart.data.datasets[0].backgroundColor = this.colorParse
-        this.chart.data.datasets[0].hoverBackgroundColor = this.colorHover
-      }
-      this.chart.data.datasets[0].hoverBorderColor = this.colorHover
-      this.chart.update(0)
-    }
+    choosePalette() {
+      // Using the refactored choosePalette function from utils
+      return choosePalette(this.selectedPalette);
+    },
+    // eslint-disable-next-line no-unused-vars
+    changeColors(theme) {
+      this.loadColors();
+
+      // Mise à jour des couleurs dans le graphique
+      this.chart.data.datasets.forEach((dataset, i) => {
+        dataset.borderColor = this.colorParse[i];
+        dataset.backgroundColor = this.colorParse[i];
+        dataset.hoverBorderColor = this.colorHover[i];
+        dataset.hoverBackgroundColor = this.colorHover[i];
+      });
+
+      this.chart.update('none');
+    },
   },
-  created () {
-    this.chartId = 'myChart' + Math.floor(Math.random() * (1000))
-    this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
-  },
-  mounted () {
-    document.getElementById(this.widgetId).offsetWidth > 486 ? this.display = 'big' : this.display = 'small'
-    this.createChart()
-    const element = document.documentElement // Reference à l'element <html> du DOM
-    element.addEventListener('dsfr.theme', (e) => {
-      this.changeColors(e.detail.theme)
-    })
-    addEventListener('resize', (event) => {
-      this.isSmall = document.documentElement.clientWidth < 767
-    })
-  },
-  beforeUpdate () {
-    this.resetData()
-    this.createChart()
-    const element = document.documentElement
-    this.changeColors(element.getAttribute('data-fr-theme'))
-  }
-}
+};
 </script>
+
 <style scoped lang="scss">
-.widget_container {
-  .ml-lg {
-    margin-left: 0;
-  }
-  @media (min-width: 62em) {
-    .ml-lg {
-      margin-left: 3rem;
-    }
-  }
-  .r_col {
-    align-self: center;
-    .flex {
-      display: flex;
-      .legende_dot {
-        min-width: 0.8rem;
-        width: 0.8rem;
-        height: 0.8rem;
-        min-width: 0.8rem;
-        background-color: #000091;
-        display: inline-block;
-        margin-top: 0.25rem;
-        margin-left: 0;
-      }
-      .legende_dash_line1{
-        min-width: 0.35rem;
-        width: 0.35rem;
-        height: 0.2rem;
-        border-radius: 0%;
-        display: inline-block;
-        margin-top: 0.6rem;
-      }
-      .legende_dash_line2{
-        min-width: 0.35rem;
-        width: 0.35rem;
-        height: 0.2rem;
-        border-radius: 0%;
-        display: inline-block;
-        margin-top: 0.6rem;
-        margin-left: 0.1rem;
-      }
-    }
-  }
-  .chart canvas {
-    max-width: 100%;
-  }
-  .linechart_tooltip {
-    opacity: 0;
-    width: 11.25rem;
-    height: auto;
-    background-color: white;
-    position: fixed;
-    z-index: 999;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 18, 0.16);
-    text-align: left;
-    pointer-events: none;
-    font-size: 0.75rem;
-    .tooltip_header {
-      width: 100%;
-      height: 1.75rem;
-      background-color: #f6f6f6;
-      color: #6b6b6b;
-      padding-left: 0.75rem;
-      padding-top: 0.25rem;
-      padding-bottom: 0.25rem;
-    }
-    .tooltip_body {
-      padding-left: 0.75rem;
-      padding-right: 0.75rem;
-      padding-top:0.25rem;
-      line-height: 1.67;
-      .tooltip_dot {
-        min-width: 0.7rem;
-        width: 0.7rem;
-        height: 0.7rem;
-        background-color: #000091;
-        display: inline-block;
-        margin-top: 0.25rem;
-        margin-right: 0.25rem;
-      }
-      .tooltip_place {
-        color: #242424;
-      }
-      .tooltip_value {
-        color: #242424;
-        font-weight: bold;
-      }
-    }
-  }
-}
+
 </style>

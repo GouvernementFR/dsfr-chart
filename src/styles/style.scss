@@ -1,0 +1,10 @@
+@import 'Tooltip';
+@import 'Legend';
+
+.chart canvas {
+  max-width: 100%;
+}
+
+.flex {
+  display: flex;
+}

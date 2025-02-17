@@ -1,0 +1,13 @@
+services:
+  test:
+    build: .
+    ports:
+      - "9323:9323"
+    environment:
+      - PLAYWRIGHT_HTML_HOST=0.0.0.0
+    command: npm run test
+  snapshots:
+    build: .
+    volumes:
+      - ./tests/__snapshots__:/home/node/tests/__snapshots__
+    command: npm run test:update-snapshots

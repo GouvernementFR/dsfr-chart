@@ -1,129 +1,208 @@
 <template>
-  <div class="widget_container fr-grid-row" :id="widgetId">
-    <div class = 'fr-table scroll' :id="tableId" :style="styleHeight">
-      <table>
-        <thead>
-          <tr>
-            <th scope="col">{{varname}}</th>
-            <th v-for="(item, index) in nameParse" :key="item" scope="col">{{nameParse[index]}}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in xparse" :key="index">
-            <td :class="getClass(item)">{{item}}</td>
-            <td v-for="(item2, index2) in yparse" :key="index2" :class="getClass(yparse[index2][index])">{{convertIntToHumanTable(yparse[index2][index])}}</td>
-          </tr>
-        </tbody>
-      </table>
+  <Teleport
+    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'global')"
+    :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
+  >
+    <div
+      :ref="widgetId"
+      class="widget_container"
+    >
+      <div
+        :ref="tableId"
+        class="fr-table"
+        :style="{ maxHeight: '25rem', overflow: 'auto' }"
+      >
+        <div class="fr-table__wrapper">
+          <div class="fr-table__container">
+            <div class="fr-table__content">
+              <table>
+                <caption>
+                  {{ tableName }}
+                </caption>
+                <thead>
+                  <tr>
+                    <th
+                      v-if="xparse.length"
+                      scope="col"
+                    >
+                      {{ tableName }}
+                    </th>
+                    <th
+                      v-for="(item, index) in nameParse"
+                      :key="index"
+                      scope="col"
+                    >
+                      {{ item }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="(rowItem, rowIndex) in xparse"
+                    :key="rowIndex"
+                  >
+                    <td :class="getClass(rowItem)">
+                      {{ rowItem }}
+                    </td>
+                    <td
+                      v-for="(colItem, colIndex) in yparse"
+                      :key="colIndex"
+                      :class="getClass(colItem[rowIndex])"
+                    >
+                      {{ formatNumber(colItem[rowIndex]) }}
+                    </td>
+                  </tr>
+                  <tr
+                    v-for="(rowItem, rowIndex) in lineParse"
+                    :key="rowIndex"
+                  >
+                    <!-- eslint-disable vue/no-v-html -->
+                    <td
+                      v-for="(cellItem, cellIndex) in rowItem"
+                      :key="cellIndex"
+                      :class="getClass(cellItem)"
+                      v-html="cellItem"
+                    />
+                    <!-- eslint-enable vue/no-v-html -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </Teleport>
 </template>
-<script>
-import { Chart } from 'chart.js'
-import { mixin } from '@/utils.js'
-import annotationPlugin from 'chartjs-plugin-annotation'
 
-Chart.pluginService.register(annotationPlugin)
+<script>
+import { chartMixins } from '@/utils/global.js';
 
 export default {
   name: 'TableChart',
-  mixins: [mixin],
-  data () {
+  mixins: [chartMixins],
+  props: {
+    databoxId: {
+      type: String,
+      default: null,
+    },
+    databoxType: {
+      type: String,
+      default: null,
+    },
+    databoxSource: {
+      type: String,
+      default: 'global',
+    },
+    x: {
+      type: String,
+      default: '',
+    },
+    y: {
+      type: String,
+      default: '',
+    },
+    line: {
+      type: String,
+      default: '',
+    },
+    name: {
+      type: String,
+      default: '',
+    },
+    tableName: {
+      type: String,
+      default: '',
+    },
+  },
+  data() {
     return {
       widgetId: '',
       tableId: '',
       xparse: [],
       yparse: [],
+      lineParse: [],
       nameParse: [],
-      styleHeight: ''
-    }
+    };
   },
-  props: {
-    x: {
-      type: String,
-      required: true
-    },
-    y: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      default: undefined
-    },
-    varname: {
-      type: String,
-      default: undefined
-    },
-    maxheight: {
-      type: String,
-      default: '25rem'
-    }
+  created() {
+    this.tableId = 'dsfr-table-' + Math.floor(Math.random() * 1000);
+    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
+  },
+  mounted() {
+    this.resetData();
+    this.getData();
   },
   methods: {
-    resetData () {
-      this.xparse = []
-      this.yparse = []
-      this.nameParse = []
+    resetData() {
+      this.xparse = [];
+      this.yparse = [];
+      this.lineParse = [];
+      this.nameParse = [];
     },
-    getData () {
-      const self = this
-      // Récupération des paramètres
-      this.xparse = JSON.parse(this.x)
-      this.yparse = JSON.parse(this.y)
+    getData() {
+      // Parsing des données
+      if (this.x && this.y) {
+        try {
+          this.xparse = JSON.parse(this.x ?? '[]');
+          this.yparse = JSON.parse(this.y ?? '[]');
+        } catch (error) {
+          console.error('Erreur lors du parsing des données x ou y:', error);
+          return;
+        }
+      }
 
-      this.styleHeight = 'max-height:' + this.maxheight
+      if (this.line) {
+        try {
+          this.lineParse = JSON.parse(this.line ?? '[]');
+        } catch (error) {
+          console.error('Erreur lors du parsing des données line:', error);
+          return;
+        }
+      }
 
-      let tmpNameParse = []
-      if (this.name !== undefined) {
-        tmpNameParse = JSON.parse(self.name)
+      let tmpNameParse = [];
+      if (this.name) {
+        try {
+          tmpNameParse = JSON.parse(this.name);
+        } catch (error) {
+          console.error('Erreur lors du parsing de name:', error);
+        }
       }
 
       for (let i = 0; i < this.yparse.length; i++) {
-        if (tmpNameParse[i] !== undefined) {
-          self.nameParse.push(tmpNameParse[i])
+        if (tmpNameParse[i]) {
+          this.nameParse.push(tmpNameParse[i]);
         } else {
-          self.nameParse.push('Serie' + (i + 1))
+          this.nameParse.push('Série ' + (i + 1));
+        }
+      }
+
+      for (let i = 0; i < (this.lineParse.length ? this.lineParse[0].length : 0); i++) {
+        if (tmpNameParse[i]) {
+          this.nameParse.push(tmpNameParse[i]);
+        } else {
+          this.nameParse.push('Série ' + (i + 1));
         }
       }
     },
-    getClass (value) {
-      if (typeof value === 'number') {
-        return 'text-right'
-      } else {
-        return 'text-left'
+    getClass(value) {
+      let classes = '';
+      if (typeof value === 'string' && value.replace(/<[^>]*>/g, '').length > 132) {
+        classes += 'text-overflow ';
       }
-    }
+      if (typeof value === 'number') {
+        classes += 'text-right ';
+      } else {
+        classes += 'text-left ';
+      }
+
+      return classes;
+    },
   },
-  created () {
-    this.widgetId = 'widget' + Math.floor(Math.random() * (1000))
-    this.tableId = 'table' + Math.floor(Math.random() * (1000))
-  },
-  mounted () {
-    this.getData()
-  },
-  beforeUpdate () {
-    this.resetData()
-    this.getData()
-  }
-}
+};
 </script>
+
 <style scoped lang="scss">
-.scroll {
-  table-layout: fixed;
-  border-collapse: collapse;
-  overflow: auto;
-}
-.scroll thead {
-  position: sticky;
-  top: 0;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.text-left {
-  text-align: left;
-}
+@import '@/styles/TableChart.scss';
 </style>

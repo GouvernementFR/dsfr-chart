@@ -1,36 +1,26 @@
+# IDE / Editor
+.idea/
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Dependency directories
+node_modules/
+vendor/
+
+# Build output
+dist/
+docs/
+
+# File systems
 .DS_Store
-node_modules
-/BarChart
-/BarLineChart
-/Charts
-/LineChart
-/MapChart
-/MultiLineChart
-/PieChart
-/ScatterChart
-/GaugeChart
-/MapChartReg
-/RadarChart
-/TableChart
-roadmap.md
+Thumbs.db
 
-
-# local env files
-.env.local
-.env.*.local
-
-# Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-#/package-lock.json
+# Storybook & playwright
+/test-results/
+/blob-report/
+/storybook-static/
+/playwright-report/
+/playwright/.cache/

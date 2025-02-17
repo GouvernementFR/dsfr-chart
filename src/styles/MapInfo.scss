@@ -1,0 +1,23 @@
+.map_info {
+  display: flex;
+  flex-direction: column;
+
+  .sep {
+    border-bottom: 1px solid var(--border-default-grey);
+  }
+
+  .flex {
+    display: inline-flex;
+  }
+
+  .scale {
+    &_container {
+      height: 1.5rem;
+    }
+
+    &_values {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

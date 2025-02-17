@@ -1,0 +1,48 @@
+.widget_container {
+  .gauge-container {
+    width: 100%;
+    display: flex;
+
+    .jauge {
+      border: 1px solid var(--border-default-grey);
+      background-color: var(--background-raised-grey);
+      width: 100%;
+
+      &-fill {
+        height: 100%;
+        background-color: var(--blue-france-850-200);
+        box-sizing: border-box;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      &-text {
+        position: absolute;
+        left: 0;
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+    }
+  }
+
+  .legende_dot {
+    margin-left: 0px;
+    min-width: 0.8rem;
+    width: 0.8rem;
+    height: 0.8rem;
+    min-width: 0.8rem;
+    display: inline-block;
+    margin-top: 0.25rem;
+  }
+
+  .target_legend {
+    border: 1px solid var(--border-default-grey);
+    background-color: var(--background-raised-grey);
+  }
+
+  .actual_legend {
+    background-color: var(--blue-france-850-200);
+  }
+}
