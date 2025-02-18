@@ -1,11 +1,27 @@
 {
   "name": "@gouvfr/dsfr-chart",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Système de Design de l'État - Visualisation graphique",
-  "repository": "git@github.com:GouvernementFR/dsfr-chart.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GouvernementFR/dsfr-chart.git"
+  },
   "author": "Service d'Information du Gouvernement <missak.keloglanian@pm.gouv.fr>",
   "type": "module",
-  "license": "SEE LICENSE IN LICENSE.md",
+  "license": "MIT",
+  "files": [
+    "dist/*",
+    "README.md",
+    "CONTRIBUTING.md"
+  ],
+  "main": "./dist/DSFRChart/DSFRChart.umd.cjs",
+  "module": "./dist/DSFRChart/DSFRChart.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/DSFRChart/DSFRChart.esm.js",
+      "require": "./dist/DSFRChart/DSFRChart.umd.cjs"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "serve": "vite preview",
@@ -13,12 +29,12 @@
     "build:docs": "vite build",
     "build": "vite build --config=vite-components.config.js",
     "build-bar": "LIBRARY=BarChart vite build --config=vite-components.config.js",
-    "build-barline": "LIBRARY=BarLineChart vite build --config=vite-components.config.js",
+    "build-bar-line": "LIBRARY=BarLineChart vite build --config=vite-components.config.js",
     "build-databox": "LIBRARY=DataBox vite build --config=vite-components.config.js",
     "build-gauge": "LIBRARY=GaugeChart vite build --config=vite-components.config.js",
     "build-line": "LIBRARY=LineChart vite build --config=vite-components.config.js",
     "build-map": "LIBRARY=MapChart vite build --config=vite-components.config.js",
-    "build-mapreg": "LIBRARY=MapChartReg vite build --config=vite-components.config.js",
+    "build-map-reg": "LIBRARY=MapChartReg vite build --config=vite-components.config.js",
     "build-pie": "LIBRARY=PieChart vite build --config=vite-components.config.js",
     "build-radar": "LIBRARY=RadarChart vite build --config=vite-components.config.js",
     "build-scatter": "LIBRARY=ScatterChart vite build --config=vite-components.config.js",
@@ -29,11 +45,6 @@
     "test": "playwright test",
     "test:update-snapshots": "playwright test --update-snapshots --reporter=line"
   },
-  "files": [
-    "dist/*",
-    "README.md",
-    "CONTRIBUTING.md"
-  ],
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "@gouvfr/dsfr": "^1.13.0",
