@@ -1,6 +1,6 @@
 {
   "name": "@gouvfr/dsfr-chart",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Système de Design de l'État - Visualisation graphique",
   "repository": {
     "type": "git",
@@ -15,12 +15,15 @@
     "CONTRIBUTING.md"
   ],
   "main": "./dist/DSFRChart/DSFRChart.umd.cjs",
-  "module": "./dist/DSFRChart/DSFRChart.esm.js",
+  "module": "./dist/DSFRChart/DSFRChart.js",
   "exports": {
     ".": {
-      "import": "./dist/DSFRChart/DSFRChart.esm.js",
+      "import": "./dist/DSFRChart/DSFRChart.js",
       "require": "./dist/DSFRChart/DSFRChart.umd.cjs"
-    }
+    },
+    "./dist/DSFRChart/DSFRChart.js": "./dist/DSFRChart/DSFRChart.js",
+    "./dist/DSFRChart/DSFRChart.umd.js": "./dist/DSFRChart/DSFRChart.umd.js",
+    "./dist/DSFRChart/DSFRChart.css": "./dist/DSFRChart/DSFRChart.css"
   },
   "scripts": {
     "dev": "vite",
