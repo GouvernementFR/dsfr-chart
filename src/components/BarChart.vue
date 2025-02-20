@@ -14,6 +14,7 @@
             <div class="tooltip_body">
               <div class="tooltip_value" />
             </div>
+            <div v-if="totalTooltip" class="tooltip_footer fr-text--sm fr-mb-0"/>
           </div>
 
           <canvas :ref="chartId" />
@@ -134,6 +135,14 @@ export default {
     unitTooltip: {
       type: String,
       default: '',
+    },
+    totalTooltip: {
+      type: [Boolean, String],
+      default: false,
+    },
+    totalTooltipLabel: {
+      type: String,
+      default: 'Total : ',
     },
   },
   data() {
@@ -369,6 +378,14 @@ export default {
                     </div>
                   `;
                   });
+
+                  if (!!this.totalTooltip) {
+                    const divFooter = tooltipEl.querySelector('.tooltip_footer');
+                    const total = this.formatNumber(tooltipModel.dataPoints.reduce((current, dataPoint) => current + (this.horizontal ? dataPoint.parsed.x : dataPoint.parsed.y), 0));
+                    const displayTotal = `${total}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
+
+                    divFooter.innerHTML = `${this.totalTooltipLabel}${displayTotal}`;
+                  }
                 }
 
                 // Position the tooltip
