@@ -43,6 +43,7 @@ export const chartData = {
       horizontal: true,
       barSize: 20,
       unitTooltip: 'tonnes',
+      totalTooltip: true,
     },
     stacked: {
       x: '[["Ensemble des Français", "Agglomération parisienne", "Communauté urbaine de province", "Commune rurale"]]',
