@@ -53,6 +53,11 @@
       color: var(--text-default-grey);
       font-size: 0.9rem;
       font-weight: 400;
+
+      &:last-child {
+        margin-left: auto;
+        text-wrap: nowrap;
+      }
     }
 
     .tooltip_value {
@@ -63,7 +68,8 @@
 
       &-content {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
+        column-gap: 0.55em;
         align-items: center;
         padding-top: 0.55rem;
         padding-left: 0.75rem;
