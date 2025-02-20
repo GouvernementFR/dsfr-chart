@@ -365,6 +365,7 @@ export default {
                     divValue.innerHTML += `
                     <div class="tooltip_value-content">
                       <span class="tooltip_dot" style="background-color:${color};"></span>
+                      ${tooltipModel.dataPoints.length > 1 ? `<p class="tooltip_place fr-mb-0">${this.datasets[datasetIndex].label}</p>` : ''}
                       <p class="tooltip_place fr-mb-0">${displayValue}</p>
                     </div>
                   `;
