@@ -184,18 +184,20 @@ export function getSequentialDescending() {
 export function getDivergentAscending() {
   const themeColors = getThemeColors();
   return chroma.scale([
-    themeColors['dsfr-chart-colors-11'],
-    themeColors['dsfr-chart-colors-13'],
-    themeColors['dsfr-chart-colors-15'],
+			themeColors['dsfr-chart-colors-15'],
+			themeColors['dsfr-chart-colors-13'],
+			themeColors['dsfr-chart-colors-11'],
+
   ]).colors(4);
 }
 
 export function getDivergentDescending() {
   const themeColors = getThemeColors();
   return chroma.scale([
-    themeColors['dsfr-chart-colors-15'],
-    themeColors['dsfr-chart-colors-13'],
-    themeColors['dsfr-chart-colors-11'],
+			themeColors['dsfr-chart-colors-11'],
+			themeColors['dsfr-chart-colors-13'],
+			themeColors['dsfr-chart-colors-15'],
+
   ]).colors(4);
 }
 
