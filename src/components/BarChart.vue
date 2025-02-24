@@ -362,9 +362,13 @@ export default {
                     const value = this.formatNumber(this.datasets[datasetIndex].data[index]);
                     const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
 
+																				const seriesname = this.nameParse ?? []
+
                     divValue.innerHTML += `
                     <div class="tooltip_value-content">
                       <span class="tooltip_dot" style="background-color:${color};"></span>
+																						${seriesname.length > 1 ? `<p class="tooltip_place fr-mb-0">${seriesname[datasetIndex] ?? ""} : </p>` : ''}
+																			</span>
                       <p class="tooltip_place fr-mb-0">${displayValue}</p>
                     </div>
                   `;
