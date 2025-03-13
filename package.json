@@ -18,8 +18,52 @@
   "module": "./dist/DSFRChart/DSFRChart.js",
   "exports": {
     ".": {
-      "import": "./dist/DSFRChart/DSFRChart.js",
-      "require": "./dist/DSFRChart/DSFRChart.umd.cjs"
+      "import": "./dist/bundler/main.js",
+      "require": "./dist/bundler/main.cjs"
+    },
+    "./BarChart": {
+      "import": "./dist/bundler/BarChart.js",
+      "require": "./dist/bundler/BarChart.cjs"
+    },
+    "./BarLineChart": {
+      "import": "./dist/bundler/BarLineChart.js",
+      "require": "./dist/bundler/BarLineChart.cjs"
+    },
+    "./DataBox": {
+      "import": "./dist/bundler/DataBox.js",
+      "require": "./dist/bundler/DataBox.cjs"
+    },
+    "./GaugeChart": {
+      "import": "./dist/bundler/GaugeChart.js",
+      "require": "./dist/bundler/GaugeChart.cjs"
+    },
+    "./LineChart": {
+      "import": "./dist/bundler/LineChart.js",
+      "require": "./dist/bundler/LineChart.cjs"
+    },
+    "./MapChart": {
+      "import": "./dist/bundler/MapChart.js",
+      "require": "./dist/bundler/MapChart.cjs"
+    },
+    "./MapChartReg": {
+      "import": "./dist/bundler/MapChartReg.js",
+      "require": "./dist/bundler/MapChartReg.cjs"
+    },
+    "./PieChart": {
+      "import": "./dist/bundler/PieChart.js",
+      "require": "./dist/bundler/PieChart.cjs"
+    },
+    "./RadarChart": {
+      "import": "./dist/bundler/RadarChart.js",
+      "require": "./dist/bundler/RadarChart.cjs"
+    },
+    "./ScatterChart": {
+      "import": "./dist/bundler/ScatterChart.js",
+      "require": "./dist/bundler/ScatterChart.cjs"
+    },
+    "./TableChart": {
+      "import": "./dist/bundler/TableChart.js",
+      "require": "./dist/bundler/TableChart.cjs"
     },
     "./dist/DSFRChart/DSFRChart.js": "./dist/DSFRChart/DSFRChart.js",
     "./dist/DSFRChart/DSFRChart.umd.js": "./dist/DSFRChart/DSFRChart.umd.js",
@@ -42,6 +86,7 @@
     "build-radar": "LIBRARY=RadarChart vite build --config=vite-components.config.js",
     "build-scatter": "LIBRARY=ScatterChart vite build --config=vite-components.config.js",
     "build-table": "LIBRARY=TableChart vite build --config=vite-components.config.js",
+    "build-bundler": "vite build --config=vite-bundler.config.js",
     "build:components": "concurrently npm:build npm:build-*",
     "storybook": "NODE_OPTIONS=--max_old_space_size=4096 storybook dev -p 6006",
     "build:storybook": "storybook build",

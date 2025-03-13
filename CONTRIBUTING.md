@@ -56,11 +56,26 @@ Il est également important de rajouter cela dans le fichier `src/charts/main.js
 
 ### Ajout de la commande de build
 
-Finalement il faut créer la commande de build du composant dans le fichier `package.json`. Dans la partie "scripts", ajouter :
+Il faut créer la commande de build du composant dans le fichier `package.json`. Dans la partie "scripts", ajouter :
 
 `"build-new": "LIBRARY=NewChart vite build --config=vite-components.config.js"`
 
 /!\ Seule la variable **LIBRARY** est nécessaire définit le nom du web-component à traiter.
+
+### Export du composant
+
+Finalement déclarer le nouveau composant dans la section `exports` du `package.json` :
+
+```json
+{
+  "exports": {
+    "./NewChart": {
+      "import": "./dist/bundler/NewChart.js",
+      "require": "./dist/bundler/NewChart.cjs"
+    }
+  }
+}
+```
 
 ## Compilation
 
