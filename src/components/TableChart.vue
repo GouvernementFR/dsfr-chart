@@ -117,6 +117,7 @@ export default {
   },
   data() {
     return {
+      mounted: false,
       widgetId: '',
       tableId: '',
       xparse: [],
@@ -125,6 +126,17 @@ export default {
       nameParse: [],
     };
   },
+  watch: {
+    $props: {
+      handler() {
+        if (!this.mounted) return;
+        this.resetData();
+        this.getData();
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
   created() {
     this.tableId = 'dsfr-table-' + Math.floor(Math.random() * 1000);
     this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
@@ -132,6 +144,8 @@ export default {
   mounted() {
     this.resetData();
     this.getData();
+
+    this.mounted = true;
   },
   methods: {
     resetData() {

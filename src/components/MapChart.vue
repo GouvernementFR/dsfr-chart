@@ -228,6 +228,7 @@ export default {
   },
   data() {
     return {
+      mounted: false,
       dataParse: {},
       widgetId: '',
       scaleMin: 0,
@@ -271,7 +272,18 @@ export default {
       displayReunion: '',
       displayGuyane: '',
       dromColor: '#6b6b6b',
+      theme: 'light',
     };
+  },
+  watch: {
+    $props: {
+      handler() {
+        if (!this.mounted) return;
+        this.createChart();
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   created() {
     this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
@@ -284,9 +296,11 @@ export default {
     // The template is not retriggered in maps, force update to process after other elements
     this.$forceUpdate();
 
+    this.mounted = true;
     const element = document.documentElement;
     element.addEventListener('dsfr.theme', (e) => {
-      this.changeTheme(e.detail.theme);
+      this.theme = e.detail.theme;
+      this.changeTheme();
     });
   },
   methods: {
@@ -498,8 +512,8 @@ export default {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
     },
-    changeTheme(theme) {
-      if (theme === 'light') {
+    changeTheme() {
+      if (this.theme === 'light') {
         this.dromColor = '#6b6b6b';
         this.FranceProps.colorStroke = '#FFFFFF';
         this.DromProps.colorStroke = '#FFFFFF';

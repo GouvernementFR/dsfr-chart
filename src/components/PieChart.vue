@@ -109,6 +109,7 @@ export default {
     this.chart = undefined;
 
     return {
+      mounted: false,
       widgetId: '',
       chartId: '',
       display: '',
@@ -120,7 +121,37 @@ export default {
       tmpColorParse: [],
       colorParse: [],
       colorHover: [],
+      theme: 'light',
     };
+  },
+  watch: {
+    $props: {
+      handler() {
+        if (!this.mounted) return;
+        this.getData();
+        this.chart.data.labels = this.labels;
+        if (this.datasets.length < this.chart.data.datasets.length) {
+          // Delete the extra datasets
+          this.chart.data.datasets.splice(this.datasets.length, this.chart.data.datasets.length - this.datasets.length);
+        }
+        this.datasets.forEach((dataset, i) => {
+          if (!this.chart.data.datasets[i]) {
+            // Add the dataset if it doesn't exist
+            this.chart.data.datasets[i] = {};
+          }
+          // Update the dataset properties
+          this.chart.data.datasets[i].data = dataset.data;
+          this.chart.data.datasets[i].borderColor = dataset.borderColor;
+          this.chart.data.datasets[i].backgroundColor = dataset.backgroundColor;
+          this.chart.data.datasets[i].hoverBorderColor = dataset.hoverBorderColor;
+          this.chart.data.datasets[i].hoverBackgroundColor = dataset.hoverBackgroundColor;
+        });
+        this.chart.options = this.getOptions();
+        this.chart.update();
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   created() {
     configureChartDefaults();
@@ -128,14 +159,17 @@ export default {
     this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
   },
   mounted() {
+    console.log('mounted');
     this.resetData();
     this.createChart();
 
+    this.mounted = true;
     this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
     const element = document.documentElement;
     element.addEventListener('dsfr.theme', (e) => {
       if (this.chartId !== '') {
-        this.changeColors(e.detail.theme);
+        this.theme = e.detail.theme;
+        this.changeColors();
       }
     });
   },
@@ -173,6 +207,7 @@ export default {
         }
       }
 
+      this.nameParse = [];
       for (let i = 0; i < this.yparse[0].length; i++) {
         if (tmpNameParse[i]) {
           this.nameParse.push(tmpNameParse[i]);
@@ -209,117 +244,7 @@ export default {
           labels: this.labels,
           datasets: this.datasets,
         },
-        options: {
-          aspectRatio: this.aspectRatio,
-          layout: {
-            padding: {
-              left: 50,
-              right: 50,
-              top: 0,
-              bottom: 0,
-            },
-          },
-          plugins: {
-            legend: {
-              display: false,
-            },
-            tooltip: {
-              enabled: false,
-              displayColors: false,
-              backgroundColor: '#6b6b6b',
-              callbacks: {
-                label: (tooltipItems) => {
-                  const value = this.datasets[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
-                  return this.formatNumber(value);
-                },
-                title: (tooltipItems) => {
-                  return tooltipItems[0].label;
-                },
-                labelTextColor: (tooltipItems) => {
-                  return this.colorParse[tooltipItems.datasetIndex][tooltipItems.dataIndex];
-                },
-              },
-              external: (context) => {
-                // Tooltip Element
-                const dom = document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) ?? this.$el.nextElementSibling;
-
-                const tooltipEl = dom.querySelector('.tooltip');
-
-                const tooltipModel = context.tooltip;
-
-                if (!tooltipEl) return;
-
-                // Hide if no tooltip
-                if (!tooltipModel || tooltipModel.opacity === 0) {
-                  tooltipEl.style.opacity = 0;
-                  return;
-                }
-
-                // Set tooltip position classes
-                tooltipEl.classList.remove('above', 'below', 'no-transform');
-                if (tooltipModel.yAlign) {
-                  tooltipEl.classList.add(tooltipModel.yAlign);
-                } else {
-                  tooltipEl.classList.add('no-transform');
-                }
-
-                // Set Text
-                if (tooltipModel.body) {
-                  const titleLines = tooltipModel.title || [];
-                  const bodyLines = tooltipModel.body.map((bodyItem) => {
-                    return bodyItem.lines;
-                  });
-
-                  // Set the tooltip header
-                  const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
-                  divDate.innerHTML = titleLines;
-
-                  const color = tooltipModel.labelTextColors[0];
-
-                  // Clear the existing tooltip content
-                  const divValue = tooltipEl.querySelector('.tooltip_value');
-                  divValue.innerHTML = '';
-
-                  const value = bodyLines[0][0];
-                  const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
-
-                  divValue.innerHTML += `
-                    <div class="tooltip_value-content">
-                      <span class="tooltip_dot" style="background-color:${color};"></span>
-                      <p class="tooltip_place fr-mb-0">${displayValue}</p>
-                    </div>
-                  `;
-                }
-
-                // Position the tooltip
-                const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;
-
-                const canvasWidth = Number(this.chart.canvas.style.width.replace(/\D/g, ''));
-                const canvasHeight = Number(this.chart.canvas.style.height.replace(/\D/g, ''));
-
-                let tooltipX = positionX + tooltipModel.caretX + 10;
-                let tooltipY = positionY + tooltipModel.caretY - 20;
-                if (tooltipX + tooltipEl.clientWidth > positionX + canvasWidth) {
-                  tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10;
-                }
-                if (tooltipY + tooltipEl.clientHeight > positionY + 0.9 * canvasHeight) {
-                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 20;
-                }
-                if (tooltipX < positionX) {
-                  tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2;
-                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 20;
-                }
-
-                tooltipEl.style.position = 'absolute';
-                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
-                tooltipEl.style.pointerEvents = 'none';
-                tooltipEl.style.left = tooltipX + 'px';
-                tooltipEl.style.top = tooltipY + 'px';
-                tooltipEl.style.opacity = 1;
-              },
-            },
-          },
-        },
+        options: this.getOptions(),
       });
     },
     loadColors() {
@@ -341,8 +266,7 @@ export default {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
     },
-    // eslint-disable-next-line no-unused-vars
-    changeColors(theme) {
+    changeColors() {
       this.loadColors();
 
       // Mise à jour des couleurs dans le graphique
@@ -354,6 +278,119 @@ export default {
       });
 
       this.chart.update('none');
+    },
+    getOptions() {
+      return {
+        aspectRatio: this.aspectRatio,
+        layout: {
+          padding: {
+            left: 50,
+            right: 50,
+            top: 0,
+            bottom: 0,
+          },
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            enabled: false,
+            displayColors: false,
+            backgroundColor: '#6b6b6b',
+            callbacks: {
+              label: (tooltipItems) => {
+                const value = this.datasets[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
+                return this.formatNumber(value);
+              },
+              title: (tooltipItems) => {
+                return tooltipItems[0].label;
+              },
+              labelTextColor: (tooltipItems) => {
+                return this.colorParse[tooltipItems.datasetIndex][tooltipItems.dataIndex];
+              },
+            },
+            external: (context) => {
+              // Tooltip Element
+              const dom = document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) ?? this.$el.nextElementSibling;
+
+              const tooltipEl = dom.querySelector('.tooltip');
+
+              const tooltipModel = context.tooltip;
+
+              if (!tooltipEl) return;
+
+              // Hide if no tooltip
+              if (!tooltipModel || tooltipModel.opacity === 0) {
+                tooltipEl.style.opacity = 0;
+                return;
+              }
+
+              // Set tooltip position classes
+              tooltipEl.classList.remove('above', 'below', 'no-transform');
+              if (tooltipModel.yAlign) {
+                tooltipEl.classList.add(tooltipModel.yAlign);
+              } else {
+                tooltipEl.classList.add('no-transform');
+              }
+
+              // Set Text
+              if (tooltipModel.body) {
+                const titleLines = tooltipModel.title || [];
+                const bodyLines = tooltipModel.body.map((bodyItem) => {
+                  return bodyItem.lines;
+                });
+
+                // Set the tooltip header
+                const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
+                divDate.innerHTML = titleLines;
+
+                const color = tooltipModel.labelTextColors[0];
+
+                // Clear the existing tooltip content
+                const divValue = tooltipEl.querySelector('.tooltip_value');
+                divValue.innerHTML = '';
+
+                const value = bodyLines[0][0];
+                const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
+
+                divValue.innerHTML += `
+                  <div class="tooltip_value-content">
+                    <span class="tooltip_dot" style="background-color:${color};"></span>
+                    <p class="tooltip_place fr-mb-0">${displayValue}</p>
+                  </div>
+                `;
+              }
+
+              // Position the tooltip
+              const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;
+
+              const canvasWidth = Number(this.chart.canvas.style.width.replace(/\D/g, ''));
+              const canvasHeight = Number(this.chart.canvas.style.height.replace(/\D/g, ''));
+
+              let tooltipX = positionX + tooltipModel.caretX + 10;
+              let tooltipY = positionY + tooltipModel.caretY - 20;
+              if (tooltipX + tooltipEl.clientWidth > positionX + canvasWidth) {
+                tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10;
+              }
+              if (tooltipY + tooltipEl.clientHeight > positionY + 0.9 * canvasHeight) {
+                tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 20;
+              }
+              if (tooltipX < positionX) {
+                tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2;
+                tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 20;
+              }
+
+              tooltipEl.style.position = 'absolute';
+              tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+              tooltipEl.style.pointerEvents = 'none';
+              tooltipEl.style.left = tooltipX + 'px';
+              tooltipEl.style.top = tooltipY + 'px';
+              tooltipEl.style.opacity = 1;
+            },
+          },
+        },
+      };
     },
   },
 };

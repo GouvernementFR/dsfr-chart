@@ -131,6 +131,7 @@ export default {
   },
   data() {
     return {
+      mounted: false,
       widgetId: '',
       percentage: 0,
       styleRectangleOver: '',
@@ -142,12 +143,23 @@ export default {
       width: '',
     };
   },
+  watch: {
+    $props: {
+      handler() {
+        if (!this.mounted) return;
+        this.createChart();
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
   created() {
     this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
   },
   mounted() {
     this.createChart();
 
+    this.mounted = true;
     this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
   },
   methods: {
