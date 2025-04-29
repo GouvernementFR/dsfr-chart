@@ -125,6 +125,19 @@ export default {
       nameParse: [],
     };
   },
+  watch: {
+    $props: {
+      handler() {
+        // Check if the chart is already created to prevent useless re-renders
+        if (this.tableId) {
+          this.resetData();
+          this.getData();
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
   created() {
     this.tableId = 'dsfr-table-' + Math.floor(Math.random() * 1000);
     this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
