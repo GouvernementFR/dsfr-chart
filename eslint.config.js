@@ -6,12 +6,14 @@ import pluginStorybook from 'eslint-plugin-storybook';
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {
-    files: ['**/*.{js,vue}']
+    files: ['**/*.{js,vue}'],
   },
   {
     languageOptions: {
-      globals: globals.browser,
-    }
+      globals: {
+        ...globals.browser,
+      },
+    },
   },
   pluginJs.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
@@ -19,9 +21,9 @@ export default [
   {
     rules: {
       'vue/multi-word-component-names': 'off',
-    }
+    },
   },
   {
-    ignores: ['!.storybook']
+    ignores: ['!.storybook'],
   },
 ];
