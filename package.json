@@ -21,9 +21,32 @@
       "import": "./dist/DSFRChart/DSFRChart.js",
       "require": "./dist/DSFRChart/DSFRChart.umd.cjs"
     },
-    "./dist/DSFRChart/DSFRChart.js": "./dist/DSFRChart/DSFRChart.js",
-    "./dist/DSFRChart/DSFRChart.umd.js": "./dist/DSFRChart/DSFRChart.umd.js",
-    "./dist/DSFRChart/DSFRChart.css": "./dist/DSFRChart/DSFRChart.css"
+    "./css": "./dist/DSFRChart/DSFRChart.css",
+    "./dist/DSFRChart/DSFRChart.js": {
+      "import": "./dist/DSFRChart/DSFRChart.js",
+      "require": "./dist/DSFRChart/DSFRChart.umd.cjs"
+    },
+    "./dist/DSFRChart/DSFRChart.css": "./dist/DSFRChart/DSFRChart.css",
+    "./*": {
+      "import": "./dist/*/*.js",
+      "require": "./dist/*/*.umd.cjs"
+    },
+    "./*/css": "./dist/*/*.css",
+    "./*.js": {
+      "import": "./dist/*/*.js",
+      "require": "./dist/*/*.umd.cjs"
+    },
+    "./*.css": "./dist/*/*.css",
+    "./dist/*/*": {
+      "import": "./dist/*/*.js",
+      "require": "./dist/*/*.umd.cjs"
+    },
+    "./dist/*/*/css": "./dist/**/*.css",
+    "./dist/*/*.js": {
+      "import": "./dist/*/*.js",
+      "require": "./dist/*/*.umd.cjs"
+    },
+    "./dist/*/*.css": "./dist/*/*.css"
   },
   "scripts": {
     "dev": "vite",
