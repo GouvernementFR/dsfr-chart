@@ -21,9 +21,32 @@
       "import": "./dist/DSFRChart/DSFRChart.js",
       "require": "./dist/DSFRChart/DSFRChart.umd.cjs"
     },
-    "./dist/DSFRChart/DSFRChart.js": "./dist/DSFRChart/DSFRChart.js",
-    "./dist/DSFRChart/DSFRChart.umd.js": "./dist/DSFRChart/DSFRChart.umd.js",
-    "./dist/DSFRChart/DSFRChart.css": "./dist/DSFRChart/DSFRChart.css"
+    "./css": "./dist/DSFRChart/DSFRChart.css",
+    "./dist/DSFRChart/DSFRChart.js": {
+      "import": "./dist/DSFRChart/DSFRChart.js",
+      "require": "./dist/DSFRChart/DSFRChart.umd.cjs"
+    },
+    "./dist/DSFRChart/DSFRChart.css": "./dist/DSFRChart/DSFRChart.css",
+    "./*": {
+      "import": "./dist/*/*.js",
+      "require": "./dist/*/*.umd.cjs"
+    },
+    "./*/css": "./dist/*/*.css",
+    "./*.js": {
+      "import": "./dist/*/*.js",
+      "require": "./dist/*/*.umd.cjs"
+    },
+    "./*.css": "./dist/*/*.css",
+    "./dist/*/*": {
+      "import": "./dist/*/*.js",
+      "require": "./dist/*/*.umd.cjs"
+    },
+    "./dist/*/*/css": "./dist/**/*.css",
+    "./dist/*/*.js": {
+      "import": "./dist/*/*.js",
+      "require": "./dist/*/*.umd.cjs"
+    },
+    "./dist/*/*.css": "./dist/*/*.css"
   },
   "scripts": {
     "dev": "vite",
@@ -49,30 +72,30 @@
     "test:update-snapshots": "playwright test --update-snapshots --reporter=line"
   },
   "devDependencies": {
-    "@eslint/js": "^9.20.0",
-    "@gouvfr/dsfr": "^1.13.0",
-    "@playwright/test": "^1.50.1",
-    "@storybook/addon-essentials": "^8.5.5",
-    "@storybook/blocks": "^8.5.5",
-    "@storybook/test": "^8.5.5",
-    "@storybook/web-components": "^8.5.5",
-    "@storybook/web-components-vite": "^8.5.5",
-    "@types/node": "^22.13.2",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "chart.js": "^4.4.7",
+    "@eslint/js": "^9.25.1",
+    "@gouvfr/dsfr": "^1.13.1",
+    "@playwright/test": "^1.52.0",
+    "@storybook/addon-essentials": "^8.6.12",
+    "@storybook/blocks": "^8.6.12",
+    "@storybook/test": "^8.6.12",
+    "@storybook/web-components": "^8.6.12",
+    "@storybook/web-components-vite": "^8.6.12",
+    "@types/node": "^22.15.3",
+    "@vitejs/plugin-vue": "^5.2.3",
+    "chart.js": "^4.4.9",
     "chroma-js": "^3.1.2",
     "concurrently": "^9.1.2",
     "d3-scale": "^4.0.2",
-    "eslint": "^9.20.1",
-    "eslint-plugin-storybook": "^0.11.2",
-    "eslint-plugin-vue": "^9.32.0",
-    "globals": "^15.15.0",
-    "html-to-image": "^1.11.12",
-    "lit": "^3.2.1",
+    "eslint": "^9.25.1",
+    "eslint-plugin-storybook": "^0.12.0",
+    "eslint-plugin-vue": "^10.0.1",
+    "globals": "^16.0.0",
+    "html-to-image": "^1.11.13",
+    "lit": "^3.3.0",
     "sass": "1.79.6",
     "standard": "^17.1.2",
-    "storybook": "^8.5.5",
-    "vite": "^6.1.0",
+    "storybook": "^8.6.12",
+    "vite": "^6.3.3",
     "vue": "^3.5.13"
   }
 }

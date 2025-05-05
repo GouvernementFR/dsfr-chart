@@ -67,7 +67,7 @@ Il existe deux possibilités :
 <link rel="stylesheet" href="./DSFRChart.css" />
 ```
 
-- Charger uniquement un ou plusieurs composants nécessaires (ex : ScatterChart) :
+- Charger uniquement un ou plusieurs composants nécessaires à votre projet :
 
 ```html
 <!-- Avec le build ESM -->
@@ -86,9 +86,20 @@ Il existe deux possibilités :
 Pour importer la librairie dans un projet utilisant un bundler comme Vite, il est nécessaire d'importer les fichiers JavaScript et CSS dans votre fichier principal.
 
 ```javascript
-import '@gouvfr/dsfr-chart/dist/DSFRChart/DSFRChart.js';
-import '@gouvfr/dsfr-chart/dist/DSFRChart/DSFRChart.css';
+import '@gouvfr/dsfr-chart';
+import '@gouvfr/dsfr-chart/css';
 ```
+
+Il est également possible d'importer uniquement un ou plusieurs composants :
+
+```javascript
+import '@gouvfr/dsfr-chart/LineChart';
+import '@gouvfr/dsfr-chart/LineChart.css'; // Ou '@gouvfr/dsfr-chart/LineChart/css'
+import '@gouvfr/dsfr-chart/BarChart';
+import '@gouvfr/dsfr-chart/BarChart.css'; // Ou '@gouvfr/dsfr-chart/BarChart/css'
+```
+
+#### ⚠️ Important : Si vous importez plus que deux composants, il est préférable d'importer toute la librairie pour éviter de charger plusieurs fois le runtime de Vue.js.
 
 # Graphiques disponibles
 
