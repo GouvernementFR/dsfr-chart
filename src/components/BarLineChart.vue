@@ -261,6 +261,20 @@ export default {
       colorBarHover: [],
     };
   },
+  watch: {
+    $props: {
+      handler() {
+        // Check if the chart is already created to prevent useless re-renders
+        if (this.chartId) {
+          this.resetData();
+          this.getData();
+          this.createChart();
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
   created() {
     configureChartDefaults();
     this.chartId = 'dsfr-chart-' + Math.floor(Math.random() * 1000);

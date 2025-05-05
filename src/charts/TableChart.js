@@ -5,6 +5,6 @@ import '@/styles/TableChart.scss';
 
 import TableChart from '@/components/TableChart.vue';
 
-const TableChartElement = defineCustomElement(TableChart);
+const TableChartElement = defineCustomElement(TableChart, { shadowRoot: false });
 
-customElements.define('table-chart', TableChartElement, { shadowRoot: false });
+customElements.define('table-chart', TableChartElement);
