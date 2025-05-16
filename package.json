@@ -73,7 +73,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.1",
-    "@gouvfr/dsfr": "^1.13.1",
+    "@gouvfr/dsfr": "^1.13.2",
     "@playwright/test": "^1.52.0",
     "@storybook/addon-essentials": "^8.6.12",
     "@storybook/blocks": "^8.6.12",
