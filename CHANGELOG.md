@@ -6,6 +6,39 @@ Pour plus d’informations : [Voir la documentation](./README.md)
 
 > ## DSFR-Chart v2
 
+## v2.0.4
+
+### [v2.0.4](https://github.com/GouvernementFR/dsfr-chart/compare/v2.0.3...v2.0.4) - 19 Mai 2025
+
+#### 🔖 chore(*): DSFR-chart v2.0.4 [(#49)](https://github.com/GouvernementFR/dsfr-chart/pull/49)
+- mise à jour du path des fichiers storybook dans src
+- ajout du watch de toutes les props pour rerender les graphiques / tableaux
+- correction du shadow root sur les composants unitaires
+- ajout d'options d'exports dans le package.json pour permettre plus de possibilités
+- mise à disposition des composants unitaires
+- mise à jour des dépendances NPM
+
+## v2.0.3
+
+### [v2.0.3](https://github.com/GouvernementFR/dsfr-chart/compare/v2.0.2...v2.0.3) - 18 Fevrier 2025
+
+#### 🔖 chore(*): DSFR-chart v2.0.3 [(#35)](https://github.com/GouvernementFR/dsfr-chart/pull/35)
+- modifie le nom du script du composant d'export.
+
+## v2.0.2
+
+### [v2.0.2](https://github.com/GouvernementFR/dsfr-chart/compare/v2.0.1...v2.0.2) - 18 Fevrier 2025
+
+#### 🔖 chore(*): DSFR-chart v2.0.2 [(#34)](https://github.com/GouvernementFR/dsfr-chart/pull/34)
+- exporte le module principal et modifie le nom du script du composant.
+
+## v2.0.1
+
+### [v2.0.1](https://github.com/GouvernementFR/dsfr-chart/compare/v2.0.0...v2.0.1) - 17 Fevrier 2025
+
+#### 🔖 chore(*): DSFR-chart v2.0.1 [(#32)](https://github.com/GouvernementFR/dsfr-chart/pull/32)
+- mise à jour du README.md
+
 ## v2.0
 
 ### [v2.0.0](https://github.com/GouvernementFR/dsfr-chart/tree/v2.0.0) - 17 Février 2025

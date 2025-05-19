@@ -142,6 +142,18 @@ export default {
       displayGuyanne: '',
     };
   },
+  watch: {
+    $props: {
+      handler() {
+        // Check if the widget is already created to prevent useless re-renders
+        if (this.widgetId) {
+          this.createChart();
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
   created() {
     this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
   },
