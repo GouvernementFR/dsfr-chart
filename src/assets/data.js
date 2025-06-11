@@ -49,7 +49,7 @@ export const chartData = {
       y: '[[15, 19, 15, 13], [45, 40, 47, 41], [36, 32, 34, 44], [4, 9, 4, 2]]',
       name: '["Tout à fait satisfait", "Plutôt satisfait", "Plutôt pas satisfait", "Pas du tout satisfait"]',
       stacked: true,
-      selectedPalette: 'divergentDescending',
+      selectedPalette: 'divergentAscending',
       unitTooltip: '%',
     },
   },

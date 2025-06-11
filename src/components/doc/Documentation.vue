@@ -175,6 +175,7 @@ const PALETTE_LABELS = {
   default: 'Palette par défaut',
   neutral: 'Palette unicolore',
   sequentialDescending: 'Palette séquentielle',
+  divergentAscending: 'Palette séquentielle divergente',
   divergentDescending: 'Palette séquentielle divergente',
 };
 
