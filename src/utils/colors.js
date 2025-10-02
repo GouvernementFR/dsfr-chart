@@ -86,8 +86,8 @@ export function generateBarLineChartColors({
   const colorBarParse = getColorsByIndex(0, palette);
   const colorBarHover = chroma(colorBarParse).darken(0.8).hex();
 
-  const colorParse = getColorsByIndex(1, palette);
-  const colorHover = chroma(colorParse).darken(0.8).hex();
+  const colorParse = palette.length > 1 ? palette.slice(1) : palette;
+  const colorHover = colorParse.map((c) => chroma(c).darken(0.8).hex());
 
   const vlineColorParse = vlineParse.map((_, i) => (tmpVlineColorParse[i] || getNeutralColor()));
 

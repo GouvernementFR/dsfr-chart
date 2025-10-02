@@ -68,12 +68,12 @@ export const chartData = {
     default: {
       x: '[1980, 1990, 2000, 2010]',
       yBar: '[826, 793, 807, 832]',
-      yLine: '[14.9, 13.4, 13.1, 12.9]',
+      yLines: '[[14.9, 13.4, 24, 13.1, 12.9], [34.9, 14, 23.4, 23.1, 22.9], [24.9, 34, 23.4, 43.1, 42.9]]',
       nameBar: 'Taux de natalité',
-      nameLine: 'Naissances',
+      nameLines: ['Naissances', 'Décès', 'Solde naturel'],
       unitTooltipBar: 'milliers',
       unitTooltipLine: '%',
-      colors: ['red', 'green', 'blue', 'yellow'],
+      colors: ['red', 'green', 'yellow', 'blue'],
     },
   },
   scatterChart: {

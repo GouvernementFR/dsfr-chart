@@ -13,6 +13,7 @@
             <div class="tooltip_header fr-text--sm fr-mb-0" />
             <div class="tooltip_body">
               <div class="tooltip_value">
+                <!-- Barre -->
                 <div
                   class="flex fr-mt-3v fr-mb-1v"
                   :style="{ 'border-bottom': '1px solid #e0e0e0' }"
@@ -27,20 +28,26 @@
                     </p>
                   </div>
                 </div>
+
+                <!-- Lignes -->
                 <div
+                  v-for="(lineColor, index) in colorParse"
+                  :key="index"
                   class="flex fr-mt-3v fr-mb-1v"
                   :style="{ 'border-bottom': '1px solid #e0e0e0' }"
                 >
                   <div class="tooltip_value-content">
                     <span
                       class="tooltip_dot"
-                      :style="{ 'background-color': colorParse }"
+                      :style="{ 'background-color': colorParse[Math.min(index, colorParse.length - 1)] }"
                     />
                     <p class="tooltip_place">
-                      {{ capitalize(nameLine) }}
+                      {{ capitalize(nameLines[index] || 'Line ' + (index + 1)) }}
                     </p>
                   </div>
                 </div>
+
+                <!-- Tu peux ajouter Hlines / Vlines si tu veux dans le tooltip de la même façon -->
               </div>
             </div>
           </div>
@@ -48,6 +55,7 @@
           <canvas :ref="chartId" />
 
           <div class="chart_legend fr-mb-0 fr-mt-4v">
+            <!-- Barre -->
             <div class="flex fr-mt-3v fr-mb-1v">
               <span
                 class="legende_dot"
@@ -57,15 +65,23 @@
                 {{ capitalize(nameBar) }}
               </p>
             </div>
-            <div class="flex fr-mt-3v fr-mb-1v">
+
+            <!-- Lignes -->
+            <div
+              v-for="(lineName, index) in nameLines"
+              :key="index"
+              class="flex fr-mt-3v fr-mb-1v"
+            >
               <span
                 class="legende_dot"
-                :style="{ 'background-color': colorParse }"
+                :style="{ 'background-color': colorParse[Math.min(index, colorParse.length - 1)] }"
               />
               <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-                {{ capitalize(nameLine) }}
+                {{ capitalize(lineName || 'Line ' + (index + 1)) }}
               </p>
             </div>
+
+            <!-- Hlines -->
             <div
               v-for="(item, index) in hlineNameParse"
               :key="index"
@@ -83,6 +99,8 @@
                 {{ capitalize(item) }}
               </p>
             </div>
+
+            <!-- Vlines -->
             <div
               v-for="(item, index) in vlineNameParse"
               :key="index"
@@ -146,8 +164,8 @@ export default {
       type: String,
       required: true,
     },
-    yLine: {
-      type: String,
+    yLines: {
+      type: Array,
       required: true,
     },
     xMin: {
@@ -178,9 +196,9 @@ export default {
       type: String,
       default: '',
     },
-    nameLine: {
-      type: String,
-      default: '',
+    nameLines: {
+      type: Array,
+      default: () => [],
     },
     barSize: {
       type: [Number, String],
@@ -325,7 +343,11 @@ export default {
       try {
         this.xparse = JSON.parse(this.x);
         this.ybarparse = JSON.parse(this.yBar);
-        this.ylineparse = JSON.parse(this.yLine);
+        if (typeof this.yLines === 'string') {
+          this.ylineparse = JSON.parse(this.yLines);
+        } else {
+          this.ylineparse = this.yLines;
+        }
       } catch (error) {
         console.error('Erreur lors du parsing des données x ou y-bar ou y-line:', error);
         return;
@@ -371,57 +393,58 @@ export default {
         }
       }
 
-      let dataLine = [];
-      let dataBar = [];
-      // Cas où x est numérique
+      const dataBar = [];
+      const dataLines = this.ylineparse.map(() => []); // tableau de tableaux pour chaque ligne
+
       if (typeof this.xparse[0] === 'number') {
-        const xsort = this.xparse.map((a) => a).sort((a, b) => a - b);
+        const xsort = [...this.xparse].sort((a, b) => a - b);
+        
         xsort.forEach((k) => {
-          const index = this.xparse.findIndex((element) => element === k);
+          const index = this.xparse.findIndex((el) => el === k);
           dataBar.push(this.ybarparse[index]);
-          dataLine.push(this.ylineparse[index]);
+
+          // Pour chaque ligne
+          this.ylineparse.forEach((line, lineIdx) => {
+            dataLines[lineIdx].push(line[index]);
+          });
         });
+
         this.labels = xsort;
       } else {
-        // Cas où x est non numérique
-        dataBar = this.ybarparse;
-        dataLine = this.ylineparse;
+        // Cas où x n'est pas numérique
         this.labels = this.xparse;
-      }
+        dataBar.push(...this.ybarparse);
 
+        this.ylineparse.forEach((line, lineIdx) => {
+          dataLines[lineIdx].push(...line);
+        });
+      }
       // Chargement des couleurs
       this.loadColors();
 
-      // Préparation des datasets
       this.datasets = [
         {
           data: dataBar,
           type: 'bar',
           borderColor: this.colorBarParse,
           backgroundColor: this.colorBarParse,
-          hoverBorderColor: this.colorBarHover,
-          hoverBackgroundColor: this.colorBarHover,
-          pointRadius: 5,
-          pointHoverRadius: 5,
           barThickness: this.barSize,
-          ...(this.maxBarSize ? { maxBarThickness: this.maxBarSize } : {}),
-          barPercentage: 0.5,
-        },
-        {
-          data: dataLine,
-          type: 'line',
-          borderColor: this.colorParse,
-          backgroundColor: 'rgba(0, 0, 0, 0)',
-          pointBorderColor: this.colorParse,
-          pointBackgroundColor: this.colorParse,
-          pointHoverBorderColor: this.colorHover,
-          pointHoverBackgroundColor: this.colorHover,
-          pointRadius: 5,
-          pointHoverRadius: 5,
-          yAxisID: 'yLine',
-          tension: 0.4,
+          maxBarThickness: this.maxBarSize,
         },
       ];
+
+      dataLines.forEach((lineData, i) => {
+        this.datasets.push({
+          data: lineData,
+          type: 'line',
+          borderColor: this.colorParse[i] || this.colorParse,
+          backgroundColor: 'rgba(0,0,0,0)',
+          pointBorderColor: this.colorParse[i] || this.colorParse,
+          pointBackgroundColor: this.colorParse[i] || this.colorParse,
+          yAxisID: 'yLine',
+          tension: 0.4,
+        });
+      });
     },
     choosePalette() {
       // Using the refactored choosePalette function from utils
@@ -429,6 +452,7 @@ export default {
     },
     loadColors() {
       const { colorBarParse, colorBarHover, colorParse, colorHover, vlineColorParse, hlineColorParse } = generateBarLineChartColors({
+        yLinesLength: this.ylineparse.length,
         vlineParse: this.vlineParse,
         hlineParse: this.hlineParse,
         tmpVlineColorParse: this.tmpVlineColorParse,
@@ -626,12 +650,12 @@ export default {
                   divValue.innerHTML = '';
 
                   // Access color arrays for different datasets
-                  const colors = [this.colorBarParse, this.colorParse]; // Adjust to match your color variables
+                  const colors = [this.colorBarParse, ...this.colorParse]; // Adjust to match your color variables
 
                   // Iterate over bodyLines to set the color and value in the tooltip
                   bodyLines[0].forEach((line, i) => {
                     if (line) {
-                      const color = colors[i] ? colors[i] : '#000';
+                      const color = colors[Math.min(i, colors.length - 1)];
 
                       // Détecter si c'est une barre ou une ligne en fonction de l'index
                       const displayValue = i === 0 ? `${line}${this.unitTooltipBar ? ' ' + this.unitTooltipBar : ''}` : `${line}${this.unitTooltipLine ? ' ' + this.unitTooltipLine : ''}`;

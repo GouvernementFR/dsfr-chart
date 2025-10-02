@@ -398,7 +398,6 @@ export default {
       this.colorParse = [];
       this.colorHover = [];
       const palette = this.choosePalette();
-      console.log('Selected Palette:', palette);
       for (let i = 0; i < this.yparse.length; i++) {
         if (this.tmpColorParse[i]) {
           const color = this.tmpColorParse[i];
@@ -432,7 +431,6 @@ export default {
       }
     },
     choosePalette() {
-      console.log("choosePalette", this.selectedPalette, this.colors);
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette, this.colors);
     },
