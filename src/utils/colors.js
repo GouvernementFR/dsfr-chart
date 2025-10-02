@@ -7,10 +7,11 @@ export function generateColors({
   highlightIndex = [],
   selectedPalette = '',
   reverseOrder = false,
+  colors: colorsInput,
 }) {
   const colorParse = [];
   const colorHover = [];
-  const palette = choosePalette(selectedPalette);
+  const palette = choosePalette(selectedPalette, colorsInput);
 
   // Si nécessaire, inverser l'ordre des données (divergentDescending)
   const adjustedYparse = reverseOrder ? [...yparse].reverse() : yparse;
@@ -31,7 +32,7 @@ export function generateColors({
       // Palette neutre avec indices de surbrillance
       const dataLength = dataSet && dataSet.length ? dataSet.length : 1;
       for (let j = 0; j < dataLength; j++) {
-        const color = highlightIndex.includes(j) ? getDefaultColor() : getNeutralColor();
+        const color = highlightIndex.includes(j) ? (palette[j % palette.length] || getDefaultColor()) : getNeutralColor();
         colors.push(color);
         hoverColors.push(chroma(color).darken(0.8).hex());
       }
@@ -78,8 +79,9 @@ export function generateBarLineChartColors({
   tmpVlineColorParse = [],
   tmpHlineColorParse = [],
   selectedPalette = '',
+  colors: colorsInput,
 }) {
-  const palette = choosePalette(selectedPalette);
+  const palette = choosePalette(selectedPalette, colorsInput);
 
   const colorBarParse = getColorsByIndex(0, palette);
   const colorBarHover = chroma(colorBarParse).darken(0.8).hex();
@@ -110,8 +112,9 @@ export function generateScatterChartColors({
   tmpVlineColorParse = [],
   hlineParse = [],
   tmpHlineColorParse = [],
+  colors: colorsInput,
 }) {
-  const palette = choosePalette(selectedPalette);
+  const palette = choosePalette(selectedPalette, colorsInput);
 
   // Génération des couleurs pour les séries
   const colorParse = [];
@@ -213,7 +216,11 @@ export function getNeutralColor() {
   return themeColors['dsfr-chart-colors-neutral'];
 }
 
-export function choosePalette(selectedPalette) {
+export function choosePalette(selectedPalette, colorsInput) {
+  if (Array.isArray(colorsInput) && colorsInput.length > 0) {
+    return colorsInput;
+  }
+
   switch (selectedPalette) {
     case 'default':
       return [getDefaultColor()];
@@ -230,7 +237,6 @@ export function choosePalette(selectedPalette) {
     case 'divergentDescending':
       return getDivergentDescending();
     default:
-    //   return getCategoricalPalette();
       return getCategoricalPalette();
   }
 }

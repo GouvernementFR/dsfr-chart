@@ -101,6 +101,10 @@ export default {
       type: String,
       default: 'sequentialAscending',
     },
+    colors: {
+      type: Array,
+      default: undefined,
+    },
   },
   data() {
     return {
@@ -276,7 +280,7 @@ export default {
     },
     choosePalette() {
       // Using the refactored choosePalette function from utils
-      return choosePalette(this.selectedPalette);
+      return choosePalette(this.selectedPalette, this.colors);
     },
     displayTooltip(e) {
       if (isMobile()) return;

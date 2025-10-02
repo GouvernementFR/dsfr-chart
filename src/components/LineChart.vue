@@ -190,6 +190,10 @@ export default {
       type: String,
       default: '',
     },
+    colors: {
+      type: Array,
+      default: undefined,
+    },
     unitTooltip: {
       type: String,
       default: '',
@@ -428,9 +432,9 @@ export default {
       }
     },
     choosePalette() {
-      console.log("choosePalette", this.selectedPalette);
+      console.log("choosePalette", this.selectedPalette, this.colors);
       // Using the refactored choosePalette function from utils
-      return choosePalette(this.selectedPalette);
+      return choosePalette(this.selectedPalette, this.colors);
     },
     changeColors(theme) {
       this.loadColors();

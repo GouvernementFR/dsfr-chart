@@ -127,6 +127,10 @@ export default {
       type: String,
       default: '',
     },
+    colors: {
+      type: Array,
+      default: undefined,
+    },
     highlightIndex: {
       type: Array,
       default: () => [3, 4],
@@ -246,7 +250,7 @@ export default {
     },
     choosePalette() {
       // Using the refactored choosePalette function from utils
-      return choosePalette(this.selectedPalette);
+      return choosePalette(this.selectedPalette, this.colors);
     },
     loadColors() {
       const { colorParse, colorHover, legendColors } = generateColors({
@@ -255,6 +259,7 @@ export default {
         highlightIndex: this.highlightIndex,
         selectedPalette: this.selectedPalette,
         reverseOrder: this.selectedPalette === 'divergentDescending',
+        colors: this.colors,
       });
 
       this.colorParse = colorParse;

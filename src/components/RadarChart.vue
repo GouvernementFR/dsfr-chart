@@ -97,6 +97,10 @@ export default {
       type: String,
       default: '',
     },
+    colors: {
+      type: Array,
+      default: undefined,
+    },
     unitTooltip: {
       type: String,
       default: '',
@@ -217,6 +221,7 @@ export default {
         yparse: this.yparse.map(() => [1]), // Simule une série avec une valeur unique
         tmpColorParse: this.tmpColorParse,
         selectedPalette: this.selectedPalette,
+        colors: this.colors,
       });
 
       this.colorParse = colorParse.map((colors) => colors[0]); // Récupère uniquement la première couleur de chaque série
@@ -224,7 +229,7 @@ export default {
     },
     choosePalette() {
       // Using the refactored choosePalette function from utils
-      return choosePalette(this.selectedPalette);
+      return choosePalette(this.selectedPalette, this.colors);
     },
     changeColors(theme) {
       this.loadColors();

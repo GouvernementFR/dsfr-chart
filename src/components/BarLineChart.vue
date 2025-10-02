@@ -226,6 +226,10 @@ export default {
       type: String,
       default: 'categorical',
     },
+    colors: {
+      type: Array,
+      default: undefined,
+    },
     unitTooltipBar: {
       type: String,
       default: '',
@@ -421,7 +425,7 @@ export default {
     },
     choosePalette() {
       // Using the refactored choosePalette function from utils
-      return choosePalette(this.selectedPalette);
+      return choosePalette(this.selectedPalette, this.colors);
     },
     loadColors() {
       const { colorBarParse, colorBarHover, colorParse, colorHover, vlineColorParse, hlineColorParse } = generateBarLineChartColors({
@@ -430,6 +434,7 @@ export default {
         tmpVlineColorParse: this.tmpVlineColorParse,
         tmpHlineColorParse: this.tmpHlineColorParse,
         selectedPalette: this.selectedPalette,
+        colors: this.colors,
       });
 
       this.colorBarParse = colorBarParse;
