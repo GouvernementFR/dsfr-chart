@@ -1,15 +1,16 @@
+/**
+ * This script is based on the dsfr implementation in the react-dsfr project.
+ * This version of the script generates .js files instead of .ts files to match
+ * this project setup.
+ * 
+ * {@link https://github.com/Maxenceee/react-dsfr/blob/main/scripts/build/build.ts React DSFR}
+ */
 import { getProjectRoot } from "./getProjetRoot";
 import { join as pathJoin } from "path";
 import * as fs from "fs";
 import { cssToTs } from "./cssToTs";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 (async () => {
-    try {
 		const projectRootDirPath = getProjectRoot();
 
 		const dsfrDirPath = pathJoin(projectRootDirPath, "dsfr");
@@ -46,9 +47,4 @@ const __dirname = dirname(__filename);
 			"generatedDirPath": pathJoin(projectRootDirPath, "src", "fr", "generatedFromCss"),
 			rawDsfrCssCode
 		});
-	} catch (e) {
-		// eslint-disable-next-line no-console
-		console.error("finish with error:", e);
-		process.exit(1);
-	}
 })();

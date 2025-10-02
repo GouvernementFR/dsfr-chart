@@ -2,12 +2,11 @@ import { generateBreakpointsTsCode } from "./breakpoints";
 import { generateGetColorDecisionsHexTsCode, generateColorDecisionsTsCode } from "./colorDecisions";
 import { generateGetColorOptionsHexTsCode, generateColorOptionsTsCode } from "./colorOptions";
 import { getProjectRoot } from "../getProjetRoot";
-import { generateTypographyTsCode } from "./typography";
 import { generateSpacingTsCode } from "./spacing";
 import { generateClassNamesTsCode } from "./classNames";
 import { generateColorDecisionAndCorrespondingOptionsTsCode } from "./colorDecisionAndCorrespondingOptions";
 import * as fs from "fs";
-import { join as pathJoin, basename as pathBasename, relative as pathRelative } from "path";
+import { join as pathJoin, relative as pathRelative } from "path";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -27,7 +26,7 @@ export function cssToTs(params: {
         )}, please don't edit.`
     ].join("\n");
 
-    const targetGetColorOptionsHexFilePath = pathJoin(generatedDirPath, "getColorOptionsHex.ts");
+    const targetGetColorOptionsHexFilePath = pathJoin(generatedDirPath, "getColorOptionsHex.js");
 
     fs.writeFileSync(
         targetGetColorOptionsHexFilePath,
@@ -37,7 +36,7 @@ export function cssToTs(params: {
         )
     );
 
-    const targetColorOptionsFilePath = pathJoin(generatedDirPath, "colorOptions.ts");
+    const targetColorOptionsFilePath = pathJoin(generatedDirPath, "colorOptions.js");
 
     fs.writeFileSync(
         targetColorOptionsFilePath,
@@ -45,14 +44,7 @@ export function cssToTs(params: {
             [
                 warningMessage,
                 ``,
-                `import type { getColorOptionsHex } from "./${pathBasename(
-                    targetGetColorOptionsHexFilePath
-                ).replace(/\.ts$/, "")}";`,
-                ``,
                 generateColorOptionsTsCode(rawDsfrCssCode),
-                ``,
-                `export type ColorOptions<Format extends "css var" | "hex"= "css var"> = `,
-                `  Format extends "css var" ? typeof colorOptions : ReturnType<typeof getColorOptionsHex>;`,
                 ``
             ].join("\n"),
             "utf8"
@@ -61,7 +53,7 @@ export function cssToTs(params: {
 
     const targetGetColorDecisionsHexFilePath = pathJoin(
         generatedDirPath,
-        "getColorDecisionsHex.ts"
+        "getColorDecisionsHex.js"
     );
 
     fs.writeFileSync(
@@ -69,9 +61,6 @@ export function cssToTs(params: {
         Buffer.from(
             [
                 warningMessage,
-                `import type { ColorOptions } from "./${pathBasename(
-                    targetColorOptionsFilePath
-                ).replace(/\.ts$/, "")}";`,
                 ``,
                 generateGetColorDecisionsHexTsCode(rawDsfrCssCode),
                 ``
@@ -80,7 +69,7 @@ export function cssToTs(params: {
         )
     );
 
-    const targetColorDecisionsFilePath = pathJoin(generatedDirPath, "colorDecisions.ts");
+    const targetColorDecisionsFilePath = pathJoin(generatedDirPath, "colorDecisions.js");
 
     fs.writeFileSync(
         targetColorDecisionsFilePath,
@@ -88,14 +77,7 @@ export function cssToTs(params: {
             [
                 warningMessage,
                 ``,
-                `import type { getColorDecisionsHex } from "./${pathBasename(
-                    targetGetColorDecisionsHexFilePath
-                ).replace(/\.ts$/, "")}";`,
-                ``,
                 generateColorDecisionsTsCode(rawDsfrCssCode),
-                ``,
-                `export type ColorDecisions<Format extends "css var" | "hex"= "css var"> = `,
-                `  Format extends "css var" ? typeof colorDecisions : ReturnType<typeof getColorDecisionsHex>;`,
                 ``
             ].join("\n"),
             "utf8"
@@ -103,29 +85,15 @@ export function cssToTs(params: {
     );
 
     fs.writeFileSync(
-        pathJoin(generatedDirPath, "breakpoints.ts"),
+        pathJoin(generatedDirPath, "breakpoints.js"),
         Buffer.from(
             [warningMessage, ``, generateBreakpointsTsCode(rawDsfrCssCode)].join("\n"),
             "utf8"
         )
     );
-
+    
     fs.writeFileSync(
-        pathJoin(generatedDirPath, "typography.ts"),
-        Buffer.from(
-            [
-                warningMessage,
-                `import { breakpoints } from "../breakpoints";`,
-                ``,
-                generateTypographyTsCode(rawDsfrCssCode),
-                ``
-            ].join("\n"),
-            "utf8"
-        )
-    );
-
-    fs.writeFileSync(
-        pathJoin(generatedDirPath, "spacing.ts"),
+        pathJoin(generatedDirPath, "spacing.js"),
         Buffer.from(
             [warningMessage, ``, generateSpacingTsCode(rawDsfrCssCode), ``].join("\n"),
             "utf8"
@@ -133,7 +101,7 @@ export function cssToTs(params: {
     );
 
     fs.writeFileSync(
-        pathJoin(generatedDirPath, "classNames.ts"),
+        pathJoin(generatedDirPath, "classNames.js"),
         Buffer.from(
             [
                 warningMessage,
@@ -148,7 +116,7 @@ export function cssToTs(params: {
     );
 
     fs.writeFileSync(
-        pathJoin(generatedDirPath, "colorDecisionAndCorrespondingOptions.ts"),
+        pathJoin(generatedDirPath, "colorDecisionAndCorrespondingOptions.js"),
         Buffer.from(
             [
                 warningMessage,

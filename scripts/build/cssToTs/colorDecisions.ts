@@ -254,9 +254,7 @@ export function generateGetColorDecisionsHexTsCode(rawCssCode: string): string {
 
     return [
         `export function getColorDecisionsHex(`,
-        `    params: {`,
-        `        colorOptions: ColorOptions<"hex">;`,
-        `    }`,
+        `    params`,
         `) {`,
         ``,
         `    const { colorOptions } = params;`,
@@ -272,7 +270,7 @@ export function generateGetColorDecisionsHexTsCode(rawCssCode: string): string {
             .map(line => line.replace(/^[ ]{2}/, ""))
             .map(line => `        ${line}`)
             .join("\n"),
-        `    } as const;`,
+        `    };`,
         `}`
     ].join("\n");
 }
@@ -313,6 +311,6 @@ export function generateColorDecisionsTsCode(rawCssCode: string) {
             .map(line => line.replace(/^[ ]{2}/, ""))
             .map(line => `    ${line}`)
             .join("\n"),
-        `} as const;`
+        `};`
     ].join("\n");
 }

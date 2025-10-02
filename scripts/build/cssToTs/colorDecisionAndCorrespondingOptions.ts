@@ -38,7 +38,7 @@ export function generateColorDecisionAndCorrespondingOptionsTsCode(rawCssCode: s
             colorDecisionAndCorrespondingOptions,
             null,
             4
-        )} as const;`,
+        )};`,
         ``
     ].join("\n");
 }

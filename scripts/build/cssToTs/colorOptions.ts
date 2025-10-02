@@ -426,9 +426,7 @@ export function generateGetColorOptionsHexTsCode(rawCssCode: string) {
 
     return [
         `export function getColorOptionsHex(`,
-        `    params: {`,
-        `        isDark: boolean;`,
-        `    }`,
+        `    params`,
         `) {`,
         ``,
         `    const { isDark } = params;`,
@@ -444,7 +442,7 @@ export function generateGetColorOptionsHexTsCode(rawCssCode: string) {
             .map(line => line.replace(/^[ ]{2}/, ""))
             .map(line => `        ${line}`)
             .join("\n"),
-        `    } as const;`,
+        `    };`,
         `}`
     ].join("\n");
 }
@@ -485,7 +483,7 @@ export function generateColorOptionsTsCode(rawCssCode: string) {
             .map(line => line.replace(/^[ ]{2}/, ""))
             .map(line => `    ${line}`)
             .join("\n"),
-        `} as const;`
+        `};`
     ].join("\n");
 }
 

@@ -1,16 +1,21 @@
+import { fr } from '../fr'
+
+const hexColors = fr.colors.getHex({ dark: false }).options;
+
 export const chartData = {
   lineChart: {
     default: {
       x: '[[2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020]]',
       y: '[[51.50, 55.30, 61.50, 70.20, 81.10, 92.60, 100.20, 104.60, 96.90, 98.00, 104.90, 106.80, 104.70, 102.70, 100.20, 100.40, 102.90, 106.00, 109.10, 114.60]]',
       name: '["Indices des prix des logements anciens"]',
-      selectedPalette: 'default',
+      selectedPalette: [hexColors.redMarianne._975_75.hover],
       unitTooltip: 'points d’indice',
     },
     multiple: {
       x: '[[1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020], [1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020]]',
       y: '[[54.5, 58.2, 58.1, 59.6, 62.1, 64, 65.9, 67.1, 69, 69.2], [83.9, 83.2, 78.4, 75.9, 74.7, 75.3, 75.2, 75, 75.6, 74.8]]',
       name: '["Femmes", "Hommes"]',
+      selectedPalette: ['red', 'green'],
       unitTooltip: '%',
     },
   },
@@ -19,14 +24,14 @@ export const chartData = {
       x: '[[2025, 2030, 2035, 2040, 2050, 2060, 2070]]',
       y: '[[69.1, 70.3, 71.4, 72.5, 74, 75.2, 76.4]]',
       name: '["Population en millions"]',
-      selectedPalette: 'default',
+      selectedPalette: ['yellow', 'orange', 'red'],
       unitTooltip: 'millions',
     },
     unicolor: {
       x: '[["15 à 29 ans", "30 à 44 ans", "45 à 59 ans", "60 à 74 ans", "75 ans ou plus"]]',
       y: '[[75.4, 80.5, 66.8, 43.4, 12.1]]',
       name: '["Achat sur internet au cours des 12 derniers mois (%)"]',
-      selectedPalette: 'neutral',
+      selectedPalette: ['blue'],
       unitTooltip: '%',
     },
     sequential: {

@@ -35,10 +35,7 @@ export function generateClassNamesTsCode(params: {
     const classNames = parseClassNames(rawCssCode);
 
     return [
-        `export const frCoreClassNames= ${JSON.stringify(classNames, null, 4)} as const;`,
-        ``,
-        ``,
-        `export type FrClassName = FrCoreClassName;`,
+        `export const frCoreClassNames= ${JSON.stringify(classNames, null, 4)};`,
         ``
     ].join("\n");
 }
