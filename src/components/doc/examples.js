@@ -1,3 +1,4 @@
+import AreaLineChart from '@/components/AreaLineChart.vue';
 import BarChart from '@/components/BarChart.vue';
 import BarLineChart from '@/components/BarLineChart.vue';
 import GaugeChart from '@/components/GaugeChart.vue';
@@ -36,6 +37,12 @@ export const chartExamples = [
     title: 'Graphique en ligne / Diagramme en barres',
     desc: 'Il est également possible de combiner un graphique en ligne et un diagramme en barres, pour permettre la comparaison entre des données présentées différemment.',
     graphs: [{ component: BarLineChart, title: 'Évolution du nombre de naissances et du taux de natalité', desc: 'France hors Mayotte, naissances en milliers et taux de natalité pour mille femmes. Insee, 16/01/2024', props: chartData.barLineChart.default }],
+  },
+  // Graphique en ligne / Diagramme en aires
+  {
+    title: 'Graphique en ligne / Diagramme en aires',
+    desc: 'Il est également possible de combiner un graphique en ligne et un diagramme en aires, pour permettre la comparaison entre des données présentées différemment.',
+    graphs: [{ component: AreaLineChart, title: 'Évolution du nombre de naissances et du taux de natalité', desc: 'France hors Mayotte, naissances en milliers et taux de natalité pour mille femmes. Insee, 16/01/2024', props: chartData.areaLineChart.default }],
   },
   // Diagramme circulaire
   {

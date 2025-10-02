@@ -104,6 +104,37 @@ export function generateBarLineChartColors({
     hlineColorParse,
   };
 }
+export function generateAreaLineChartColors({
+  vlineParse = [],
+  hlineParse = [],
+  tmpVlineColorParse = [],
+  tmpHlineColorParse = [],
+  selectedPalette = '',
+  areasColors: areasColorsInput,
+  linesColors: linesColorsInput,
+}) {
+  const areasPalette = choosePalette(selectedPalette, areasColorsInput);
+  const linePalette = choosePalette(selectedPalette, linesColorsInput);
+
+  const colorAreaParse = [...areasPalette].map((c) => chroma(c).alpha(0.5).css());
+  const colorAreaHover = colorAreaParse.map((c) => chroma(c).darken(0.8).hex());
+
+  const colorParse = [...linePalette];
+  const colorHover = colorParse.map((c) => chroma(c).darken(0.8).hex());
+
+  const vlineColorParse = vlineParse.map((_, i) => (tmpVlineColorParse[i] || getNeutralColor()));
+
+  const hlineColorParse = hlineParse.map((_, i) => (tmpHlineColorParse[i] || getNeutralColor()));
+
+  return {
+    colorAreaParse,
+    colorAreaHover,
+    colorParse,
+    colorHover,
+    vlineColorParse,
+    hlineColorParse,
+  };
+}
 
 export function generateScatterChartColors({
   yparse = [],
