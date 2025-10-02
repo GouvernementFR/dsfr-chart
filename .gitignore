@@ -24,3 +24,5 @@ Thumbs.db
 /storybook-static/
 /playwright-report/
 /playwright/.cache/
+/dsfr
+/src/fr/generatedFromCss

@@ -230,6 +230,7 @@ export function choosePalette(selectedPalette) {
     case 'divergentDescending':
       return getDivergentDescending();
     default:
+    //   return getCategoricalPalette();
       return getCategoricalPalette();
   }
 }
