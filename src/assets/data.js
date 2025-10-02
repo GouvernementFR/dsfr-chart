@@ -67,13 +67,15 @@ export const chartData = {
   barLineChart: {
     default: {
       x: '[1980, 1990, 2000, 2010]',
-      yBar: '[826, 793, 807, 832]',
+      yBars: '[[826, 793, 807, 832], [926, 493, 307, 732]]',
       yLines: '[[14.9, 13.4, 24, 13.1, 12.9], [34.9, 14, 23.4, 23.1, 22.9], [24.9, 34, 23.4, 43.1, 42.9]]',
-      nameBar: 'Taux de natalité',
+      nameBars: ['Taux de natalité', 'Taux de mortalité'],
       nameLines: ['Naissances', 'Décès', 'Solde naturel'],
       unitTooltipBar: 'milliers',
       unitTooltipLine: '%',
-      colors: ['red', 'green', 'yellow', 'blue'],
+      linesColors: ['#219679ff', 'green', 'yellow', 'blue'],
+      barsColors: ['#6754A4', 'red'],
+      // stacked: true,
     },
   },
   scatterChart: {

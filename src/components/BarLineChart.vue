@@ -15,16 +15,18 @@
               <div class="tooltip_value">
                 <!-- Barre -->
                 <div
+                  v-for="(barColor, index) in colorBarParse"
+                  :key="index"
                   class="flex fr-mt-3v fr-mb-1v"
                   :style="{ 'border-bottom': '1px solid #e0e0e0' }"
                 >
                   <div class="tooltip_value-content">
                     <span
                       class="tooltip_dot"
-                      :style="{ 'background-color': colorBarParse }"
+                      :style="{ 'background-color': colorBarParse[Math.min(index, colorBarParse.length - 1)] }"
                     />
                     <p class="tooltip_place">
-                      {{ capitalize(nameBar) }}
+                      {{ capitalize(nameBars[index] || 'Bar ' + (index + 1)) }}
                     </p>
                   </div>
                 </div>
@@ -56,13 +58,17 @@
 
           <div class="chart_legend fr-mb-0 fr-mt-4v">
             <!-- Barre -->
-            <div class="flex fr-mt-3v fr-mb-1v">
+            <div
+              v-for="(barName, index) in nameBars"
+              :key="index"
+              class="flex fr-mt-3v fr-mb-1v"
+            >
               <span
                 class="legende_dot"
-                :style="{ 'background-color': colorBarParse }"
+                :style="{ 'background-color': colorBarParse[Math.min(index, colorBarParse.length - 1)] }"
               />
               <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-                {{ capitalize(nameBar) }}
+                {{ capitalize(barName || 'Bar ' + (index + 1)) }}
               </p>
             </div>
 
@@ -160,8 +166,8 @@ export default {
       type: String,
       required: true,
     },
-    yBar: {
-      type: String,
+    yBars: {
+      type: Array,
       required: true,
     },
     yLines: {
@@ -192,9 +198,13 @@ export default {
       type: [Number, String],
       default: '',
     },
-    nameBar: {
-      type: String,
-      default: '',
+    stacked: {
+      type: [Boolean, String],
+      default: false,
+    },
+    nameBars: {
+      type: Array,
+      default: () => [],
     },
     nameLines: {
       type: Array,
@@ -244,7 +254,11 @@ export default {
       type: String,
       default: 'categorical',
     },
-    colors: {
+    barsColors: {
+      type: Array,
+      default: undefined,
+    },
+    linesColors: {
       type: Array,
       default: undefined,
     },
@@ -264,7 +278,8 @@ export default {
       widgetId: '',
       chartId: '',
       display: '',
-      datasets: [],
+      barsDatasets: [],
+      linesDatasets: [],
       labels: [],
       xparse: [],
       ybarparse: [],
@@ -320,7 +335,8 @@ export default {
         this.chart.destroy();
       }
       this.display = '';
-      this.datasets = [];
+      this.barsDatasets = [];
+      this.linesDatasets = [];
       this.labels = [];
       this.xparse = [];
       this.ybarparse = [];
@@ -342,12 +358,8 @@ export default {
       // Parsing des données
       try {
         this.xparse = JSON.parse(this.x);
-        this.ybarparse = JSON.parse(this.yBar);
-        if (typeof this.yLines === 'string') {
-          this.ylineparse = JSON.parse(this.yLines);
-        } else {
-          this.ylineparse = this.yLines;
-        }
+        this.ybarparse = JSON.parse(this.yBars);
+        this.ylineparse = JSON.parse(this.yLines);
       } catch (error) {
         console.error('Erreur lors du parsing des données x ou y-bar ou y-line:', error);
         return;
@@ -393,7 +405,7 @@ export default {
         }
       }
 
-      const dataBar = [];
+      const dataBars = this.ybarparse.map(() => []); // tableau pour les barres
       const dataLines = this.ylineparse.map(() => []); // tableau de tableaux pour chaque ligne
 
       if (typeof this.xparse[0] === 'number') {
@@ -401,7 +413,10 @@ export default {
         
         xsort.forEach((k) => {
           const index = this.xparse.findIndex((el) => el === k);
-          dataBar.push(this.ybarparse[index]);
+
+          this.ybarparse.forEach((bar, barIdx) => {
+            dataBars[barIdx].push(bar[index]);
+          });
 
           // Pour chaque ligne
           this.ylineparse.forEach((line, lineIdx) => {
@@ -413,7 +428,10 @@ export default {
       } else {
         // Cas où x n'est pas numérique
         this.labels = this.xparse;
-        dataBar.push(...this.ybarparse);
+
+        this.ybarparse.forEach((bar, barIdx) => {
+          dataBars[barIdx].push(...bar);
+        });
 
         this.ylineparse.forEach((line, lineIdx) => {
           dataLines[lineIdx].push(...line);
@@ -422,33 +440,32 @@ export default {
       // Chargement des couleurs
       this.loadColors();
 
-      this.datasets = [
-        {
-          data: dataBar,
-          type: 'bar',
-          borderColor: this.colorBarParse,
-          backgroundColor: this.colorBarParse,
-          barThickness: this.barSize,
-          maxBarThickness: this.maxBarSize,
-        },
-      ];
+      this.barsDatasets = dataBars.map((barData, i) => ({
+        data: barData,
+        type: 'bar',
+        borderColor: this.colorBarParse[i] || this.colorBarParse[0],
+        backgroundColor: this.colorBarParse[i] || this.colorBarParse[0],
+        barThickness: this.barSize,
+        maxBarThickness: this.maxBarSize,
+        order: 2,
+      }));
 
-      dataLines.forEach((lineData, i) => {
-        this.datasets.push({
-          data: lineData,
-          type: 'line',
-          borderColor: this.colorParse[i] || this.colorParse,
-          backgroundColor: 'rgba(0,0,0,0)',
-          pointBorderColor: this.colorParse[i] || this.colorParse,
-          pointBackgroundColor: this.colorParse[i] || this.colorParse,
-          yAxisID: 'yLine',
-          tension: 0.4,
-        });
-      });
+      // Crée les datasets des lignes
+      this.linesDatasets = dataLines.map((lineData, i) => ({
+        data: lineData,
+        type: 'line',
+        borderColor: this.colorParse[i] || this.colorParse[0],
+        backgroundColor: 'rgba(0,0,0,0)',
+        pointBorderColor: this.colorParse[i] || this.colorParse[0],
+        pointBackgroundColor: this.colorParse[i] || this.colorParse[0],
+        yAxisID: 'yLine',
+        tension: 0.4,
+        order: 1,
+      }));
     },
     choosePalette() {
       // Using the refactored choosePalette function from utils
-      return choosePalette(this.selectedPalette, this.colors);
+      return {bar: choosePalette(this.selectedPalette, this.barsColors), line: choosePalette(this.selectedPalette, this.linesColors)};
     },
     loadColors() {
       const { colorBarParse, colorBarHover, colorParse, colorHover, vlineColorParse, hlineColorParse } = generateBarLineChartColors({
@@ -458,7 +475,8 @@ export default {
         tmpVlineColorParse: this.tmpVlineColorParse,
         tmpHlineColorParse: this.tmpHlineColorParse,
         selectedPalette: this.selectedPalette,
-        colors: this.colors,
+        barsColors: this.barsColors,
+        linesColors: this.linesColors,
       });
 
       this.colorBarParse = colorBarParse;
@@ -478,7 +496,7 @@ export default {
       this.chart = new Chart(ctx, {
         data: {
           labels: this.labels,
-          datasets: this.datasets,
+          datasets: [...this.barsDatasets, ...this.linesDatasets],
         },
         plugins: [
           {
@@ -488,8 +506,8 @@ export default {
                 const x = chart.tooltip.getActiveElements()[0].element.tooltipPosition().x;
                 const index = chart.tooltip._active[0].index;
 
-                const yBar = chart.scales.y.getPixelForValue(this.ybarparse[index]);
-                const yLine = chart.scales.yLine.getPixelForValue(this.ylineparse[index]);
+                const yBars = chart.scales.y.getPixelForValue(this.ybarparse[index]);
+                const yLines = chart.scales.yLine.getPixelForValue(this.ylineparse[index]);
 
                 ctx.save();
                 ctx.beginPath();
@@ -503,8 +521,8 @@ export default {
 
                 ctx.save();
                 ctx.beginPath();
-                ctx.moveTo(chart.scales.x.right, yLine);
-                ctx.lineTo(x, yLine);
+                ctx.moveTo(chart.scales.x.right, yLines);
+                ctx.lineTo(x, yLines);
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = this.colorPrecisionBar;
                 ctx.setLineDash([10, 5]);
@@ -513,8 +531,8 @@ export default {
 
                 ctx.save();
                 ctx.beginPath();
-                ctx.moveTo(chart.scales.x.left, yBar);
-                ctx.lineTo(x, yBar);
+                ctx.moveTo(chart.scales.x.left, yBars);
+                ctx.lineTo(x, yBars);
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = this.colorPrecisionBar;
                 ctx.setLineDash([10, 5]);
@@ -529,6 +547,7 @@ export default {
           scales: {
             x: {
               offset: true,
+              stacked: this.stacked,
               grid: {
                 drawTicks: false,
                 drawOnChartArea: false,
@@ -539,6 +558,7 @@ export default {
             y: {
               type: 'linear',
               position: 'left',
+              stacked: this.stacked,
               grid: {
                 drawTicks: false,
               },
@@ -602,7 +622,7 @@ export default {
               callbacks: {
                 label: (tooltipItems) => {
                   const label = [];
-                  this.datasets.forEach((set) => {
+                  [...this.barsDatasets, ...this.linesDatasets].forEach((set) => {
                     label.push(this.formatNumber(set.data[tooltipItems.dataIndex]));
                   });
                   return label;
@@ -650,7 +670,7 @@ export default {
                   divValue.innerHTML = '';
 
                   // Access color arrays for different datasets
-                  const colors = [this.colorBarParse, ...this.colorParse]; // Adjust to match your color variables
+                  const colors = [...this.colorBarParse, ...this.colorParse]; // Adjust to match your color variables
 
                   // Iterate over bodyLines to set the color and value in the tooltip
                   bodyLines[0].forEach((line, i) => {
@@ -705,15 +725,19 @@ export default {
       this.loadColors();
 
       // Mise à jour des couleurs dans le graphique
-      this.chart.data.datasets.forEach((dataset) => {
-        dataset.borderColor = this.colorParse;
-        dataset.backgroundColor = this.colorBarParse;
-        dataset.pointBorderColor = this.colorParse;
-        dataset.pointBackgroundColor = this.colorParse;
-        dataset.hoverBorderColor = this.colorHover;
-        dataset.hoverBackgroundColor = this.colorBarHover;
-        dataset.pointHoverBorderColor = this.colorHover;
-        dataset.pointHoverBackgroundColor = this.colorHover;
+      this.chart.data.datasets.forEach((dataset, i) => {
+        if (dataset.type === 'bar') {
+          dataset.borderColor = this.colorBarParse[i] || this.colorBarParse[0];
+          dataset.backgroundColor = this.colorBarParse[i] || this.colorBarParse[0];
+          dataset.hoverBorderColor = this.colorBarHover[i] || this.colorBarHover[0];
+          dataset.hoverBackgroundColor = this.colorBarHover[i] || this.colorBarHover[0];
+        } else if (dataset.type === 'line') {
+          dataset.borderColor = this.colorParse[i] || this.colorParse[0];
+          dataset.pointBorderColor = this.colorParse[i] || this.colorParse[0];
+          dataset.pointBackgroundColor = this.colorParse[i] || this.colorParse[0];
+          dataset.pointHoverBorderColor = this.colorHover[i] || this.colorHover[0];
+          dataset.pointHoverBackgroundColor = this.colorHover[i] || this.colorHover[0];
+        }
       });
 
       this.chart.options.scales.x.ticks.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;

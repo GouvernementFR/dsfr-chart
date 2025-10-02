@@ -79,14 +79,16 @@ export function generateBarLineChartColors({
   tmpVlineColorParse = [],
   tmpHlineColorParse = [],
   selectedPalette = '',
-  colors: colorsInput,
+  barsColors: barsColorsInput,
+  linesColors: linesColorsInput,
 }) {
-  const palette = choosePalette(selectedPalette, colorsInput);
+  const barPalette = choosePalette(selectedPalette, barsColorsInput);
+  const linePalette = choosePalette(selectedPalette, linesColorsInput);
 
-  const colorBarParse = getColorsByIndex(0, palette);
-  const colorBarHover = chroma(colorBarParse).darken(0.8).hex();
+  const colorBarParse = [...barPalette];
+  const colorBarHover = colorBarParse.map((c) => chroma(c).darken(0.8).hex());
 
-  const colorParse = palette.length > 1 ? palette.slice(1) : palette;
+  const colorParse = [...linePalette];
   const colorHover = colorParse.map((c) => chroma(c).darken(0.8).hex());
 
   const vlineColorParse = vlineParse.map((_, i) => (tmpVlineColorParse[i] || getNeutralColor()));
