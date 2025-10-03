@@ -4,6 +4,7 @@ import '@/styles/style.scss';
 
 import DataBox from '@/components/DataBox.vue';
 
+import AreaLineChart from '@/components/AreaLineChart.vue';
 import BarChart from '@/components/BarChart.vue';
 import BarLineChart from '@/components/BarLineChart.vue';
 import GaugeChart from '@/components/GaugeChart.vue';
@@ -17,6 +18,7 @@ import TableChart from '@/components/TableChart.vue';
 
 customElements.define('data-box', defineCustomElement(DataBox, { shadowRoot: false }));
 
+customElements.define('area-line-chart', defineCustomElement(AreaLineChart, { shadowRoot: false }));
 customElements.define('bar-chart', defineCustomElement(BarChart, { shadowRoot: false }));
 customElements.define('bar-line-chart', defineCustomElement(BarLineChart, { shadowRoot: false }));
 customElements.define('gauge-chart', defineCustomElement(GaugeChart, { shadowRoot: false }));
