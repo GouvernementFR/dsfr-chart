@@ -49,7 +49,7 @@ import NewChart from '@/components/NewChart.vue';
 
 const NewChartElement = defineCustomElement(NewChart, { shadowRoot: false });
 
-customElements.define('bar-line-chart', NewChartElement);
+customElements.define('new-chart-name', NewChartElement);
 ```
 
 Il est également important de rajouter cela dans le fichier `src/charts/main.js` qui permet de l'inclure dans la compilation de tous les web-components ainsi que dans le fichier `src/main.js` pour l'utiliser dans la documentation du `index.html`.
