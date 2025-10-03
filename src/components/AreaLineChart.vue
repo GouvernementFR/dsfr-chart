@@ -210,6 +210,7 @@ export default {
       yLineParse: [],
       colorParse: [],
       colorAreaParse: [],
+      colorAreaLineParse: [],
       colorHover: [],
       colorAreaHover: [],
     };
@@ -234,23 +235,39 @@ export default {
       this.yLineParse = [];
       this.colorParse = [];
       this.colorAreaParse = [];
+      this.colorAreaLineParse = [];
       this.colorHover = [];
       this.colorAreaHover = [];
     },
     getData() {
       try {
-        this.xparse = JSON.parse(this.x);
-        this.yAreaParse = JSON.parse(this.yAreas);
-        this.yLineParse = JSON.parse(this.yLines);
+        if (typeof this.x === 'string' || typeof this.yAreas === 'string' || typeof this.yLines === 'string') {
+          console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'x', 'yAreas' et 'yLines' comme une liste de nombres.");
+        }
+        // On gère la legacy où x et y pouvaient être passés en string
+        this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
+
+        this.yAreaParse = typeof this.yArea === 'string' ? JSON.parse(this.yAreas) : this.yAreas;
+        this.yLineParse = typeof this.yLines === 'string' ? JSON.parse(this.yLines) : this.yLines;
+
+        if (!Array.isArray(this.xparse) || !Array.isArray(this.xparse[0])) {
+          throw new Error("La prop 'x' doit être une liste de listes.");
+        }
+        if (!Array.isArray(this.yAreaParse) || !Array.isArray(this.yAreaParse[0])) {
+          throw new Error("La prop 'yAreas' doit être une liste de listes.");
+        }
+        if (!Array.isArray(this.yLineParse) || !Array.isArray(this.yLineParse[0])) {
+          throw new Error("La prop 'yLines' doit être une liste de listes.");
+        }
       } catch (err) {
         console.error('Erreur parsing:', err);
         return;
       }
 
-      this.labels = this.xparse;
+      this.labels = this.xparse[0];
 
       // Charger les couleurs
-      const { colorAreaParse, colorAreaHover, colorParse, colorHover } = generateAreaLineChartColors({
+      const { colorAreaParse, colorAreaLineParse, colorAreaHover, colorParse, colorHover } = generateAreaLineChartColors({
         yLinesLength: this.yLineParse.length,
         yBarsLength: this.yAreaParse.length,
         selectedPalette: this.selectedPalette,
@@ -258,6 +275,7 @@ export default {
         linesColors: this.linesColors,
       });
 
+      this.colorAreaLineParse = colorAreaLineParse;
       this.colorAreaParse = colorAreaParse;
       this.colorAreaHover = colorAreaHover;
       this.colorParse = colorParse;
@@ -269,7 +287,7 @@ export default {
         type: 'line',
         fill: true,
         backgroundColor: this.colorAreaParse[i],
-        borderColor: this.colorAreaParse[i],
+        borderColor: this.colorAreaLineParse[i],
         tension: 0.4,
         pointRadius: 0,
         order: 2,
@@ -530,7 +548,7 @@ export default {
 
       // Mise à jour des couleurs dans le graphique
       this.areasDatasets.forEach((dataset, i) => {
-        dataset.borderColor = this.colorAreaParse[i] || this.colorAreaParse[0];
+        dataset.borderColor = this.colorAreaLineParse[i] || this.colorAreaLineParse[0];
         dataset.backgroundColor = this.colorAreaParse[i] || this.colorAreaParse[0];
         dataset.pointBorderColor = this.colorAreaParse[i] || this.colorAreaParse[0];
         dataset.pointBackgroundColor = this.colorAreaParse[i] || this.colorAreaParse[0];

@@ -293,6 +293,13 @@ export default {
         // On gère la legacy où x et y pouvaient être passés en string
         this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
         this.yparse = typeof this.y === 'string' ? JSON.parse(this.y) : this.y;
+
+        if (!Array.isArray(this.xparse) || !Array.isArray(this.xparse[0])) {
+          throw new Error("La prop 'x' doit être une liste de listes.");
+        }
+        if (!Array.isArray(this.yparse) || !Array.isArray(this.yparse[0])) {
+          throw new Error("La prop 'y' doit être une liste de listes.");
+        }
       } catch (error) {
         console.error('Erreur lors du parsing des données x ou y:', error);
         return;

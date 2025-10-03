@@ -116,7 +116,8 @@ export function generateAreaLineChartColors({
   const areasPalette = choosePalette(selectedPalette, areasColorsInput);
   const linePalette = choosePalette(selectedPalette, linesColorsInput);
 
-  const colorAreaParse = [...areasPalette].map((c) => chroma(c).alpha(0.5).css());
+  const colorAreaParse = [...areasPalette].map((c) => chroma(c).alpha(0.4).css());
+  const colorAreaLineParse = [...areasPalette];
   const colorAreaHover = colorAreaParse.map((c) => chroma(c).darken(0.8).hex());
 
   const colorParse = [...linePalette];
@@ -128,6 +129,7 @@ export function generateAreaLineChartColors({
 
   return {
     colorAreaParse,
+    colorAreaLineParse,
     colorAreaHover,
     colorParse,
     colorHover,

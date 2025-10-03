@@ -205,8 +205,19 @@ export default {
     getData() {
       // Parsing des données
       try {
-        this.xparse = JSON.parse(this.x);
-        this.yparse = JSON.parse(this.y);
+        if (typeof this.x === 'string' || typeof this.y === 'string') {
+          console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'x' et 'y' comme une liste de nombres.");
+        }
+        // On gère la legacy où x et y pouvaient être passés en string
+        this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
+        this.yparse = typeof this.y === 'string' ? JSON.parse(this.y) : this.y;
+
+        if (!Array.isArray(this.xparse) || !Array.isArray(this.xparse[0])) {
+          throw new Error("La prop 'x' doit être une liste de listes.");
+        }
+        if (!Array.isArray(this.yparse) || !Array.isArray(this.yparse[0])) {
+          throw new Error("La prop 'y' doit être une liste de listes.");
+        }
       } catch (error) {
         console.error('Erreur lors du parsing des données x ou y:', error);
         return;
@@ -215,7 +226,11 @@ export default {
       let tmpNameParse = [];
       if (this.name) {
         try {
-          tmpNameParse = JSON.parse(this.name);
+          if (typeof this.name === 'string') {
+            console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'name' comme une liste de nombres.");
+          }
+          // On gère la legacy où name pouvait être passé en string
+          tmpNameParse = typeof this.name === 'string' ? JSON.parse(this.name) : this.name;
         } catch (error) {
           console.error('Erreur lors du parsing de name:', error);
         }

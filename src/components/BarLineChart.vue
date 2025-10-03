@@ -282,8 +282,8 @@ export default {
       linesDatasets: [],
       labels: [],
       xparse: [],
-      ybarparse: [],
-      ylineparse: [],
+      yBarParse: [],
+      yLineParse: [],
       vlineParse: [],
       vlineColorParse: [],
       tmpVlineColorParse: [],
@@ -339,8 +339,8 @@ export default {
       this.linesDatasets = [];
       this.labels = [];
       this.xparse = [];
-      this.ybarparse = [];
-      this.ylineparse = [];
+      this.yBarParse = [];
+      this.yLineParse = [];
       this.vlineParse = [];
       this.vlineColorParse = [];
       this.tmpVlineColorParse = [];
@@ -357,9 +357,24 @@ export default {
     getData() {
       // Parsing des données
       try {
-        this.xparse = JSON.parse(this.x);
-        this.ybarparse = JSON.parse(this.yBars);
-        this.ylineparse = JSON.parse(this.yLines);
+        if (typeof this.x === 'string' || typeof this.yBars === 'string' || typeof this.yLines === 'string') {
+          console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'x', 'yBars' et 'yLines' comme une liste de nombres.");
+        }
+        // On gère la legacy où x et y pouvaient être passés en string
+        this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
+
+        this.yBarParse = typeof this.yBars === 'string' ? JSON.parse(this.yBars) : this.yBars;
+        this.yLineParse = typeof this.yLines === 'string' ? JSON.parse(this.yLines) : this.yLines;
+
+        if (!Array.isArray(this.xparse) || !Array.isArray(this.xparse[0])) {
+          throw new Error("La prop 'x' doit être une liste de listes.");
+        }
+        if (!Array.isArray(this.yBarParse) || !Array.isArray(this.yBarParse[0])) {
+          throw new Error("La prop 'yBars' doit être une liste de listes.");
+        }
+        if (!Array.isArray(this.yLineParse) || !Array.isArray(this.yLineParse[0])) {
+          throw new Error("La prop 'yLines' doit être une liste de listes.");
+        }
       } catch (error) {
         console.error('Erreur lors du parsing des données x ou y-bar ou y-line:', error);
         return;
@@ -405,8 +420,8 @@ export default {
         }
       }
 
-      const dataBars = this.ybarparse.map(() => []); // tableau pour les barres
-      const dataLines = this.ylineparse.map(() => []); // tableau de tableaux pour chaque ligne
+      const dataBars = this.yBarParse.map(() => []); // tableau pour les barres
+      const dataLines = this.yLineParse.map(() => []); // tableau de tableaux pour chaque ligne
 
       if (typeof this.xparse[0] === 'number') {
         const xsort = [...this.xparse].sort((a, b) => a - b);
@@ -414,12 +429,12 @@ export default {
         xsort.forEach((k) => {
           const index = this.xparse.findIndex((el) => el === k);
 
-          this.ybarparse.forEach((bar, barIdx) => {
+          this.yBarParse.forEach((bar, barIdx) => {
             dataBars[barIdx].push(bar[index]);
           });
 
           // Pour chaque ligne
-          this.ylineparse.forEach((line, lineIdx) => {
+          this.yLineParse.forEach((line, lineIdx) => {
             dataLines[lineIdx].push(line[index]);
           });
         });
@@ -427,13 +442,13 @@ export default {
         this.labels = xsort;
       } else {
         // Cas où x n'est pas numérique
-        this.labels = this.xparse;
+        this.labels = this.xparse[0];
 
-        this.ybarparse.forEach((bar, barIdx) => {
+        this.yBarParse.forEach((bar, barIdx) => {
           dataBars[barIdx].push(...bar);
         });
 
-        this.ylineparse.forEach((line, lineIdx) => {
+        this.yLineParse.forEach((line, lineIdx) => {
           dataLines[lineIdx].push(...line);
         });
       }
@@ -469,7 +484,7 @@ export default {
     },
     loadColors() {
       const { colorBarParse, colorBarHover, colorParse, colorHover, vlineColorParse, hlineColorParse } = generateBarLineChartColors({
-        yLinesLength: this.ylineparse.length,
+        yLinesLength: this.yLineParse.length,
         vlineParse: this.vlineParse,
         hlineParse: this.hlineParse,
         tmpVlineColorParse: this.tmpVlineColorParse,
@@ -506,8 +521,8 @@ export default {
                 const x = chart.tooltip.getActiveElements()[0].element.tooltipPosition().x;
                 const index = chart.tooltip._active[0].index;
 
-                const yBars = chart.scales.y.getPixelForValue(this.ybarparse[index]);
-                const yLines = chart.scales.yLine.getPixelForValue(this.ylineparse[index]);
+                const yBars = chart.scales.y.getPixelForValue(this.yBarParse[index]);
+                const yLines = chart.scales.yLine.getPixelForValue(this.yLineParse[index]);
 
                 ctx.save();
                 ctx.beginPath();
