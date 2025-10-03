@@ -198,6 +198,10 @@ export default {
       type: String,
       default: '',
     },
+    showLabels: {
+      type: [String, Array],
+      default: undefined,
+    },
   },
   data() {
     this.chart = undefined;
@@ -283,8 +287,12 @@ export default {
     getData() {
       // Parsing des données
       try {
-        this.xparse = JSON.parse(this.x);
-        this.yparse = JSON.parse(this.y);
+        if (typeof this.x === 'string' || typeof this.y === 'string') {
+          console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'x' et 'y' comme une liste de nombres.");
+        }
+        // On gère la legacy où x et y pouvaient être passés en string
+        this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
+        this.yparse = typeof this.y === 'string' ? JSON.parse(this.y) : this.y;
       } catch (error) {
         console.error('Erreur lors du parsing des données x ou y:', error);
         return;
@@ -293,7 +301,11 @@ export default {
       let tmpNameParse = [];
       if (this.name) {
         try {
-          tmpNameParse = JSON.parse(this.name);
+          if (typeof this.name === 'string') {
+            console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'name' comme une liste de nombres.");
+          }
+          // On gère la legacy où name pouvait être passé en string
+          tmpNameParse = typeof this.name === 'string' ? JSON.parse(this.name) : this.name;
         } catch (error) {
           console.error('Erreur lors du parsing de name:', error);
         }
@@ -461,6 +473,39 @@ export default {
 
       const ctx = this.$refs[this.chartId].getContext('2d');
 
+      // La props 'showLabels' peut être une liste d'index, une string ou non définie
+      // En fonction de sa valeur, on détermine les index des points à labeliser
+      const showLabels = Array.isArray(this.showLabels) ? true : this.showLabels != undefined;
+      const indexesWithLabels = this.datasets.map((sets) => {
+        // Si c'est une liste d'index, on la retourne telle quelle
+        if (Array.isArray(this.showLabels)) {
+          return this.showLabels;
+        }
+        switch (this.showLabels) {
+          case 'all':
+            return sets.data.map((_, index) => index);
+          case 'edges':
+            return [0, sets.data.length - 1];
+          case 'minmax': {
+            if (sets.data.length === 0) return [];
+            const allYValues = sets.data.map(p => p.y);
+            const min = Math.min(...allYValues);
+            const max = Math.max(...allYValues);
+            const indexes = [];
+            sets.data.forEach((value, index) => {
+              if (value.y === min || value.y === max) {
+                if (!indexes.includes(index)) {
+                  indexes.push(index);
+                }
+              }
+            });
+            return indexes;
+          }
+          default:
+            return null;
+        }
+      });
+
       this.chart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -500,6 +545,28 @@ export default {
               }
             },
           },
+          {
+            id: 'pointLabels',
+            afterDatasetsDraw(chart) {
+              if (!showLabels) return;
+
+              const { ctx } = chart;
+              chart.data.datasets.forEach((dataset, i) => {
+                const meta = chart.getDatasetMeta(i);
+                if (!meta.hidden) {
+                  meta.data.forEach((point, index) => {
+                    if (indexesWithLabels[i] && !indexesWithLabels[i].includes(index)) return;
+
+                    const value = dataset.data[index];
+                    ctx.fillStyle = '#333';
+                    ctx.font = '12px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(value.y, point.x, point.y - 10);
+                  });
+                }
+              })
+            }
+          }
         ],
         options: {
           aspectRatio: this.aspectRatio,
