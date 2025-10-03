@@ -1,7 +1,3 @@
-import { fr } from '../fr'
-
-const hexColors = fr.colors.getHex({ dark: false }).options;
-
 export const chartData = {
   lineChart: {
     default: {
@@ -9,7 +5,7 @@ export const chartData = {
       y: [[51.50, 55.30, 61.50, 70.20, 81.10, 92.60, 100.20, 104.60, 96.90, 98.00, 104.90, 106.80, 104.70, 102.70, 100.20, 100.40, 102.90, 106.00, 109.10, 114.60]],
       name: ["Indices des prix des logements anciens"],
       selectedPalette: 'default',
-      colors: [hexColors.redMarianne._975_75.hover],
+      colors: ['orange'],
       unitTooltip: 'points d’indice',
       showLabels: [0, 10, 12],
     },
