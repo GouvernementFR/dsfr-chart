@@ -1,34 +1,5 @@
 # Documentation des composants DSFR Chart
 
-Cette documentation présente les propriétés (props) disponibles pour chaque composant de visualisation de données de la bibliothèque DSFR Chart.
-
-## Utilisation de base
-
-```vue
-<template>
-  <div>
-    <!-- Conteneur DataBox pour le graphique -->
-    <DataBox
-      id="exemple-chart"
-      title="Mon graphique"
-      tooltip-title="Titre du tooltip"
-      tooltip-content="Description du graphique"
-      source="Insee"
-      date="15/10/2024"
-    />
-    
-    <!-- Graphique en barres -->
-    <BarChart
-      databox-id="exemple-chart"
-      :x="[['2020', '2021', '2022', '2023']]"
-      :y="[[10, 15, 12, 18]]"
-      :name="['Évolution']"
-      unit-tooltip="millions"
-    />
-  </div>
-</template>
-```
-
 ## Composants disponibles
 
 ### LineChart
@@ -52,15 +23,14 @@ Cette documentation présente les propriétés (props) disponibles pour chaque c
 - `date` (String) : Date de mise à jour
 
 **Exemple :**
-```vue
-<LineChart
-  databox-id="line-example"
-  :x="[[2001, 2002, 2003, 2004, 2005]]"
-  :y="[[51.50, 55.30, 61.50, 70.20, 81.10]]"
-  :name="['Indices des prix']"
-  unit-tooltip="points d'indice"
-  :show-labels="[0, 2, 4]"
-/>
+```json
+{
+  "x": [[2020, 2021, 2022, 2023]],
+  "y": [[10, 15, 12, 18]],
+  "colors": ["#007bff"],
+  "name": ["Évolution"],
+  "unitTooltip": "millions"
+}
 ```
 
 ### BarChart
@@ -82,16 +52,14 @@ Cette documentation présente les propriétés (props) disponibles pour chaque c
 - `date` (String) : Date de mise à jour
 
 **Exemple :**
-```vue
-<BarChart
-  databox-id="bar-example"
-  :x="[['Groupe A', 'Groupe B', 'Groupe C']]"
-  :y="[[15, 19, 15], [45, 40, 47]]"
-  :name="['Satisfait', 'Plutôt satisfait']"
-  :stacked="true"
-  selected-palette="divergentDescending"
-  unit-tooltip="%"
-/>
+```json
+{
+  "x": [[2020, 2021, 2022, 2023]],
+  "y": [[10, 15, 12, 18], [8, 12, 14, 20]],
+  "name": ["Évolution", "Prévision"],
+  "colors": ["#007bff", "#28a745"],
+  "unitTooltip": "millions"
+}
 ```
 
 ### PieChart
@@ -108,15 +76,14 @@ Cette documentation présente les propriétés (props) disponibles pour chaque c
 - `date` (String) : Date de mise à jour
 
 **Exemple :**
-```vue
-<PieChart
-  databox-id="pie-example"
-  :x="[['CDI', 'Non-salariés', 'CDD', 'Apprentis']]"
-  :y="[[74.8, 11.7, 9.3, 1.6]]"
-  :name="['CDI', 'Non-salariés', 'CDD', 'Apprentis']"
-  :fill="true"
-  unit-tooltip="%"
-/>
+```json
+{
+  "x": [["Catégorie A", "Catégorie B", "Catégorie C"]],
+  "y": [[30, 50, 20]],
+  "colors": ["#007bff", "#28a745", "#ffc107"],
+  "name": ["Répartition"],
+  "unitTooltip": "%"
+}
 ```
 
 ### ScatterChart
@@ -135,15 +102,14 @@ Cette documentation présente les propriétés (props) disponibles pour chaque c
 - `date` (String) : Date de mise à jour
 
 **Exemple :**
-```vue
-<ScatterChart
-  databox-id="scatter-example"
-  :x="[[1995, 2000, 2005, 2010, 2015, 2020]]"
-  :y="[[175, 155, 149, 130, 111, 107]]"
-  :name="['Émissions CO₂']"
-  :show-line="true"
-  unit-tooltip="g de CO₂ / km"
-/>
+```json
+{
+  "x": [[1, 2, 3, 4, 5]],
+  "y": [[10, 15, 12, 18, 20]],
+  "colors": ["#17a2b8"],
+  "name": ["Données"],
+  "unitTooltip": "unités"
+}
 ```
 
 ### RadarChart
@@ -159,14 +125,13 @@ Cette documentation présente les propriétés (props) disponibles pour chaque c
 - `date` (String) : Date de mise à jour
 
 **Exemple :**
-```vue
-<RadarChart
-  databox-id="radar-example"
-  :x="[['Logement', 'Alimentation', 'Transport']]"
-  :y="[[22.6, 28.9, 10.7], [31.3, 15.9, 12.9]]"
-  :name="['1963', '2023']"
-  unit-tooltip="%"
-/>
+```json
+{
+  "x": [["Dimension 1", "Dimension 2", "Dimension 3", "Dimension 4"]],
+  "y": [[5, 3, 4, 2], [4, 4, 3, 5]],
+  "name": ["Série A", "Série B"],
+  "unitTooltip": "points"
+}
 ```
 
 ### GaugeChart
@@ -180,15 +145,14 @@ Cette documentation présente les propriétés (props) disponibles pour chaque c
 - `date` (String) : Date de mise à jour
 
 **Exemple :**
-```vue
-<GaugeChart
-  databox-id="gauge-example"
-  :value="360000"
-  :init="100000"
-  :target="2000000"
-  init-date="(en 2022)"
-  target-date="(en 2026)"
-/>
+```json
+{
+  "value": 75,
+  "init": 50,
+  "target": 100,
+  "initDate": "2020",
+  "targetDate": "2025"
+}
 ```
 
 ### BarLineChart
@@ -209,17 +173,18 @@ Cette documentation présente les propriétés (props) disponibles pour chaque c
 - `date` (String) : Date de mise à jour
 
 **Exemple :**
-```vue
-<BarLineChart
-  databox-id="barline-example"
-  :x="[[1980, 1990, 2000, 2010]]"
-  :y-bars="[[826, 793, 807, 832], [926, 493, 307, 732]]"
-  :y-lines="[[14.9, 13.4, 24, 13.1]]"
-  :name-bars="['Taux natalité', 'Taux mortalité']"
-  :name-lines="['Naissances']"
-  unit-tooltip-bar="milliers"
-  unit-tooltip-line="%"
-/>
+```json
+{
+  "x": [[2020, 2021, 2022, 2023]],
+  "yBars": [[10, 15, 12, 18], [8, 12, 14, 20]],
+  "yLines": [[5, 7, 6, 9]],
+  "nameBars": ["Évolution", "Prévision"],
+  "nameLines": ["Moyenne"],
+  "barsColors": ["#007bff", "#28a745"],
+  "linesColors": ["#6c757d"],
+  "unitTooltipBar": "millions",
+  "unitTooltipLine": "millions"
+}
 ```
 
 ### AreaLineChart
@@ -236,6 +201,21 @@ Cette documentation présente les propriétés (props) disponibles pour chaque c
 - `linesColors` (Array) : Couleurs des lignes
 - `stacked` (Boolean) : Empilement des zones
 
+**Exemple :**
+```json
+{
+  "x": [[2020, 2021, 2022, 2023]],
+  "yAreas": [[10, 15, 12, 18], [8, 12, 14, 20]],
+  "yLines": [[5, 7, 6, 9]],
+  "nameAreas": ["Évolution", "Prévision"],
+  "nameLines": ["Moyenne"],
+  "areasColors": ["#007bff", "#28a745"],
+  "linesColors": ["#6c757d"],
+  "unitTooltipArea": "millions",
+  "unitTooltipLine": "millions"
+}
+```
+
 ### MapChart
 
 **Props :**
@@ -248,15 +228,18 @@ Cette documentation présente les propriétés (props) disponibles pour chaque c
 - `selectedPalette` (String) : Palette de couleurs
 
 **Exemple :**
-```vue
-<MapChart
-  databox-id="map-example"
-  :data="{'01': 10, '02': 83, '13': 89}"
-  level="dep"
-  value="10"
-  name="Indicateur départemental"
-  date="15/10/2024"
-/>
+```json
+{
+  "data": {
+    "01": 12.5,
+    "02": 15.0,
+    "03": 9.8,
+  },
+  "level": "dep",
+  "value": "Taux de chômage",
+  "name": "Chômage",
+  "date": "2023"
+}
 ```
 
 ### MapChartReg
@@ -273,76 +256,15 @@ Cette documentation présente les propriétés (props) disponibles pour chaque c
 - `date` (String) : Date de mise à jour
 
 **Exemple :**
-```vue
-<TableChart
-  databox-id="table-example"
-  :x="['A','B','C','D']"
-  :y="[[40, 50, 40, 39], [30, 150, 340, 379]]"
-  table-name="Données statistiques"
-/>
-```
-
-### DataBox
-
-**Props :**
-- `id` (String, requis) : Identifiant unique
-- `title` (String, requis) : Titre principal
-- `tooltipTitle` (String) : Titre du tooltip
-- `tooltipContent` (String) : Contenu du tooltip
-- `modalTitle` (String) : Titre de la modale
-- `modalContent` (String) : Contenu HTML de la modale
-- `source` (String) : Source des données
-- `date` (String) : Date de mise à jour
-- `trend` (String) : Évolution en pourcentage (ex: '+2.1%', '-1.5%')
-- `defaultSource` (String) : Source par défaut si plusieurs
-- `screenshot` (Boolean) : Activer la capture d'écran
-- `download` (Boolean) : Activer le téléchargement
-- `fullscreen` (Boolean) : Activer le mode plein écran
-- `segmentedControl` (Boolean) : Activer le basculement graphique/tableau
-- `actions` (Array) : Actions personnalisées dans le menu
-
-## Propriétés communes à tous les graphiques
-
-### Intégration DataBox
-- `databoxId` (String) : ID de la DataBox conteneur
-- `databoxType` (String) : Type de contenu
-- `databoxSource` (String) : Source spécifique (défaut: 'default')
-
-### Palettes de couleurs prédéfinies
-- `'default'` : Couleurs standard DSFR
-- `'neutral'` : Tons neutres
-- `'sequential'` : Dégradé croissant
-- `'sequentialDescending'` : Dégradé décroissant
-- `'divergent'` : Couleurs divergentes
-- `'divergentDescending'` : Divergentes inversées
-
-## Exemple complet
-
-```vue
-<template>
-  <div class="fr-container">
-    <DataBox
-      id="evolution-population"
-      title="Évolution de la population française"
-      tooltip-title="Population française"
-      tooltip-content="Données de population de 2020 à 2024"
-      source="INSEE"
-      date="15/10/2024"
-      trend="+2.1%"
-      :screenshot="true"
-      :download="true"
-      :fullscreen="true"
-    />
-    
-    <LineChart
-      databox-id="evolution-population"
-      :x="[[2020, 2021, 2022, 2023, 2024]]"
-      :y="[[67.4, 67.6, 67.8, 68.0, 68.2]]"
-      :name="['Population totale']"
-      :colors="['#000091']"
-      unit-tooltip="millions"
-      show-labels="minmax"
-    />
-  </div>
-</template>
+```json
+{
+  "x": [["Année", "Population", "PIB"]],
+  "y": [
+    ["2020", "67.4M", "2.6T€"],
+    ["2021", "67.6M", "2.7T€"],
+    ["2022", "67.8M", "2.8T€"]
+  ],
+  "tableName": "Données économiques",
+  "date": "2024"
+}
 ```
