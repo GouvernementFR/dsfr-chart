@@ -44,7 +44,7 @@
                       :style="{ 'background-color': colorParse[Math.min(index, colorParse.length - 1)] }"
                     />
                     <p class="tooltip_place">
-                      {{ capitalize(nameLines[index] || 'Line ' + (index + 1)) }}
+                      {{ capitalize(nameLinesParse[index] || 'Line ' + (index + 1)) }}
                     </p>
                   </div>
                 </div>
@@ -74,7 +74,7 @@
 
             <!-- Lignes -->
             <div
-              v-for="(lineName, index) in nameLines"
+              v-for="(lineName, index) in nameLinesParse"
               :key="index"
               class="flex fr-mt-3v fr-mb-1v"
             >
@@ -342,8 +342,8 @@ export default {
       this.yBarParse = [];
       this.yLineParse = [];
       this.vlineParse = [];
-	  this.nameLinesParse = [];
-	  this.nameBarsParse = [];
+      this.nameLinesParse = [];
+      this.nameBarsParse = [];
       this.vlineColorParse = [];
       this.tmpVlineColorParse = [];
       this.vlineNameParse = [];
@@ -363,6 +363,9 @@ export default {
         console.debug('x:', this.x);
         console.debug('yBars:', this.yBars);
         console.debug('yLines:', this.yLines);
+        console.debug('nameLines:', this.nameLines);
+        console.debug('nameBars:', this.nameBars);
+
         if (typeof this.x === 'string' || typeof this.yBars === 'string' || typeof this.yLines === 'string') {
           console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'x', 'yBars' et 'yLines' comme une liste de nombres.");
         }
@@ -382,12 +385,14 @@ export default {
           throw new Error("La prop 'yLines' doit être une liste de listes.");
         }
 
-		this.nameLinesParse = this.nameLines === 'string' ? JSON.parse(this.nameLines) : this.nameLines;
-		this.nameBarsParse = this.nameBars === 'string' ? JSON.parse(this.nameBars) : this.nameBars;
+        this.nameLinesParse = this.nameLines === 'string' ? JSON.parse(this.nameLines) : this.nameLines;
+        this.nameBarsParse = this.nameBars === 'string' ? JSON.parse(this.nameBars) : this.nameBars;
 
         console.debug('xparse:', this.xparse);
         console.debug('yBarParse:', this.yBarParse);
         console.debug('yLineParse:', this.yLineParse);
+        console.debug('nameLinesParse:', this.nameLinesParse);
+        console.debug('nameBarsParse:', this.nameBarsParse);
       } catch (error) {
         console.error('Erreur lors du parsing des données x ou y-bar ou y-line:', error);
         return;
