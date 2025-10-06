@@ -157,8 +157,8 @@ export default {
       // Parsing des données
       if (this.x && this.y) {
         try {
-          this.xparse = JSON.parse(this.x ?? '[]');
-          this.yparse = JSON.parse(this.y ?? '[]');
+          this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
+          this.yparse = typeof this.y === 'string' ? JSON.parse(this.y) : this.y;
         } catch (error) {
           console.error('Erreur lors du parsing des données x ou y:', error);
           return;
@@ -167,7 +167,7 @@ export default {
 
       if (this.line) {
         try {
-          this.lineParse = JSON.parse(this.line ?? '[]');
+          this.lineParse = typeof this.line === 'string' ? JSON.parse(this.line) : this.line;
         } catch (error) {
           console.error('Erreur lors du parsing des données line:', error);
           return;
@@ -177,7 +177,7 @@ export default {
       let tmpNameParse = [];
       if (this.name) {
         try {
-          tmpNameParse = JSON.parse(this.name);
+          tmpNameParse = typeof this.name === 'string' ? JSON.parse(this.name) : this.name;
         } catch (error) {
           console.error('Erreur lors du parsing de name:', error);
         }
