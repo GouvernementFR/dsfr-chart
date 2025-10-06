@@ -124,7 +124,7 @@ export default {
       default: 'default',
     },
     x: {
-      type: String,
+      type: Array,
       required: true
     },
     yAreas: {

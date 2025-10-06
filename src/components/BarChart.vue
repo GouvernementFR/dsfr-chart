@@ -72,11 +72,11 @@ export default {
       default: 'default',
     },
     x: {
-      type: String,
+      type: Array,
       required: true,
     },
     y: {
-      type: String,
+      type: Array,
       required: true,
     },
     xMin: {
