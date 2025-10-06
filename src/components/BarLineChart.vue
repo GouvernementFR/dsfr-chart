@@ -15,7 +15,7 @@
               <div class="tooltip_value">
                 <!-- Barre -->
                 <div
-                  v-for="(barColor, index) in colorBarParse"
+                  v-for="(barColor, index) in nameBarsParse"
                   :key="index"
                   class="flex fr-mt-3v fr-mb-1v"
                   :style="{ 'border-bottom': '1px solid #e0e0e0' }"
@@ -23,10 +23,10 @@
                   <div class="tooltip_value-content">
                     <span
                       class="tooltip_dot"
-                      :style="{ 'background-color': colorBarParse[Math.min(index, colorBarParse.length - 1)] }"
+                      :style="{ 'background-color': nameBarsParse[Math.min(index, nameBarsParse.length - 1)] }"
                     />
                     <p class="tooltip_place">
-                      {{ capitalize(nameBars[index] || 'Bar ' + (index + 1)) }}
+                      {{ capitalize(nameBarsParse[index] || 'Bar ' + (index + 1)) }}
                     </p>
                   </div>
                 </div>
@@ -342,6 +342,8 @@ export default {
       this.yBarParse = [];
       this.yLineParse = [];
       this.vlineParse = [];
+	  this.nameLinesParse = [];
+	  this.nameBarsParse = [];
       this.vlineColorParse = [];
       this.tmpVlineColorParse = [];
       this.vlineNameParse = [];
@@ -355,8 +357,6 @@ export default {
       this.colorBarHover = [];
     },
     getData() {
-      console.debug('BarLineChart - getData');
-
       // Parsing des données
       try {
         console.debug('BarLineChart - Parsing des données');
@@ -381,6 +381,9 @@ export default {
         if (!Array.isArray(this.yLineParse) || !Array.isArray(this.yLineParse[0])) {
           throw new Error("La prop 'yLines' doit être une liste de listes.");
         }
+
+		this.nameLinesParse = this.nameLines === 'string' ? JSON.parse(this.nameLines) : this.nameLines;
+		this.nameBarsParse = this.nameBars === 'string' ? JSON.parse(this.nameBars) : this.nameBars;
 
         console.debug('xparse:', this.xparse);
         console.debug('yBarParse:', this.yBarParse);
