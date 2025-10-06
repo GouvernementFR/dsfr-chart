@@ -395,6 +395,7 @@ export default {
         console.debug('nameBarsParse:', this.nameBarsParse);
       } catch (error) {
         console.error('Erreur lors du parsing des données x ou y-bar ou y-line:', error);
+        console.error('Original data:', this.x, this.yBars, this.yLines);
         return;
       }
 
