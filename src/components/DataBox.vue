@@ -52,7 +52,7 @@
         />
 
         <Teleport to="body">
-          <dialog-modal
+          <DialogModal
             :id="id"
             :modal-title="modalTitle"
             :modal-content="modalContent"
