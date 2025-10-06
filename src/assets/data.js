@@ -203,6 +203,15 @@ export const chartData = {
       tableName: 'Indicateur',
     },
   },
+  treemapChart: {
+    default: {
+      name: ["Europe", "France", "Allemagne", "Italie", "Espagne", "Portugal", "Belgique", "Pays-Bas", "Luxembourg", "Royaume-Uni", "Irlande"],
+      tree: [300, 100, 80, 60, 40, 20, 50, 30, 10, 70, 20],
+      selectedPalette: 'divergentAscending',
+      // colors: ['#6754A4', '#219679ff', '#FFB400ff'],
+      unitTooltip: 'millions',
+    }
+  },
   dataBox: {
     simple: {
       id: 'simple',

@@ -104,6 +104,7 @@ export function generateBarLineChartColors({
     hlineColorParse,
   };
 }
+
 export function generateAreaLineChartColors({
   vlineParse = [],
   hlineParse = [],
@@ -180,6 +181,21 @@ export function generateScatterChartColors({
     colorHover,
     vlineColorParse,
     hlineColorParse,
+  };
+}
+
+export function generateTreemapChartColors({
+  selectedPalette = '',
+  colors: colorsInput,
+}) {
+  const palette = choosePalette(selectedPalette, colorsInput);
+
+  const colorParse = palette.flat();
+  const colorHover = colorParse.map((c) => chroma(c).darken(0.8).hex());
+
+  return {
+    colorParse,
+    colorHover,
   };
 }
 

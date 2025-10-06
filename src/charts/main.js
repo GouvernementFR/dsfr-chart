@@ -15,6 +15,7 @@ import PieChart from '@/components/PieChart.vue';
 import RadarChart from '@/components/RadarChart.vue';
 import ScatterChart from '@/components/ScatterChart.vue';
 import TableChart from '@/components/TableChart.vue';
+import TreemapChart from '@/components/TreemapChart.vue';
 
 customElements.define('data-box', defineCustomElement(DataBox, { shadowRoot: false }));
 
@@ -29,3 +30,4 @@ customElements.define('pie-chart', defineCustomElement(PieChart, { shadowRoot: f
 customElements.define('radar-chart', defineCustomElement(RadarChart, { shadowRoot: false }));
 customElements.define('scatter-chart', defineCustomElement(ScatterChart, { shadowRoot: false }));
 customElements.define('table-chart', defineCustomElement(TableChart, { shadowRoot: false }));
+customElements.define('treemap-chart', defineCustomElement(TreemapChart, { shadowRoot: false }));

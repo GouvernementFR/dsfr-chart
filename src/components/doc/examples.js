@@ -8,6 +8,7 @@ import MapChartReg from '@/components/MapChartReg.vue';
 import PieChart from '@/components/PieChart.vue';
 import RadarChart from '@/components/RadarChart.vue';
 import ScatterChart from '@/components/ScatterChart.vue';
+import TreemapChart from '@/components/TreemapChart.vue';
 import { chartData } from '@/assets/data.js';
 
 export const chartExamples = [
@@ -83,5 +84,11 @@ export const chartExamples = [
     title: 'Jauge',
     desc: 'La jauge permet d’afficher des valeurs numériques ou des mesures dans une plage, pour visualiser l’avancement d’un objectif par exemple.',
     graphs: [{ component: GaugeChart, noPalette: true, props: chartData.gaugeChart.default }],
+  },
+  // Treemap
+  {
+    title: 'Treemap',
+    desc: 'Le treemap est un graphique qui permet de représenter des données hiérarchiques sous forme de rectangles imbriqués.',
+    graphs: [{ component: TreemapChart, noPalette: true, props: chartData.treemapChart.default }],
   },
 ];
