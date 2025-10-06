@@ -59,7 +59,7 @@
           <div class="chart_legend fr-mb-0 fr-mt-4v">
             <!-- Barre -->
             <div
-              v-for="(barName, index) in nameBars"
+              v-for="(barName, index) in nameBarsParse"
               :key="index"
               class="flex fr-mt-3v fr-mb-1v"
             >
