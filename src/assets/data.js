@@ -8,6 +8,10 @@ export const chartData = {
       colors: ['orange'],
       unitTooltip: 'points d’indice',
       showLabels: [0, 10, 12],
+      highlightStart: 2008,
+      highlightEnd: 2009,
+      highlightLabel: 'Crise des subprimes',
+      highlightLabelPosition: 'bottom',
     },
     multiple: {
       x: [[1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020], [1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020]],
@@ -16,6 +20,10 @@ export const chartData = {
       colors: ['red', 'green'],
       unitTooltip: '%',
       showLabels: 'minmax',
+      highlightStart: 2008,
+      highlightEnd: 2009,
+      highlightLabel: 'Crise des subprimes',
+      highlightLabelPosition: 'bottom',
     },
   },
   barChart: {
@@ -87,7 +95,6 @@ export const chartData = {
       unitTooltipLine: '%',
       areasColors: ['#6754A4', 'red'],
       linesColors: ['#219679ff', 'green', 'yellow', 'blue'],
-      stacked: true,
     },
   },
   scatterChart: {
