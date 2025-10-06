@@ -385,8 +385,8 @@ export default {
           throw new Error("La prop 'yLines' doit être une liste de listes.");
         }
 
-        this.nameLinesParse = this.nameLines === 'string' ? JSON.parse(this.nameLines) : this.nameLines;
-        this.nameBarsParse = this.nameBars === 'string' ? JSON.parse(this.nameBars) : this.nameBars;
+        this.nameLinesParse = typeof this.nameLines === 'string' ? JSON.parse(this.nameLines) : this.nameLines;
+        this.nameBarsParse = typeof this.nameBars === 'string' ? JSON.parse(this.nameBars) : this.nameBars;
 
         console.debug('xparse:', this.xparse);
         console.debug('yBarParse:', this.yBarParse);
