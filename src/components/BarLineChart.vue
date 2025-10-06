@@ -355,6 +355,8 @@ export default {
       this.colorBarHover = [];
     },
     getData() {
+      console.debug('BarLineChart - getData');
+
       // Parsing des données
       try {
         console.debug('BarLineChart - Parsing des données');
