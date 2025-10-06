@@ -357,6 +357,10 @@ export default {
     getData() {
       // Parsing des données
       try {
+        console.debug('BarLineChart - Parsing des données');
+        console.debug('x:', this.x);
+        console.debug('yBars:', this.yBars);
+        console.debug('yLines:', this.yLines);
         if (typeof this.x === 'string' || typeof this.yBars === 'string' || typeof this.yLines === 'string') {
           console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'x', 'yBars' et 'yLines' comme une liste de nombres.");
         }
@@ -375,6 +379,10 @@ export default {
         if (!Array.isArray(this.yLineParse) || !Array.isArray(this.yLineParse[0])) {
           throw new Error("La prop 'yLines' doit être une liste de listes.");
         }
+
+        console.debug('xparse:', this.xparse);
+        console.debug('yBarParse:', this.yBarParse);
+        console.debug('yLineParse:', this.yLineParse);
       } catch (error) {
         console.error('Erreur lors du parsing des données x ou y-bar ou y-line:', error);
         return;
