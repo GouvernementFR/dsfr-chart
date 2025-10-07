@@ -359,13 +359,6 @@ export default {
     getData() {
       // Parsing des données
       try {
-        console.debug('BarLineChart - Parsing des données');
-        console.debug('x:', this.x);
-        console.debug('yBars:', this.yBars);
-        console.debug('yLines:', this.yLines);
-        console.debug('nameLines:', this.nameLines);
-        console.debug('nameBars:', this.nameBars);
-
         if (typeof this.x === 'string' || typeof this.yBars === 'string' || typeof this.yLines === 'string') {
           console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'x', 'yBars' et 'yLines' comme une liste de nombres.");
         }
@@ -387,12 +380,6 @@ export default {
 
         this.nameLinesParse = typeof this.nameLines === 'string' ? JSON.parse(this.nameLines) : this.nameLines;
         this.nameBarsParse = typeof this.nameBars === 'string' ? JSON.parse(this.nameBars) : this.nameBars;
-
-        console.debug('xparse:', this.xparse);
-        console.debug('yBarParse:', this.yBarParse);
-        console.debug('yLineParse:', this.yLineParse);
-        console.debug('nameLinesParse:', this.nameLinesParse);
-        console.debug('nameBarsParse:', this.nameBarsParse);
       } catch (error) {
         console.error('Erreur lors du parsing des données x ou y-bar ou y-line:', error);
         return;

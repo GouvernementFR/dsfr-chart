@@ -268,6 +268,16 @@ export function getNeutralColor() {
 }
 
 export function choosePalette(selectedPalette, colorsInput) {
+  // Si colorsInput est une chaîne JSON, on la parse
+  if (typeof colorsInput === 'string') {
+    try {
+        colorsInput = JSON.parse(colorsInput);
+    } catch (error) {
+        console.error('Invalid JSON string:', error);
+    }
+  }
+
+  // Si colorsInput est une liste non vide, on l'utilise directement
   if (Array.isArray(colorsInput) && colorsInput.length > 0) {
     return colorsInput;
   }
