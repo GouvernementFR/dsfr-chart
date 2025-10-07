@@ -43,7 +43,7 @@
             >
               <span
                 class="legende_dot"
-                :style="{ 'background-color': colorParse[index] }"
+                :style="{ 'background-color': colorParse[Math.min(index, colorParse.length - 1)] }"
               />
               <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
                 {{ capitalize(item) }}
@@ -201,6 +201,10 @@ export default {
     showLabels: {
       type: [String, Array],
       default: undefined,
+    },
+    pointRadius: {
+      type: Number,
+      default: 5,
     },
     highlightStart: {
       type: [String, Number],
@@ -428,8 +432,8 @@ export default {
         data: dataSet,
         fill: false,
         borderColor: this.colorParse[index % this.colorParse.length],
-        pointRadius: 5,
-        pointHoverRadius: 5,
+        pointRadius: this.pointRadius,
+        pointHoverRadius: this.pointRadius,
         pointBackgroundColor: this.colorParse[index % this.colorParse.length],
         pointBorderColor: this.colorParse[index % this.colorParse.length],
         pointHoverBackgroundColor: this.colorHover[index % this.colorHover.length],
