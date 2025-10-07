@@ -76,7 +76,7 @@ export default {
       type: Array,
       required: true,
     },
-    name: {
+    names: {
       type: String,
       default: '',
     },
@@ -191,11 +191,11 @@ export default {
 
       // Parsing des données
       try {
-        if (typeof this.name === 'string') {
-          console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer la prop 'name' comme une liste de strings.");
+        if (typeof this.names === 'string') {
+          console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer la prop 'names' comme une liste de strings.");
         }
 
-        this.nameParse = Array.isArray(this.name) ? this.name : JSON.parse(this.name);
+        this.nameParse = Array.isArray(this.names) ? this.names : JSON.parse(this.names);
       } catch (error) {
         console.error('Erreur lors du parsing des données:', error);
         return;
