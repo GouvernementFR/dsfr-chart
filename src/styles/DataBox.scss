@@ -82,3 +82,36 @@
     }
   }
 }
+
+/* Grille Databox */
+.grid {
+  display: grid;
+  gap: 1rem; // espace entre les items
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Pour que chaque chart/table prenne toute la largeur de sa colonne */
+.grid > div {
+  width: 100%;
+}
+
+/* Optionnel : alignement vertical si nécessaire */
+.grid > div > .databox__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Responsive mobile : 1 colonne sur petit écran */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+}
