@@ -51,7 +51,10 @@
           title="Afficher la modale"
         />
 
-        <Teleport to="body">
+        <Teleport
+          v-if="modalTitle && modalContent"
+          to="body"
+        >
           <DialogModal
             :id="id"
             :modal-title="modalTitle"
@@ -117,7 +120,7 @@
     <div class="fr-px-2w databox__data">
       <!-- Source -->
       <div
-        v-if="chartSources.length > 1"
+        v-if="chartSources.length > 1 && disposition === 'default'"
         class="databox__source"
       >
         <div class="fr-select-group">
@@ -188,10 +191,12 @@
     <!-- Content -->
     <div class="fr-p-2w databox__content">
       <div
-        :class="selectedView === 'table' ? 'fr-hidden' : 'w-full'"
+        :class="[
+          selectedView === 'table' ? 'fr-hidden' : 'w-full',
+          disposition !== 'default' ? gridClass : ''
+        ]"
         :aria-hidden="selectedView === 'chart'"
       >
-        <!-- Bulk create all charts source divs for teleport -->
         <div
           v-for="(chartSource, i) in chartSources"
           :id="id + '-chart-' + chartSource"
@@ -345,6 +350,11 @@ const props = defineProps({
     type: [Array, String],
     default: () => [],
   },
+  disposition: {
+    type: String,
+    default: 'default',
+    validator: (value) => ['default', 'grid2', 'grid3'].includes(value),
+  },
 });
 
 const chartSources = ref([]);
@@ -443,6 +453,16 @@ const screenshotChart = () => {
       tendency.style.removeProperty('margin-top');
     });
 };
+const gridClass = computed(() => {
+  switch (props.disposition) {
+    case 'grid2':
+      return 'grid grid-cols-2 gap-4'; // 2 colonnes
+    case 'grid3':
+      return 'grid grid-cols-3 gap-4'; // 3 colonnes
+    default:
+      return '';
+  }
+});
 </script>
 
 <style scoped lang="scss">
