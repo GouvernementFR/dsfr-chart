@@ -262,6 +262,10 @@ export default {
       type: Array,
       default: undefined,
     },
+    hideLines: {
+      type: Boolean,
+      default: false,
+    },
     unitTooltipBar: {
       type: String,
       default: '',
@@ -463,8 +467,8 @@ export default {
       this.barsDatasets = dataBars.map((barData, i) => ({
         data: barData,
         type: 'bar',
-        borderColor: this.colorBarParse[i] || this.colorBarParse[0],
-        backgroundColor: this.colorBarParse[i] || this.colorBarParse[0],
+        borderColor: this.colorBarParse[i % this.colorBarParse.length],
+        backgroundColor: this.colorBarParse[i % this.colorBarParse.length],
         barThickness: this.barSize,
         maxBarThickness: this.maxBarSize,
         order: 2,
@@ -474,10 +478,10 @@ export default {
       this.linesDatasets = dataLines.map((lineData, i) => ({
         data: lineData,
         type: 'line',
-        borderColor: this.colorParse[i] || this.colorParse[0],
+        borderColor: this.hideLines ? 'transparent' : this.colorParse[i % this.colorParse.length],
         backgroundColor: 'rgba(0,0,0,0)',
-        pointBorderColor: this.colorParse[i] || this.colorParse[0],
-        pointBackgroundColor: this.colorParse[i] || this.colorParse[0],
+        pointBorderColor: this.colorParse[i % this.colorParse.length],
+        pointBackgroundColor: this.colorParse[i % this.colorParse.length],
         yAxisID: 'yLine',
         tension: 0.4,
         order: 1,

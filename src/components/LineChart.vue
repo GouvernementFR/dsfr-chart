@@ -427,13 +427,13 @@ export default {
       this.datasets = data.map((dataSet, index) => ({
         data: dataSet,
         fill: false,
-        borderColor: this.colorParse[index],
+        borderColor: this.colorParse[index % this.colorParse.length],
         pointRadius: 5,
         pointHoverRadius: 5,
-        pointBackgroundColor: this.colorParse[index],
-        pointBorderColor: this.colorParse[index],
-        pointHoverBackgroundColor: this.colorHover[index],
-        pointHoverBorderColor: this.colorHover[index],
+        pointBackgroundColor: this.colorParse[index % this.colorParse.length],
+        pointBorderColor: this.colorParse[index % this.colorParse.length],
+        pointHoverBackgroundColor: this.colorHover[index % this.colorHover.length],
+        pointHoverBorderColor: this.colorHover[index % this.colorHover.length],
         borderWidth: 2,
         tension: 0.4,
       }));

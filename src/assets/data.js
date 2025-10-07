@@ -82,6 +82,7 @@ export const chartData = {
       linesColors: ['#219679ff', 'green', 'yellow', 'blue'],
       barsColors: ['#6754A4', 'red'],
       stacked: true,
+      hideLines: true,
     },
   },
   areaLineChart: {

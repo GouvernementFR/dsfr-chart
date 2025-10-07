@@ -255,10 +255,10 @@ export default {
       this.datasets = this.yparse.map((dataSet, index) => ({
         label: this.nameParse[index],
         data: dataSet,
-        backgroundColor: this.colorParse[index],
-        borderColor: this.colorParse[index],
-        hoverBackgroundColor: this.colorHover[index],
-        hoverBorderColor: this.colorHover[index],
+        backgroundColor: this.colorParse[index % this.colorParse.length],
+        borderColor: this.colorParse[index % this.colorParse.length],
+        hoverBackgroundColor: this.colorHover[index % this.colorHover.length],
+        hoverBorderColor: this.colorHover[index % this.colorHover.length],
         barThickness: this.barSize,
         ...(this.maxBarSize ? { maxBarThickness: this.maxBarSize } : {}),
       }));
