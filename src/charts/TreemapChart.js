@@ -1,7 +1,6 @@
 import { defineCustomElement } from 'vue';
 
 import '@/styles/style.scss';
-import '@/styles/TreemapChart.scss';
 
 import TreemapChart from '@/components/TreemapChart.vue';
 
