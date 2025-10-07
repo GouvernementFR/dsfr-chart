@@ -195,6 +195,10 @@ export default {
       type: String,
       default: ''
     },
+    singleAxis: {
+      type: Boolean,
+      default: false
+    },
     highlightStart: {
       type: [String, Number],
       default: null
@@ -332,7 +336,7 @@ export default {
         pointBorderColor: this.colorParse[i],
         pointBackgroundColor: this.colorParse[i],
         tension: 0.4,
-        yAxisID: 'yLine',
+        yAxisID: this.singleAxis ? 'y' : 'yLine',
         order: 1,
       }));
     },
@@ -482,6 +486,7 @@ export default {
               ...(this.yAreaMax ? { suggestedMax: this.yAreaMax } : {}),
             },
             yLine: {
+              display: !this.singleAxis,
               type: 'linear',
               position: 'right',
               id: 'yLine',
