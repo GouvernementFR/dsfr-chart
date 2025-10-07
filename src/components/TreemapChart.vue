@@ -183,7 +183,7 @@ export default {
           console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer la prop 'tree' comme une liste de nombres.");
         }
 
-        this.dataParse = Array.isArray(this.tree) ? this.tree : JSON.parse(this.tree);
+        this.dataParse = typeof this.tree === 'string' ? JSON.parse(this.tree) : this.tree;
       } catch (error) {
         console.error("Erreur lors du parsing des données de 'tree':", error);
         return;
@@ -195,7 +195,7 @@ export default {
           console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer la prop 'names' comme une liste de strings.");
         }
 
-        this.nameParse = Array.isArray(this.names) ? this.names : JSON.parse(this.names);
+        this.nameParse = typeof this.names === 'string' ? JSON.parse(this.names) : this.names;
       } catch (error) {
         console.error("Erreur lors du parsing des données de 'names':", error);
         return;
