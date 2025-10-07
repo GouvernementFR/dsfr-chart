@@ -195,6 +195,31 @@ export default {
       type: String,
       default: ''
     },
+    highlightStart: {
+      type: [String, Number],
+      default: null
+    },
+    highlightEnd: {
+      type: [String, Number],
+      default: null
+    },
+    highlightLabel: {
+      type: String,
+      default: ''
+    },
+    highlightLabelColor: {
+      type: String,
+      default: 'rgba(100, 100, 100, 1)'
+    },
+    highlightLabelSize: {
+      type: Number,
+      default: 14
+    },
+    highlightLabelPosition: {
+      type: String,
+      default: 'top', // 'top' | 'middle' | 'bottom'
+      validator: (v) => ['top', 'middle', 'bottom'].includes(v)
+    },
   },
   data() {
     this.chart = undefined;
@@ -364,6 +389,54 @@ export default {
                 ctx.stroke();
                 ctx.restore();
               }
+            },
+          },
+          {
+            id: 'highlightZone',
+            beforeDraw: (chart) => {
+              const { ctx, chartArea, scales } = chart;
+              const start = this.highlightStart;
+              const end = this.highlightEnd;
+
+              if (!start || !end) return;
+
+              const xStart = scales.x.getPixelForValue(start);
+              const xEnd = scales.x.getPixelForValue(end);
+
+              // === Zone grisée ===
+              ctx.save();
+              ctx.fillStyle = 'rgba(150, 150, 150, 0.15)';
+              ctx.fillRect(xStart, chartArea.top, xEnd - xStart, chartArea.bottom - chartArea.top);
+
+              // === Bordures ===
+              ctx.strokeStyle = 'rgba(150, 150, 150, 0.25)';
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(xStart, chartArea.top);
+              ctx.lineTo(xStart, chartArea.bottom);
+              ctx.moveTo(xEnd, chartArea.top);
+              ctx.lineTo(xEnd, chartArea.bottom);
+              ctx.stroke();
+
+              // === Texte optionnel ===
+              if (this.highlightLabel) {
+                ctx.fillStyle = this.highlightLabelColor;
+                ctx.font = `${this.highlightLabelSize}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                const textX = (xStart + xEnd) / 2;
+                let textY = chartArea.top + 20;
+
+                if (this.highlightLabelPosition === 'middle')
+                  textY = chartArea.top + (chartArea.bottom - chartArea.top) / 2;
+                else if (this.highlightLabelPosition === 'bottom')
+                  textY = chartArea.bottom - 20;
+
+                ctx.fillText(this.highlightLabel, textX, textY);
+              }
+
+              ctx.restore();
             },
           },
         ],
