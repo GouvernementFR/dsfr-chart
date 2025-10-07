@@ -190,10 +190,10 @@
 
     <!-- Content -->
     <div class="fr-p-2w databox__content">
+      <!-- Charts -->
       <div
         :class="[
-          selectedView === 'table' ? 'fr-hidden' : 'w-full',
-          disposition !== 'default' ? gridClass : ''
+          selectedView === 'table' ? 'fr-hidden' : disposition !== 'default' ? gridClass : 'w-full'
         ]"
         :aria-hidden="selectedView === 'chart'"
       >
@@ -201,25 +201,27 @@
           v-for="(chartSource, i) in chartSources"
           :id="id + '-chart-' + chartSource"
           :key="i"
-          :class="currentSource !== chartSource ? 'fr-hidden' : ''"
+          :class="disposition === 'default' && currentSource !== chartSource ? 'fr-hidden' : ''"
         />
       </div>
+
+      <!-- Tables -->
       <div
-        :class="selectedView === 'chart' ? 'fr-hidden' : 'w-full'"
+        :class="[
+          selectedView === 'chart' ? 'fr-hidden' : disposition !== 'default' ? gridClass : 'w-full'
+        ]"
         :aria-hidden="selectedView === 'table'"
       >
-        <!-- Bulk create all table source divs for teleport -->
         <div
           v-for="(tableSource, i) in tableSources.filter((s) => s !== 'global')"
           :id="id + '-table-' + tableSource"
           :key="i"
-          :class="currentSource !== tableSource ? 'fr-hidden' : ''"
+          :class="disposition === 'default' && currentSource !== tableSource ? 'fr-hidden' : ''"
         />
-        <!-- Also create a global chart in case only one table is provided -->
         <div
           v-if="tableSources.includes('global')"
           :id="id + '-table-global'"
-          :class="tableSources.includes(currentSource) ? 'fr-hidden' : ''"
+          :class="disposition === 'default' && tableSources.includes(currentSource) ? 'fr-hidden' : ''"
         />
       </div>
     </div>
