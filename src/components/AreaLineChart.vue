@@ -247,7 +247,7 @@ export default {
         // On gère la legacy où x et y pouvaient être passés en string
         this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
 
-        this.yAreaParse = typeof this.yArea === 'string' ? JSON.parse(this.yAreas) : this.yAreas;
+        this.yAreaParse = typeof this.yAreas === 'string' ? JSON.parse(this.yAreas) : this.yAreas;
         this.yLineParse = typeof this.yLines === 'string' ? JSON.parse(this.yLines) : this.yLines;
 
         if (!Array.isArray(this.xparse) || !Array.isArray(this.xparse[0])) {
