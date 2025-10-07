@@ -355,7 +355,7 @@ const props = defineProps({
   disposition: {
     type: String,
     default: 'default',
-    validator: (value) => ['default', 'grid2', 'grid3'].includes(value),
+    validator: (value) => ['default', 'grid2', 'grid4'].includes(value),
   },
 });
 
@@ -459,8 +459,8 @@ const gridClass = computed(() => {
   switch (props.disposition) {
     case 'grid2':
       return 'grid grid-cols-2 gap-4'; // 2 colonnes
-    case 'grid3':
-      return 'grid grid-cols-3 gap-4'; // 3 colonnes
+    case 'grid4':
+      return 'grid grid-cols-4 gap-4'; // 4 colonnes
     default:
       return '';
   }
