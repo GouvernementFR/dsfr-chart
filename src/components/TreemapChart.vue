@@ -204,8 +204,6 @@ export default {
       // Chargement des couleurs
       this.loadColors();
 
-      console.log('after load colors:', this.colorParse);
-
       this.datasets = [{
         tree: this.dataParse,
         labels: {
@@ -213,6 +211,10 @@ export default {
           font: {
             size: 14,
             weight: 'bold',
+            formatter(ctx) {
+              const data = ctx.chart.data;
+              return `Custom Text: ${data.datasets[ctx.datasetIndex].tree[ctx.dataIndex]}`;
+            }
           }
         },
         backgroundColor: (ctx) => {
