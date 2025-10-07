@@ -26,7 +26,7 @@
                       :style="{ 'background-color': colorAreaParse[Math.min(index, colorAreaParse.length - 1)] }"
                     />
                     <p class="tooltip_place">
-                      {{ capitalize(nameAreas[index] || 'Area ' + (index + 1)) }}
+                      {{ capitalize(nameAreasParse[index] || 'Area ' + (index + 1)) }}
                     </p>
                   </div>
                 </div>
@@ -44,7 +44,7 @@
                       :style="{ 'background-color': colorParse[Math.min(index, colorParse.length - 1)] }"
                     />
                     <p class="tooltip_place">
-                      {{ capitalize(nameLines[index] || 'Line ' + (index + 1)) }}
+                      {{ capitalize(nameLinesParse[index] || 'Line ' + (index + 1)) }}
                     </p>
                   </div>
                 </div>
@@ -57,7 +57,7 @@
           <div class="chart_legend fr-mb-0 fr-mt-4v">
             <!-- Areas -->
             <div
-              v-for="(areaName, index) in nameAreas"
+              v-for="(areaName, index) in nameAreasParse"
               :key="index"
               class="flex fr-mt-3v fr-mb-1v"
             >
@@ -72,7 +72,7 @@
 
             <!-- Lignes -->
             <div
-              v-for="(lineName, index) in nameLines"
+              v-for="(lineName, index) in nameLinesParse"
               :key="index"
               class="flex fr-mt-3v fr-mb-1v"
             >
@@ -208,6 +208,8 @@ export default {
       xparse: [],
       yAreaParse: [],
       yLineParse: [],
+      nameAreasParse: [],
+      nameLinesParse: [],
       colorParse: [],
       colorAreaParse: [],
       colorAreaLineParse: [],
@@ -259,6 +261,9 @@ export default {
         if (!Array.isArray(this.yLineParse) || !Array.isArray(this.yLineParse[0])) {
           throw new Error("La prop 'yLines' doit être une liste de listes.");
         }
+
+        this.nameAreasParse = typeof this.nameAreas === 'string' ? JSON.parse(this.nameAreas) : this.nameAreas;
+        this.nameLinesParse = typeof this.nameLines === 'string' ? JSON.parse(this.nameLines) : this.nameLines;
       } catch (err) {
         console.error('Erreur parsing:', err);
         return;
