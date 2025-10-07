@@ -185,7 +185,7 @@ export default {
 
         this.dataParse = Array.isArray(this.tree) ? this.tree : JSON.parse(this.tree);
       } catch (error) {
-        console.error('Erreur lors du parsing des données:', error);
+        console.error("Erreur lors du parsing des données de 'tree':", error);
         return;
       }
 
@@ -197,7 +197,7 @@ export default {
 
         this.nameParse = Array.isArray(this.names) ? this.names : JSON.parse(this.names);
       } catch (error) {
-        console.error('Erreur lors du parsing des données:', error);
+        console.error("Erreur lors du parsing des données de 'names':", error);
         return;
       }
 
