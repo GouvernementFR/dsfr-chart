@@ -18,7 +18,7 @@
 
           <canvas :ref="chartId" />
 
-          <div class="chart_legend fr-mb-0 fr-mt-4v">
+          <!-- <div class="chart_legend fr-mb-0 fr-mt-4v">
             <div
               v-for="(item, index) in nameParse"
               :key="index"
@@ -32,7 +32,7 @@
                 {{ capitalize(item) }}
               </p>
             </div>
-          </div>
+          </div> -->
 
           <div
             v-if="date"
@@ -208,6 +208,13 @@ export default {
 
       this.datasets = [{
         tree: this.dataParse,
+        labels: {
+          display: true,
+          font: {
+            size: 14,
+            weight: 'bold',
+          }
+        },
         backgroundColor: (ctx) => {
           const index = ctx.dataIndex;
           return this.colorParse[index % this.colorParse.length];
