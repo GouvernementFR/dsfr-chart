@@ -328,6 +328,7 @@ export default {
         borderColor: this.colorAreaLineParse[i],
         tension: 0.4,
         pointRadius: 0,
+        pointHoverRadius: 0,
         order: 2,
       }));
 
@@ -340,6 +341,7 @@ export default {
         pointBorderColor: this.colorParse[i],
         pointBackgroundColor: this.colorParse[i],
         pointRadius: this.pointRadius,
+        pointHoverRadius: this.pointRadius,
         tension: 0.4,
         yAxisID: this.singleAxis ? 'y' : 'yLine',
         order: 1,
