@@ -199,6 +199,10 @@ export default {
       type: Boolean,
       default: false
     },
+    pointRadius: {
+      type: Number,
+      default: 5,
+    },
     highlightStart: {
       type: [String, Number],
       default: null
@@ -335,6 +339,7 @@ export default {
         borderColor: this.colorParse[i],
         pointBorderColor: this.colorParse[i],
         pointBackgroundColor: this.colorParse[i],
+        pointRadius: this.pointRadius,
         tension: 0.4,
         yAxisID: this.singleAxis ? 'y' : 'yLine',
         order: 1,
