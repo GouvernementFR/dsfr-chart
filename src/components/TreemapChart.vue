@@ -162,10 +162,19 @@ export default {
     console.log('databoxId:', this.databoxId);
     console.log('databoxType:', this.databoxType);
     console.log('databoxSource:', this.databoxSource);
-    console.log('teleport disabled:', !this.$el?.ownerDocument.getElementById(this.databoxId), (!this.databoxId && !this.databoxType && this.databoxSource === 'default'));
-    console.log('databox target:', this.$el?.ownerDocument.getElementById(this.databoxId));
-    console.log('databox element:', this.$el?.ownerDocument.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource));
-    console.log('chartId:', this.chartId);
+
+    // Vérification différée pour le teleport
+    this.$nextTick(() => {
+        const databoxTarget = this.$el?.ownerDocument.getElementById(this.databoxId);
+        const databoxElement = this.$el?.ownerDocument.getElementById(
+            `${this.databoxId}-${this.databoxType}-${this.databoxSource}`
+        );
+
+        console.log('teleport disabled:', !databoxTarget, (!this.databoxId && !this.databoxType && this.databoxSource === 'default'));
+        console.log('databox target:', databoxTarget);
+        console.log('databox element:', databoxElement);
+        console.log('chartId:', this.chartId);
+    });
 
     console.groupEnd();
 
@@ -375,7 +384,7 @@ export default {
                 }
 
                 tooltipEl.style.position = 'absolute';
-                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+                tooltipEl.style.padding = (tooltipModel.padding || 0) + 'px ' + (tooltipModel.padding || 0) + 'px';
                 tooltipEl.style.pointerEvents = 'none';
                 tooltipEl.style.left = tooltipX + 'px';
                 tooltipEl.style.top = tooltipY + 'px';
@@ -400,9 +409,8 @@ export default {
           const index = ctx.dataIndex;
           return this.colorHover[index % this.colorHover.length];
         };
+        this.chart.update('none');
       }
-
-      this.chart.update('none');
     },
   },
 };
