@@ -30,6 +30,7 @@
                     <th
                       v-for="(item, index) in nameParse"
                       :key="index"
+                      :class="'text-right'"
                       scope="col"
                     >
                       {{ item }}
