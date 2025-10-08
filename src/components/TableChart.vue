@@ -201,7 +201,6 @@ export default {
       }
     },
     getClass(value) {
-      console.log(value, typeof value);
       let classes = '';
       if (typeof value === 'string' && value.replace(/<[^>]*>/g, '').length > 132) {
         classes += 'text-overflow ';
