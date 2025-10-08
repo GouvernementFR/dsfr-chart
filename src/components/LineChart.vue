@@ -281,6 +281,18 @@ export default {
     this.resetData();
     this.createChart();
 
+    console.group('LineChart mounted');
+    console.log('Props:', this.$props);
+    console.log('databoxId:', this.databoxId);
+    console.log('databoxType:', this.databoxType);
+    console.log('databoxSource:', this.databoxSource);
+    console.log('teleport disabled:', !this.$el?.ownerDocument.getElementById(this.databoxId), (!this.databoxId && !this.databoxType && this.databoxSource === 'default'));
+    console.log('databox target:', this.$el?.ownerDocument.getElementById(this.databoxId));
+    console.log('databox element:', this.$el?.ownerDocument.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource));
+    console.log('chartId:', this.chartId);
+
+    console.groupEnd();
+
     this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
     const element = document.documentElement;
     element.addEventListener('dsfr.theme', (e) => {
