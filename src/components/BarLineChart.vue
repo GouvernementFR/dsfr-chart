@@ -378,7 +378,7 @@ export default {
         if (!Array.isArray(this.yBarParse) || !Array.isArray(this.yBarParse[0])) {
           throw new Error("La prop 'yBars' doit être une liste de listes.");
         }
-        if (!Array.isArray(this.yLineParse) || !Array.isArray(this.yLineParse[0])) {
+        if (!Array.isArray(this.yLineParse) || (this.yLineParse.length > 0 && !Array.isArray(this.yLineParse[0]))) {
           throw new Error("La prop 'yLines' doit être une liste de listes.");
         }
 

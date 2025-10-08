@@ -291,7 +291,7 @@ export default {
         if (!Array.isArray(this.yAreaParse) || !Array.isArray(this.yAreaParse[0])) {
           throw new Error("La prop 'yAreas' doit être une liste de listes.");
         }
-        if (!Array.isArray(this.yLineParse) || !Array.isArray(this.yLineParse[0])) {
+        if (!Array.isArray(this.yLineParse) || (this.yLineParse.length > 0 && !Array.isArray(this.yLineParse[0]))) {
           throw new Error("La prop 'yLines' doit être une liste de listes.");
         }
 
