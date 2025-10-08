@@ -140,12 +140,14 @@ export default {
       const databoxExists = this.$el?.ownerDocument.getElementById(this.databoxId);
       const isDefaultSource = (!this.databoxId && !this.databoxType && this.databoxSource === 'default');
       
+      console.group('TreemapChart teleportDisabled computation');
       console.log('TreemapChart teleportDisabled debug:');
       console.log('- hasDataboxId:', hasDataboxId);
       console.log('- databoxExists:', !!databoxExists);
       console.log('- isDefaultSource:', isDefaultSource);
       console.log('- $el:', !!this.$el);
       console.log('- final disabled:', !databoxExists || isDefaultSource);
+      console.groupEnd();
       
       return !databoxExists || isDefaultSource;
     },
@@ -182,7 +184,6 @@ export default {
     console.log('databox target:', this.$el?.ownerDocument.getElementById(this.databoxId));
     console.log('databox element:', this.$el?.ownerDocument.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource));
     console.log('chartId:', this.chartId);
-
     console.groupEnd();
 
     this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
