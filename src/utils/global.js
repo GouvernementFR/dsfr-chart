@@ -30,7 +30,7 @@ export const slugify = (string) =>
 export const formatNumber = (value) => {
   // Return original value if not a valid number
   if (isNaN(value)) {
-    return value;
+    return "N/A";
   }
 
   // Format as integer or decimal number
