@@ -258,24 +258,6 @@ export default {
       colorHover: [],
     };
   },
-  computed: {
-    teleportDisabled() {
-      const hasDataboxId = !!this.databoxId;
-      const databoxExists = this.$el?.ownerDocument.getElementById(this.databoxId);
-      const isDefaultSource = (!this.databoxId && !this.databoxType && this.databoxSource === 'default');
-      
-      console.group('LineChart.vue teleportDisabled computation');
-      console.log('LineChart teleportDisabled debug:');
-      console.log('- hasDataboxId:', hasDataboxId);
-      console.log('- databoxExists:', !!databoxExists);
-      console.log('- isDefaultSource:', isDefaultSource);
-      console.log('- $el:', !!this.$el);
-      console.log('- final disabled:', !databoxExists || isDefaultSource);
-      console.groupEnd();
-      
-      return !databoxExists || isDefaultSource;
-    },
-  },
   watch: {
     $props: {
       handler() {

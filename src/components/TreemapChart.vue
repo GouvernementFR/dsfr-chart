@@ -1,6 +1,10 @@
 <template>
+  <!-- 
+    FIXME: Temporary fix for Teleport issue when databoxId is not found in the DOM.
+    This bug is due to the different lifecycle between Chart.js and Chart.js-Treemap.
+   -->
   <Teleport
-    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
+    :disabled="false"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
     <div
@@ -133,24 +137,6 @@ export default {
       colorParse: [],
       colorHover: [],
     };
-  },
-  computed: {
-    teleportDisabled() {
-      const hasDataboxId = !!this.databoxId;
-      const databoxExists = this.$el?.ownerDocument.getElementById(this.databoxId);
-      const isDefaultSource = (!this.databoxId && !this.databoxType && this.databoxSource === 'default');
-      
-      console.group('TreemapChart teleportDisabled computation');
-      console.log('TreemapChart teleportDisabled debug:');
-      console.log('- hasDataboxId:', hasDataboxId);
-      console.log('- databoxExists:', !!databoxExists);
-      console.log('- isDefaultSource:', isDefaultSource);
-      console.log('- $el:', !!this.$el);
-      console.log('- final disabled:', !databoxExists || isDefaultSource);
-      console.groupEnd();
-      
-      return !databoxExists || isDefaultSource;
-    },
   },
   watch: {
     $props: {
