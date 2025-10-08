@@ -133,7 +133,7 @@ export default {
     },
     highlightIndex: {
       type: Array,
-      default: () => [3, 4],
+      default: () => [],
     },
     unitTooltip: {
       type: String,

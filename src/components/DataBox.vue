@@ -359,14 +359,22 @@ const props = defineProps({
   },
 });
 
+console.group('DataBox.vue');
+
 const chartSources = ref([]);
 const tableSources = ref([]);
 
 chartSources.value = [...document.querySelectorAll(`[databox-id="${props.id}"][databox-type="chart"]`)].map((el) => el.getAttribute('databox-source') || 'default');
 
+console.log('chartSources:', chartSources.value);
+
 tableSources.value = [...document.querySelectorAll(`[databox-id="${props.id}"][databox-type="table"]`)].map((el) => el.getAttribute('databox-source') || 'global');
 
+console.log('tableSources:', tableSources.value);
+
 const currentSource = ref(chartSources.value.includes(props.defaultSource) ? props.defaultSource : chartSources.value[0]);
+
+console.log('currentSource:', currentSource.value);
 
 const generateOptions = (source) => {
   return source.map((option) => ({
@@ -455,6 +463,7 @@ const screenshotChart = () => {
       tendency.style.removeProperty('margin-top');
     });
 };
+
 const gridClass = computed(() => {
   switch (props.disposition) {
     case 'grid2':
@@ -467,6 +476,8 @@ const gridClass = computed(() => {
       return '';
   }
 });
+
+console.groupEnd();
 </script>
 
 <style scoped lang="scss">
