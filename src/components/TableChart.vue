@@ -30,7 +30,7 @@
                     <th
                       v-for="(item, index) in nameParse"
                       :key="index"
-                      :class="'text-right'"
+                      :class="getClass(rowItem)"
                       scope="col"
                     >
                       {{ item }}
@@ -201,6 +201,7 @@ export default {
       }
     },
     getClass(value) {
+      console.log(value, typeof value);
       let classes = '';
       if (typeof value === 'string' && value.replace(/<[^>]*>/g, '').length > 132) {
         classes += 'text-overflow ';
