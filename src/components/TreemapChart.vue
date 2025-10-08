@@ -161,17 +161,6 @@ export default {
     this.resetData();
     this.createChart();
 
-    console.group('TreemapChart mounted');
-    console.log('Props:', this.$props);
-    console.log('databoxId:', this.databoxId);
-    console.log('databoxType:', this.databoxType);
-    console.log('databoxSource:', this.databoxSource);
-    console.log('teleport disabled:', !this.$el?.ownerDocument.getElementById(this.databoxId), (!this.databoxId && !this.databoxType && this.databoxSource === 'default'));
-    console.log('databox target:', this.$el?.ownerDocument.getElementById(this.databoxId));
-    console.log('databox element:', this.$el?.ownerDocument.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource));
-    console.log('chartId:', this.chartId);
-    console.groupEnd();
-
     this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
     const element = document.documentElement;
     element.addEventListener('dsfr.theme', (e) => {
@@ -341,8 +330,6 @@ export default {
                     const index = dataPoint.dataIndex;
 
                     // Ensure the color is correctly referenced
-                    console.log('tooltip dataPoint:', this.colorParse);
-                    
                     const color = this.colorParse[index % this.colorParse[datasetIndex].length];
 
                     const value = this.formatNumber(this.datasets[datasetIndex].data[index]);
@@ -394,7 +381,6 @@ export default {
 
       // Mise à jour des couleurs dans le graphique
       if (this.chart && this.chart.data.datasets[0]) {
-        console.log('change colors:', this.colorParse);
         this.chart.data.datasets[0].backgroundColor = (ctx) => {
           const index = ctx.dataIndex;
           return this.colorParse[index % this.colorParse.length];
