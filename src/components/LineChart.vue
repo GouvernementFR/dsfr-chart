@@ -482,26 +482,6 @@ export default {
       // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette, this.colors);
     },
-    changeColors(theme) {
-      this.loadColors();
-
-      // Mise à jour des couleurs dans le graphique
-      this.chart.data.datasets.forEach((dataset, i) => {
-        dataset.borderColor = this.colorParse[i];
-        dataset.backgroundColor = this.colorParse[i];
-        dataset.pointBorderColor = this.colorParse[i];
-        dataset.pointBackgroundColor = this.colorParse[i];
-        dataset.hoverBorderColor = this.colorHover[i];
-        dataset.hoverBackgroundColor = this.colorHover[i];
-        dataset.pointHoverBorderColor = this.colorHover[i];
-        dataset.pointHoverBackgroundColor = this.colorHover[i];
-      });
-
-      this.chart.options.scales.x.ticks.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;
-      this.chart.options.scales.y.ticks.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;
-
-      this.chart.update('none');
-    },
     createChart() {
       if (this.chart) this.chart.destroy();
 
@@ -805,6 +785,26 @@ export default {
           },
         },
       });
+    },
+    changeColors(theme) {
+      this.loadColors();
+
+      // Mise à jour des couleurs dans le graphique
+      this.chart.data.datasets.forEach((dataset, i) => {
+        dataset.borderColor = this.colorParse[i];
+        dataset.backgroundColor = this.colorParse[i];
+        dataset.pointBorderColor = this.colorParse[i];
+        dataset.pointBackgroundColor = this.colorParse[i];
+        dataset.hoverBorderColor = this.colorHover[i];
+        dataset.hoverBackgroundColor = this.colorHover[i];
+        dataset.pointHoverBorderColor = this.colorHover[i];
+        dataset.pointHoverBackgroundColor = this.colorHover[i];
+      });
+
+      this.chart.options.scales.x.ticks.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;
+      this.chart.options.scales.y.ticks.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;
+
+      this.chart.update('none');
     },
   },
 };
