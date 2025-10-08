@@ -206,7 +206,7 @@ export default {
       if (typeof value === 'string' && value.replace(/<[^>]*>/g, '').length > 132) {
         classes += 'text-overflow ';
       }
-      if (typeof value === 'number') {
+      if (typeof value === 'number' || void 0 === value) {
         classes += 'text-right ';
       } else {
         classes += 'text-left ';
