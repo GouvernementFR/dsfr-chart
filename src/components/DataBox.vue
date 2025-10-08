@@ -208,7 +208,7 @@
       <!-- Tables -->
       <div
         :class="[
-          selectedView === 'chart' ? 'fr-hidden' : disposition !== 'default' ? gridClass : 'w-full'
+          selectedView === 'chart' ? 'fr-hidden' : 'w-full'
         ]"
         :aria-hidden="selectedView === 'table'"
       >
