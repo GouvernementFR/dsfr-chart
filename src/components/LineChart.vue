@@ -1,6 +1,6 @@
 <template>
   <Teleport
-    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
+    :disabled="teleportDisabled"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
     <div
@@ -257,6 +257,22 @@ export default {
       hlineNameParse: [],
       colorHover: [],
     };
+  },
+  computed: {
+    teleportDisabled() {
+      const hasDataboxId = !!this.databoxId;
+      const databoxExists = this.$el?.ownerDocument.getElementById(this.databoxId);
+      const isDefaultSource = (!this.databoxId && !this.databoxType && this.databoxSource === 'default');
+      
+      console.log('TreemapChart teleportDisabled debug:');
+      console.log('- hasDataboxId:', hasDataboxId);
+      console.log('- databoxExists:', !!databoxExists);
+      console.log('- isDefaultSource:', isDefaultSource);
+      console.log('- $el:', !!this.$el);
+      console.log('- final disabled:', !databoxExists || isDefaultSource);
+      
+      return !databoxExists || isDefaultSource;
+    },
   },
   watch: {
     $props: {
