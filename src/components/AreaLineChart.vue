@@ -107,6 +107,42 @@ import { generateAreaLineChartColors } from '@/utils/colors.js';
 
 Chart.register(LineController, LineElement, Filler, PointElement, LinearScale, CategoryScale);
 
+const getIndexes = (datasets, showLabelsParse) => {
+  return datasets.map((sets, di) => {
+    if (!showLabelsParse[di]) return null;
+
+    // Si c'est une liste d'index, on la retourne telle quelle
+    if (Array.isArray(showLabelsParse[di])) {
+      return [...showLabelsParse[di]];
+    }
+    switch (showLabelsParse[di]) {
+      case 'all':
+        return sets.data.map((_, index) => index);
+      case 'edges':
+        return [0, sets.data.length - 1];
+      case 'minmax': {
+        if (sets.data.length === 0) return [];            
+        const allYValues = sets.data.map(p => p.y ? p.y : p);
+        const min = Math.min(...allYValues);
+        const max = Math.max(...allYValues);
+        const indexes = [];
+        sets.data.forEach((v, index) => {
+          const value = v.y ? v.y : v;
+          if (value === min || value === max) {
+            if (!indexes.includes(index)) {
+              indexes.push(index);
+            }
+          }
+        });
+        return indexes;
+      }
+      default:
+        console.error('La prop showLabels doit être une liste d\'index, "all", "edges" ou "minmax".');
+        return null;
+    }
+  });
+}
+
 export default {
   name: 'AreaLineChart',
   mixins: [chartMixins],
@@ -195,7 +231,11 @@ export default {
       type: String,
       default: ''
     },
-    showLabels: {
+    showLinesLabels: {
+      type: [Array],
+      default: () => [],
+    },
+    showAreaLabels: {
       type: [Array],
       default: () => [],
     },
@@ -245,7 +285,8 @@ export default {
       xparse: [],
       yAreaParse: [],
       yLineParse: [],
-      showLabelsParse: [],
+      showAreaLabelsParse: [],
+      showLinesLabelsParse: [],
       nameAreasParse: [],
       nameLinesParse: [],
       colorParse: [],
@@ -273,7 +314,8 @@ export default {
       this.xparse = [];
       this.yAreaParse = [];
       this.yLineParse = [];
-      this.showLabelsParse = [];
+      this.showAreaLabelsParse = [];
+      this.showLinesLabelsParse = [];
       this.nameAreasParse = [];
       this.nameLinesParse = [];
       this.colorParse = [];
@@ -311,13 +353,17 @@ export default {
       }
 
       try {
-        this.showLabelsParse = typeof this.showLabels === 'string' ? JSON.parse(this.showLabels) : this.showLabels;
+        this.showAreaLabelsParse = typeof this.showAreaLabels === 'string' ? JSON.parse(this.showAreaLabels) : this.showAreaLabels;
+        this.showLinesLabelsParse = typeof this.showLinesLabels === 'string' ? JSON.parse(this.showLinesLabels) : this.showLinesLabels;
 
-        if (!Array.isArray(this.showLabelsParse)) {
-          throw new Error("La prop 'showLabels' doit être une liste.");
+        if (!Array.isArray(this.showAreaLabelsParse)) {
+          throw new Error("La prop 'showAreaLabels' doit être une liste.");
+        }
+        if (!Array.isArray(this.showLinesLabelsParse)) {
+          throw new Error("La prop 'showLinesLabels' doit être une liste.");
         }
       } catch (error) {
-        console.error('Erreur lors du parsing des données showLabels:', error);
+        console.error("Erreur lors du parsing des données 'showLinesLabels' ou 'showAreaLabels':", error);
         return;
       }
 
@@ -373,44 +419,13 @@ export default {
 
       const ctx = this.$refs[this.chartId].getContext('2d');
 
+      // NOTE: Il est important de conserver l'ordre des datasets (lines avant areas) pour le bon fonctionnement du plugin de labels
       const datasets = [...this.linesDatasets, ...this.areasDatasets];
 
-      // La props 'showLabels' peut être une liste d'index, une string ou non définie
-      // En fonction de sa valeur, on détermine les index des points à labeliser
-      const showLabels = Array.isArray(this.showLabelsParse) ? true : this.showLabelsParse != undefined;
-      const indexesWithLabels = datasets.map((sets, di) => {
-        if (!this.showLabelsParse[di]) return null;
-
-        // Si c'est une liste d'index, on la retourne telle quelle
-        if (Array.isArray(this.showLabelsParse[di])) {
-          return [...this.showLabelsParse[di]];
-        }
-        switch (this.showLabelsParse[di]) {
-          case 'all':
-            return sets.data.map((_, index) => index);
-          case 'edges':
-            return [0, sets.data.length - 1];
-          case 'minmax': {
-            if (sets.data.length === 0) return [];            
-            const allYValues = sets.data.map(p => p.y ? p.y : p);
-            const min = Math.min(...allYValues);
-            const max = Math.max(...allYValues);
-            const indexes = [];
-            sets.data.forEach((v, index) => {
-              const value = v.y ? v.y : v;
-              if (value === min || value === max) {
-                if (!indexes.includes(index)) {
-                  indexes.push(index);
-                }
-              }
-            });
-            return indexes;
-          }
-          default:
-            console.error('La prop showLabels doit être une liste d\'index, "all", "edges" ou "minmax".');
-            return null;
-        }
-      });
+      const indexesWithLabels = [
+        ...getIndexes(this.linesDatasets, this.showLinesLabelsParse),
+        ...getIndexes(this.areasDatasets, this.showAreaLabelsParse)
+      ];
 
       this.chart = new Chart(ctx, {
         data: {
@@ -466,8 +481,6 @@ export default {
           {
             id: 'pointLabels',
             afterDatasetsDraw(chart) {
-              if (!showLabels) return;
-
               const { ctx, chartArea } = chart;
               const drawnBoxes = [];
               const padding = 2; // marge intérieure minimale avec le bord du chart

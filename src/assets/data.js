@@ -100,7 +100,7 @@ export const chartData = {
       unitTooltipLine: '%',
       areasColors: ['#6754A4', 'red'],
       linesColors: ['#219679ff', 'green', 'yellow', 'blue'],
-      showLabels: ['minmax', 'edges', 'edges', 'edges', 'edges'],
+      showLinesLabels: ['minmax', 'edges', 'edges', 'edges', 'edges'],
     },
   },
   scatterChart: {
