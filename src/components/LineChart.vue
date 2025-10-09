@@ -247,6 +247,7 @@ export default {
       nameParse: [],
       tmpColorParse: [],
       colorParse: [],
+      showLabelsParse: [],
       vlineParse: [],
       vlineColorParse: [],
       tmpVlineColorParse: [],
@@ -332,6 +333,13 @@ export default {
       } catch (error) {
         console.error('Erreur lors du parsing des données x ou y:', error);
         return;
+      }
+
+      try {
+        this.showLabelsParse = JSON.parse(this.showLabels);
+      } catch {
+        // Si showLabels n'est pas une liste, on le garde tel quel
+        this.showLabelsParse = this.showLabels;
       }
 
       let tmpNameParse = [];
@@ -491,13 +499,13 @@ export default {
 
       // La props 'showLabels' peut être une liste d'index, une string ou non définie
       // En fonction de sa valeur, on détermine les index des points à labeliser
-      const showLabels = Array.isArray(this.showLabels) ? true : this.showLabels != undefined;
+      const showLabels = Array.isArray(this.showLabelsParse) ? true : this.showLabelsParse != undefined;
       const indexesWithLabels = this.datasets.map((sets) => {
         // Si c'est une liste d'index, on la retourne telle quelle
-        if (Array.isArray(this.showLabels)) {
-          return this.showLabels;
+        if (Array.isArray(this.showLabelsParse)) {
+          return this.showLabelsParse;
         }
-        switch (this.showLabels) {
+        switch (this.showLabelsParse) {
           case 'all':
             return sets.data.map((_, index) => index);
           case 'edges':
