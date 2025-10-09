@@ -199,7 +199,7 @@ export default {
       default: '',
     },
     showLabels: {
-      type: [String, Array],
+      type: [Array],
       default: undefined,
     },
     pointRadius: {
@@ -337,10 +337,13 @@ export default {
 
       try {
         this.showLabelsParse = typeof this.showLabels === 'string' ? JSON.parse(this.showLabels) : this.showLabels;
-      } catch {
-        // showLabels peut être une string ou une liste ou une liste `stringified`,
-        // si c'est une string on tente de la parser, sinon on la garde telle quelle
-        this.showLabelsParse = this.showLabels;
+
+        if (!Array.isArray(this.showLabelsParse)) {
+          throw new Error("La prop 'showLabels' doit être une liste.");
+        }
+      } catch (error) {
+        console.error('Erreur lors du parsing des données showLabels:', error);
+        return;
       }
 
       let tmpNameParse = [];
@@ -501,18 +504,20 @@ export default {
       // La props 'showLabels' peut être une liste d'index, une string ou non définie
       // En fonction de sa valeur, on détermine les index des points à labeliser
       const showLabels = Array.isArray(this.showLabelsParse) ? true : this.showLabelsParse != undefined;
-      const indexesWithLabels = this.datasets.map((sets) => {
+      const indexesWithLabels = this.datasets.map((sets, di) => {
+        if (!this.showLabelsParse[di]) return null;
+
         // Si c'est une liste d'index, on la retourne telle quelle
-        if (Array.isArray(this.showLabelsParse)) {
-          return this.showLabelsParse;
+        if (Array.isArray(this.showLabelsParse[di])) {
+          return [...this.showLabelsParse[di]];
         }
-        switch (this.showLabelsParse) {
+        switch (this.showLabelsParse[di]) {
           case 'all':
             return sets.data.map((_, index) => index);
           case 'edges':
             return [0, sets.data.length - 1];
           case 'minmax': {
-            if (sets.data.length === 0) return [];
+            if (sets.data.length === 0) return [];            
             const allYValues = sets.data.map(p => p.y);
             const min = Math.min(...allYValues);
             const max = Math.max(...allYValues);
@@ -527,6 +532,7 @@ export default {
             return indexes;
           }
           default:
+            console.error('La prop showLabels doit être une liste d\'index, "all", "edges" ou "minmax".');
             return null;
         }
       });
@@ -576,14 +582,14 @@ export default {
               if (!showLabels) return;
 
               const { ctx, chartArea } = chart;
-              const drawnBoxes = []; // 🔹 stocke les rectangles déjà occupés par un label
+              const drawnBoxes = [];
 
               chart.data.datasets.forEach((dataset, i) => {
                 const meta = chart.getDatasetMeta(i);
                 if (meta.hidden) return;
 
                 meta.data.forEach((point, index) => {
-                  if (indexesWithLabels[i] && !indexesWithLabels[i].includes(index)) return;
+                  if (!indexesWithLabels[i] || indexesWithLabels[i] && !indexesWithLabels[i].includes(index)) return;
 
                   const value = dataset.data[index];
                   const text = value.y !== undefined ? value.y : value; // compatibilité bar/line
@@ -592,7 +598,6 @@ export default {
                   ctx.textAlign = 'center';
                   ctx.textBaseline = 'bottom';
 
-                  // Coordonnées de base
                   const x = point.x;
                   const y = point.y - 10;
 
@@ -608,27 +613,23 @@ export default {
                     bottom: y,
                   };
 
-                  // 🚫 1️⃣ Si le label sort du chart, on le saute
                   if (
                     box.left < chartArea.left ||
                     box.right > chartArea.right ||
                     box.top < chartArea.top ||
                     box.bottom > chartArea.bottom
                   ) {
-                    return; // ne pas dessiner
+                    return;
                   }
 
-                  // 💥 2️⃣ Si le label overlap un autre déjà dessiné, on le saute aussi
                   const overlaps = drawnBoxes.some(b =>
                     !(box.right < b.left || box.left > b.right || box.bottom < b.top || box.top > b.bottom)
                   );
                   if (overlaps) return;
 
-                  // ✅ Dessiner le texte
                   ctx.fillStyle = '#333';
                   ctx.fillText(text, x, y);
 
-                  // 🔹 Mémoriser la zone du texte pour la suite
                   drawnBoxes.push(box);
                 });
               });
