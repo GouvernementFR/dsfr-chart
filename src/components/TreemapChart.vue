@@ -215,10 +215,26 @@ export default {
           font: {
             size: 14,
             weight: 'bold',
-            formatter(ctx) {
-              const data = ctx.chart.data;
-              return `Custom Text: ${data.datasets[ctx.datasetIndex].tree[ctx.dataIndex]}`;
-            }
+          },
+          formatter(ctx) {
+            const item = ctx.chart.data.datasets[ctx.datasetIndex].tree[ctx.dataIndex];
+            const label = item.label || '';
+
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+
+            words.forEach(word => {
+              if ((currentLine + word).length > 10) {
+                lines.push(currentLine.trim());
+                currentLine = word + ' ';
+              } else {
+                currentLine += word + ' ';
+              }
+            });
+            if (currentLine) lines.push(currentLine.trim());
+
+            return lines;
           }
         },
         backgroundColor: (ctx) => {
@@ -284,7 +300,7 @@ export default {
                   return this.formatNumber(value);
                 },
                 title: (tooltipItems) => {
-                  return tooltipItems[0].label;
+                  return tooltipItems[0].raw;
                 },
                 labelTextColor: (tooltipItems) => {
                   return this.colorParse[tooltipItems.datasetIndex][tooltipItems.dataIndex];
