@@ -751,16 +751,16 @@ export default {
       // Mise à jour des couleurs dans le graphique
       this.chart.data.datasets.forEach((dataset, i) => {
         if (dataset.type === 'bar') {
-          dataset.borderColor = this.colorBarParse[i] || this.colorBarParse[0];
-          dataset.backgroundColor = this.colorBarParse[i] || this.colorBarParse[0];
-          dataset.hoverBorderColor = this.colorBarHover[i] || this.colorBarHover[0];
-          dataset.hoverBackgroundColor = this.colorBarHover[i] || this.colorBarHover[0];
+          dataset.borderColor = this.colorBarParse[i % this.colorBarParse.length];
+          dataset.backgroundColor = this.colorBarParse[i % this.colorBarParse.length];
+          dataset.hoverBorderColor = this.colorBarHover[i % this.colorBarHover.length];
+          dataset.hoverBackgroundColor = this.colorBarHover[i % this.colorBarHover.length];
         } else if (dataset.type === 'line') {
-          dataset.borderColor = this.colorParse[i] || this.colorParse[0];
-          dataset.pointBorderColor = this.colorParse[i] || this.colorParse[0];
-          dataset.pointBackgroundColor = this.colorParse[i] || this.colorParse[0];
-          dataset.pointHoverBorderColor = this.colorHover[i] || this.colorHover[0];
-          dataset.pointHoverBackgroundColor = this.colorHover[i] || this.colorHover[0];
+          dataset.borderColor = this.hideLines ? 'transparent' : this.colorParse[i % this.colorParse.length];
+          dataset.pointBorderColor = this.colorParse[i % this.colorParse.length];
+          dataset.pointBackgroundColor = this.colorParse[i % this.colorParse.length];
+          dataset.pointHoverBorderColor = this.colorHover[i % this.colorHover.length];
+          dataset.pointHoverBackgroundColor = this.colorHover[i % this.colorHover.length];
         }
       });
 
