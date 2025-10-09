@@ -575,22 +575,64 @@ export default {
             afterDatasetsDraw(chart) {
               if (!showLabels) return;
 
-              const { ctx } = chart;
+              const { ctx, chartArea } = chart;
+              const drawnBoxes = []; // 🔹 stocke les rectangles déjà occupés par un label
+
               chart.data.datasets.forEach((dataset, i) => {
                 const meta = chart.getDatasetMeta(i);
-                if (!meta.hidden) {
-                  meta.data.forEach((point, index) => {
-                    if (indexesWithLabels[i] && !indexesWithLabels[i].includes(index)) return;
+                if (meta.hidden) return;
 
-                    const value = dataset.data[index];
-                    ctx.fillStyle = '#333';
-                    ctx.font = '12px sans-serif';
-                    ctx.textAlign = 'center';
-                    ctx.fillText(value.y, point.x, point.y - 10);
-                  });
-                }
-              })
-            }
+                meta.data.forEach((point, index) => {
+                  if (indexesWithLabels[i] && !indexesWithLabels[i].includes(index)) return;
+
+                  const value = dataset.data[index];
+                  const text = value.y !== undefined ? value.y : value; // compatibilité bar/line
+                  const fontSize = 12;
+                  ctx.font = `${fontSize}px sans-serif`;
+                  ctx.textAlign = 'center';
+                  ctx.textBaseline = 'bottom';
+
+                  // Coordonnées de base
+                  const x = point.x;
+                  const y = point.y - 10;
+
+                  // Mesurer la largeur et la hauteur du texte
+                  const textWidth = ctx.measureText(text).width;
+                  const textHeight = fontSize;
+
+                  // Calculer les limites du texte
+                  const box = {
+                    left: x - textWidth / 2,
+                    right: x + textWidth / 2,
+                    top: y - textHeight,
+                    bottom: y,
+                  };
+
+                  // 🚫 1️⃣ Si le label sort du chart, on le saute
+                  if (
+                    box.left < chartArea.left ||
+                    box.right > chartArea.right ||
+                    box.top < chartArea.top ||
+                    box.bottom > chartArea.bottom
+                  ) {
+                    return; // ne pas dessiner
+                  }
+
+                  // 💥 2️⃣ Si le label overlap un autre déjà dessiné, on le saute aussi
+                  const overlaps = drawnBoxes.some(b =>
+                    !(box.right < b.left || box.left > b.right || box.bottom < b.top || box.top > b.bottom)
+                  );
+                  if (overlaps) return;
+
+                  // ✅ Dessiner le texte
+                  ctx.fillStyle = '#333';
+                  ctx.fillText(text, x, y);
+
+                  // 🔹 Mémoriser la zone du texte pour la suite
+                  drawnBoxes.push(box);
+                });
+              });
+            },
           },
           {
             id: 'highlightZone',
