@@ -60,6 +60,25 @@ import { choosePalette, generateTreemapChartColors } from '@/utils/colors.js';
 
 Chart.register(TreemapController, TreemapElement);
 
+function splitLabelToFit(label, maxWidth, ctx) {
+    const words = label.split(' ');
+    const lines = [];
+    let currentLine = '';
+    for (let i = 0; i < words.length; i++) {
+    const word = words[i];
+    const newLine = currentLine + ' ' + word;
+    const width = ctx.chart.ctx.measureText(newLine).width;
+    if (width < maxWidth) {
+        currentLine = newLine;
+    } else {
+        lines.push(currentLine);
+        currentLine = word;
+    }
+    }
+    lines.push(currentLine);
+    return lines;
+}
+
 export default {
   name: 'TreemapChart',
   mixins: [chartMixins],
@@ -209,7 +228,8 @@ export default {
       this.loadColors();
 
       this.datasets = [{
-        tree: this.dataParse,
+        tree: this.dataParse.map((v, i) => ({label: this.nameParse[i], value: v})),
+        key: 'value',
         labels: {
           display: true,
           font: {
@@ -217,24 +237,12 @@ export default {
             weight: 'bold',
           },
           formatter(ctx) {
-            const item = ctx.chart.data.datasets[ctx.datasetIndex].tree[ctx.dataIndex];
-            const label = item.label || '';
-
-            const words = label.split(' ');
-            const lines = [];
-            let currentLine = '';
-
-            words.forEach(word => {
-              if ((currentLine + word).length > 10) {
-                lines.push(currentLine.trim());
-                currentLine = word + ' ';
-              } else {
-                currentLine += word + ' ';
-              }
-            });
-            if (currentLine) lines.push(currentLine.trim());
-
-            return lines;
+            if (ctx.type !== 'data') {
+                return;
+            }
+            const data = ctx.chart.data;
+            const value = data.datasets[ctx.datasetIndex].tree[ctx.dataIndex].label;
+            return splitLabelToFit(value, ctx.raw.w * 0.8, ctx);
           }
         },
         backgroundColor: (ctx) => {
@@ -297,10 +305,12 @@ export default {
               callbacks: {
                 label: (tooltipItems) => {
                   const value = this.datasets[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
+                  console.log("treemap label callback", value);
                   return this.formatNumber(value);
                 },
                 title: (tooltipItems) => {
-                  return tooltipItems[0].raw;
+                  console.log("treemap title callback", tooltipItems, tooltipItems[0].raw)
+                  return tooltipItems[0].label;
                 },
                 labelTextColor: (tooltipItems) => {
                   return this.colorParse[tooltipItems.datasetIndex][tooltipItems.dataIndex];
