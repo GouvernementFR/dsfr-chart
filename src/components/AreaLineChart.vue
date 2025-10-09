@@ -235,7 +235,7 @@ export default {
       type: [Array],
       default: () => [],
     },
-    showAreaLabels: {
+    showAreasLabels: {
       type: [Array],
       default: () => [],
     },
@@ -353,17 +353,17 @@ export default {
       }
 
       try {
-        this.showAreaLabelsParse = typeof this.showAreaLabels === 'string' ? JSON.parse(this.showAreaLabels) : this.showAreaLabels;
+        this.showAreaLabelsParse = typeof this.showAreasLabels === 'string' ? JSON.parse(this.showAreasLabels) : this.showAreasLabels;
         this.showLinesLabelsParse = typeof this.showLinesLabels === 'string' ? JSON.parse(this.showLinesLabels) : this.showLinesLabels;
 
         if (!Array.isArray(this.showAreaLabelsParse)) {
-          throw new Error("La prop 'showAreaLabels' doit être une liste.");
+          throw new Error("La prop 'showAreasLabels' doit être une liste.");
         }
         if (!Array.isArray(this.showLinesLabelsParse)) {
           throw new Error("La prop 'showLinesLabels' doit être une liste.");
         }
       } catch (error) {
-        console.error("Erreur lors du parsing des données 'showLinesLabels' ou 'showAreaLabels':", error);
+        console.error("Erreur lors du parsing des données 'showLinesLabels' ou 'showAreasLabels':", error);
         return;
       }
 
@@ -506,7 +506,6 @@ export default {
                   const textWidth = ctx.measureText(text).width;
                   const textHeight = fontSize;
 
-                  // ✅ Calcul initial des limites du texte
                   const box = {
                     left: x - textWidth / 2,
                     right: x + textWidth / 2,
@@ -514,7 +513,6 @@ export default {
                     bottom: y,
                   };
 
-                  // ✅ Si dépasse à gauche / droite / haut / bas → on décale vers l’intérieur
                   if (box.left < chartArea.left + padding) {
                     x += (chartArea.left + padding) - box.left;
                   }
@@ -528,7 +526,6 @@ export default {
                     y -= box.bottom - (chartArea.bottom - padding);
                   }
 
-                  // 🔁 Recalcul du box après ajustement
                   const adjustedBox = {
                     left: x - textWidth / 2,
                     right: x + textWidth / 2,
@@ -536,13 +533,11 @@ export default {
                     bottom: y,
                   };
 
-                  // 💥 Empêcher l’overlap
                   const overlaps = drawnBoxes.some(b =>
                     !(adjustedBox.right < b.left || adjustedBox.left > b.right || adjustedBox.bottom < b.top || adjustedBox.top > b.bottom)
                   );
                   if (overlaps) return;
 
-                  // ✅ Dessiner le texte ajusté
                   ctx.fillStyle = '#333';
                   ctx.fillText(text, x, y);
 
