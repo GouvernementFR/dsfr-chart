@@ -305,13 +305,11 @@ export default {
               callbacks: {
                 label: (tooltipItems) => {
                   const value = this.datasets[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
-                  console.log("treemap label callback", value);
                   return this.formatNumber(value.v);
                 },
                 title: (tooltipItems) => {
                   const ctx = tooltipItems[0];
                   const value = this.datasets[ctx.datasetIndex].tree[ctx.dataIndex].label;
-                  console.log("treemap title callback", value);
                   return value;
                 },
                 labelTextColor: (tooltipItems) => {
