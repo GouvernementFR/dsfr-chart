@@ -89,13 +89,18 @@ export const chartData = {
     default: {
       x: [[1980, 1990, 2000, 2010]],
       yAreas: [[826, 793, 807, 832], [926, 493, 307, 732]],
-      yLines: [[14.9, 13.4, 24, 13.1, 12.9], [34.9, 14, 23.4, 23.1, 22.9], [24.9, 34, 23.4, 43.1, 42.9]],
+      yLines: [
+        [14.9, 13.4, 24, 13.1, 12.9],
+        [34.9, 14, 23.4, 23.1, 22.9],
+        [24.9, 34, 23.4, 43.1, 42.9]
+      ],
       nameAreas: ['Taux de natalité', 'Taux de mortalité'],
       nameLines: ['Naissances', 'Décès', 'Solde naturel'],
       unitTooltipArea: 'milliers',
       unitTooltipLine: '%',
       areasColors: ['#6754A4', 'red'],
       linesColors: ['#219679ff', 'green', 'yellow', 'blue'],
+      showLabels: ['minmax', 'edges', 'edges', 'edges', 'edges'],
     },
   },
   scatterChart: {

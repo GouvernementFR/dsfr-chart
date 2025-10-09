@@ -195,6 +195,10 @@ export default {
       type: String,
       default: ''
     },
+    showLabels: {
+      type: [Array],
+      default: () => [],
+    },
     singleAxis: {
       type: Boolean,
       default: false
@@ -241,6 +245,7 @@ export default {
       xparse: [],
       yAreaParse: [],
       yLineParse: [],
+      showLabelsParse: [],
       nameAreasParse: [],
       nameLinesParse: [],
       colorParse: [],
@@ -268,6 +273,9 @@ export default {
       this.xparse = [];
       this.yAreaParse = [];
       this.yLineParse = [];
+      this.showLabelsParse = [];
+      this.nameAreasParse = [];
+      this.nameLinesParse = [];
       this.colorParse = [];
       this.colorAreaParse = [];
       this.colorAreaLineParse = [];
@@ -299,6 +307,17 @@ export default {
         this.nameLinesParse = typeof this.nameLines === 'string' ? JSON.parse(this.nameLines) : this.nameLines;
       } catch (err) {
         console.error('Erreur parsing:', err);
+        return;
+      }
+
+      try {
+        this.showLabelsParse = typeof this.showLabels === 'string' ? JSON.parse(this.showLabels) : this.showLabels;
+
+        if (!Array.isArray(this.showLabelsParse)) {
+          throw new Error("La prop 'showLabels' doit être une liste.");
+        }
+      } catch (error) {
+        console.error('Erreur lors du parsing des données showLabels:', error);
         return;
       }
 
@@ -348,13 +367,55 @@ export default {
       }));
     },
     createChart() {
+      if (this.chart) this.chart.destroy();
+
       this.getData();
+
       const ctx = this.$refs[this.chartId].getContext('2d');
+
+      const datasets = [...this.linesDatasets, ...this.areasDatasets];
+
+      // La props 'showLabels' peut être une liste d'index, une string ou non définie
+      // En fonction de sa valeur, on détermine les index des points à labeliser
+      const showLabels = Array.isArray(this.showLabelsParse) ? true : this.showLabelsParse != undefined;
+      const indexesWithLabels = datasets.map((sets, di) => {
+        if (!this.showLabelsParse[di]) return null;
+
+        // Si c'est une liste d'index, on la retourne telle quelle
+        if (Array.isArray(this.showLabelsParse[di])) {
+          return [...this.showLabelsParse[di]];
+        }
+        switch (this.showLabelsParse[di]) {
+          case 'all':
+            return sets.data.map((_, index) => index);
+          case 'edges':
+            return [0, sets.data.length - 1];
+          case 'minmax': {
+            if (sets.data.length === 0) return [];            
+            const allYValues = sets.data.map(p => p.y ? p.y : p);
+            const min = Math.min(...allYValues);
+            const max = Math.max(...allYValues);
+            const indexes = [];
+            sets.data.forEach((v, index) => {
+              const value = v.y ? v.y : v;
+              if (value === min || value === max) {
+                if (!indexes.includes(index)) {
+                  indexes.push(index);
+                }
+              }
+            });
+            return indexes;
+          }
+          default:
+            console.error('La prop showLabels doit être une liste d\'index, "all", "edges" ou "minmax".');
+            return null;
+        }
+      });
 
       this.chart = new Chart(ctx, {
         data: {
           labels: this.labels,
-          datasets: [...this.areasDatasets, ...this.linesDatasets],
+          datasets: datasets,
         },
         plugins: [
           {
@@ -400,6 +461,81 @@ export default {
                 ctx.stroke();
                 ctx.restore();
               }
+            },
+          },
+          {
+            id: 'pointLabels',
+            afterDatasetsDraw(chart) {
+              if (!showLabels) return;
+
+              const { ctx, chartArea } = chart;
+              const drawnBoxes = [];
+              const padding = 2; // marge intérieure minimale avec le bord du chart
+
+              chart.data.datasets.forEach((dataset, i) => {
+                const meta = chart.getDatasetMeta(i);
+                if (meta.hidden) return;
+
+                meta.data.forEach((point, index) => {
+                  if (!indexesWithLabels[i] || !indexesWithLabels[i].includes(index)) return;
+
+                  const value = dataset.data[index];
+                  const text = value.y !== undefined ? value.y : value;
+                  const fontSize = 12;
+
+                  ctx.font = `${fontSize}px sans-serif`;
+                  ctx.textAlign = 'center';
+                  ctx.textBaseline = 'bottom';
+
+                  let x = point.x;
+                  let y = point.y - 10;
+
+                  const textWidth = ctx.measureText(text).width;
+                  const textHeight = fontSize;
+
+                  // ✅ Calcul initial des limites du texte
+                  const box = {
+                    left: x - textWidth / 2,
+                    right: x + textWidth / 2,
+                    top: y - textHeight,
+                    bottom: y,
+                  };
+
+                  // ✅ Si dépasse à gauche / droite / haut / bas → on décale vers l’intérieur
+                  if (box.left < chartArea.left + padding) {
+                    x += (chartArea.left + padding) - box.left;
+                  }
+                  if (box.right > chartArea.right - padding) {
+                    x -= box.right - (chartArea.right - padding);
+                  }
+                  if (box.top < chartArea.top + padding) {
+                    y += (chartArea.top + padding) - box.top;
+                  }
+                  if (box.bottom > chartArea.bottom - padding) {
+                    y -= box.bottom - (chartArea.bottom - padding);
+                  }
+
+                  // 🔁 Recalcul du box après ajustement
+                  const adjustedBox = {
+                    left: x - textWidth / 2,
+                    right: x + textWidth / 2,
+                    top: y - textHeight,
+                    bottom: y,
+                  };
+
+                  // 💥 Empêcher l’overlap
+                  const overlaps = drawnBoxes.some(b =>
+                    !(adjustedBox.right < b.left || adjustedBox.left > b.right || adjustedBox.bottom < b.top || adjustedBox.top > b.bottom)
+                  );
+                  if (overlaps) return;
+
+                  // ✅ Dessiner le texte ajusté
+                  ctx.fillStyle = '#333';
+                  ctx.fillText(text, x, y);
+
+                  drawnBoxes.push(adjustedBox);
+                });
+              });
             },
           },
           {
@@ -581,7 +717,7 @@ export default {
                   divValue.innerHTML = '';
 
                   // Access color arrays for different datasets
-                  const colors = [...this.colorAreaParse, ...this.colorParse]; // Adjust to match your color variables
+                  const colors = [...this.colorParse, ...this.colorAreaParse]; // Adjust to match your color variables
 
                   // Iterate over bodyLines to set the color and value in the tooltip
                   bodyLines[0].forEach((line, i) => {
@@ -638,21 +774,21 @@ export default {
 
       // Mise à jour des couleurs dans le graphique
       this.areasDatasets.forEach((dataset, i) => {
-        dataset.borderColor = this.colorAreaLineParse[i] || this.colorAreaLineParse[0];
-        dataset.backgroundColor = this.colorAreaParse[i] || this.colorAreaParse[0];
-        dataset.pointBorderColor = this.colorAreaParse[i] || this.colorAreaParse[0];
-        dataset.pointBackgroundColor = this.colorAreaParse[i] || this.colorAreaParse[0];
-        dataset.pointHoverBorderColor = this.colorAreaHover[i] || this.colorAreaHover[0];
-        dataset.pointHoverBackgroundColor = this.colorAreaHover[i] || this.colorAreaHover[0];
+        dataset.borderColor = this.colorAreaLineParse[i % this.colorAreaLineParse.length];
+        dataset.backgroundColor = this.colorAreaParse[i % this.colorAreaParse.length];
+        dataset.pointBorderColor = this.colorAreaParse[i % this.colorAreaParse.length];
+        dataset.pointBackgroundColor = this.colorAreaParse[i % this.colorAreaParse.length];
+        dataset.pointHoverBorderColor = this.colorAreaHover[i % this.colorAreaHover.length];
+        dataset.pointHoverBackgroundColor = this.colorAreaHover[i % this.colorAreaHover.length];
       });
 
       // Mise à jour des datasets line
       this.linesDatasets.forEach((dataset, i) => {
-        dataset.borderColor = this.colorParse[i] || this.colorParse[0];
-        dataset.pointBorderColor = this.colorParse[i] || this.colorParse[0];
-        dataset.pointBackgroundColor = this.colorParse[i] || this.colorParse[0];
-        dataset.pointHoverBorderColor = this.colorHover[i] || this.colorHover[0];
-        dataset.pointHoverBackgroundColor = this.colorHover[i] || this.colorHover[0];
+        dataset.borderColor = this.colorParse[i % this.colorParse.length];
+        dataset.pointBorderColor = this.colorParse[i % this.colorParse.length];
+        dataset.pointBackgroundColor = this.colorParse[i % this.colorParse.length];
+        dataset.pointHoverBorderColor = this.colorHover[i % this.colorHover.length];
+        dataset.pointHoverBackgroundColor = this.colorHover[i % this.colorHover.length];
       });
 
       this.chart.options.scales.x.ticks.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;

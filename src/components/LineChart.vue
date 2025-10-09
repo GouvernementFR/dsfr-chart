@@ -302,6 +302,7 @@ export default {
       this.xparse = [];
       this.yparse = [];
       this.nameParse = [];
+      this.showLabelsParse = [];
       this.tmpColorParse = [];
       this.colorParse = [];
       this.vlineParse = [];
