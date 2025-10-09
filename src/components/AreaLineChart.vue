@@ -493,7 +493,7 @@ export default {
               ...(this.yAreaMax ? { suggestedMax: this.yAreaMax } : {}),
             },
             yLine: {
-              display: !this.singleAxis,
+              display: !this.singleAxis && this.yLineParse.length > 0,
               type: 'linear',
               position: 'right',
               id: 'yLine',
