@@ -336,9 +336,10 @@ export default {
       }
 
       try {
-        this.showLabelsParse = JSON.parse(this.showLabels);
+        this.showLabelsParse = typeof this.showLabels === 'string' ? JSON.parse(this.showLabels) : this.showLabels;
       } catch {
-        // Si showLabels n'est pas une liste, on le garde tel quel
+        // showLabels peut être une string ou une liste ou une liste `stringified`,
+        // si c'est une string on tente de la parser, sinon on la garde telle quelle
         this.showLabelsParse = this.showLabels;
       }
 
