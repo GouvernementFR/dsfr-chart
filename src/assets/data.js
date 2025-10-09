@@ -81,8 +81,8 @@ export const chartData = {
       unitTooltipLine: '%',
       linesColors: ['#219679ff', 'green', 'yellow', 'blue'],
       barsColors: ['#6754A4', 'red'],
-      stacked: true,
-      hideLines: true,
+      // stacked: true,
+      // hideLines: true,
     },
   },
   areaLineChart: {

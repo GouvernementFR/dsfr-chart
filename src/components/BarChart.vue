@@ -139,6 +139,18 @@ export default {
       type: String,
       default: '',
     },
+    pointValues: {
+      type: Array,
+      default: () => [],
+    },
+    pointColor: {
+      type: String,
+      default: '#000',
+    },
+    pointRadius: {
+      type: Number,
+      default: 5,
+    },
   },
   data() {
     this.chart = undefined;
@@ -434,6 +446,49 @@ export default {
             },
           },
         },
+        plugins: [
+          {
+            id: 'barPoints',
+            afterDatasetsDraw: (chart) => {
+              const { ctx, scales } = chart;
+              const isHorizontal = chart.config.options.indexAxis === 'y';
+              const datasets = chart.data.datasets;
+              const pointValues = this.pointValues;
+
+              ctx.save();
+
+              datasets.forEach((dataset, datasetIndex) => {
+                const meta = chart.getDatasetMeta(datasetIndex);
+                const data = dataset.data;
+
+                data.forEach((value, i) => {
+                  if (pointValues[datasetIndex] && pointValues[datasetIndex][i] != null) {
+                    const pointValue = pointValues[datasetIndex][i];
+                    const bar = meta.data[i];
+                    if (!bar) return;
+
+                    // Récupération de la position du point en fonction du mode horizontal ou vertical
+                    const x = isHorizontal
+                      ? scales.x.getPixelForValue(pointValue)
+                      : bar.x;
+                    const y = isHorizontal
+                      ? bar.y
+                      : scales.y.getPixelForValue(pointValue);
+
+                    // Dessin du point
+                    ctx.beginPath();
+                    ctx.arc(x, y, this.pointRadius, 0, 2 * Math.PI);
+                    ctx.fillStyle = this.pointColor;
+                    ctx.fill();
+                    ctx.closePath();
+                  }
+                });
+              });
+
+              ctx.restore();
+            },
+          }
+        ]
       });
     },
     changeColors(theme) {
