@@ -202,6 +202,10 @@ export default {
       type: [Boolean, String],
       default: false,
     },
+    horizontal: {
+      type: [Boolean, String],
+      default: false,
+    },
     nameBars: {
       type: Array,
       default: () => [],
@@ -567,14 +571,18 @@ export default {
           },
         ],
         options: {
+          indexAxis: this.horizontal ? 'y' : 'x',
           aspectRatio: this.aspectRatio,
           scales: {
             x: {
-              offset: true,
+              offset: !this.horizontal,
               stacked: this.stacked,
               grid: {
                 drawTicks: false,
-                drawOnChartArea: false,
+                drawOnChartArea: this.horizontal,
+              },
+              ticks: {
+                padding: this.horizontal ? 5 : 0,
               },
               ...(this.xMin ? { suggestedMin: this.xMin } : {}),
               ...(this.xMax ? { suggestedMax: this.xMax } : {}),
@@ -582,9 +590,11 @@ export default {
             y: {
               type: 'linear',
               position: 'left',
+              offset: this.horizontal,
               stacked: this.stacked,
               grid: {
                 drawTicks: false,
+                drawOnChartArea: !this.horizontal,
               },
               border: {
                 dash: [3],
@@ -610,9 +620,11 @@ export default {
               type: 'linear',
               position: 'right',
               id: 'yLine',
+              offset: this.horizontal,
               beginAtZero: true,
               grid: {
                 drawTicks: false,
+                drawOnChartArea: !this.horizontal,
               },
               border: {
                 dash: [3],
