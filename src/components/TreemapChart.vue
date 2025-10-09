@@ -306,10 +306,11 @@ export default {
                 label: (tooltipItems) => {
                   const value = this.datasets[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
                   console.log("treemap label callback", value);
-                  return this.formatNumber(value);
+                  return this.formatNumber(value.v);
                 },
                 title: (tooltipItems) => {
-                  const value = this.datasets[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
+                  const ctx = tooltipItems[0];
+                  const value = this.datasets[ctx.datasetIndex].tree[ctx.dataIndex].label;
                   console.log("treemap title callback", value);
                   return value;
                 },
@@ -343,15 +344,16 @@ export default {
 
                 // Set Text
                 if (tooltipModel.body) {
-                  // const titleLines = this.nameParse;
+                  const titleLines = tooltipModel.title || [];
 
+                  // Set the tooltip header
                   const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
-                  divDate.innerHTML = '';
+                  divDate.innerHTML = titleLines[0];
 
+                  // Clear the existing tooltip content
                   const divValue = tooltipEl.querySelector('.tooltip_value');
                   divValue.innerHTML = '';
 
-                  // Iterate over each data point to set the color and value in the tooltip
                   tooltipModel.dataPoints.forEach((dataPoint) => {
                     const datasetIndex = dataPoint.datasetIndex;
                     const index = dataPoint.dataIndex;
@@ -359,9 +361,9 @@ export default {
                     // Ensure the color is correctly referenced
                     const color = this.colorParse[index % this.colorParse[datasetIndex].length];
 
-                    const value = this.formatNumber(this.datasets[datasetIndex].data[index]);
+                    const value = this.formatNumber(this.datasets[datasetIndex].data[index].v);
 
-                    const displayValue = `${value.v}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
+                    const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
 
                     divValue.innerHTML += `
                     <div class="tooltip_value-content">
