@@ -200,7 +200,7 @@ export default {
     },
     showLabels: {
       type: [Array],
-      default: undefined,
+      default: () => [],
     },
     pointRadius: {
       type: Number,
