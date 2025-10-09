@@ -309,8 +309,9 @@ export default {
                   return this.formatNumber(value);
                 },
                 title: (tooltipItems) => {
-                  console.log("treemap title callback", tooltipItems, tooltipItems[0].raw)
-                  return tooltipItems[0].label;
+                  const value = this.datasets[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
+                  console.log("treemap title callback", value);
+                  return value;
                 },
                 labelTextColor: (tooltipItems) => {
                   return this.colorParse[tooltipItems.datasetIndex][tooltipItems.dataIndex];
