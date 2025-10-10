@@ -143,6 +143,7 @@
 import { Chart, LineController, LineElement } from 'chart.js';
 import { chartMixins, configureChartDefaults } from '@/utils/global.js';
 import { choosePalette, generateBarLineChartColors } from '@/utils/colors.js';
+import { ticksCallback } from '@/utils/labels.js';
 import { plugins } from '@/utils/plugins.js';
 
 Chart.register(LineController, LineElement);
@@ -555,16 +556,7 @@ export default {
               ticks: {
                 padding: 10,
                 maxTicksLimit: 5,
-                callback: (value) => {
-                  if (value >= 1000000000 || value <= -1000000000) {
-                    return value / 1e9 + 'B';
-                  } else if (value >= 1000000 || value <= -1000000) {
-                    return value / 1e6 + 'M';
-                  } else if (value >= 1000 || value <= -1000) {
-                    return value / 1e3 + 'K';
-                  }
-                  return value;
-                },
+                callback: ticksCallback,
               },
               ...(this.yBarMin ? { suggestedMin: this.yBarMin } : {}),
               ...(this.yBarMax ? { suggestedMax: this.yBarMax } : {}),
@@ -583,16 +575,7 @@ export default {
               ticks: {
                 padding: 10,
                 maxTicksLimit: 5,
-                callback: (value) => {
-                  if (value >= 1000000000 || value <= -1000000000) {
-                    return value / 1e9 + 'B';
-                  } else if (value >= 1000000 || value <= -1000000) {
-                    return value / 1e6 + 'M';
-                  } else if (value >= 1000 || value <= -1000) {
-                    return value / 1e3 + 'K';
-                  }
-                  return value;
-                },
+                callback: ticksCallback,
               },
               ...(this.yLineMin ? { suggestedMin: this.yLineMin } : {}),
               ...(this.yLineMax ? { suggestedMax: this.yLineMax } : {}),

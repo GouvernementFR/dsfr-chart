@@ -104,7 +104,7 @@
 import { Chart, LineController, LineElement, Filler, PointElement, LinearScale, CategoryScale } from 'chart.js';
 import { chartMixins, configureChartDefaults } from '@/utils/global.js';
 import { generateAreaLineChartColors } from '@/utils/colors.js';
-import { getIndexes } from '@/utils/labels.js';
+import { getIndexes, ticksCallback } from '@/utils/labels.js';
 import { plugins } from '@/utils/plugins.js';
 
 Chart.register(LineController, LineElement, Filler, PointElement, LinearScale, CategoryScale);
@@ -439,16 +439,7 @@ export default {
               ticks: {
                 padding: 10,
                 maxTicksLimit: 5,
-                callback: (value) => {
-                  if (value >= 1000000000 || value <= -1000000000) {
-                    return value / 1e9 + 'B';
-                  } else if (value >= 1000000 || value <= -1000000) {
-                    return value / 1e6 + 'M';
-                  } else if (value >= 1000 || value <= -1000) {
-                    return value / 1e3 + 'K';
-                  }
-                  return value;
-                },
+                callback: ticksCallback,
               },
               ...(this.yAreaMin ? { suggestedMin: this.yAreaMin } : {}),
               ...(this.yAreaMax ? { suggestedMax: this.yAreaMax } : {}),
@@ -468,16 +459,7 @@ export default {
               ticks: {
                 padding: 10,
                 maxTicksLimit: 5,
-                callback: (value) => {
-                  if (value >= 1000000000 || value <= -1000000000) {
-                    return value / 1e9 + 'B';
-                  } else if (value >= 1000000 || value <= -1000000) {
-                    return value / 1e6 + 'M';
-                  } else if (value >= 1000 || value <= -1000) {
-                    return value / 1e3 + 'K';
-                  }
-                  return value;
-                },
+                callback: ticksCallback,
               },
               ...(this.yLineMin ? { suggestedMin: this.yLineMin } : {}),
               ...(this.yLineMax ? { suggestedMax: this.yLineMax } : {}),

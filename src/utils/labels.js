@@ -33,3 +33,14 @@ export const getIndexes = (datasets, showLabelsParse) => {
     }
   });
 }
+
+export const ticksCallback = (value) => {
+  if (value >= 1000000000 || value <= -1000000000) {
+    return value / 1e9 + 'B';
+  } else if (value >= 1000000 || value <= -1000000) {
+    return value / 1e6 + 'M';
+  } else if (value >= 1000 || value <= -1000) {
+    return value / 1e3 + 'K';
+  }
+  return value;
+}
