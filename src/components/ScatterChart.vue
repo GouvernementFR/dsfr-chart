@@ -89,6 +89,7 @@
 import { Chart, ScatterController } from 'chart.js';
 import { chartMixins, configureChartDefaults } from '@/utils/global.js';
 import { choosePalette, generateScatterChartColors } from '@/utils/colors.js';
+import { plugins } from '@/utils/plugins.js';
 
 Chart.register(ScatterController);
 
@@ -398,36 +399,8 @@ export default {
         },
         plugins: [
           {
-            afterDraw: (chart) => {
-              if (chart.tooltip?._active && chart.tooltip?._active.length) {
-                const { ctx } = chart;
-                const x = chart.tooltip.getActiveElements()[0].element.tooltipPosition().x;
-                const index = chart.tooltip._active[0].index;
-
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(x, chart.scales.y.top);
-                ctx.lineTo(x, chart.scales.y.bottom);
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = this.colorPrecisionBar;
-                ctx.setLineDash([10, 5]);
-                ctx.stroke();
-                ctx.restore();
-
-                this.yparse.forEach((i) => {
-                  let y = chart.scales.y.getPixelForValue(i[index]);
-                  ctx.save();
-                  ctx.beginPath();
-                  ctx.moveTo(chart.scales.x.left, y);
-                  ctx.lineTo(chart.scales.x.right, y);
-                  ctx.lineWidth = 1;
-                  ctx.strokeStyle = this.colorPrecisionBar;
-                  ctx.setLineDash([10, 5]);
-                  ctx.stroke();
-                  ctx.restore();
-                });
-              }
-            },
+            id: 'hoverAxisLines',
+            afterDraw: plugins.hoverAxisLines.afterDraw_1D(this.yparse),
           },
         ],
         options: {

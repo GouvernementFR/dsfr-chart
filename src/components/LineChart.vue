@@ -103,6 +103,8 @@ import { Chart, LineController, LineElement } from 'chart.js';
 import chroma from 'chroma-js';
 import { chartMixins, configureChartDefaults } from '@/utils/global.js';
 import { choosePalette, getColorsByIndex, getNeutralColor } from '@/utils/colors.js';
+import { getIndexes } from '@/utils/labels.js';
+import { plugins } from '@/utils/plugins.js';
 
 Chart.register(LineController, LineElement);
 
@@ -502,41 +504,7 @@ export default {
 
       const ctx = this.$refs[this.chartId].getContext('2d');
 
-      // La props 'showLabels' peut être une liste d'index, une string ou non définie
-      // En fonction de sa valeur, on détermine les index des points à labeliser
-      const showLabels = Array.isArray(this.showLabelsParse) ? true : this.showLabelsParse != undefined;
-      const indexesWithLabels = this.datasets.map((sets, di) => {
-        if (!this.showLabelsParse[di]) return null;
-
-        // Si c'est une liste d'index, on la retourne telle quelle
-        if (Array.isArray(this.showLabelsParse[di])) {
-          return [...this.showLabelsParse[di]];
-        }
-        switch (this.showLabelsParse[di]) {
-          case 'all':
-            return sets.data.map((_, index) => index);
-          case 'edges':
-            return [0, sets.data.length - 1];
-          case 'minmax': {
-            if (sets.data.length === 0) return [];            
-            const allYValues = sets.data.map(p => p.y);
-            const min = Math.min(...allYValues);
-            const max = Math.max(...allYValues);
-            const indexes = [];
-            sets.data.forEach((value, index) => {
-              if (value.y === min || value.y === max) {
-                if (!indexes.includes(index)) {
-                  indexes.push(index);
-                }
-              }
-            });
-            return indexes;
-          }
-          default:
-            console.error('La prop showLabels doit être une liste d\'index, "all", "edges" ou "minmax".');
-            return null;
-        }
-      });
+      const indexesWithLabels = getIndexes(this.datasets, this.showLabelsParse);
 
       this.chart = new Chart(ctx, {
         type: 'line',
@@ -546,143 +514,16 @@ export default {
         },
         plugins: [
           {
-            afterDraw: (chart) => {
-              if (chart.tooltip?._active && chart.tooltip?._active.length) {
-                const { ctx } = chart;
-                const x = chart.tooltip.getActiveElements()[0].element.tooltipPosition().x;
-                const index = chart.tooltip._active[0].index;
-
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(x, chart.scales.y.top);
-                ctx.lineTo(x, chart.scales.y.bottom);
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = this.colorPrecisionBar;
-                ctx.setLineDash([10, 5]);
-                ctx.stroke();
-                ctx.restore();
-
-                this.yparse.forEach((i) => {
-                  let y = chart.scales.y.getPixelForValue(i[index]);
-                  ctx.save();
-                  ctx.beginPath();
-                  ctx.moveTo(chart.scales.x.left, y);
-                  ctx.lineTo(chart.scales.x.right, y);
-                  ctx.lineWidth = 1;
-                  ctx.strokeStyle = this.colorPrecisionBar;
-                  ctx.setLineDash([10, 5]);
-                  ctx.stroke();
-                  ctx.restore();
-                });
-              }
-            },
+            id: 'hoverAxisLines',
+            afterDraw: plugins.hoverAxisLines.afterDraw_1D.call(this, this.yparse),
           },
           {
             id: 'pointLabels',
-            afterDatasetsDraw(chart) {
-              if (!showLabels) return;
-
-              const { ctx, chartArea } = chart;
-              const drawnBoxes = [];
-
-              chart.data.datasets.forEach((dataset, i) => {
-                const meta = chart.getDatasetMeta(i);
-                if (meta.hidden) return;
-
-                meta.data.forEach((point, index) => {
-                  if (!indexesWithLabels[i] || indexesWithLabels[i] && !indexesWithLabels[i].includes(index)) return;
-
-                  const value = dataset.data[index];
-                  const text = value.y !== undefined ? value.y : value; // compatibilité bar/line
-                  const fontSize = 12;
-                  ctx.font = `${fontSize}px sans-serif`;
-                  ctx.textAlign = 'center';
-                  ctx.textBaseline = 'bottom';
-
-                  const x = point.x;
-                  const y = point.y - 10;
-
-                  // Mesurer la largeur et la hauteur du texte
-                  const textWidth = ctx.measureText(text).width;
-                  const textHeight = fontSize;
-
-                  // Calculer les limites du texte
-                  const box = {
-                    left: x - textWidth / 2,
-                    right: x + textWidth / 2,
-                    top: y - textHeight,
-                    bottom: y,
-                  };
-
-                  if (
-                    box.left < chartArea.left ||
-                    box.right > chartArea.right ||
-                    box.top < chartArea.top ||
-                    box.bottom > chartArea.bottom
-                  ) {
-                    return;
-                  }
-
-                  const overlaps = drawnBoxes.some(b =>
-                    !(box.right < b.left || box.left > b.right || box.bottom < b.top || box.top > b.bottom)
-                  );
-                  if (overlaps) return;
-
-                  ctx.fillStyle = '#333';
-                  ctx.fillText(text, x, y);
-
-                  drawnBoxes.push(box);
-                });
-              });
-            },
+            afterDatasetsDraw: plugins.pointLabels.afterDatasetsDraw.call(this, indexesWithLabels),
           },
           {
             id: 'highlightZone',
-            beforeDraw: (chart) => {
-              const { ctx, chartArea, scales } = chart;
-              const start = this.highlightStart;
-              const end = this.highlightEnd;
-
-              if (!start || !end) return;
-
-              const xStart = scales.x.getPixelForValue(start);
-              const xEnd = scales.x.getPixelForValue(end);
-
-              // === Zone grisée ===
-              ctx.save();
-              ctx.fillStyle = 'rgba(150, 150, 150, 0.15)';
-              ctx.fillRect(xStart, chartArea.top, xEnd - xStart, chartArea.bottom - chartArea.top);
-
-              // === Bordures ===
-              ctx.strokeStyle = 'rgba(150, 150, 150, 0.25)';
-              ctx.lineWidth = 2;
-              ctx.beginPath();
-              ctx.moveTo(xStart, chartArea.top);
-              ctx.lineTo(xStart, chartArea.bottom);
-              ctx.moveTo(xEnd, chartArea.top);
-              ctx.lineTo(xEnd, chartArea.bottom);
-              ctx.stroke();
-
-              // === Texte optionnel ===
-              if (this.highlightLabel) {
-                ctx.fillStyle = this.highlightLabelColor;
-                ctx.font = `${this.highlightLabelSize}px sans-serif`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-
-                const textX = (xStart + xEnd) / 2;
-                let textY = chartArea.top + 20;
-
-                if (this.highlightLabelPosition === 'middle')
-                  textY = chartArea.top + (chartArea.bottom - chartArea.top) / 2;
-                else if (this.highlightLabelPosition === 'bottom')
-                  textY = chartArea.bottom - 20;
-
-                ctx.fillText(this.highlightLabel, textX, textY);
-              }
-
-              ctx.restore();
-            },
+            beforeDraw: plugins.highlightZone.beforeDraw.bind(this),
           },
         ],
         options: {

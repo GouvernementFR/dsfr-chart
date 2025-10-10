@@ -143,6 +143,7 @@
 import { Chart, LineController, LineElement } from 'chart.js';
 import { chartMixins, configureChartDefaults } from '@/utils/global.js';
 import { choosePalette, generateBarLineChartColors } from '@/utils/colors.js';
+import { plugins } from '@/utils/plugins.js';
 
 Chart.register(LineController, LineElement);
 
@@ -524,46 +525,8 @@ export default {
         },
         plugins: [
           {
-            afterDraw: (chart) => {
-              if (chart.tooltip?._active && chart.tooltip?._active.length) {
-                const { ctx } = chart;
-                const x = chart.tooltip.getActiveElements()[0].element.tooltipPosition().x;
-                const index = chart.tooltip._active[0].index;
-
-                const yBars = chart.scales.y.getPixelForValue(this.yBarParse[index]);
-                const yLines = chart.scales.yLine.getPixelForValue(this.yLineParse[index]);
-
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(x, chart.scales.y.top);
-                ctx.lineTo(x, chart.scales.y.bottom);
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = this.colorPrecisionBar;
-                ctx.setLineDash([10, 5]);
-                ctx.stroke();
-                ctx.restore();
-
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(chart.scales.x.right, yLines);
-                ctx.lineTo(x, yLines);
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = this.colorPrecisionBar;
-                ctx.setLineDash([10, 5]);
-                ctx.stroke();
-                ctx.restore();
-
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(chart.scales.x.left, yBars);
-                ctx.lineTo(x, yBars);
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = this.colorPrecisionBar;
-                ctx.setLineDash([10, 5]);
-                ctx.stroke();
-                ctx.restore();
-              }
-            },
+            id: 'hoverAxisLines',
+            afterDraw: plugins.hoverAxisLines.afterDraw_2D(this.yBarParse, this.yLineParse),
           },
         ],
         options: {
