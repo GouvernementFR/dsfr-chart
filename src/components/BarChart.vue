@@ -307,6 +307,10 @@ export default {
           datasets: this.datasets,
         },
         options: {
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
           indexAxis: this.horizontal ? 'y' : 'x',
           aspectRatio: this.aspectRatio,
           scales: {

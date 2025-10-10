@@ -228,6 +228,10 @@ export default {
           datasets: this.datasets,
         },
         options: {
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
           aspectRatio: this.aspectRatio,
           layout: {
             padding: {
