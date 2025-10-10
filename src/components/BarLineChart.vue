@@ -436,7 +436,7 @@ export default {
 
       if (typeof this.xparse[0] === 'number') {
         const xsort = [...this.xparse].sort((a, b) => a - b);
-        
+
         xsort.forEach((k) => {
           const index = this.xparse.findIndex((el) => el === k);
 
@@ -531,6 +531,10 @@ export default {
           },
         ],
         options: {
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
           aspectRatio: this.aspectRatio,
           scales: {
             x: {

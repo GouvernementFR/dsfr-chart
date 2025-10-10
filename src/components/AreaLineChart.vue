@@ -413,6 +413,10 @@ export default {
           },
         ],
         options: {
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
           layout: {
             padding: 0, // supprime toutes les marges
           },

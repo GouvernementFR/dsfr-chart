@@ -527,6 +527,10 @@ export default {
           },
         ],
         options: {
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
           aspectRatio: this.aspectRatio,
           scales: {
             x: {

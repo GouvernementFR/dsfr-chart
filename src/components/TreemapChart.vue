@@ -1,5 +1,5 @@
 <template>
-  <!-- 
+  <!--
     FIXME: Temporary fix for Teleport issue when databoxId is not found in the DOM.
     This bug is due to the different lifecycle between Chart.js and Chart.js-Treemap.
    -->
@@ -260,7 +260,7 @@ export default {
     loadColors() {
       // Simuler une structure yparse pour la génération des couleurs
       const mockYparse = [this.dataParse.map(item => item[this.value] || item.value)];
-      
+
       const { colorParse, colorHover } = generateTreemapChartColors({
         yparse: mockYparse,
         tmpColorParse: [],
@@ -290,6 +290,10 @@ export default {
           datasets: this.datasets,
         },
         options: {
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
           aspectRatio: this.aspectRatio,
           responsive: true,
           maintainAspectRatio: true,
