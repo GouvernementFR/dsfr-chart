@@ -6,7 +6,7 @@
     <!-- Header -->
     <div class="fr-p-2w databox__header">
       <h3 class="fr-h6 fr-mb-0">
-        {{ title }}
+        {{ databoxTitle }}
       </h3>
 
       <div :class="'flex screenshot-hide-' + id">
@@ -296,7 +296,7 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  title: {
+  databoxTitle: {
     type: String,
     required: true,
   },

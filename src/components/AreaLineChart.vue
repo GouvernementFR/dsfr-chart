@@ -55,21 +55,6 @@
           <canvas :ref="chartId" />
 
           <div class="chart_legend fr-mb-0 fr-mt-4v">
-            <!-- Areas -->
-            <div
-              v-for="(areaName, index) in nameAreasParse"
-              :key="index"
-              class="flex fr-mt-3v fr-mb-1v"
-            >
-              <span
-                class="legende_dot"
-                :style="{ 'background-color': colorAreaParse[Math.min(index, colorAreaParse.length - 1)] }"
-              />
-              <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-                {{ capitalize(areaName || 'Area ' + (index + 1)) }}
-              </p>
-            </div>
-
             <!-- Lignes -->
             <div
               v-for="(lineName, index) in nameLinesParse"
@@ -82,6 +67,21 @@
               />
               <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
                 {{ capitalize(lineName || 'Line ' + (index + 1)) }}
+              </p>
+            </div>
+
+            <!-- Areas -->
+            <div
+              v-for="(areaName, index) in nameAreasParse"
+              :key="index"
+              class="flex fr-mt-3v fr-mb-1v"
+            >
+              <span
+                class="legende_dot"
+                :style="{ 'background-color': colorAreaParse[Math.min(index, colorAreaParse.length - 1)] }"
+              />
+              <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+                {{ capitalize(areaName || 'Area ' + (index + 1)) }}
               </p>
             </div>
           </div>
@@ -480,7 +480,7 @@ export default {
               callbacks: {
                 label: (tooltipItems) => {
                   const label = [];
-                  [...this.areasDatasets, ...this.linesDatasets].forEach((set) => {
+                  [...this.linesDatasets, ...this.areasDatasets].forEach((set) => {
                     label.push(this.formatNumber(set.data[tooltipItems.dataIndex]));
                   });
                   return label;
