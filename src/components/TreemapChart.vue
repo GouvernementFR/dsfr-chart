@@ -295,6 +295,7 @@ export default {
           interaction: {
             mode: 'index',
             intersect: false,
+            axis: 'xy',
           },
           aspectRatio: this.aspectRatio,
           responsive: true,

@@ -314,6 +314,7 @@ export default {
           interaction: {
             mode: 'index',
             intersect: false,
+            axis: this.horizontal ? 'y' : 'x',
           },
           indexAxis: this.horizontal ? 'y' : 'x',
           aspectRatio: this.aspectRatio,
