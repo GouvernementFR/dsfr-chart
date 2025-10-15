@@ -216,6 +216,24 @@ export const chartData = {
       tableName: 'Indicateur',
     },
   },
+  tableBarChart: {
+    x: [["1 - Chine", "2 - États-Unis", "3 - Japon"]],
+    y: [
+      [-3219.3, -2753.6, -2354.2], // ← bar line as first dataset
+      [3753.1, 4095.2, 4872.4], // ← bar line as second dataset
+      [2.8, -3.1, 1.5] // ← point line as third dataset
+    ],
+    yLines: [
+      [-3219.3, -2753.6, -2354.2],
+      [3753.1, 4095.2, 4872.4],
+      [2.8, -3.1, 1.5]
+    ],
+    name: ["Imports", "Exports", "Variation (%)"],
+    colors: ["#e4794a", "#68a532", "#666666"],
+    unitTooltip: "milliards USD",
+    horizontal: true,
+    stacked: true
+  },
   treemapChart: {
     default: {
       name: ["Europe", "France", "Allemagne", "Italie", "Espagne", "Portugal", "Belgique", "Pays-Bas", "Luxembourg", "Royaume-Uni", "Irlande"],

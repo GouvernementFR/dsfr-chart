@@ -5,6 +5,7 @@ import path from 'path';
 export default {
   resolve: {
     alias: {
+      // eslint-disable-next-line no-undef
       '@': path.resolve(__dirname, './src'),
     },
   },
@@ -35,7 +36,7 @@ export default {
     vue({
       template: {
         compilerOptions: {
-          isCustomElement: (tag) => ['data-box', 'area-line-chart', 'bar-chart', 'bar-line-chart', 'gauge-chart', 'line-chart', 'map-chart', 'map-chart-reg', 'pie-chart', 'radar-chart', 'scatter-chart', 'table-chart', 'treemap-chart'].includes(tag),
+          isCustomElement: (tag) => ['data-box', 'area-line-chart', 'bar-chart', 'bar-line-chart', 'gauge-chart', 'line-chart', 'map-chart', 'map-chart-reg', 'pie-chart', 'radar-chart', 'scatter-chart', 'table-chart', 'table-bar-chart', 'treemap-chart'].includes(tag),
         },
       },
     }),

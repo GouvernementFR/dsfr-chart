@@ -1,5 +1,6 @@
 <template>
   <Teleport
+    defer
     :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
@@ -162,6 +163,7 @@ export default {
       labels: [],
       xparse: [],
       yparse: [],
+      pvparse: [],
       nameParse: [],
       tmpColorParse: [],
       colorParse: [],
@@ -209,6 +211,7 @@ export default {
       this.labels = [];
       this.xparse = [];
       this.yparse = [];
+      this.pvparse = [];
       this.nameParse = [];
       this.tmpColorParse = [];
       this.colorParse = [];
@@ -223,6 +226,7 @@ export default {
         // On gère la legacy où x et y pouvaient être passés en string
         this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
         this.yparse = typeof this.y === 'string' ? JSON.parse(this.y) : this.y;
+        this.pvparse = typeof this.pointValues === 'string' ? JSON.parse(this.pointValues) : this.pointValues;
 
         if (!Array.isArray(this.xparse) || !Array.isArray(this.xparse[0])) {
           throw new Error("La prop 'x' doit être une liste de listes.");
@@ -457,7 +461,7 @@ export default {
               const { ctx, scales } = chart;
               const isHorizontal = chart.config.options.indexAxis === 'y';
               const datasets = chart.data.datasets;
-              const pointValues = this.pointValues;
+              const pointValues = this.pvparse;
 
               ctx.save();
 

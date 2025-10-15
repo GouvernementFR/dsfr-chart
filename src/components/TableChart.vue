@@ -1,5 +1,6 @@
 <template>
   <Teleport
+    defer
     :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'global')"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
@@ -16,9 +17,6 @@
           <div class="fr-table__container">
             <div class="fr-table__content">
               <table>
-                <caption>
-                  {{ tableName }}
-                </caption>
                 <thead>
                   <tr>
                     <th

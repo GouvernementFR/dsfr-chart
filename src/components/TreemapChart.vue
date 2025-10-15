@@ -4,7 +4,8 @@
     This bug is due to the different lifecycle between Chart.js and Chart.js-Treemap.
    -->
   <Teleport
-    :disabled="false"
+    defer
+    :disabled="(!databoxId && !databoxType && databoxSource === 'default')"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
     <div
@@ -178,6 +179,7 @@ export default {
   },
   mounted() {
     this.resetData();
+    this.getData();
     this.createChart();
 
     this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
