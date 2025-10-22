@@ -12,6 +12,7 @@
       <div :class="'flex screenshot-hide-' + id">
         <!-- Tooltip -->
         <button
+          v-if="tooltipTitle && tooltipContent"
           class="fr-btn--tooltip fr-btn"
           type="button"
           :aria-describedby="'tooltip-' + id"
