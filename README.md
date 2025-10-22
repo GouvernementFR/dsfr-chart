@@ -968,8 +968,8 @@ Voici la liste des props disponibles pour le composant `DataBox` :
 
 ### Optionnelles
 
-- **tooltip-title** `(String)` (défaut : '') : titre de la tooltip (Le titre **et** sont contenus doivent être renseignés pour afficher le bouton de la tooltip)
-- **tooltip-content** `(String)` (défaut : '') : contenu de la tooltip (Le titre **et** sont contenus doivent être renseignés pour afficher le bouton de la tooltip)
+- **tooltip-title** `(String)` (défaut : '') : titre de la tooltip (Le titre **et** son contenu doivent être renseignés pour afficher le bouton de la tooltip)
+- **tooltip-content** `(String)` (défaut : '') : contenu de la tooltip (Le titre **et** son contenu doivent être renseignés pour afficher le bouton de la tooltip)
 - **modal-title** `(String)` (défaut : '') : titre de la modale
 - **modal-content** `(String)` (défaut : '') : contenu de la modale
 - **default-source** `(String)` (défaut : null) : source à afficher par défaut
