@@ -1,10 +1,3 @@
-import { defineCustomElement } from 'vue';
+import { defineChart } from './chart-factory.js';
 
-import '@/styles/style.scss';
-import '@/styles/DataBox.scss';
-
-import DataBox from '@/components/DataBox.vue';
-
-const DataBoxElement = defineCustomElement(DataBox, { shadowRoot: false });
-
-customElements.define('data-box', DataBoxElement);
+defineChart('data-box');

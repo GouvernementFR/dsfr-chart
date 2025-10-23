@@ -1,9 +1,3 @@
-import { defineCustomElement } from 'vue';
+import { defineChart } from './chart-factory.js';
 
-import '@/styles/style.scss';
-
-import ScatterChart from '@/components/ScatterChart.vue';
-
-const ScatterChartElement = defineCustomElement(ScatterChart, { shadowRoot: false });
-
-customElements.define('scatter-chart', ScatterChartElement);
+defineChart('scatter-chart');

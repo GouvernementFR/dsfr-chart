@@ -1,8 +1,8 @@
 <template>
   <Teleport
     defer
-    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
-    :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
+    :disabled="!databoxId || !databoxType || databoxSource === 'default' || !$el?.ownerDocument?.getElementById?.(databoxId + '-' + databoxType + '-' + databoxSource)"
+    :to="databoxId && databoxType && databoxSource !== 'default' ? '#' + databoxId + '-' + databoxType + '-' + databoxSource : undefined"
   >
     <div
       :ref="widgetId"
@@ -53,7 +53,7 @@
 <script>
 import { Chart, RadarController, RadialLinearScale } from 'chart.js';
 import chroma from 'chroma-js';
-import { chartMixins, configureChartDefaults } from '@/utils/global.js';
+import { chartMixins, generateChartIds, setupThemeListener } from '../utils/global.js';
 import { choosePalette, generateColors } from '@/utils/colors.js';
 
 Chart.register(RadarController, RadialLinearScale);
@@ -139,21 +139,14 @@ export default {
     },
   },
   created() {
-    configureChartDefaults();
-    this.chartId = 'dsfr-chart-' + Math.floor(Math.random() * 1000);
-    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
+    generateChartIds.call(this);
   },
   mounted() {
+    setupThemeListener.call(this);
     this.resetData();
     this.createChart();
 
     this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
-    const element = document.documentElement;
-    element.addEventListener('dsfr.theme', (e) => {
-      if (this.chartId !== '') {
-        this.changeColors(e.detail.theme);
-      }
-    });
   },
   methods: {
     resetData() {

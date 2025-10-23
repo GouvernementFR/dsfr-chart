@@ -1,8 +1,8 @@
 <template>
   <Teleport
     defer
-    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
-    :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
+    :disabled="!databoxId || !databoxType || databoxSource === 'default' || !$el?.ownerDocument?.getElementById?.(databoxId + '-' + databoxType + '-' + databoxSource)"
+    :to="databoxId && databoxType && databoxSource !== 'default' ? '#' + databoxId + '-' + databoxType + '-' + databoxSource : undefined"
   >
     <div
       :ref="widgetId"

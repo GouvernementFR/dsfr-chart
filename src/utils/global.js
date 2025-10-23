@@ -105,6 +105,28 @@ export const configureChartDefaults = () => {
   Chart.defaults.borderColor = '#cecece';
 };
 
+/**
+ * Generate unique IDs for charts and assign them to the component instance
+ */
+export const generateChartIds = function() {
+  configureChartDefaults();
+  this.chartId = 'dsfr-chart-' + Math.floor(Math.random() * 1000);
+  this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
+};
+
+/**
+ * Setup theme change listener for charts on the component instance
+ */
+export const setupThemeListener = function() {
+  const element = document.documentElement;
+  const component = this; // Capture the component instance
+  element.addEventListener('dsfr.theme', (e) => {
+    if (component && component.chartId && component.chartId !== '') {
+      component.changeColors(e.detail.theme);
+    }
+  });
+};
+
 export const chartMixins = {
   methods: {
     capitalize,

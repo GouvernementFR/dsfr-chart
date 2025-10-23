@@ -1,9 +1,3 @@
-import { defineCustomElement } from 'vue';
+import { defineChart } from './chart-factory.js';
 
-import '@/styles/style.scss';
-
-import TreemapChart from '@/components/TreemapChart.vue';
-
-const TreemapChartElement = defineCustomElement(TreemapChart, { shadowRoot: false });
-
-customElements.define('treemap-chart', TreemapChartElement);
+defineChart('treemap-chart');

@@ -1,10 +1,3 @@
-import { defineCustomElement } from 'vue';
+import { defineChart } from './chart-factory.js';
 
-import '@/styles/style.scss';
-import '@/styles/MapChart.scss';
-
-import MapChartReg from '@/components/MapChartReg.vue';
-
-const MapChartRegElement = defineCustomElement(MapChartReg, { shadowRoot: false });
-
-customElements.define('map-chart-reg', MapChartRegElement);
+defineChart('map-chart-reg');

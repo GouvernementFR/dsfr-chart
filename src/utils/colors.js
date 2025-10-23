@@ -268,12 +268,34 @@ export function getNeutralColor() {
 }
 
 export function choosePalette(selectedPalette, colorsInput) {
-  // Si colorsInput est une chaîne JSON, on la parse
+  // Cas problématiques fréquents en HTML/JS
+  const problematicValues = ['', 'undefined', 'null', '[object Object]', 'NaN'];
+  
+  // Si colorsInput est problématique, on utilise undefined
+  if (!colorsInput || 
+      colorsInput === null || 
+      (typeof colorsInput === 'string' && problematicValues.includes(colorsInput.trim()))) {
+    colorsInput = undefined;
+  }
+  
+  // Si colorsInput est une chaîne non-JSON (ex: "red,green,blue,yellow"), on la convertit
   if (typeof colorsInput === 'string') {
-    try {
+    // D'abord essayer de parser comme JSON
+    const trimmed = colorsInput.trim();
+    if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+      // C'est probablement du JSON
+      try {
         colorsInput = JSON.parse(colorsInput);
-    } catch (error) {
+      } catch (error) {
         console.error('Invalid JSON string:', error);
+        colorsInput = undefined;
+      }
+    } else if (trimmed.includes(',')) {
+      // C'est probablement une liste séparée par des virgules
+      colorsInput = trimmed.split(',').map(color => color.trim()).filter(color => color !== '');
+    } else {
+      // C'est une seule couleur
+      colorsInput = [trimmed];
     }
   }
 

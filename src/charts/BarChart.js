@@ -1,9 +1,3 @@
-import { defineCustomElement } from 'vue';
+import { defineChart } from './chart-factory.js';
 
-import '@/styles/style.scss';
-
-import BarChart from '@/components/BarChart.vue';
-
-const BarChartElement = defineCustomElement(BarChart, { shadowRoot: false });
-
-customElements.define('bar-chart', BarChartElement);
+defineChart('bar-chart');

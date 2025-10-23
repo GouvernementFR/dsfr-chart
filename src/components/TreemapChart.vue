@@ -1,12 +1,12 @@
-<template>
+c'e<template>
   <!--
     FIXME: Temporary fix for Teleport issue when databoxId is not found in the DOM.
     This bug is due to the different lifecycle between Chart.js and Chart.js-Treemap.
    -->
   <Teleport
     defer
-    :disabled="(!databoxId && !databoxType && databoxSource === 'default')"
-    :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
+    :disabled="!databoxId || !databoxType || databoxSource === 'default' || !$el?.ownerDocument?.getElementById?.(databoxId + '-' + databoxType + '-' + databoxSource)"
+    :to="databoxId && databoxType && databoxSource !== 'default' ? '#' + databoxId + '-' + databoxType + '-' + databoxSource : undefined"
   >
     <div
       :ref="widgetId"
@@ -218,11 +218,17 @@ export default {
       try {
         if (typeof this.names === 'string') {
           console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer la prop 'names' comme une liste de strings.");
+          // Si c'est une chaîne vide ou undefined, utiliser un tableau vide
+          if (!this.names || this.names.trim() === '') {
+            this.nameParse = [];
+            return;
+          }
         }
 
         this.nameParse = typeof this.names === 'string' ? JSON.parse(this.names) : this.names;
       } catch (error) {
         console.error("Erreur lors du parsing des données de 'names':", error);
+        this.nameParse = []; // Valeur par défaut sûre
         return;
       }
 
