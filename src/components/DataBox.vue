@@ -380,39 +380,7 @@ const segmentedControl = computed(() => [true, 'true', ''].includes(props.segmen
 const fullscreen = computed(() => [true, 'true', ''].includes(props.fullscreen));
 const screenshot = computed(() => [true, 'true', ''].includes(props.screenshot));
 const download = computed(() => [true, 'true', ''].includes(props.download));
-const actions = computed(() => {
-  const problematicValues = ['', 'undefined', 'null', '[object Object]', 'NaN'];
-  
-  // Si actions est problématique, on utilise un tableau vide
-  if (!props.actions || 
-      props.actions === null || 
-      (typeof props.actions === 'string' && problematicValues.includes(props.actions.trim()))) {
-    return [];
-  }
-  
-  // Si actions est une chaîne non-JSON (ex: "action1,action2"), on la convertit
-  if (typeof props.actions === 'string') {
-    const trimmed = props.actions.trim();
-    if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
-      // C'est probablement du JSON
-      try {
-        return JSON.parse(props.actions);
-      } catch (error) {
-        console.error('Invalid JSON string for actions:', error);
-        return [];
-      }
-    } else if (trimmed.includes(',')) {
-      // C'est probablement une liste séparée par des virgules
-      return trimmed.split(',').map(action => action.trim()).filter(action => action !== '');
-    } else if (trimmed !== '') {
-      // C'est une seule action
-      return [trimmed];
-    }
-    return [];
-  }
-  
-  return Array.isArray(props.actions) ? props.actions : [];
-});
+const actions = computed(() => (typeof props.actions === 'string' ? JSON.parse(props.actions) : props.actions));
 
 const selectedView = ref(chartSources.value.length > 0 ? 'chart' : 'table');
 
