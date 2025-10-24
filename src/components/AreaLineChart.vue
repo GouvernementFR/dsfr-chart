@@ -1,117 +1,67 @@
 <template>
-  <Teleport
-    defer
-    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
-    :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
+  <ChartShell
+    :databox-id="databoxId"
+    :databox-type="databoxType"
+    :databox-source="databoxSource"
+    :widget-id="widgetId"
+    :chart-id="chartId"
+    :name-parse="[...nameLinesParse, ...nameAreasParse]"
+    :color-parse="[...colorParse, ...colorAreaParse]"
+    :date="date"
   >
-    <div
-      :ref="widgetId"
-      class="widget_container fr-grid-row"
-    >
-      <div class="fr-col-12">
-        <div class="chart">
-          <div class="tooltip">
-            <div class="tooltip_header fr-text--sm fr-mb-0" />
-            <div class="tooltip_body">
-              <div class="tooltip_value">
-                <!-- Areas -->
-                <div
-                  v-for="(areaColor, index) in colorAreaParse"
-                  :key="index"
-                  class="flex fr-mt-3v fr-mb-1v"
-                  :style="{ 'border-bottom': '1px solid #e0e0e0' }"
-                >
-                  <div class="tooltip_value-content">
-                    <span
-                      class="tooltip_dot"
-                      :style="{ 'background-color': colorAreaParse[Math.min(index, colorAreaParse.length - 1)] }"
-                    />
-                    <p class="tooltip_place">
-                      {{ capitalize(nameAreasParse[index] || 'Area ' + (index + 1)) }}
-                    </p>
-                  </div>
-                </div>
+    <template #canvas>
+      <canvas :ref="chartId" />
+    </template>
+    <template #legend>
+      <div class="chart_legend fr-mb-0 fr-mt-4v">
+        <!-- Lignes -->
+        <div
+          v-for="(lineName, index) in nameLinesParse"
+          :key="index"
+          class="flex fr-mt-3v fr-mb-1v"
+        >
+          <span
+            class="legende_dot"
+            :style="{ 'background-color': colorParse[Math.min(index, colorParse.length - 1)] }"
+          />
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+            {{ capitalize(lineName || 'Line ' + (index + 1)) }}
+          </p>
+        </div>
 
-                <!-- Lignes -->
-                <div
-                  v-for="(lineColor, index) in colorParse"
-                  :key="index"
-                  class="flex fr-mt-3v fr-mb-1v"
-                  :style="{ 'border-bottom': '1px solid #e0e0e0' }"
-                >
-                  <div class="tooltip_value-content">
-                    <span
-                      class="tooltip_dot"
-                      :style="{ 'background-color': colorParse[Math.min(index, colorParse.length - 1)] }"
-                    />
-                    <p class="tooltip_place">
-                      {{ capitalize(nameLinesParse[index] || 'Line ' + (index + 1)) }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <canvas :ref="chartId" />
-
-          <div class="chart_legend fr-mb-0 fr-mt-4v">
-            <!-- Lignes -->
-            <div
-              v-for="(lineName, index) in nameLinesParse"
-              :key="index"
-              class="flex fr-mt-3v fr-mb-1v"
-            >
-              <span
-                class="legende_dot"
-                :style="{ 'background-color': colorParse[Math.min(index, colorParse.length - 1)] }"
-              />
-              <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-                {{ capitalize(lineName || 'Line ' + (index + 1)) }}
-              </p>
-            </div>
-
-            <!-- Areas -->
-            <div
-              v-for="(areaName, index) in nameAreasParse"
-              :key="index"
-              class="flex fr-mt-3v fr-mb-1v"
-            >
-              <span
-                class="legende_dot"
-                :style="{ 'background-color': colorAreaParse[Math.min(index, colorAreaParse.length - 1)] }"
-              />
-              <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-                {{ capitalize(areaName || 'Area ' + (index + 1)) }}
-              </p>
-            </div>
-          </div>
-
-          <div
-            v-if="date"
-            class="flex fr-mt-1w"
-          >
-            <p class="fr-text--xs">
-              Mise à jour : {{ date }}
-            </p>
-          </div>
+        <!-- Areas -->
+        <div
+          v-for="(areaName, index) in nameAreasParse"
+          :key="index"
+          class="flex fr-mt-3v fr-mb-1v"
+        >
+          <span
+            class="legende_dot"
+            :style="{ 'background-color': colorAreaParse[Math.min(index, colorAreaParse.length - 1)] }"
+          />
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+            {{ capitalize(areaName || 'Area ' + (index + 1)) }}
+          </p>
         </div>
       </div>
-    </div>
-  </Teleport>
+    </template>
+  </ChartShell>
 </template>
 
 <script>
 import { Chart, LineController, LineElement, Filler, PointElement, LinearScale, CategoryScale } from 'chart.js';
-import { chartMixins, configureChartDefaults } from '@/utils/global.js';
+import { chartMixins, generateChartIds, setupThemeListener } from '@/utils/global.js';
 import { generateAreaLineChartColors } from '@/utils/colors.js';
 import { getIndexes, ticksCallback } from '@/utils/labels.js';
 import { plugins } from '@/utils/plugins.js';
+import ChartShell from '@/components/ChartShell.vue';
+import { externalTooltip } from '@/utils/externalTooltip.js';
 
 Chart.register(LineController, LineElement, Filler, PointElement, LinearScale, CategoryScale);
 
 export default {
   name: 'AreaLineChart',
+  components: { ChartShell },
   mixins: [chartMixins],
   props: {
     databoxId: {
@@ -228,90 +178,97 @@ export default {
     },
     highlightLabelColor: {
       type: String,
-      default: 'rgba(100, 100, 100, 1)'
-    },
-    highlightLabelSize: {
-      type: Number,
-      default: 14
-    },
-    highlightLabelPosition: {
-      type: String,
-      default: 'top', // 'top' | 'middle' | 'bottom'
-      validator: (v) => ['top', 'middle', 'bottom'].includes(v)
+      default: ''
     },
   },
   data() {
-    this.chart = undefined;
     return {
       widgetId: '',
       chartId: '',
       display: '',
+      chart: undefined,
       areasDatasets: [],
       linesDatasets: [],
       labels: [],
       xparse: [],
       yAreaParse: [],
       yLineParse: [],
-      showAreaLabelsParse: [],
-      showLinesLabelsParse: [],
       nameAreasParse: [],
       nameLinesParse: [],
-      colorParse: [],
-      colorAreaParse: [],
+      showAreaLabelsParse: [],
+      showLinesLabelsParse: [],
       colorAreaLineParse: [],
-      colorHover: [],
+      colorAreaParse: [],
       colorAreaHover: [],
+      colorParse: [],
+      colorHover: [],
     };
   },
+  watch: {
+    $props: {
+      handler() {
+        if (this.chartId) {
+          this.resetData();
+          this.getData();
+          this.createChart();
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
   created() {
-    configureChartDefaults();
-    this.chartId = 'dsfr-chart-' + Math.floor(Math.random() * 1000);
-    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
+    generateChartIds.call(this);
   },
   mounted() {
     this.resetData();
     this.createChart();
+
+    this.display = (this.$refs[this.widgetId] && (this.$refs[this.widgetId].offsetWidth || (this.$refs[this.widgetId].$el && this.$refs[this.widgetId].$el.offsetWidth)))
+      ? (this.$refs[this.widgetId].offsetWidth || this.$refs[this.widgetId].$el.offsetWidth) > 486 ? 'big' : 'small'
+      : 'small';
+    setupThemeListener(this.chartId, (theme) => this.changeColors(theme));
   },
   methods: {
     resetData() {
-      if (this.chart) this.chart.destroy();
+      if (this.chart) {
+        this.chart.destroy();
+      }
+      this.display = '';
       this.areasDatasets = [];
       this.linesDatasets = [];
       this.labels = [];
       this.xparse = [];
       this.yAreaParse = [];
       this.yLineParse = [];
-      this.showAreaLabelsParse = [];
-      this.showLinesLabelsParse = [];
       this.nameAreasParse = [];
       this.nameLinesParse = [];
-      this.colorParse = [];
-      this.colorAreaParse = [];
+      this.showAreaLabelsParse = [];
+      this.showLinesLabelsParse = [];
       this.colorAreaLineParse = [];
-      this.colorHover = [];
+      this.colorAreaParse = [];
       this.colorAreaHover = [];
+      this.colorParse = [];
+      this.colorHover = [];
+    },
+    loadColors() {
+      const { colorAreaParse, colorAreaLineParse, colorAreaHover, colorParse, colorHover } = generateAreaLineChartColors({
+        yLinesLength: this.yLineParse.length,
+        yBarsLength: this.yAreaParse.length,
+        selectedPalette: this.selectedPalette,
+        areasColors: this.areasColors,
+        linesColors: this.linesColors,
+      });
+
+      this.colorAreaLineParse = colorAreaLineParse;
+      this.colorAreaParse = colorAreaParse;
+      this.colorAreaHover = colorAreaHover;
+      this.colorParse = colorParse;
+      this.colorHover = colorHover;
     },
     getData() {
+      // Parsing des données
       try {
-        if (typeof this.x === 'string' || typeof this.yAreas === 'string' || typeof this.yLines === 'string') {
-          console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'x', 'yAreas' et 'yLines' comme une liste de nombres.");
-        }
-        // On gère la legacy où x et y pouvaient être passés en string
-        this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
-
-        this.yAreaParse = typeof this.yAreas === 'string' ? JSON.parse(this.yAreas) : this.yAreas;
-        this.yLineParse = typeof this.yLines === 'string' ? JSON.parse(this.yLines) : this.yLines;
-
-        if (!Array.isArray(this.xparse) || !Array.isArray(this.xparse[0])) {
-          throw new Error("La prop 'x' doit être une liste de listes.");
-        }
-        if (!Array.isArray(this.yAreaParse) || !Array.isArray(this.yAreaParse[0])) {
-          throw new Error("La prop 'yAreas' doit être une liste de listes.");
-        }
-        if (!Array.isArray(this.yLineParse) || (this.yLineParse.length > 0 && !Array.isArray(this.yLineParse[0]))) {
-          throw new Error("La prop 'yLines' doit être une liste de listes.");
-        }
-
         this.nameAreasParse = typeof this.nameAreas === 'string' ? JSON.parse(this.nameAreas) : this.nameAreas;
         this.nameLinesParse = typeof this.nameLines === 'string' ? JSON.parse(this.nameLines) : this.nameLines;
       } catch (err) {
@@ -490,91 +447,7 @@ export default {
                   return tooltipItems[0].label;
                 },
               },
-              external: (context) => {
-                // Tooltip Element
-                const dom = document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) || this.$el.nextElementSibling;
-
-                const tooltipEl = dom.querySelector('.tooltip');
-
-                const tooltipModel = context.tooltip;
-
-                if (!tooltipEl) return;
-
-                // Hide if no tooltip
-                if (!tooltipModel || tooltipModel.opacity === 0) {
-                  tooltipEl.style.opacity = 0;
-                  return;
-                }
-
-                // Set tooltip position classes
-                tooltipEl.classList.remove('above', 'below', 'no-transform');
-                if (tooltipModel.yAlign) {
-                  tooltipEl.classList.add(tooltipModel.yAlign);
-                } else {
-                  tooltipEl.classList.add('no-transform');
-                }
-
-                // Set Text
-                if (tooltipModel.body) {
-                  const titleLines = tooltipModel.title || [];
-                  const bodyLines = tooltipModel.body.map((bodyItem) => {
-                    return bodyItem.lines;
-                  });
-
-                  // Set the title in the tooltip header
-                  const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
-                  divDate.innerHTML = titleLines[0];
-
-                  const divValue = tooltipEl.querySelector('.tooltip_value');
-                  divValue.innerHTML = '';
-
-                  // Access color arrays for different datasets
-                  const colors = [...this.colorParse, ...this.colorAreaParse]; // Adjust to match your color variables
-
-                  // Iterate over bodyLines to set the color and value in the tooltip
-                  bodyLines[0].forEach((line, i) => {
-                    if (line) {
-                      const color = colors[Math.min(i, colors.length - 1)];
-
-                      // Détecter si c'est une barre ou une ligne en fonction de l'index
-                      const displayValue = i === 0 ? `${line}${this.unitTooltipArea ? ' ' + this.unitTooltipArea : ''}` : `${line}${this.unitTooltipLine ? ' ' + this.unitTooltipLine : ''}`;
-
-                      divValue.innerHTML += `
-                        <div class="tooltip_value-content">
-                          <span class="tooltip_dot" style="background-color:${color};"></span>
-                          <p class="tooltip_place fr-mb-0">${displayValue}</p>
-                        </div>
-                      `;
-                    }
-                  });
-                }
-
-                // Position the tooltip
-                const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;
-
-                const canvasWidth = Number(this.chart.canvas.style.width.replace(/\D/g, ''));
-                const canvasHeight = Number(this.chart.canvas.style.height.replace(/\D/g, ''));
-
-                let tooltipX = positionX + tooltipModel.caretX + 10;
-                let tooltipY = positionY + tooltipModel.caretY - 20;
-                if (tooltipX + tooltipEl.clientWidth > positionX + canvasWidth) {
-                  tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10;
-                }
-                if (tooltipY + tooltipEl.clientHeight > positionY + 0.9 * canvasHeight) {
-                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 20;
-                }
-                if (tooltipX < positionX) {
-                  tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2;
-                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 20;
-                }
-
-                tooltipEl.style.position = 'absolute';
-                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
-                tooltipEl.style.pointerEvents = 'none';
-                tooltipEl.style.left = tooltipX + 'px';
-                tooltipEl.style.top = tooltipY + 'px';
-                tooltipEl.style.opacity = 1;
-              },
+              external: (context) => externalTooltip(context, this, { unitLookup: (i) => (i === 0 ? this.unitTooltipArea : this.unitTooltipLine) }),
             },
           },
         },
