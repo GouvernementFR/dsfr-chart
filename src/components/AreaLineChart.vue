@@ -267,15 +267,37 @@ export default {
       this.colorHover = colorHover;
     },
     getData() {
-      // Parsing des données
+      // Parsing des données (supports legacy JSON strings)
+      try {
+        // x, yAreas, yLines can be passed as stringified JSON in legacy usage
+        this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
+        this.yAreaParse = typeof this.yAreas === 'string' ? JSON.parse(this.yAreas) : this.yAreas;
+        this.yLineParse = typeof this.yLines === 'string' ? JSON.parse(this.yLines) : this.yLines;
+
+        if (!Array.isArray(this.xparse) || !Array.isArray(this.xparse[0])) {
+          throw new Error("La prop 'x' doit être une liste de listes.");
+        }
+        if (!Array.isArray(this.yAreaParse) || !Array.isArray(this.yAreaParse[0])) {
+          throw new Error("La prop 'yAreas' doit être une liste de listes.");
+        }
+        if (!Array.isArray(this.yLineParse) || (this.yLineParse.length > 0 && !Array.isArray(this.yLineParse[0]))) {
+          throw new Error("La prop 'yLines' doit être une liste de listes.");
+        }
+      } catch (err) {
+        console.error('Erreur lors du parsing des données x, yAreas ou yLines:', err);
+        return;
+      }
+
+      // Noms
       try {
         this.nameAreasParse = typeof this.nameAreas === 'string' ? JSON.parse(this.nameAreas) : this.nameAreas;
         this.nameLinesParse = typeof this.nameLines === 'string' ? JSON.parse(this.nameLines) : this.nameLines;
       } catch (err) {
-        console.error('Erreur parsing:', err);
+        console.error('Erreur parsing names:', err);
         return;
       }
 
+      // Labels à afficher sur les points
       try {
         this.showAreaLabelsParse = typeof this.showAreasLabels === 'string' ? JSON.parse(this.showAreasLabels) : this.showAreasLabels;
         this.showLinesLabelsParse = typeof this.showLinesLabels === 'string' ? JSON.parse(this.showLinesLabels) : this.showLinesLabels;
@@ -291,22 +313,36 @@ export default {
         return;
       }
 
-      this.labels = this.xparse[0];
+      // Construction des labels et alignement des séries si x est numérique
+      if (typeof this.xparse[0] === 'number') {
+        const xsort = [...this.xparse].sort((a, b) => a - b);
+
+        const dataAreas = this.yAreaParse.map(() => []);
+        const dataLines = this.yLineParse.map(() => []);
+
+        xsort.forEach((k) => {
+          const index = this.xparse.findIndex((el) => el === k);
+
+          this.yAreaParse.forEach((area, i) => {
+            dataAreas[i].push(area[index]);
+          });
+
+          this.yLineParse.forEach((line, i) => {
+            dataLines[i].push(line[index]);
+          });
+        });
+
+        this.labels = xsort;
+        // réassigner les séries réordonnées
+        this.yAreaParse = dataAreas;
+        this.yLineParse = dataLines;
+      } else {
+        // Cas catégoriel : la première ligne de x contient les labels
+        this.labels = this.xparse[0];
+      }
 
       // Charger les couleurs
-      const { colorAreaParse, colorAreaLineParse, colorAreaHover, colorParse, colorHover } = generateAreaLineChartColors({
-        yLinesLength: this.yLineParse.length,
-        yBarsLength: this.yAreaParse.length,
-        selectedPalette: this.selectedPalette,
-        areasColors: this.areasColors,
-        linesColors: this.linesColors,
-      });
-
-      this.colorAreaLineParse = colorAreaLineParse;
-      this.colorAreaParse = colorAreaParse;
-      this.colorAreaHover = colorAreaHover;
-      this.colorParse = colorParse;
-      this.colorHover = colorHover;
+      this.loadColors();
 
       // Crée datasets area
       this.areasDatasets = this.yAreaParse.map((data, i) => ({
