@@ -100,7 +100,7 @@ export default {
       type: Array,
       required: true,
     },
-    names: {
+    name: {
       type: String,
       default: '',
     },
@@ -216,16 +216,11 @@ export default {
 
       // Parsing des données
       try {
-        if (typeof this.names === 'string') {
+        if (typeof this.name === 'string') {
           console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer la prop 'names' comme une liste de strings.");
-          // Si c'est une chaîne vide ou undefined, utiliser un tableau vide
-          if (!this.names || this.names.trim() === '') {
-            this.nameParse = [];
-            return;
-          }
         }
 
-        this.nameParse = typeof this.names === 'string' ? JSON.parse(this.names) : this.names;
+        this.nameParse = typeof this.name === 'string' ? JSON.parse(this.name) : this.name;
       } catch (error) {
         console.error("Erreur lors du parsing des données de 'names':", error);
         this.nameParse = []; // Valeur par défaut sûre
