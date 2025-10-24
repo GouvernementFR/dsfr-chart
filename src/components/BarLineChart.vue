@@ -1,156 +1,114 @@
 <template>
-  <Teleport
-    defer
-    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
-    :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
+  <ChartShell
+    :databox-id="databoxId"
+    :databox-type="databoxType"
+    :databox-source="databoxSource"
+    :widget-id="widgetId"
+    :chart-id="chartId"
+    :name-parse="[...nameBarsParse, ...nameLinesParse]"
+    :color-parse="[...colorBarParse, ...colorParse]"
+    :date="date"
   >
-    <div
-      :ref="widgetId"
-      class="widget_container fr-grid-row"
-    >
-      <div class="fr-col-12">
-        <div class="chart">
-          <div class="tooltip">
-            <div class="tooltip_header fr-text--sm fr-mb-0" />
-            <div class="tooltip_body">
-              <div class="tooltip_value">
-                <!-- Barre -->
-                <div
-                  v-for="(barColor, index) in nameBarsParse"
-                  :key="index"
-                  class="flex fr-mt-3v fr-mb-1v"
-                  :style="{ 'border-bottom': '1px solid #e0e0e0' }"
-                >
-                  <div class="tooltip_value-content">
-                    <span
-                      class="tooltip_dot"
-                      :style="{ 'background-color': nameBarsParse[Math.min(index, nameBarsParse.length - 1)] }"
-                    />
-                    <p class="tooltip_place">
-                      {{ capitalize(nameBarsParse[index] || 'Bar ' + (index + 1)) }}
-                    </p>
-                  </div>
-                </div>
+    <template #canvas>
+      <canvas :ref="chartId" />
+    </template>
 
-                <!-- Lignes -->
-                <div
-                  v-for="(lineColor, index) in colorParse"
-                  :key="index"
-                  class="flex fr-mt-3v fr-mb-1v"
-                  :style="{ 'border-bottom': '1px solid #e0e0e0' }"
-                >
-                  <div class="tooltip_value-content">
-                    <span
-                      class="tooltip_dot"
-                      :style="{ 'background-color': colorParse[Math.min(index, colorParse.length - 1)] }"
-                    />
-                    <p class="tooltip_place">
-                      {{ capitalize(nameLinesParse[index] || 'Line ' + (index + 1)) }}
-                    </p>
-                  </div>
-                </div>
+    <template #legend>
+      <div class="chart_legend fr-mb-0 fr-mt-4v">
+        <!-- Barre -->
+        <div
+          v-for="(barName, index) in nameBarsParse"
+          :key="index"
+          class="flex fr-mt-3v fr-mb-1v"
+        >
+          <span
+            class="legende_dot"
+            :style="{ 'background-color': colorBarParse[Math.min(index, colorBarParse.length - 1)] }"
+          />
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+            {{ capitalize(barName || 'Bar ' + (index + 1)) }}
+          </p>
+        </div>
 
-                <!-- Tu peux ajouter Hlines / Vlines si tu veux dans le tooltip de la même façon -->
-              </div>
-            </div>
-          </div>
+        <!-- Lignes -->
+        <div
+          v-for="(lineName, index) in nameLinesParse"
+          :key="index"
+          class="flex fr-mt-3v fr-mb-1v"
+        >
+          <span
+            class="legende_dot"
+            :style="{ 'background-color': colorParse[Math.min(index, colorParse.length - 1)] }"
+          />
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+            {{ capitalize(lineName || 'Line ' + (index + 1)) }}
+          </p>
+        </div>
 
-          <canvas :ref="chartId" />
+        <!-- Hlines -->
+        <div
+          v-for="(item, index) in hlineNameParse"
+          :key="index"
+          class="flex"
+        >
+          <span
+            class="legende_dash_line"
+            :style="{ 'background-color': hlineColorParse[index] }"
+          />
+          <span
+            class="legende_dash_line legende_dash_line_end"
+            :style="{ 'background-color': hlineColorParse[index] }"
+          />
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+            {{ capitalize(item) }}
+          </p>
+        </div>
 
-          <div class="chart_legend fr-mb-0 fr-mt-4v">
-            <!-- Barre -->
-            <div
-              v-for="(barName, index) in nameBarsParse"
-              :key="index"
-              class="flex fr-mt-3v fr-mb-1v"
-            >
-              <span
-                class="legende_dot"
-                :style="{ 'background-color': colorBarParse[Math.min(index, colorBarParse.length - 1)] }"
-              />
-              <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-                {{ capitalize(barName || 'Bar ' + (index + 1)) }}
-              </p>
-            </div>
-
-            <!-- Lignes -->
-            <div
-              v-for="(lineName, index) in nameLinesParse"
-              :key="index"
-              class="flex fr-mt-3v fr-mb-1v"
-            >
-              <span
-                class="legende_dot"
-                :style="{ 'background-color': colorParse[Math.min(index, colorParse.length - 1)] }"
-              />
-              <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-                {{ capitalize(lineName || 'Line ' + (index + 1)) }}
-              </p>
-            </div>
-
-            <!-- Hlines -->
-            <div
-              v-for="(item, index) in hlineNameParse"
-              :key="index"
-              class="flex"
-            >
-              <span
-                class="legende_dash_line"
-                :style="{ 'background-color': hlineColorParse[index] }"
-              />
-              <span
-                class="legende_dash_line legende_dash_line_end"
-                :style="{ 'background-color': hlineColorParse[index] }"
-              />
-              <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-                {{ capitalize(item) }}
-              </p>
-            </div>
-
-            <!-- Vlines -->
-            <div
-              v-for="(item, index) in vlineNameParse"
-              :key="index"
-              class="flex"
-            >
-              <span
-                class="legende_dash_line"
-                :style="{ 'background-color': vlineColorParse[index] }"
-              />
-              <span
-                class="legende_dash_line legende_dash_line_end"
-                :style="{ 'background-color': vlineColorParse[index] }"
-              />
-              <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
-                {{ capitalize(item) }}
-              </p>
-            </div>
-          </div>
-          <div
-            v-if="date"
-            class="flex fr-mt-1w"
-          >
-            <p class="fr-text--xs">
-              Mise à jour : {{ date }}
-            </p>
-          </div>
+        <!-- Vlines -->
+        <div
+          v-for="(item, index) in vlineNameParse"
+          :key="index"
+          class="flex"
+        >
+          <span
+            class="legende_dash_line"
+            :style="{ 'background-color': vlineColorParse[index] }"
+          />
+          <span
+            class="legende_dash_line legende_dash_line_end"
+            :style="{ 'background-color': vlineColorParse[index] }"
+          />
+          <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
+            {{ capitalize(item) }}
+          </p>
         </div>
       </div>
-    </div>
-  </Teleport>
+      <div
+        v-if="date"
+        class="flex fr-mt-1w"
+      >
+        <p class="fr-text--xs">
+          Mise à jour : {{ date }}
+        </p>
+      </div>
+    </template>
+  </ChartShell>
 </template>
 
 <script>
 import { Chart, LineController, LineElement } from 'chart.js';
-import { chartMixins, configureChartDefaults } from '@/utils/global.js';
+import { chartMixins, configureChartDefaults, setupThemeListener } from '@/utils/global.js';
 import { choosePalette, generateBarLineChartColors } from '@/utils/colors.js';
 import { ticksCallback } from '@/utils/labels.js';
 import { plugins } from '@/utils/plugins.js';
+import ChartShell from '@/components/ChartShell.vue';
+import { externalTooltip } from '@/utils/externalTooltip.js';
 
 Chart.register(LineController, LineElement);
 
 export default {
   name: 'BarLineChart',
+  components: { ChartShell },
   mixins: [chartMixins],
   props: {
     databoxId: {
@@ -328,13 +286,10 @@ export default {
     this.resetData();
     this.createChart();
 
-    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
-    const element = document.documentElement;
-    element.addEventListener('dsfr.theme', (e) => {
-      if (this.chartId !== '') {
-        this.changeColors(e.detail.theme);
-      }
-    });
+    this.display = (this.$refs[this.widgetId] && (this.$refs[this.widgetId].offsetWidth || (this.$refs[this.widgetId].$el && this.$refs[this.widgetId].$el.offsetWidth)))
+      ? (this.$refs[this.widgetId].offsetWidth || this.$refs[this.widgetId].$el.offsetWidth) > 486 ? 'big' : 'small'
+      : 'small';
+    setupThemeListener(this.chartId, (theme) => this.changeColors(theme));
   },
   methods: {
     resetData() {
@@ -606,91 +561,7 @@ export default {
                   return tooltipItems[0].label;
                 },
               },
-              external: (context) => {
-                // Tooltip Element
-                const dom = document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) || this.$el.nextElementSibling;
-
-                const tooltipEl = dom.querySelector('.tooltip');
-
-                const tooltipModel = context.tooltip;
-
-                if (!tooltipEl) return;
-
-                // Hide if no tooltip
-                if (!tooltipModel || tooltipModel.opacity === 0) {
-                  tooltipEl.style.opacity = 0;
-                  return;
-                }
-
-                // Set tooltip position classes
-                tooltipEl.classList.remove('above', 'below', 'no-transform');
-                if (tooltipModel.yAlign) {
-                  tooltipEl.classList.add(tooltipModel.yAlign);
-                } else {
-                  tooltipEl.classList.add('no-transform');
-                }
-
-                // Set Text
-                if (tooltipModel.body) {
-                  const titleLines = tooltipModel.title || [];
-                  const bodyLines = tooltipModel.body.map((bodyItem) => {
-                    return bodyItem.lines;
-                  });
-
-                  // Set the title in the tooltip header
-                  const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
-                  divDate.innerHTML = titleLines[0];
-
-                  const divValue = tooltipEl.querySelector('.tooltip_value');
-                  divValue.innerHTML = '';
-
-                  // Access color arrays for different datasets
-                  const colors = [...this.colorBarParse, ...this.colorParse]; // Adjust to match your color variables
-
-                  // Iterate over bodyLines to set the color and value in the tooltip
-                  bodyLines[0].forEach((line, i) => {
-                    if (line) {
-                      const color = colors[Math.min(i, colors.length - 1)];
-
-                      // Détecter si c'est une barre ou une ligne en fonction de l'index
-                      const displayValue = i === 0 ? `${line}${this.unitTooltipBar ? ' ' + this.unitTooltipBar : ''}` : `${line}${this.unitTooltipLine ? ' ' + this.unitTooltipLine : ''}`;
-
-                      divValue.innerHTML += `
-                        <div class="tooltip_value-content">
-                          <span class="tooltip_dot" style="background-color:${color};"></span>
-                          <p class="tooltip_place fr-mb-0">${displayValue}</p>
-                        </div>
-                      `;
-                    }
-                  });
-                }
-
-                // Position the tooltip
-                const { offsetLeft: positionX, offsetTop: positionY } = this.chart.canvas;
-
-                const canvasWidth = Number(this.chart.canvas.style.width.replace(/\D/g, ''));
-                const canvasHeight = Number(this.chart.canvas.style.height.replace(/\D/g, ''));
-
-                let tooltipX = positionX + tooltipModel.caretX + 10;
-                let tooltipY = positionY + tooltipModel.caretY - 20;
-                if (tooltipX + tooltipEl.clientWidth > positionX + canvasWidth) {
-                  tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth - 10;
-                }
-                if (tooltipY + tooltipEl.clientHeight > positionY + 0.9 * canvasHeight) {
-                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight + 20;
-                }
-                if (tooltipX < positionX) {
-                  tooltipX = positionX + tooltipModel.caretX - tooltipEl.clientWidth / 2;
-                  tooltipY = positionY + tooltipModel.caretY - tooltipEl.clientHeight - 20;
-                }
-
-                tooltipEl.style.position = 'absolute';
-                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
-                tooltipEl.style.pointerEvents = 'none';
-                tooltipEl.style.left = tooltipX + 'px';
-                tooltipEl.style.top = tooltipY + 'px';
-                tooltipEl.style.opacity = 1;
-              },
+              external: (context) => externalTooltip(context, this, { unitLookup: (i) => (i < this.barsDatasets.length ? this.unitTooltipBar : this.unitTooltipLine) }),
             },
           },
         },

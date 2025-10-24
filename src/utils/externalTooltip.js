@@ -25,6 +25,7 @@ export function externalTooltip(context, component, opts = {}) {
   if (tooltipModel.body) {
     const titleLines = tooltipModel.title || [];
     const bodyLines = tooltipModel.body.map((bodyItem) => bodyItem.lines);
+    const dataPoints = tooltipModel.dataPoints || [];
 
     // Set the tooltip header
     const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
@@ -34,24 +35,50 @@ export function externalTooltip(context, component, opts = {}) {
     const divValue = tooltipEl.querySelector('.tooltip_value');
     if (divValue) divValue.innerHTML = '';
 
-    // If series colors are present on the component, use them; fallback to neutral
-    const colors = component.colorParse || [];
-      const unit = opts.unitTooltip ?? component.unitTooltip;
-      const unitLookup = opts.unitLookup;
+    const unit = opts.unitTooltip ?? component.unitTooltip;
+    const unitLookup = opts.unitLookup;
+    const colorResolver = opts.colorResolver;
 
-      // Iterate over bodyLines to set the color and value in the tooltip
-      (bodyLines[0] || []).forEach((line, i) => {
-        const resolvedUnit = typeof unitLookup === 'function' ? unitLookup(i) : unit;
-        const displayValue = line !== undefined && line !== null ? `${line}${resolvedUnit ? ' ' + resolvedUnit : ''}` : '';
-        if (line) {
-          divValue.innerHTML += `
-            <div class="tooltip_value-content">
-              <span class="tooltip_dot" style="background-color:${colors[i] || '#000'};"></span>
-              <p class="tooltip_place fr-mb-0">${displayValue}</p>
-            </div>
-          `;
+    // Prefer iterating dataPoints if present so we can map datasetIndex/dataIndex -> color correctly
+    if (dataPoints.length > 0) {
+      dataPoints.forEach((dp, idx) => {
+        const line = (bodyLines[0] || [])[idx];
+        if (line === undefined || line === null) return;
+        const resolvedUnit = typeof unitLookup === 'function' ? unitLookup(idx, dp) : unit;
+
+        let color = '#000';
+        if (typeof colorResolver === 'function') {
+          color = colorResolver(component, idx, dp.datasetIndex, dp.dataIndex) || color;
+        } else if (component.colorParse) {
+          // Try common shapes of colorParse (flat array or array of arrays per dataset)
+          if (Array.isArray(component.colorParse[dp.datasetIndex]) && component.colorParse[dp.datasetIndex][dp.dataIndex]) {
+            color = component.colorParse[dp.datasetIndex][dp.dataIndex];
+          } else if (component.colorParse[idx]) {
+            color = component.colorParse[idx];
+          }
         }
+
+        divValue.innerHTML += `
+          <div class="tooltip_value-content">
+            <span class="tooltip_dot" style="background-color:${color};"></span>
+            <p class="tooltip_place fr-mb-0">${line}${resolvedUnit ? ' ' + resolvedUnit : ''}</p>
+          </div>
+        `;
       });
+    } else {
+      // Fallback: iterate over the first bodyLines array
+      (bodyLines[0] || []).forEach((line, i) => {
+        if (line === undefined || line === null) return;
+        const resolvedUnit = typeof unitLookup === 'function' ? unitLookup(i) : unit;
+        const color = (component.colorParse && component.colorParse[i]) || '#000';
+        divValue.innerHTML += `
+          <div class="tooltip_value-content">
+            <span class="tooltip_dot" style="background-color:${color};"></span>
+            <p class="tooltip_place fr-mb-0">${line}${resolvedUnit ? ' ' + resolvedUnit : ''}</p>
+          </div>
+        `;
+      });
+    }
   }
 
   // Position the tooltip
