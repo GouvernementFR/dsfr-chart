@@ -1,3 +1,9 @@
-import { defineChart } from './chart-factory.js';
+import { defineCustomElement } from 'vue';
 
-defineChart('radar-chart');
+import '@/styles/style.scss';
+
+import RadarChart from '@/components/RadarChart.vue';
+
+const RadarChartElement = defineCustomElement(RadarChart, { shadowRoot: false });
+
+customElements.define('radar-chart', RadarChartElement);

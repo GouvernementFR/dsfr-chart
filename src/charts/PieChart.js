@@ -1,3 +1,9 @@
-import { defineChart } from './chart-factory.js';
+import { defineCustomElement } from 'vue';
 
-defineChart('pie-chart');
+import '@/styles/style.scss';
+
+import PieChart from '@/components/PieChart.vue';
+
+const PieChartElement = defineCustomElement(PieChart, { shadowRoot: false });
+
+customElements.define('pie-chart', PieChartElement);
