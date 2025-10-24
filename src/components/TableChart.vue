@@ -1,7 +1,7 @@
 <template>
   <Teleport
     defer
-    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
+    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'global')"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
   >
     <div
