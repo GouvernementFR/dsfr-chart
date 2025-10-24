@@ -248,6 +248,8 @@ export default {
       labels: [],
       xparse: [],
       yBarParse: [],
+      nameBarsParse: [],
+      nameLinesParse: [],
       yLineParse: [],
       vlineParse: [],
       vlineColorParse: [],
