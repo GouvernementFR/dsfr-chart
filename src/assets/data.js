@@ -279,7 +279,7 @@ export const chartData = {
       screenshot: true,
       download: true,
       fullscreen: true,
-      actions: "['Source officielle', 'Pôle emploi']",
+      actions: '["Source officielle", "Pôle emploi"]',
     },
   },
 };

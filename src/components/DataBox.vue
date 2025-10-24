@@ -359,6 +359,8 @@ const props = defineProps({
   },
 });
 
+console.log("props", props);
+
 const chartSources = ref([]);
 const tableSources = ref([]);
 
