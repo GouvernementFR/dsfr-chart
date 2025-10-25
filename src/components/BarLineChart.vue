@@ -99,6 +99,7 @@
 import { Chart, LineController, LineElement } from 'chart.js';
 import { chartMixins, configureChartDefaults, setupThemeListener } from '@/utils/global.js';
 import { choosePalette, generateBarLineChartColors } from '@/utils/colors.js';
+import { ensureArray, ensureArrayOfArrays, parseVhLines } from '@/utils/propParsers.js';
 import { ticksCallback } from '@/utils/labels.js';
 import { plugins } from '@/utils/plugins.js';
 import ChartShell from '@/components/ChartShell.vue';
@@ -322,71 +323,28 @@ export default {
     },
     getData() {
       // Parsing des données
-      try {
-        if (typeof this.x === 'string' || typeof this.yBars === 'string' || typeof this.yLines === 'string') {
-          console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'x', 'yBars' et 'yLines' comme une liste de nombres.");
-        }
-        // On gère la legacy où x et y pouvaient être passés en string
-        this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
+      // Parsing des données (support legacy JSON strings)
+      this.xparse = ensureArrayOfArrays(this.x);
+      this.yBarParse = ensureArrayOfArrays(this.yBars);
+      this.yLineParse = ensureArrayOfArrays(this.yLines);
 
-        this.yBarParse = typeof this.yBars === 'string' ? JSON.parse(this.yBars) : this.yBars;
-        this.yLineParse = typeof this.yLines === 'string' ? JSON.parse(this.yLines) : this.yLines;
-
-        if (!Array.isArray(this.xparse) || !Array.isArray(this.xparse[0])) {
-          throw new Error("La prop 'x' doit être une liste de listes.");
-        }
-        if (!Array.isArray(this.yBarParse) || !Array.isArray(this.yBarParse[0])) {
-          throw new Error("La prop 'yBars' doit être une liste de listes.");
-        }
-        if (!Array.isArray(this.yLineParse) || (this.yLineParse.length > 0 && !Array.isArray(this.yLineParse[0]))) {
-          throw new Error("La prop 'yLines' doit être une liste de listes.");
-        }
-
-        this.nameLinesParse = typeof this.nameLines === 'string' ? JSON.parse(this.nameLines) : this.nameLines;
-        this.nameBarsParse = typeof this.nameBars === 'string' ? JSON.parse(this.nameBars) : this.nameBars;
-      } catch (error) {
-        console.error('Erreur lors du parsing des données x ou y-bar ou y-line:', error);
-        return;
-      }
+      this.nameLinesParse = ensureArray(this.nameLines, []);
+      this.nameBarsParse = ensureArray(this.nameBars, []);
 
       // Récupération données Vline
       if (this.vline) {
-        this.vlineParse = JSON.parse(this.vline);
-        let tmpVlineNameParse = [];
-        if (this.vlinename) {
-          tmpVlineNameParse = JSON.parse(this.vlinename);
-        }
-        if (this.vlinecolor) {
-          this.tmpVlineColorParse = JSON.parse(this.vlinecolor);
-        }
-
-        for (let i = 0; i < this.vlineParse.length; i++) {
-          if (tmpVlineNameParse[i]) {
-            this.vlineNameParse.push(tmpVlineNameParse[i]);
-          } else {
-            this.vlineNameParse.push('V' + (i + 1));
-          }
-        }
+        const { parse, names, colors } = parseVhLines(this.vline, this.vlinename, this.vlinecolor);
+        this.vlineParse = parse;
+        this.vlineNameParse = names;
+        this.tmpVlineColorParse = colors;
       }
 
       // Récupération données Hline
       if (this.hline) {
-        this.hlineParse = JSON.parse(this.hline);
-        let tmpHlineNameParse = [];
-        if (this.hlinename) {
-          tmpHlineNameParse = JSON.parse(this.hlinename);
-        }
-        if (this.hlinecolor) {
-          this.tmpHlineColorParse = JSON.parse(this.hlinecolor);
-        }
-
-        for (let i = 0; i < this.hlineParse.length; i++) {
-          if (tmpHlineNameParse[i]) {
-            this.hlineNameParse.push(tmpHlineNameParse[i]);
-          } else {
-            this.hlineNameParse.push('H' + (i + 1));
-          }
-        }
+        const { parse, names, colors } = parseVhLines(this.hline, this.hlinename, this.hlinecolor);
+        this.hlineParse = parse;
+        this.hlineNameParse = names;
+        this.tmpHlineColorParse = colors;
       }
 
       const dataBars = this.yBarParse.map(() => []); // tableau pour les barres

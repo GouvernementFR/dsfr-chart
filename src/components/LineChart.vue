@@ -74,6 +74,7 @@ import { Chart, LineController, LineElement } from 'chart.js';
 import chroma from 'chroma-js';
 import { chartMixins, generateChartIds, setupThemeListener } from '@/utils/global.js';
 import { choosePalette, getColorsByIndex, getNeutralColor } from '@/utils/colors.js';
+import { ensureArray, ensureArrayOfArrays, parseVhLines } from '@/utils/propParsers.js';
 import { getIndexes, ticksCallback } from '@/utils/labels.js';
 import { plugins } from '@/utils/plugins.js';
 import ChartShell from '@/components/ChartShell.vue';
@@ -288,48 +289,13 @@ export default {
     },
     getData() {
       // Parsing des données
-      try {
-        if (typeof this.x === 'string' || typeof this.y === 'string') {
-          console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'x' et 'y' comme une liste de nombres.");
-        }
-        // On gère la legacy où x et y pouvaient être passés en string
-        this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
-        this.yparse = typeof this.y === 'string' ? JSON.parse(this.y) : this.y;
+      // Parsing des données (support legacy JSON strings)
+      this.xparse = ensureArrayOfArrays(this.x);
+      this.yparse = ensureArrayOfArrays(this.y);
 
-        if (!Array.isArray(this.xparse) || !Array.isArray(this.xparse[0])) {
-          throw new Error("La prop 'x' doit être une liste de listes.");
-        }
-        if (!Array.isArray(this.yparse) || !Array.isArray(this.yparse[0])) {
-          throw new Error("La prop 'y' doit être une liste de listes.");
-        }
-      } catch (error) {
-        console.error('Erreur lors du parsing des données x ou y:', error);
-        return;
-      }
+      this.showLabelsParse = ensureArray(this.showLabels, []);
 
-      try {
-        this.showLabelsParse = typeof this.showLabels === 'string' ? JSON.parse(this.showLabels) : this.showLabels;
-
-        if (!Array.isArray(this.showLabelsParse)) {
-          throw new Error("La prop 'showLabels' doit être une liste.");
-        }
-      } catch (error) {
-        console.error('Erreur lors du parsing des données showLabels:', error);
-        return;
-      }
-
-      let tmpNameParse = [];
-      if (this.name) {
-        try {
-          if (typeof this.name === 'string') {
-            console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'name' comme une liste de nombres.");
-          }
-          // On gère la legacy où name pouvait être passé en string
-          tmpNameParse = typeof this.name === 'string' ? JSON.parse(this.name) : this.name;
-        } catch (error) {
-          console.error('Erreur lors du parsing de name:', error);
-        }
-      }
+      const tmpNameParse = ensureArray(this.name, []);
 
       for (let i = 0; i < this.yparse.length; i++) {
         if (tmpNameParse[i]) {
@@ -341,42 +307,18 @@ export default {
 
       // Récupération données Vline
       if (this.vline) {
-        this.vlineParse = JSON.parse(this.vline);
-        let tmpVlineNameParse = [];
-        if (this.vlinename) {
-          tmpVlineNameParse = JSON.parse(this.vlinename);
-        }
-        if (this.vlinecolor) {
-          this.tmpVlineColorParse = JSON.parse(this.vlinecolor);
-        }
-
-        for (let i = 0; i < this.vlineParse.length; i++) {
-          if (tmpVlineNameParse[i]) {
-            this.vlineNameParse.push(tmpVlineNameParse[i]);
-          } else {
-            this.vlineNameParse.push('V' + (i + 1));
-          }
-        }
+        const { parse, names, colors } = parseVhLines(this.vline, this.vlinename, this.vlinecolor);
+        this.vlineParse = parse;
+        this.vlineNameParse = names;
+        this.tmpVlineColorParse = colors;
       }
 
       // Récupération données Hline
       if (this.hline) {
-        this.hlineParse = JSON.parse(this.hline);
-        let tmpHlineNameParse = [];
-        if (this.hlinename) {
-          tmpHlineNameParse = JSON.parse(this.hlinename);
-        }
-        if (this.hlinecolor) {
-          this.tmpHlineColorParse = JSON.parse(this.hlinecolor);
-        }
-
-        for (let i = 0; i < this.hlineParse.length; i++) {
-          if (tmpHlineNameParse[i]) {
-            this.hlineNameParse.push(tmpHlineNameParse[i]);
-          } else {
-            this.hlineNameParse.push('H' + (i + 1));
-          }
-        }
+        const { parse, names, colors } = parseVhLines(this.hline, this.hlinename, this.hlinecolor);
+        this.hlineParse = parse;
+        this.hlineNameParse = names;
+        this.tmpHlineColorParse = colors;
       }
 
       // Formatage des données

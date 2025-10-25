@@ -52,6 +52,7 @@
 import { Chart, LineController, LineElement, Filler, PointElement, LinearScale, CategoryScale } from 'chart.js';
 import { chartMixins, generateChartIds, setupThemeListener } from '@/utils/global.js';
 import { generateAreaLineChartColors } from '@/utils/colors.js';
+import { ensureArray, ensureArrayOfArrays } from '@/utils/propParsers.js';
 import { getIndexes, ticksCallback } from '@/utils/labels.js';
 import { plugins } from '@/utils/plugins.js';
 import ChartShell from '@/components/ChartShell.vue';
@@ -268,50 +269,17 @@ export default {
     },
     getData() {
       // Parsing des données (supports legacy JSON strings)
-      try {
-        // x, yAreas, yLines can be passed as stringified JSON in legacy usage
-        this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
-        this.yAreaParse = typeof this.yAreas === 'string' ? JSON.parse(this.yAreas) : this.yAreas;
-        this.yLineParse = typeof this.yLines === 'string' ? JSON.parse(this.yLines) : this.yLines;
-
-        if (!Array.isArray(this.xparse) || !Array.isArray(this.xparse[0])) {
-          throw new Error("La prop 'x' doit être une liste de listes.");
-        }
-        if (!Array.isArray(this.yAreaParse) || !Array.isArray(this.yAreaParse[0])) {
-          throw new Error("La prop 'yAreas' doit être une liste de listes.");
-        }
-        if (!Array.isArray(this.yLineParse) || (this.yLineParse.length > 0 && !Array.isArray(this.yLineParse[0]))) {
-          throw new Error("La prop 'yLines' doit être une liste de listes.");
-        }
-      } catch (err) {
-        console.error('Erreur lors du parsing des données x, yAreas ou yLines:', err);
-        return;
-      }
+      this.xparse = ensureArrayOfArrays(this.x);
+      this.yAreaParse = ensureArrayOfArrays(this.yAreas);
+      this.yLineParse = ensureArrayOfArrays(this.yLines);
 
       // Noms
-      try {
-        this.nameAreasParse = typeof this.nameAreas === 'string' ? JSON.parse(this.nameAreas) : this.nameAreas;
-        this.nameLinesParse = typeof this.nameLines === 'string' ? JSON.parse(this.nameLines) : this.nameLines;
-      } catch (err) {
-        console.error('Erreur parsing names:', err);
-        return;
-      }
+      this.nameAreasParse = ensureArray(this.nameAreas, []);
+      this.nameLinesParse = ensureArray(this.nameLines, []);
 
       // Labels à afficher sur les points
-      try {
-        this.showAreaLabelsParse = typeof this.showAreasLabels === 'string' ? JSON.parse(this.showAreasLabels) : this.showAreasLabels;
-        this.showLinesLabelsParse = typeof this.showLinesLabels === 'string' ? JSON.parse(this.showLinesLabels) : this.showLinesLabels;
-
-        if (!Array.isArray(this.showAreaLabelsParse)) {
-          throw new Error("La prop 'showAreasLabels' doit être une liste.");
-        }
-        if (!Array.isArray(this.showLinesLabelsParse)) {
-          throw new Error("La prop 'showLinesLabels' doit être une liste.");
-        }
-      } catch (error) {
-        console.error("Erreur lors du parsing des données 'showLinesLabels' ou 'showAreasLabels':", error);
-        return;
-      }
+      this.showAreaLabelsParse = ensureArray(this.showAreasLabels, []);
+      this.showLinesLabelsParse = ensureArray(this.showLinesLabels, []);
 
       // Construction des labels et alignement des séries si x est numérique
       if (typeof this.xparse[0] === 'number') {

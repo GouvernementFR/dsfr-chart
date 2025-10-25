@@ -289,6 +289,7 @@
 import { computed, ref } from 'vue';
 import { toPng } from 'html-to-image';
 import { slugify } from '@/utils/global.js';
+import { parseMaybeJSON } from '@/utils/propParsers.js';
 import DialogModal from '@/components/DialogModal.vue';
 
 const props = defineProps({
@@ -380,7 +381,7 @@ const segmentedControl = computed(() => [true, 'true', ''].includes(props.segmen
 const fullscreen = computed(() => [true, 'true', ''].includes(props.fullscreen));
 const screenshot = computed(() => [true, 'true', ''].includes(props.screenshot));
 const download = computed(() => [true, 'true', ''].includes(props.download));
-const actions = computed(() => (typeof props.actions === 'string' ? JSON.parse(props.actions) : props.actions));
+const actions = computed(() => parseMaybeJSON(props.actions, []));
 
 const selectedView = ref(chartSources.value.length > 0 ? 'chart' : 'table');
 
@@ -390,9 +391,9 @@ const changeView = (view) => {
 
 const downloadCSV = (mode) => {
   const dom = document.querySelector(`[databox-id="${props.id}"][databox-type="${mode}"][databox-source="${currentSource.value}"]`);
-  const x = JSON.parse(dom.getAttribute('x'));
-  const y = JSON.parse(dom.getAttribute('y'));
-  const name = JSON.parse(dom.getAttribute('name'));
+  const x = parseMaybeJSON(dom.getAttribute('x'), []);
+  const y = parseMaybeJSON(dom.getAttribute('y'), []);
+  const name = parseMaybeJSON(dom.getAttribute('name'), []);
   const tableName = dom.getAttribute('table-name') ?? '';
 
   let csv = [];

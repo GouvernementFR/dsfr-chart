@@ -26,6 +26,7 @@ import { chartMixins, configureChartDefaults, setupThemeListener } from '@/utils
 import { choosePalette, generateTreemapChartColors } from '@/utils/colors.js';
 import ChartShell from '@/components/ChartShell.vue';
 import { externalTooltip } from '@/utils/externalTooltip.js';
+import { ensureArray, normalizeNumber } from '@/utils/propParsers.js';
 
 Chart.register(TreemapController, TreemapElement);
 
@@ -168,29 +169,9 @@ export default {
     },
     getData() {
       // Parsing des données
-      try {
-        if (typeof this.tree === 'string') {
-          console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer la prop 'tree' comme une liste de nombres.");
-        }
-
-        this.dataParse = typeof this.tree === 'string' ? JSON.parse(this.tree) : this.tree;
-      } catch (error) {
-        console.error("Erreur lors du parsing des données de 'tree':", error);
-        return;
-      }
-
-      // Parsing des données
-      try {
-        if (typeof this.name === 'string') {
-          console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer la prop 'names' comme une liste de strings.");
-        }
-
-        this.nameParse = typeof this.name === 'string' ? JSON.parse(this.name) : this.name;
-      } catch (error) {
-        console.error("Erreur lors du parsing des données de 'names':", error);
-        this.nameParse = []; // Valeur par défaut sûre
-        return;
-      }
+      // Normalize tree and name props (accept JSON strings or native values)
+      this.dataParse = ensureArray(this.tree, []);
+      this.nameParse = ensureArray(this.name, []);
 
       // Chargement des couleurs
       this.loadColors();
@@ -222,7 +203,7 @@ export default {
           return this.colorHover[index % this.colorHover.length];
         },
         borderColor: this.borderColor,
-        borderWidth: this.borderWidth,
+        borderWidth: normalizeNumber(this.borderWidth, 2),
       }];
     },
     loadColors() {

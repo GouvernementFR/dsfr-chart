@@ -22,6 +22,7 @@ import { chartMixins, generateChartIds, setupThemeListener } from '../utils/glob
 import { choosePalette, generateColors } from '@/utils/colors.js';
 import ChartShell from '@/components/ChartShell.vue';
 import { externalTooltip } from '@/utils/externalTooltip.js';
+import { ensureArrayOfArrays, ensureArray } from '@/utils/propParsers.js';
 
 Chart.register(RadarController, RadialLinearScale);
 
@@ -134,23 +135,11 @@ export default {
       this.colorHover = [];
     },
     getData() {
-      // Parsing des données
-      try {
-        this.xparse = JSON.parse(this.x);
-        this.yparse = JSON.parse(this.y);
-      } catch (error) {
-        console.error('Erreur lors du parsing des données x ou y:', error);
-        return;
-      }
+        // Normalise x et y (accepte JSON string ou valeurs natives)
+        this.xparse = ensureArrayOfArrays(this.x, []);
+        this.yparse = ensureArrayOfArrays(this.y, []);
 
-      let tmpNameParse = [];
-      if (this.name) {
-        try {
-          tmpNameParse = JSON.parse(this.name);
-        } catch (error) {
-          console.error('Erreur lors du parsing de name:', error);
-        }
-      }
+        const tmpNameParse = ensureArray(this.name, []);
 
       for (let i = 0; i < this.yparse.length; i++) {
         if (tmpNameParse[i]) {

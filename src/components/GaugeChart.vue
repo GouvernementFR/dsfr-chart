@@ -43,7 +43,7 @@
             </p>
           </div>
           <div
-            v-if="legend"
+            v-if="showLegend"
             class="flex"
           >
             <span class="legende_dot target_legend" />
@@ -52,7 +52,7 @@
             </p>
           </div>
           <div
-            v-if="legend"
+            v-if="showLegend"
             class="flex fr-mt-3v fr-mb-1v"
           >
             <span class="legende_dot actual_legend" />
@@ -76,6 +76,7 @@
 
 <script>
 import { chartMixins } from '@/utils/global.js';
+import { normalizeNumber, normalizeBoolean } from '@/utils/propParsers.js';
 
 export default {
   name: 'GaugeChart',
@@ -143,6 +144,11 @@ export default {
       width: '',
     };
   },
+  computed: {
+    showLegend() {
+      return normalizeBoolean(this.legend, true);
+    },
+  },
   watch: {
     $props: {
       handler() {
@@ -165,12 +171,20 @@ export default {
   },
   methods: {
     createChart() {
-      if (!this.percent) {
-        this.percentage = Math.round((100 * (this.value - this.init)) / (this.target - this.init));
+      const init = normalizeNumber(this.init, 0);
+      const target = normalizeNumber(this.target, 0);
+      const val = normalizeNumber(this.value, null);
+      const pct = normalizeNumber(this.percent, null);
+
+      if (pct !== null) {
+        this.percentage = Math.round(pct);
+      } else if (val !== null && target !== init) {
+        this.percentage = Math.round((100 * (val - init)) / (target - init));
       } else {
-        this.percentage = Math.round(this.percent);
+        this.percentage = 0;
       }
-      this.width = Math.min(100, this.percentage);
+
+      this.width = Math.min(100, Math.max(0, this.percentage));
     },
   },
 };

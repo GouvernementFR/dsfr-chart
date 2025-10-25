@@ -22,6 +22,7 @@ import { chartMixins, generateChartIds, setupThemeListener } from '@/utils/globa
 import { choosePalette, generateColors } from '@/utils/colors.js';
 import ChartShell from '@/components/ChartShell.vue';
 import { externalTooltip } from '@/utils/externalTooltip.js';
+import { ensureArray, ensureArrayOfArrays } from '@/utils/propParsers.js';
 
 Chart.register(BarController, BarElement);
 
@@ -184,38 +185,12 @@ export default {
     },
     getData() {
       // Parsing des données
-      try {
-        if (typeof this.x === 'string' || typeof this.y === 'string') {
-          console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'x' et 'y' comme une liste de nombres.");
-        }
-        // On gère la legacy où x et y pouvaient être passés en string
-        this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
-        this.yparse = typeof this.y === 'string' ? JSON.parse(this.y) : this.y;
-        this.pvparse = typeof this.pointValues === 'string' ? JSON.parse(this.pointValues) : this.pointValues;
+      // Parsing des données (support legacy JSON strings)
+      this.xparse = ensureArrayOfArrays(this.x);
+      this.yparse = ensureArrayOfArrays(this.y);
+      this.pvparse = ensureArray(this.pointValues, []);
 
-        if (!Array.isArray(this.xparse) || !Array.isArray(this.xparse[0])) {
-          throw new Error("La prop 'x' doit être une liste de listes.");
-        }
-        if (!Array.isArray(this.yparse) || !Array.isArray(this.yparse[0])) {
-          throw new Error("La prop 'y' doit être une liste de listes.");
-        }
-      } catch (error) {
-        console.error('Erreur lors du parsing des données x ou y:', error);
-        return;
-      }
-
-      let tmpNameParse = [];
-      if (this.name) {
-        try {
-          if (typeof this.name === 'string') {
-            console.error("Cette fonctionnalité n'est plus supportée. Veuillez passer les props 'name' comme une liste de nombres.");
-          }
-          // On gère la legacy où name pouvait être passé en string
-          tmpNameParse = typeof this.name === 'string' ? JSON.parse(this.name) : this.name;
-        } catch (error) {
-          console.error('Erreur lors du parsing de name:', error);
-        }
-      }
+      const tmpNameParse = ensureArray(this.name, []);
 
       // Assignation des noms de séries
       for (let i = 0; i < this.yparse.length; i++) {

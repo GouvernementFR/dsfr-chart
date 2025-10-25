@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import { ensureArray, ensureArrayOfArrays } from '@/utils/propParsers.js';
 export default {
   name: 'TableBarChart',
   props: {
@@ -134,15 +135,12 @@ export default {
       this.colorParse = [];
     },
     getData() {
-      try {
-        this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
-        this.yparse = typeof this.y === 'string' ? JSON.parse(this.y) : this.y;
-        this.colorParse = typeof this.colors === 'string' ? JSON.parse(this.colors) : this.colors;
-      } catch (error) {
-        console.error('Parsing error:', error);
-        return;
-      }
-      const tmpName = typeof this.name === 'string' ? JSON.parse(this.name) : this.name;
+      // Normalize props (accept JSON string or native values)
+      this.xparse = ensureArrayOfArrays(this.x, []);
+      this.yparse = ensureArrayOfArrays(this.y, []);
+      this.colorParse = ensureArray(this.colors, ['#e4794a', '#68a532', '#666666']);
+
+      const tmpName = ensureArray(this.name, []);
       this.nameParse = tmpName.length ? tmpName : this.yparse.map((_, i) => 'Série ' + (i + 1));
     },
     formatNumber(value) {

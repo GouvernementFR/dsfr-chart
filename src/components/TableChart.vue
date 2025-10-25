@@ -76,6 +76,7 @@
 
 <script>
 import { chartMixins } from '@/utils/global.js';
+import { ensureArray, ensureArrayOfArrays } from '@/utils/propParsers.js';
 
 export default {
   name: 'TableChart',
@@ -153,34 +154,17 @@ export default {
       this.nameParse = [];
     },
     getData() {
-      // Parsing des données
+      // Parsing des données (support legacy JSON strings)
       if (this.x && this.y) {
-        try {
-          this.xparse = typeof this.x === 'string' ? JSON.parse(this.x) : this.x;
-          this.yparse = typeof this.y === 'string' ? JSON.parse(this.y) : this.y;
-        } catch (error) {
-          console.error('Erreur lors du parsing des données x ou y:', error);
-          return;
-        }
+        this.xparse = ensureArrayOfArrays(this.x);
+        this.yparse = ensureArrayOfArrays(this.y);
       }
 
       if (this.line) {
-        try {
-          this.lineParse = typeof this.line === 'string' ? JSON.parse(this.line) : this.line;
-        } catch (error) {
-          console.error('Erreur lors du parsing des données line:', error);
-          return;
-        }
+        this.lineParse = ensureArray(this.line, []);
       }
 
-      let tmpNameParse = [];
-      if (this.name) {
-        try {
-          tmpNameParse = typeof this.name === 'string' ? JSON.parse(this.name) : this.name;
-        } catch (error) {
-          console.error('Erreur lors du parsing de name:', error);
-        }
-      }
+      const tmpNameParse = ensureArray(this.name, []);
 
       for (let i = 0; i < this.yparse.length; i++) {
         if (tmpNameParse[i]) {

@@ -180,6 +180,7 @@ import * as d3 from 'd3-scale';
 import MapInfo from '@/components/MapInfo.vue';
 import maps from '@/components/maps';
 import { mapMixins, isMobile } from '@/utils/global.js';
+import { parseMaybeJSON } from '@/utils/propParsers.js';
 import { choosePalette } from '@/utils/colors.js';
 
 export default {
@@ -310,13 +311,8 @@ export default {
     createChart() {
       const parentWidget = this.$refs[this.widgetId];
 
-      // Parsing des données
-      try {
-        this.dataParse = JSON.parse(this.data);
-      } catch (error) {
-        console.error('Erreur lors du parsing des données data:', error);
-        return;
-      }
+      // Normalize data prop (accept JSON string or native object)
+      this.dataParse = parseMaybeJSON(this.data, {});
 
       const palette = this.choosePalette();
 

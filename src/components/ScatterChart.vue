@@ -36,6 +36,7 @@
 import { Chart, ScatterController } from 'chart.js';
 import { chartMixins, generateChartIds, setupThemeListener } from '@/utils/global.js';
 import { choosePalette, generateScatterChartColors } from '@/utils/colors.js';
+import { ensureArray, ensureArrayOfArrays, parseVhLines } from '@/utils/propParsers.js';
 import { ticksCallback } from '@/utils/labels.js';
 import { plugins } from '@/utils/plugins.js';
 import ChartShell from '@/components/ChartShell.vue';
@@ -217,23 +218,11 @@ export default {
       this.colorHover = [];
     },
     getData() {
-      // Parsing des données
-      try {
-        this.xparse = JSON.parse(this.x);
-        this.yparse = JSON.parse(this.y);
-      } catch (error) {
-        console.error('Erreur lors du parsing des données x ou y:', error);
-        return;
-      }
+      // Parsing des données (support legacy JSON strings)
+      this.xparse = ensureArrayOfArrays(this.x);
+      this.yparse = ensureArrayOfArrays(this.y);
 
-      let tmpNameParse = [];
-      if (this.name) {
-        try {
-          tmpNameParse = JSON.parse(this.name);
-        } catch (error) {
-          console.error('Erreur lors du parsing de name:', error);
-        }
-      }
+      const tmpNameParse = ensureArray(this.name, []);
 
       for (let i = 0; i < this.yparse.length; i++) {
         if (tmpNameParse[i]) {
@@ -245,42 +234,18 @@ export default {
 
       // Récupération données Vline
       if (this.vline) {
-        this.vlineParse = JSON.parse(this.vline);
-        let tmpVlineNameParse = [];
-        if (this.vlinename) {
-          tmpVlineNameParse = JSON.parse(this.vlinename);
-        }
-        if (this.vlinecolor) {
-          this.tmpVlineColorParse = JSON.parse(this.vlinecolor);
-        }
-
-        for (let i = 0; i < this.vlineParse.length; i++) {
-          if (tmpVlineNameParse[i]) {
-            this.vlineNameParse.push(tmpVlineNameParse[i]);
-          } else {
-            this.vlineNameParse.push('V' + (i + 1));
-          }
-        }
+        const { parse, names, colors } = parseVhLines(this.vline, this.vlinename, this.vlinecolor);
+        this.vlineParse = parse;
+        this.vlineNameParse = names;
+        this.tmpVlineColorParse = colors;
       }
 
       // Récupération données Hline
       if (this.hline) {
-        this.hlineParse = JSON.parse(this.hline);
-        let tmpHlineNameParse = [];
-        if (this.hlinename) {
-          tmpHlineNameParse = JSON.parse(this.hlinename);
-        }
-        if (this.hlinecolor) {
-          this.tmpHlineColorParse = JSON.parse(this.hlinecolor);
-        }
-
-        for (let i = 0; i < this.hlineParse.length; i++) {
-          if (tmpHlineNameParse[i]) {
-            this.hlineNameParse.push(tmpHlineNameParse[i]);
-          } else {
-            this.hlineNameParse.push('H' + (i + 1));
-          }
-        }
+        const { parse, names, colors } = parseVhLines(this.hline, this.hlinename, this.hlinecolor);
+        this.hlineParse = parse;
+        this.hlineNameParse = names;
+        this.tmpHlineColorParse = colors;
       }
 
       // Formatage des données
