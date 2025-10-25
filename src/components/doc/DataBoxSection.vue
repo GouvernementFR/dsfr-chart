@@ -198,13 +198,11 @@
 import { chartData } from '@/assets/data';
 import CodeBlock from './CodeBlock.vue';
 
-const scatterData = JSON.parse(chartData.scatterChart.linked.y);
+const defaultScatterData = JSON.stringify(chartData.scatterChart.linked.y);
+const sortedScatterData = JSON.stringify(chartData.scatterChart.linked.y.map((arr) => arr.sort((a, b) => a - b)));
+const reversedScatterData = JSON.stringify(chartData.scatterChart.linked.y.map((arr) => arr.reverse()));
 
-const defaultScatterData = JSON.stringify(scatterData);
-const sortedScatterData = JSON.stringify(scatterData.map((arr) => arr.sort((a, b) => a - b)));
-const reversedScatterData = JSON.stringify(scatterData.map((arr) => arr.reverse()));
-
-const tableParse = (data) => JSON.stringify(JSON.parse(data)[0]);
+const tableParse = (data) => JSON.stringify(data[0]);
 </script>
 
 <style scoped>

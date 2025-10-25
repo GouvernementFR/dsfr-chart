@@ -1,8 +1,4 @@
 <template>
-  <!--
-    FIXME: Temporary fix for Teleport issue when databoxId is not found in the DOM.
-    This bug is due to the different lifecycle between Chart.js and Chart.js-Treemap.
-   -->
   <ChartShell
     :databox-id="databoxId"
     :databox-type="databoxType"
@@ -31,22 +27,22 @@ import { ensureArray, normalizeNumber } from '@/utils/propParsers.js';
 Chart.register(TreemapController, TreemapElement);
 
 function splitLabelToFit(label, maxWidth, ctx) {
-    const words = label.split(' ');
-    const lines = [];
-    let currentLine = '';
-    for (let i = 0; i < words.length; i++) {
+  const words = label.split(' ');
+  const lines = [];
+  let currentLine = '';
+  for (let i = 0; i < words.length; i++) {
     const word = words[i];
     const newLine = currentLine + ' ' + word;
     const width = ctx.chart.ctx.measureText(newLine).width;
     if (width < maxWidth) {
-        currentLine = newLine;
+      currentLine = newLine;
     } else {
-        lines.push(currentLine);
-        currentLine = word;
+      lines.push(currentLine);
+      currentLine = word;
     }
-    }
-    lines.push(currentLine);
-    return lines;
+  }
+  lines.push(currentLine);
+  return lines;
 }
 
 export default {
@@ -187,7 +183,7 @@ export default {
           },
           formatter(ctx) {
             if (ctx.type !== 'data') {
-                return;
+              return;
             }
             const data = ctx.chart.data;
             const value = data.datasets[ctx.datasetIndex].tree[ctx.dataIndex].label;
@@ -275,9 +271,9 @@ export default {
                 colorResolver: (comp, idx, datasetIndex, dataIndex) => {
                   // Try to emulate previous treemap color resolution: colorParse[datasetIndex][dataIndex] or fallback to colorParse[dataIndex]
                   if (comp.colorParse && Array.isArray(comp.colorParse[datasetIndex]) && comp.colorParse[datasetIndex][dataIndex]) {
-                    return comp.colorParse[datasetIndex][dataIndex];
+                    return comp.colorParse[datasetIndex][dataIndex % comp.colorParse[datasetIndex].length];
                   }
-                  return (comp.colorParse && comp.colorParse[dataIndex]) || '#000';
+                  return (comp.colorParse && comp.colorParse[dataIndex % comp.colorParse.length]) || '#000';
                 }
               }),
             },

@@ -36,7 +36,22 @@ export default {
     vue({
       template: {
         compilerOptions: {
-          isCustomElement: (tag) => ['data-box', 'area-line-chart', 'bar-chart', 'bar-line-chart', 'gauge-chart', 'line-chart', 'map-chart', 'map-chart-reg', 'pie-chart', 'radar-chart', 'scatter-chart', 'table-chart', 'table-bar-chart', 'treemap-chart'].includes(tag),
+          isCustomElement: (tag) => [
+            'data-box',
+            'area-line-chart',
+            'bar-chart',
+            'bar-line-chart',
+            'gauge-chart',
+            'line-chart',
+            'map-chart',
+            'map-chart-reg',
+            'pie-chart',
+            'radar-chart',
+            'scatter-chart',
+            'table-chart',
+            'table-bar-chart',
+            'treemap-chart'
+          ].includes(tag),
         },
       },
     }),

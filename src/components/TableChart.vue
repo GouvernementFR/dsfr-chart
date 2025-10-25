@@ -156,7 +156,7 @@ export default {
     getData() {
       // Parsing des données (support legacy JSON strings)
       if (this.x && this.y) {
-        this.xparse = ensureArrayOfArrays(this.x);
+        this.xparse = ensureArray(this.x);
         this.yparse = ensureArrayOfArrays(this.y);
       }
 

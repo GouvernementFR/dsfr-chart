@@ -86,17 +86,42 @@
 
 <script>
 import { ensureArray, ensureArrayOfArrays } from '@/utils/propParsers.js';
+
 export default {
   name: 'TableBarChart',
   props: {
-    databoxId: { type: String, default: null },
-    databoxType: { type: String, default: null },
-    databoxSource: { type: String, default: 'default' },
-    x: { type: [String, Array], default: () => [] },
-    y: { type: [String, Array], default: () => [] },
-    name: { type: [String, Array], default: () => [] },
-    colors: { type: Array, default: () => ['#e4794a', '#68a532', '#666666'] },
-    tableName: { type: String, default: 'Bar chart' },
+    databoxId: {
+      type: String,
+      default: null
+    },
+    databoxType: {
+      type: String,
+      default: null
+    },
+    databoxSource: {
+      type: String,
+      default: 'default'
+    },
+    x: {
+      type: [String, Array],
+      default: () => []
+    },
+    y: {
+      type: [String, Array],
+      default: () => []
+    },
+    name: {
+      type: [String, Array],
+      default: () => []
+    },
+    colors: {
+      type: Array,
+      default: () => ['#e4794a', '#68a532', '#666666']
+    },
+    tableName: {
+      type: String,
+      default: 'Bar chart'
+    },
   },
   data() {
     return {
@@ -142,11 +167,6 @@ export default {
 
       const tmpName = ensureArray(this.name, []);
       this.nameParse = tmpName.length ? tmpName : this.yparse.map((_, i) => 'Série ' + (i + 1));
-    },
-    formatNumber(value) {
-      return typeof value === 'number'
-        ? value.toLocaleString('fr-FR', { maximumFractionDigits: 1 })
-        : value;
     },
     hasMixedValues(series) {
       return series.some(v => v < 0) && series.some(v => v > 0);

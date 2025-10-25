@@ -348,11 +348,11 @@ export default {
       const ctx = this.$refs[this.chartId].getContext('2d');
 
       // NOTE: Il est important de conserver l'ordre des datasets (lines avant areas) pour le bon fonctionnement du plugin de labels
-      const datasets = [...this.linesDatasets, ...this.areasDatasets];
+      const datasets = [...this.areasDatasets, ...this.linesDatasets];
 
       const indexesWithLabels = [
+        ...getIndexes(this.areasDatasets, this.showAreaLabelsParse),
         ...getIndexes(this.linesDatasets, this.showLinesLabelsParse),
-        ...getIndexes(this.areasDatasets, this.showAreaLabelsParse)
       ];
 
       this.chart = new Chart(ctx, {
@@ -442,7 +442,7 @@ export default {
               callbacks: {
                 label: (tooltipItems) => {
                   const label = [];
-                  [...this.linesDatasets, ...this.areasDatasets].forEach((set) => {
+                  [...this.areasDatasets, ...this.linesDatasets].forEach((set) => {
                     label.push(this.formatNumber(set.data[tooltipItems.dataIndex]));
                   });
                   return label;
@@ -451,12 +451,11 @@ export default {
                   return tooltipItems[0].label;
                 },
               },
-              external: (context) => externalTooltip(context, this, { unitLookup: (i) => (i === 0 ? this.unitTooltipArea : this.unitTooltipLine) }),
+              external: (context) => externalTooltip(context, this, { unitLookup: (i) => (i < this.areasDatasets.length ? this.unitTooltipArea : this.unitTooltipLine) }),
             },
           },
         },
       });
-
     },
     changeColors(theme) {
       this.loadColors();

@@ -228,6 +228,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    singleAxis: {
+      type: Boolean,
+      default: false
+    },
     unitTooltipBar: {
       type: String,
       default: '',
@@ -400,7 +404,7 @@ export default {
         backgroundColor: 'rgba(0,0,0,0)',
         pointBorderColor: this.colorParse[i % this.colorParse.length],
         pointBackgroundColor: this.colorParse[i % this.colorParse.length],
-        yAxisID: 'yLine',
+        yAxisID: this.singleAxis ? 'y' : 'yLine',
         tension: 0.4,
         order: 1,
       }));
@@ -482,6 +486,7 @@ export default {
               ...(this.yBarMax ? { suggestedMax: this.yBarMax } : {}),
             },
             yLine: {
+              display: !this.singleAxis && this.yLineParse.length > 0,
               type: 'linear',
               position: 'right',
               id: 'yLine',

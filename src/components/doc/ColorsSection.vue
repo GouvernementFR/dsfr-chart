@@ -261,6 +261,12 @@
         />
       </div>
     </div>
+
+    <h4 class="fr-mt-6v">
+      Couleurs personnalisées
+    </h4>
+    <p>Il est possible de définir des couleurs personnalisées pour chaque graphique en utilisant la propriété <code>colors</code> ou ses dérivées pour les graphes mixtes (ex: <code>linesColors</code>, <code>areasColors</code>, <code>barsColors</code>, etc.).</p>
+    <p>Les couleurs seront utilisées et associées aux différentes séries de données <strong>dans le même ordre</strong> que les séries ou par ordre décroissant pour le graphiques n'ayant pas d'ordre spécifique. Si le nombre de couleurs fournies ne suffit pas, les couleurs seront répétées.</p>
   </div>
 </template>
 

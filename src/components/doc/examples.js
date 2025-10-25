@@ -33,17 +33,17 @@ export const chartExamples = [
       { component: BarChart, heading: 'Barres empilées', title: 'Satisfaction des français à l’égard des services publics', desc: 'Étude IFOP pour TF1, janvier 2024 - Le regard des Français sur les services publics : satisfaction, jugement sur leur financement par les impôts et attentes. Ifop, enquête Emploi, 04/01/2024', props: chartData.barChart.stacked },
     ],
   },
-  // Graphique en ligne / Diagramme en barres
-  {
-    title: 'Graphique en ligne / Diagramme en barres',
-    desc: 'Il est également possible de combiner un graphique en ligne et un diagramme en barres, pour permettre la comparaison entre des données présentées différemment.',
-    graphs: [{ component: BarLineChart, title: 'Évolution du nombre de naissances et du taux de natalité', desc: 'France hors Mayotte, naissances en milliers et taux de natalité pour mille femmes. Insee, 16/01/2024', props: chartData.barLineChart.default }],
-  },
   // Graphique en ligne / Diagramme en aires
   {
     title: 'Graphique en ligne / Diagramme en aires',
     desc: 'Il est également possible de combiner un graphique en ligne et un diagramme en aires, pour permettre la comparaison entre des données présentées différemment.',
     graphs: [{ component: AreaLineChart, title: 'Évolution du nombre de naissances et du taux de natalité', desc: 'France hors Mayotte, naissances en milliers et taux de natalité pour mille femmes. Insee, 16/01/2024', props: chartData.areaLineChart.default }],
+  },
+  // Graphique en ligne / Diagramme en barres
+  {
+    title: 'Graphique en ligne / Diagramme en barres',
+    desc: 'Il est également possible de combiner un graphique en ligne et un diagramme en barres, pour permettre la comparaison entre des données présentées différemment.',
+    graphs: [{ component: BarLineChart, title: 'Évolution du nombre de naissances et du taux de natalité', desc: 'France hors Mayotte, naissances en milliers et taux de natalité pour mille femmes. Insee, 16/01/2024', props: chartData.barLineChart.default }],
   },
   // Diagramme circulaire
   {
@@ -85,10 +85,10 @@ export const chartExamples = [
     desc: 'La jauge permet d’afficher des valeurs numériques ou des mesures dans une plage, pour visualiser l’avancement d’un objectif par exemple.',
     graphs: [{ component: GaugeChart, noPalette: true, props: chartData.gaugeChart.default }],
   },
-  // Treemap
+  // Carte proportionnelle
   {
-    title: 'Treemap',
-    desc: 'Le treemap est un graphique qui permet de représenter des données hiérarchiques sous forme de rectangles imbriqués.',
+    title: 'Carte proportionnelle',
+    desc: 'La carte proportionnelle est un graphique qui permet de représenter des données hiérarchiques sous forme de rectangles imbriqués.',
     graphs: [{ component: TreemapChart, noPalette: true, props: chartData.treemapChart.default }],
   },
 ];
