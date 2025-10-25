@@ -28,12 +28,12 @@ export const slugify = (string) =>
  * @returns {string} The formatted number
  */
 export const formatNumber = (value) => {
-  // Return original value if not a valid number
+  // Retourne la valeur originale si ce n'est pas un nombre valide
   if (isNaN(value)) {
     return "N/A";
   }
 
-  // Format as integer or decimal number
+  // Formate en entier ou en nombre décimal
   if (Number.isInteger(value)) {
     return parseInt(value).toLocaleString('fr-FR');
   } else {

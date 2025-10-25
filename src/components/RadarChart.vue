@@ -96,7 +96,7 @@ export default {
   watch: {
     $props: {
       handler() {
-        // Check if the chart is already created to prevent useless re-renders
+
         if (this.chartId) {
           this.resetData();
           this.getData();
@@ -135,7 +135,6 @@ export default {
       this.colorHover = [];
     },
     getData() {
-        // Normalise x et y (accepte JSON string ou valeurs natives)
         this.xparse = ensureArrayOfArrays(this.x, []);
         this.yparse = ensureArrayOfArrays(this.y, []);
 
@@ -149,13 +148,10 @@ export default {
         }
       }
 
-      // Assignation des labels
       this.labels = this.xparse[0];
 
-      // Chargement des couleurs
       this.loadColors();
 
-      // Préparation des datasets
       this.datasets = this.yparse.map((dataSet, index) => ({
         pointRadius: 5,
         pointHoverRadius: 5,
@@ -169,7 +165,6 @@ export default {
       }));
     },
     loadColors() {
-      // Utilisation de generateColors
       const { colorParse, colorHover } = generateColors({
         yparse: this.yparse.map(() => [1]), // Simule une série avec une valeur unique
         tmpColorParse: this.tmpColorParse,
@@ -181,26 +176,7 @@ export default {
       this.colorHover = colorHover.map((colors) => colors[0]); // Idem pour les couleurs de survol
     },
     choosePalette() {
-      // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette, this.colors);
-    },
-    changeColors(theme) {
-      this.loadColors();
-
-      // Mise à jour des couleurs dans le graphique
-      this.chart.data.datasets.forEach((dataset, i) => {
-        dataset.borderColor = this.colorParse[i];
-        dataset.pointBorderColor = this.colorParse[i];
-        dataset.pointBackgroundColor = this.colorParse[i];
-        dataset.hoverBorderColor = this.colorHover[i];
-        dataset.hoverBackgroundColor = this.colorHover[i];
-        dataset.pointHoverBorderColor = this.colorHover[i];
-        dataset.pointHoverBackgroundColor = this.colorHover[i];
-      });
-
-      this.chart.options.scales.r.pointLabels.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;
-
-      this.chart.update('none');
     },
     createChart() {
       if (this.chart) this.chart.destroy();
@@ -264,6 +240,24 @@ export default {
           },
         },
       });
+    },
+    changeColors(theme) {
+      this.loadColors();
+
+      // Mise à jour des couleurs dans le graphique
+      this.chart.data.datasets.forEach((dataset, i) => {
+        dataset.borderColor = this.colorParse[i];
+        dataset.pointBorderColor = this.colorParse[i];
+        dataset.pointBackgroundColor = this.colorParse[i];
+        dataset.hoverBorderColor = this.colorHover[i];
+        dataset.hoverBackgroundColor = this.colorHover[i];
+        dataset.pointHoverBorderColor = this.colorHover[i];
+        dataset.pointHoverBackgroundColor = this.colorHover[i];
+      });
+
+      this.chart.options.scales.r.pointLabels.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;
+
+      this.chart.update('none');
     },
   },
 };

@@ -128,7 +128,6 @@ export default {
   watch: {
     $props: {
       handler() {
-        // Check if the chart is already created to prevent useless re-renders
         if (this.tableId) {
           this.resetData();
           this.getData();

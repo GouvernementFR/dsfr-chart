@@ -268,20 +268,16 @@ export default {
       this.colorHover = colorHover;
     },
     getData() {
-      // Parsing des données (supports legacy JSON strings)
       this.xparse = ensureArrayOfArrays(this.x);
       this.yAreaParse = ensureArrayOfArrays(this.yAreas);
       this.yLineParse = ensureArrayOfArrays(this.yLines);
 
-      // Noms
       this.nameAreasParse = ensureArray(this.nameAreas, []);
       this.nameLinesParse = ensureArray(this.nameLines, []);
 
-      // Labels à afficher sur les points
       this.showAreaLabelsParse = ensureArray(this.showAreasLabels, []);
       this.showLinesLabelsParse = ensureArray(this.showLinesLabels, []);
 
-      // Construction des labels et alignement des séries si x est numérique
       if (typeof this.xparse[0] === 'number') {
         const xsort = [...this.xparse].sort((a, b) => a - b);
 
@@ -301,18 +297,15 @@ export default {
         });
 
         this.labels = xsort;
-        // réassigner les séries réordonnées
+
         this.yAreaParse = dataAreas;
         this.yLineParse = dataLines;
       } else {
-        // Cas catégoriel : la première ligne de x contient les labels
         this.labels = this.xparse[0];
       }
 
-      // Charger les couleurs
       this.loadColors();
 
-      // Crée datasets area
       this.areasDatasets = this.yAreaParse.map((data, i) => ({
         data,
         type: 'line',
@@ -325,7 +318,6 @@ export default {
         order: 2,
       }));
 
-      // Crée datasets line
       this.linesDatasets = this.yLineParse.map((data, i) => ({
         data,
         type: 'line',
@@ -347,7 +339,7 @@ export default {
 
       const ctx = this.$refs[this.chartId].getContext('2d');
 
-      // NOTE: Il est important de conserver l'ordre des datasets (lines avant areas) pour le bon fonctionnement du plugin de labels
+      // NOTE: Il est important de conserver l'ordre des datasets (aires, avant les lines) pour le bon fonctionnement du plugin de labels
       const datasets = [...this.areasDatasets, ...this.linesDatasets];
 
       const indexesWithLabels = [
@@ -380,7 +372,7 @@ export default {
             intersect: false,
           },
           layout: {
-            padding: 0, // supprime toutes les marges
+            padding: 0,
           },
           aspectRatio: this.aspectRatio,
           scales: {

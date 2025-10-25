@@ -63,7 +63,6 @@ const formattedCode = (() => {
   let code = "";
 
   components.forEach((comp, i) => {
-    // ouverture du tag
     code += `&lt;<span class="token tag">${toKebabCase(comp.name)}</span><br>`;
 
     const attrs = attributes[i];
@@ -71,7 +70,6 @@ const formattedCode = (() => {
       code += `&nbsp;&nbsp;<span class="token attr-name">${toKebabCase(attr)}</span><span class="token punctuation">=</span>'<span class="class">${formatValue(value)}</span>'<br>`;
     }
 
-    // fermeture du tag
     code += `&gt;<br>&lt;/<span class="token tag">${toKebabCase(comp.name)}</span>&gt;`;
   });
 

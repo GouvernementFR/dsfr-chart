@@ -1,4 +1,4 @@
-// Shared external tooltip handler for Chart.js used across charts
+// Gestionnaire de tooltip externe partagé pour Chart.js utilisé par les différents graphiques
 export function externalTooltip(context, component, opts = {}) {
   const dom = document.getElementById(component.databoxId + '-' + component.databoxType + '-' + component.databoxSource) || component.$el.nextElementSibling;
 
@@ -7,13 +7,13 @@ export function externalTooltip(context, component, opts = {}) {
 
   if (!tooltipEl) return;
 
-  // Hide if no tooltip
+  // Masquer si aucun tooltip
   if (!tooltipModel || tooltipModel.opacity === 0) {
     tooltipEl.style.opacity = 0;
     return;
   }
 
-  // Set tooltip position classes
+  // Définir les classes de position du tooltip
   tooltipEl.classList.remove('above', 'below', 'no-transform');
   if (tooltipModel.yAlign) {
     tooltipEl.classList.add(tooltipModel.yAlign);
@@ -21,17 +21,17 @@ export function externalTooltip(context, component, opts = {}) {
     tooltipEl.classList.add('no-transform');
   }
 
-  // Set Text
+  // Définir le texte
   if (tooltipModel.body) {
     const titleLines = tooltipModel.title || [];
     const bodyLines = tooltipModel.body.map((bodyItem) => bodyItem.lines);
     const dataPoints = tooltipModel.dataPoints || [];
 
-    // Set the tooltip header
+  // Définir l'en-tête du tooltip
     const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
     if (divDate) divDate.innerHTML = titleLines[0] || '';
 
-    // Clear the existing tooltip content
+  // Vider le contenu existant du tooltip
     const divValue = tooltipEl.querySelector('.tooltip_value');
     if (divValue) divValue.innerHTML = '';
 
@@ -39,7 +39,7 @@ export function externalTooltip(context, component, opts = {}) {
     const unitLookup = opts.unitLookup;
     const colorResolver = opts.colorResolver;
 
-    // Prefer iterating dataPoints if present so we can map datasetIndex/dataIndex -> color correctly
+  // Privilégier l'itération sur dataPoints si présent afin de pouvoir mapper datasetIndex/dataIndex -> couleur correctement
     if (dataPoints.length > 0) {
       dataPoints.forEach((dp, idx) => {
         const line = (bodyLines[0] || [])[idx];
@@ -50,7 +50,7 @@ export function externalTooltip(context, component, opts = {}) {
         if (typeof colorResolver === 'function') {
           color = colorResolver(component, idx, dp.datasetIndex, dp.dataIndex) || color;
         } else if (component.colorParse) {
-          // Try common shapes of colorParse (flat array or array of arrays per dataset)
+          // Essayer les formes courantes de colorParse (tableau plat ou tableau de tableaux par dataset)
           if (Array.isArray(component.colorParse[dp.datasetIndex]) && component.colorParse[dp.datasetIndex][dp.dataIndex]) {
             color = component.colorParse[dp.datasetIndex][dp.dataIndex];
           } else if (component.colorParse[idx]) {
@@ -66,7 +66,7 @@ export function externalTooltip(context, component, opts = {}) {
         `;
       });
     } else {
-      // Fallback: iterate over the first bodyLines array
+  // Repli : itérer sur le premier tableau bodyLines
       (bodyLines[0] || []).forEach((line, i) => {
         if (line === undefined || line === null) return;
         const resolvedUnit = typeof unitLookup === 'function' ? unitLookup(i) : unit;
@@ -81,7 +81,7 @@ export function externalTooltip(context, component, opts = {}) {
     }
   }
 
-  // Position the tooltip
+  // Positionner le tooltip
   const { offsetLeft: positionX, offsetTop: positionY } = component.chart.canvas;
 
   const canvasWidth = Number(component.chart.canvas.style.width.replace(/\D/g, ''));

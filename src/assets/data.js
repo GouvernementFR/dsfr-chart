@@ -212,9 +212,9 @@ export const chartData = {
   tableBarChart: {
     x: [["1 - Chine", "2 - États-Unis", "3 - Japon"]],
     y: [
-      [-3219.3, -2753.6, -2354.2], // ← bar line as first dataset
-      [3753.1, 4095.2, 4872.4], // ← bar line as second dataset
-      [2.8, -3.1, 1.5] // ← point line as third dataset
+      [-3219.3, -2753.6, -2354.2],
+      [3753.1, 4095.2, 4872.4],
+      [2.8, -3.1, 1.5]
     ],
     yLines: [
       [-3219.3, -2753.6, -2354.2],

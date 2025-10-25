@@ -127,7 +127,6 @@ export default {
   watch: {
     $props: {
       handler() {
-        // Check if the chart is already created to prevent useless re-renders
         if (this.chartId) {
           this.resetData();
           this.getData();
@@ -164,12 +163,9 @@ export default {
       this.colorHover = [];
     },
     getData() {
-      // Parsing des données
-      // Normalize tree and name props (accept JSON strings or native values)
       this.dataParse = ensureArray(this.tree, []);
       this.nameParse = ensureArray(this.name, []);
 
-      // Chargement des couleurs
       this.loadColors();
 
       this.datasets = [{
@@ -219,7 +215,6 @@ export default {
       this.colorHover = colorHover;
     },
     choosePalette() {
-      // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette, this.colors);
     },
     createChart() {
@@ -269,7 +264,6 @@ export default {
               external: (context) => externalTooltip(context, this, {
                 unitTooltip: this.unitTooltip,
                 colorResolver: (comp, idx, datasetIndex, dataIndex) => {
-                  // Try to emulate previous treemap color resolution: colorParse[datasetIndex][dataIndex] or fallback to colorParse[dataIndex]
                   if (comp.colorParse && Array.isArray(comp.colorParse[datasetIndex]) && comp.colorParse[datasetIndex][dataIndex]) {
                     return comp.colorParse[datasetIndex][dataIndex % comp.colorParse[datasetIndex].length];
                   }

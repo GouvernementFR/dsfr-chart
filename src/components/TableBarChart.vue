@@ -160,7 +160,6 @@ export default {
       this.colorParse = [];
     },
     getData() {
-      // Normalize props (accept JSON string or native values)
       this.xparse = ensureArrayOfArrays(this.x, []);
       this.yparse = ensureArrayOfArrays(this.y, []);
       this.colorParse = ensureArray(this.colors, ['#e4794a', '#68a532', '#666666']);

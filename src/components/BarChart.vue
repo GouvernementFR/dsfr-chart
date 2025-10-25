@@ -145,7 +145,6 @@ export default {
   watch: {
     $props: {
       handler() {
-        // Check if the chart is already created to prevent useless re-renders
         if (this.chartId) {
           this.resetData();
           this.getData();
@@ -184,8 +183,6 @@ export default {
       this.colorHover = [];
     },
     getData() {
-      // Parsing des données
-      // Parsing des données (support legacy JSON strings)
       this.xparse = ensureArrayOfArrays(this.x);
       this.yparse = ensureArrayOfArrays(this.y);
       this.pvparse = ensureArray(this.pointValues, []);
@@ -201,13 +198,10 @@ export default {
         }
       }
 
-      // Assignation des labels
       this.labels = this.xparse[0];
 
-      // Chargement des couleurs
       this.loadColors();
 
-      // Préparation des datasets
       this.datasets = this.yparse.map((dataSet, index) => ({
         label: this.nameParse[index],
         data: dataSet,
@@ -220,7 +214,6 @@ export default {
       }));
     },
     choosePalette() {
-      // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette, this.colors);
     },
     loadColors() {
@@ -337,7 +330,6 @@ export default {
                     const bar = meta.data[i];
                     if (!bar) return;
 
-                    // Récupération de la position du point en fonction du mode horizontal ou vertical
                     const x = isHorizontal
                       ? scales.x.getPixelForValue(pointValue)
                       : bar.x;
@@ -345,7 +337,6 @@ export default {
                       ? bar.y
                       : scales.y.getPixelForValue(pointValue);
 
-                    // Dessin du point
                     ctx.beginPath();
                     ctx.arc(x, y, this.pointRadius, 0, 2 * Math.PI);
                     ctx.fillStyle = this.pointColor;

@@ -99,7 +99,6 @@ export default {
   watch: {
     $props: {
       handler() {
-        // Check if the chart is already created to prevent useless re-renders
         if (this.chartId) {
           this.resetData();
           this.getData();
@@ -152,13 +151,10 @@ export default {
         }
       }
 
-      // Assignation des labels
       this.labels = this.xparse[0];
 
-      // Chargement des couleurs
       this.loadColors();
 
-      // Préparation des datasets
       this.datasets = this.yparse.map((dataSet, index) => ({
         data: dataSet,
         borderColor: this.colorParse[index],
@@ -237,11 +233,9 @@ export default {
       this.colorHover = [colorHover.flat()];
     },
     choosePalette() {
-      // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette, this.colors);
     },
-    // eslint-disable-next-line no-unused-vars
-    changeColors(theme) {
+    changeColors() {
       this.loadColors();
 
       // Mise à jour des couleurs dans le graphique

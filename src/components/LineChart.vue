@@ -205,7 +205,7 @@ export default {
     },
     highlightLabelPosition: {
       type: String,
-      default: 'top', // 'top' | 'middle' | 'bottom'
+      default: 'top',
       validator: (v) => ['top', 'middle', 'bottom'].includes(v)
     },
   },
@@ -239,7 +239,6 @@ export default {
   watch: {
     $props: {
       handler() {
-        // Check if the chart is already created to prevent useless re-renders
         if (this.chartId) {
           this.resetData();
           this.getData();
@@ -288,7 +287,6 @@ export default {
       this.colorHover = [];
     },
     getData() {
-      // Parsing des données
       // Parsing des données (support legacy JSON strings)
       this.xparse = ensureArrayOfArrays(this.x);
       this.yparse = ensureArrayOfArrays(this.y);
@@ -321,7 +319,6 @@ export default {
         this.tmpHlineColorParse = colors;
       }
 
-      // Formatage des données
       let data = [];
       // Cas où x est numérique
       if (typeof this.xparse[0][0] === 'number') {
@@ -350,10 +347,8 @@ export default {
         this.xAxisType = 'category';
       }
 
-      // Chargement des couleurs
       this.loadColors();
 
-      // Préparation des datasets
       this.datasets = data.map((dataSet, index) => ({
         data: dataSet,
         fill: false,
@@ -405,7 +400,6 @@ export default {
       }
     },
     choosePalette() {
-      // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette, this.colors);
     },
     createChart() {

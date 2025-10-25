@@ -1,9 +1,9 @@
-// This test require the project to be build and storybook running to work
+// Ce test nécessite que le projet soit buildé et que Storybook soit en cours d'exécution pour fonctionner
 
 import { test, expect } from '@playwright/test';
 import { readdirSync } from 'fs';
 
-// Small hack because page.waitForSelector is not working with storybook
+// Petit hack car page.waitForSelector ne fonctionne pas avec Storybook
 const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
 const stories = await Promise.all(

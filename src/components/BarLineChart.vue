@@ -273,7 +273,6 @@ export default {
   watch: {
     $props: {
       handler() {
-        // Check if the chart is already created to prevent useless re-renders
         if (this.chartId) {
           this.resetData();
           this.getData();
@@ -326,8 +325,6 @@ export default {
       this.colorBarHover = [];
     },
     getData() {
-      // Parsing des données
-      // Parsing des données (support legacy JSON strings)
       this.xparse = ensureArrayOfArrays(this.x);
       this.yBarParse = ensureArrayOfArrays(this.yBars);
       this.yLineParse = ensureArrayOfArrays(this.yLines);
@@ -351,8 +348,8 @@ export default {
         this.tmpHlineColorParse = colors;
       }
 
-      const dataBars = this.yBarParse.map(() => []); // tableau pour les barres
-      const dataLines = this.yLineParse.map(() => []); // tableau de tableaux pour chaque ligne
+      const dataBars = this.yBarParse.map(() => []);
+      const dataLines = this.yLineParse.map(() => []);
 
       if (typeof this.xparse[0] === 'number') {
         const xsort = [...this.xparse].sort((a, b) => a - b);
@@ -364,7 +361,6 @@ export default {
             dataBars[barIdx].push(bar[index]);
           });
 
-          // Pour chaque ligne
           this.yLineParse.forEach((line, lineIdx) => {
             dataLines[lineIdx].push(line[index]);
           });
@@ -383,7 +379,7 @@ export default {
           dataLines[lineIdx].push(...line);
         });
       }
-      // Chargement des couleurs
+
       this.loadColors();
 
       this.barsDatasets = dataBars.map((barData, i) => ({
@@ -396,7 +392,6 @@ export default {
         order: 2,
       }));
 
-      // Crée les datasets des lignes
       this.linesDatasets = dataLines.map((lineData, i) => ({
         data: lineData,
         type: 'line',
@@ -410,7 +405,6 @@ export default {
       }));
     },
     choosePalette() {
-      // Using the refactored choosePalette function from utils
       return {bar: choosePalette(this.selectedPalette, this.barsColors), line: choosePalette(this.selectedPalette, this.linesColors)};
     },
     loadColors() {

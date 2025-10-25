@@ -171,7 +171,6 @@ export default {
   watch: {
     $props: {
       handler() {
-        // Check if the chart is already created to prevent useless re-renders
         if (this.chartId) {
           this.resetData();
           this.getData();
@@ -248,7 +247,6 @@ export default {
         this.tmpHlineColorParse = colors;
       }
 
-      // Formatage des données
       let data = [];
       // Cas où x est numérique
       if (typeof this.xparse[0][0] === 'number') {
@@ -277,10 +275,8 @@ export default {
         this.xAxisType = 'category';
       }
 
-      // Chargement des couleurs
       this.loadColors();
 
-      // Préparation des datasets
       this.datasets = data.map((dataSet, index) => ({
         data: dataSet,
         fill: false,
@@ -403,7 +399,6 @@ export default {
       this.hlineColorParse = hlineColorParse;
     },
     choosePalette() {
-      // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette, this.colors);
     },
     changeColors(theme) {

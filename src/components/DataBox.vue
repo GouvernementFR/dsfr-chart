@@ -376,7 +376,6 @@ const generateOptions = (source) => {
   }));
 };
 
-// Cast props to boolean
 const segmentedControl = computed(() => [true, 'true', ''].includes(props.segmentedControl));
 const fullscreen = computed(() => [true, 'true', ''].includes(props.fullscreen));
 const screenshot = computed(() => [true, 'true', ''].includes(props.screenshot));

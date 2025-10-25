@@ -151,7 +151,6 @@ export default {
   watch: {
     $props: {
       handler() {
-        // Check if the widget is already created to prevent useless re-renders
         if (this.widgetId) {
           this.createChart();
         }
@@ -165,7 +164,6 @@ export default {
   },
   mounted() {
     this.createChart();
-    // The template is not retriggered in maps, force update to process after other elements
     this.$forceUpdate();
 
     const element = document.documentElement;
@@ -177,10 +175,8 @@ export default {
     createChart() {
       const parentWidget = this.$refs[this.widgetId];
 
-      // Normalize data prop (accept JSON string or native object)
       this.dataParse = parseMaybeJSON(this.data, {});
 
-      // Choisir les couleurs extrêmes basées sur la palette
       const palette = this.choosePalette();
 
       this.colorLeft = palette[0];
@@ -195,7 +191,6 @@ export default {
 
       this.FranceProps.displayDep = {};
 
-      // Afficher uniquement les départements de la région sélectionnée
       listDep = this.getDepsFromReg(this.region);
       listDep.forEach((key) => {
         values.push(this.dataParse[key]);
@@ -205,15 +200,14 @@ export default {
       this.scaleMin = Math.min(...values);
       this.scaleMax = Math.max(...values);
 
-      // Define color scale based on regional values
-      const colorScale = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colorLeft, this.colorRight]);
+  // Définir l'échelle de couleurs en fonction des valeurs régionales
+  const colorScale = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colorLeft, this.colorRight]);
 
       let xmin = [],
         xmax = [],
         ymin = [],
         ymax = [];
 
-      // Iterate over each department in France and hide
       for (const key in this.dataParse) {
         const className = 'FR-' + key;
         const elCol = parentWidget.getElementsByClassName(className);
@@ -221,7 +215,6 @@ export default {
         elCol.length !== 0 && elCol[0].setAttribute('fill', 'rgba(255, 255, 255, 0)');
         this.FranceProps.displayDep[className] = 'none';
       }
-      // Iterate over each department in the region and set colors
       listDep.forEach((key) => {
         const className = 'FR-' + key;
         const elCol = parentWidget.getElementsByClassName(className);
@@ -257,7 +250,6 @@ export default {
         }
       });
 
-      // Calculate viewBox to focus on the selected region
       if (xmin.length && ymin.length && xmax.length && ymax.length) {
         const xminValue = Math.min(...xmin);
         const yminValue = Math.min(...ymin);
@@ -276,7 +268,6 @@ export default {
       this.InfoProps.max = this.scaleMax;
     },
     choosePalette() {
-      // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette, this.colors);
     },
     displayTooltip(e) {
@@ -317,7 +308,6 @@ export default {
       elCol[0].style.opacity = 1;
     },
     changeGeoLevel(e) {
-      // Get clicked department value
       const hoverValue = e.target.className.baseVal.replace('FR-', '');
       this.zoomDep = hoverValue;
       this.createChart();

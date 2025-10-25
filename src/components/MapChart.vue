@@ -282,7 +282,6 @@ export default {
   watch: {
     $props: {
       handler() {
-        // Check if the widget is already created to prevent useless re-renders
         if (this.widgetId) {
           this.createChart();
         }
@@ -299,7 +298,6 @@ export default {
   },
   mounted() {
     this.createChart();
-    // The template is not retriggered in maps, force update to process after other elements
     this.$forceUpdate();
 
     const element = document.documentElement;
@@ -311,12 +309,10 @@ export default {
     createChart() {
       const parentWidget = this.$refs[this.widgetId];
 
-      // Normalize data prop (accept JSON string or native object)
       this.dataParse = parseMaybeJSON(this.data, {});
 
       const palette = this.choosePalette();
 
-      // Choisir les couleurs extrêmes basées sur la palette
       this.colorLeft = palette[0];
       this.colorRight = palette[palette.length - 1];
       this.InfoProps.colorMin = this.colorLeft;
@@ -353,15 +349,15 @@ export default {
       this.scaleMin = Math.min(...values);
       this.scaleMax = Math.max(...values);
 
-      // Define color scale based on regional values
-      const colorScale = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colorLeft, this.colorRight]);
+  // Définir l'échelle de couleurs en fonction des valeurs régionales
+  const colorScale = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colorLeft, this.colorRight]);
 
       let xmin = [],
         xmax = [],
         ymin = [],
         ymax = [];
 
-      // Iterate over each department in France and set colors
+  // Itérer sur chaque département de France et définir les couleurs
       for (const key in this.dataParse) {
         const className = 'FR-' + key;
         const elCol = parentWidget.getElementsByClassName(className);
@@ -386,7 +382,7 @@ export default {
             xmax.push(polygon.x + polygon.width);
             ymax.push(polygon.y + polygon.height);
           } else {
-            // Hide other departments outside the selected region
+            // Masquer les autres départements en dehors de la région sélectionnée
             elCol.length !== 0 && elCol[0].setAttribute('fill', 'rgba(255, 255, 255, 0)');
             this.FranceProps.displayDep[className] = 'none';
           }
@@ -394,7 +390,6 @@ export default {
       }
 
       if (this.zoomDep) {
-        // Logic for zoom level and dimensions adjustment
         if (this.isDep) {
           this.InfoProps.localisation = this.getDep(this.zoomDep).department;
           const xminValue = Math.min(...xmin);
@@ -420,7 +415,7 @@ export default {
           this.displayMayotte = 'none';
           this.displayReunion = 'none';
           this.displayGuyane = 'none';
-          // Setting visibility for DOM regions
+
           if ((this.zoomDep === '971' && this.level === 'dep') || (this.zoomDep === '01' && this.level === 'reg')) {
             this.displayGuadeloupe = '';
           } else if ((this.zoomDep === '972' && this.level === 'dep') || (this.zoomDep === '02' && this.level === 'reg')) {
@@ -498,7 +493,6 @@ export default {
       elCol[0].style.opacity = 1;
     },
     changeGeoLevel(e) {
-      // Get clicked department value
       const hoverValue = e.target.className.baseVal.replace('FR-', '');
       this.zoomDep = hoverValue;
       this.createChart();
@@ -508,7 +502,6 @@ export default {
       this.createChart();
     },
     choosePalette() {
-      // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette, this.colors);
     },
     changeTheme(theme) {

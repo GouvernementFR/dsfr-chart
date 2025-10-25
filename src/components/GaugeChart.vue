@@ -152,7 +152,6 @@ export default {
   watch: {
     $props: {
       handler() {
-        // Check if the widget is already created to prevent useless re-renders
         if (this.widgetId) {
           this.createChart();
         }

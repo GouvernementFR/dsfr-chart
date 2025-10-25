@@ -1,11 +1,12 @@
-// Utility helpers to normalize props that may be passed as JSON strings or native values.
+// Helpers utilitaires pour normaliser les props qui peuvent être passées
+// soit sous forme de chaînes JSON, soit sous forme de valeurs natives.
 export function parseMaybeJSON(value, fallback = null) {
   if (value === null || value === undefined || value === '') return fallback;
   if (typeof value === 'string') {
     try {
       return JSON.parse(value);
     } catch (e) {
-      // Keep behaviour conservative: log and return fallback
+      // Comportement conservateur : logger et retourner la valeur de repli
        
       console.error('parseMaybeJSON: invalid JSON', e);
       return fallback;
@@ -22,10 +23,12 @@ export function ensureArray(value, fallback = []) {
 export function ensureArrayOfArrays(value, fallback = []) {
   const parsed = parseMaybeJSON(value, fallback);
   if (!Array.isArray(parsed)) return fallback;
-  // If first element is also an array assume array-of-arrays, otherwise try to wrap
+  // Si le premier élément est lui-même un tableau, on suppose un tableau-de-tableaux,
+  // sinon on tente d'encapsuler la liste pour compatibilité ascendante.
   if (parsed.length === 0) return [];
   if (Array.isArray(parsed[0])) return parsed;
-  // If it's a single list (labels), wrap into an array-of-arrays for backward compatibility
+  // Si c'est une liste simple (labels), on l'encapsule dans un tableau-de-tableaux
+  // pour assurer la compatibilité ascendante.
   return [parsed];
 }
 
@@ -39,7 +42,7 @@ export function parseNames(nameProp, seriesCount) {
 }
 
 export function parseVhLines(lineProp, lineNameProp, lineColorProp) {
-  // lineProp may be stringified JSON or array
+  // lineProp peut être du JSON stringifié ou un tableau
   const parse = ensureArray(lineProp, []);
   const names = ensureArray(lineNameProp, []);
   const colors = ensureArray(lineColorProp, []);
