@@ -49,18 +49,6 @@ export default {
   components: { ChartShell },
   mixins: [chartMixins],
   props: {
-    databoxId: {
-      type: String,
-      default: null,
-    },
-    databoxType: {
-      type: String,
-      default: null,
-    },
-    databoxSource: {
-      type: String,
-      default: 'default',
-    },
     x: {
       type: String,
       required: true,
@@ -116,10 +104,6 @@ export default {
     showLine: {
       type: [Boolean, String],
       default: false,
-    },
-    date: {
-      type: String,
-      default: '',
     },
     aspectRatio: {
       type: [Number, String],

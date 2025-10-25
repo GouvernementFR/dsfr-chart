@@ -65,18 +65,6 @@ export default {
   components: { ChartShell },
   mixins: [chartMixins],
   props: {
-    databoxId: {
-      type: String,
-      default: null,
-    },
-    databoxType: {
-      type: String,
-      default: null,
-    },
-    databoxSource: {
-      type: String,
-      default: 'default',
-    },
     x: {
       type: Array,
       required: true
@@ -142,10 +130,6 @@ export default {
       default: ''
     },
     unitTooltipLine: {
-      type: String,
-      default: ''
-    },
-    date: {
       type: String,
       default: ''
     },

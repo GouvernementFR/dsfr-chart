@@ -59,14 +59,38 @@ import { capitalize } from '@/utils/global.js';
 export default {
   name: 'ChartShell',
   props: {
-    databoxId: { type: String, default: null },
-    databoxType: { type: String, default: null },
-    databoxSource: { type: String, default: 'default' },
-    widgetId: { type: String, required: true },
-    chartId: { type: String, required: true },
-    nameParse: { type: Array, default: () => [] },
-    colorParse: { type: Array, default: () => [] },
-    date: { type: String, default: '' },
+    databoxId: {
+      type: String,
+      default: null
+    },
+    databoxType: {
+      type: String,
+      default: null
+    },
+    databoxSource: {
+      type: String,
+      default: 'default'
+    },
+    widgetId: {
+      type: String,
+      required: true
+    },
+    chartId: {
+      type: String,
+      required: true
+    },
+    nameParse: {
+      type: Array,
+      default: () => []
+    },
+    colorParse: {
+      type: Array,
+      default: () => []
+    },
+    date: {
+      type: String,
+      default: ''
+    },
   },
   methods: {
     capitalize,
