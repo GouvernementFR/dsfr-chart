@@ -437,6 +437,9 @@ export default {
               },
               ticks: {
                 padding: 10,
+                callback: function(value) {// prevents thousand seperator
+                  return value;
+                }
               },
               ...(this.xMin ? { suggestedMin: this.xMin } : {}),
               ...(this.xMax ? { suggestedMax: this.xMax } : {}),

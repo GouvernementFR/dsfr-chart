@@ -71,6 +71,7 @@
               :aria-controls="'translate-' + id"
               aria-expanded="false"
               title="Plus d'actions"
+              type="button"
             />
             <div
               :id="'translate-' + id"
@@ -82,6 +83,7 @@
                     class="fr-translate__language fr-nav__link"
                     title="Prendre une capture d'écran"
                     @click="screenshotChart()"
+                    type="button"
                   >
                     Capture d'écran
                   </button>
@@ -91,6 +93,7 @@
                     class="fr-translate__language fr-nav__link"
                     title="Télécharger les données en CSV"
                     @click="downloadCSV(selectedView)"
+                    type="button"
                   >
                     Télécharger en CSV
                   </button>
@@ -189,19 +192,19 @@
     <div class="fr-p-2w databox__content">
       <div
         :class="selectedView === 'table' ? 'fr-hidden' : 'w-full'"
-        :aria-hidden="selectedView === 'chart'"
+        :aria-hidden="selectedView === 'table'"
       >
         <!-- Bulk create all charts source divs for teleport -->
         <div
           v-for="(chartSource, i) in chartSources"
           :id="id + '-chart-' + chartSource"
           :key="i"
-          :class="currentSource !== chartSource ? 'fr-hidden' : ''"
+          :class="currentSource != chartSource ? 'fr-hidden' : ''"
         />
       </div>
       <div
         :class="selectedView === 'chart' ? 'fr-hidden' : 'w-full'"
-        :aria-hidden="selectedView === 'table'"
+        :aria-hidden="selectedView === 'chart'"
       >
         <!-- Bulk create all table source divs for teleport -->
         <div
@@ -374,6 +377,9 @@ const selectedView = ref(chartSources.value.length > 0 ? 'chart' : 'table');
 
 const changeView = (view) => {
   selectedView.value = view;
+  currentSource.value = view === 'chart'
+    ? chartSources.value
+    : tableSources.value;
 };
 
 const downloadCSV = (mode) => {
@@ -393,11 +399,12 @@ const downloadCSV = (mode) => {
     csv.push(`${x},${y.map((y) => y[i]).join(',')}\n`);
   });
 
+  const filename = props.title.replace(/[\/|\\:*?"<>]/g, " ").trim();
   const blob = new Blob(csv, { type: 'text/csv' });
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'data.csv';
+  a.download = (filename ?? 'data') + '.csv';
   a.click();
   window.URL.revokeObjectURL(url);
 };
