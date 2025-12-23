@@ -84,13 +84,29 @@
     <div>
       <component
         :is="TableChart"
-        v-bind="chartData.tableChart.default"
+        v-bind="chartData.tableChart.chart"
       />
     </div>
 
     <CodeBlock
       :component="TableChart"
-      :attributes="chartData.tableChart.default"
+      :attributes="chartData.tableChart.chart"
+    />
+
+    <p>
+      Il est également possible de présenter l’alternative avec une en-tête et des lignes. Les arguments sont donc seulement au nombre de deux.
+    </p>
+
+    <div>
+      <component
+        :is="TableChart"
+        v-bind="chartData.tableChart.line"
+      />
+    </div>
+
+    <CodeBlock
+      :component="TableChart"
+      :attributes="chartData.tableChart.line"
     />
   </div>
 </template>

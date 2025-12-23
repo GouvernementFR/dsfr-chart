@@ -4,6 +4,10 @@ export default {
   component: 'table-chart',
 };
 
-export const Default = {
-  args: chartData.tableChart.default,
+export const Chart = {
+  args: chartData.tableChart.chart,
+};
+
+export const Line = {
+  args: chartData.tableChart.line,
 };

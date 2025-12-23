@@ -1,5 +1,5 @@
 import { CategoryScale, Chart, Filler, LinearScale, PointElement, Tooltip } from 'chart.js';
-import { FRANCE } from '@/utils/constants.js';
+import { FRANCE, WORLD } from '@/utils/constants.js';
 
 Chart.register(Tooltip, Filler, LinearScale, CategoryScale, PointElement);
 
@@ -36,9 +36,9 @@ export const formatNumber = (value) => {
   // Format as integer or decimal number
   if (Number.isInteger(value)) {
     return parseInt(value).toLocaleString('fr-FR');
-  } else {
+  } 
     return parseFloat(value).toLocaleString('fr-FR', { maximumFractionDigits: 2 });
-  }
+  
 };
 
 /**
@@ -73,6 +73,21 @@ export const getDep = (code) => FRANCE.find((item) => item.department_value === 
 export const getReg = (code) => FRANCE.find((item) => item.region_value === code);
 
 /**
+ * Retrieve the academy object from its code
+ * @param {string} code The academy code
+ * @returns {object} The academy object
+ */
+export const getAca = (code) => FRANCE.find((item) => item.academy_value === code);
+
+
+/**
+ * Retrieve the country object from its code
+ * @param {string} code The country code
+ * @returns {object} The country object
+ */
+export const getCountry = (code) => WORLD.find((item) => item.country_value === code);
+
+/**
  * Retrieve all department codes
  * @returns {string[]} The department codes
  */
@@ -85,6 +100,18 @@ export const getAllDep = () => FRANCE.map((item) => item.department_value);
 export const getAllReg = () => FRANCE.map((item) => item.region_value);
 
 /**
+ * Retrieve all academy codes
+ * @returns {string[]} The academy codes
+ */
+export const getAllAca = () => FRANCE.map((item) => item.academy_value);
+
+/**
+ * Retrieve all country codes
+ * @returns {string[]} The country codes
+ */
+export const getAllCountries = () => WORLD.map((item) => item.country_value);
+
+/**
  * Retrieve the department codes from a region code
  * @param {string} code The region code
  * @returns {string[]} The department codes
@@ -93,6 +120,26 @@ export const getDepsFromReg = (code) => {
   const items = FRANCE.filter((item) => item.region_value === code);
   return items.map((item) => item.department_value);
 };
+
+/**
+ * Retrieve the department codes from an academy code
+ * @param {string} code The academy code
+ * @returns {string[]} The department codes
+ */
+export const getDepsFromAca = (code) => {
+  const items = FRANCE.filter((item) => item.academy_value === code);
+  return items.map((item) => item.department_value);
+};
+
+/**
+ * Retrieve the country codes from a continent code
+ * @param {string} code The continent code
+ * @returns {string[]} The country codes
+ */
+export const getCountriesFromContinent = (code) => {
+  const items = WORLD.filter((item) => item.continent_value === code);
+  return items.map((item) => item.country_value);
+}
 
 /**
  * Configure the default values for chart.js
@@ -116,17 +163,14 @@ export const mapMixins = {
   methods: {
     getDep,
     getReg,
+    getAca,
+    getCountry,
     getAllDep,
     getAllReg,
+    getAllAca,
+    getAllCountries,
     getDepsFromReg,
-  },
-};
-
-export const svgMixins = {
-  props: {
-    onenter: Function,
-    onleave: Function,
-    onclick: Function,
-    ondblclick: Function,
+    getDepsFromAca,
+    getCountriesFromContinent,
   },
 };

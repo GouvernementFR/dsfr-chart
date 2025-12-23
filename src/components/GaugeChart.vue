@@ -45,7 +45,7 @@
             v-if="legend"
             class="flex"
           >
-            <span class="legende_dot target_legend" />
+            <span class="legend_dot target_legend" />
             <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">
               Valeur cible
             </p>
@@ -54,7 +54,7 @@
             v-if="legend"
             class="flex fr-mt-3v fr-mb-1v"
           >
-            <span class="legende_dot actual_legend" />
+            <span class="legend_dot actual_legend" />
             <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">
               Valeur actuelle
             </p>
@@ -94,11 +94,11 @@ export default {
     },
     value: {
       type: [Number, String],
-      default: '',
+      default: 0,
     },
     percent: {
       type: [Number, String],
-      default: '',
+      default: null,
     },
     init: {
       type: [Number, String],
@@ -132,6 +132,7 @@ export default {
   data() {
     return {
       widgetId: '',
+      display: '',
       percentage: 0,
       styleRectangleOver: '',
       styleRectangleUnder: '',
@@ -155,7 +156,7 @@ export default {
     },
   },
   created() {
-    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
+    this.widgetId = `dsfr-widget-${Math.floor(Math.random() * 1000)}`;
   },
   mounted() {
     this.createChart();
@@ -164,8 +165,8 @@ export default {
   },
   methods: {
     createChart() {
-      if (!this.percent) {
-        this.percentage = Math.round((100 * (this.value - this.init)) / (this.target - this.init));
+      if (this.percent === null) {
+        this.percentage = Math.round((100 * (Number(this.value) - Number(this.init))) / (this.target - this.init));
       } else {
         this.percentage = Math.round(this.percent);
       }

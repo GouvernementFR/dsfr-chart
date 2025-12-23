@@ -1,6 +1,6 @@
 <template>
-  <div class="fr-col-12 fr-col-md-10 fr-mb-4w">
-    <h1 class="fr-pt-2w">
+  <div class="fr-col-12 fr-col-md-10 fr-my-4w">
+    <h1>
       DSFR Chart
     </h1>
     <p>

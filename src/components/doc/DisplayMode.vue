@@ -4,7 +4,7 @@
     aria-controls="fr-theme-modal"
     data-fr-opened="false"
     data-fr-js-modal-button="true"
-    style="z-index: 999;"
+    :style="{ zIndex: 999 }"
   >
     Paramètres d’affichage
   </button>
@@ -71,15 +71,15 @@
                           >
                             <use
                               class="fr-artwork-decorative"
-                              :xlink:href="`/src/assets/img/light.svg#artwork-decorative`"
+                              xlink:href="@/assets/img/light.svg#artwork-decorative"
                             />
                             <use
                               class="fr-artwork-minor"
-                              :xlink:href="`/src/assets/img/light.svg#artwork-minor`"
+                              xlink:href="@/assets/img/light.svg#artwork-minor"
                             />
                             <use
                               class="fr-artwork-major"
-                              :xlink:href="`/src/assets/img/light.svg#artwork-major`"
+                              xlink:href="@/assets/img/light.svg#artwork-major"
                             />
                           </svg>
                         </div>
@@ -107,15 +107,15 @@
                           >
                             <use
                               class="fr-artwork-decorative"
-                              :xlink:href="`/src/assets/img/dark.svg#artwork-decorative`"
+                              xlink:href="@/assets/img/dark.svg#artwork-decorative"
                             />
                             <use
                               class="fr-artwork-minor"
-                              :xlink:href="`/src/assets/img/dark.svg#artwork-minor`"
+                              xlink:href="@/assets/img/dark.svg#artwork-minor"
                             />
                             <use
                               class="fr-artwork-major"
-                              :xlink:href="`/src/assets/img/dark.svg#artwork-major`"
+                              xlink:href="@/assets/img/dark.svg#artwork-major"
                             />
                           </svg>
                         </div>
@@ -146,15 +146,15 @@
                           >
                             <use
                               class="fr-artwork-decorative"
-                              :xlink:href="`/src/assets/img/system.svg#artwork-decorative`"
+                              xlink:href="@/assets/img/system.svg#artwork-decorative"
                             />
                             <use
                               class="fr-artwork-minor"
-                              :xlink:href="`/src/assets/img/system.svg#artwork-minor`"
+                              xlink:href="@/assets/img/system.svg#artwork-minor"
                             />
                             <use
                               class="fr-artwork-major"
-                              :xlink:href="`/src/assets/img/system.svg#artwork-major`"
+                              xlink:href="@/assets/img/system.svg#artwork-major"
                             />
                           </svg>
                         </div>

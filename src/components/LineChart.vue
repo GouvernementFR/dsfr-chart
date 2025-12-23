@@ -12,28 +12,15 @@
           <div class="tooltip">
             <div class="tooltip_header fr-text--sm fr-mb-0" />
             <div class="tooltip_body">
-              <div class="tooltip_value">
-                <div
-                  v-for="(item, index) in nameParse"
-                  :key="index"
-                  class="flex fr-mt-3v fr-mb-1v"
-                  :style="{ 'border-bottom': '1px solid #e0e0e0' }"
-                >
-                  <div class="tooltip_value-content">
-                    <span
-                      class="tooltip_dot"
-                      :style="{ 'background-color': colorParse[index] }"
-                    />
-                    <p class="tooltip_place">
-                      {{ capitalize(item) }}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <div class="tooltip_value" />
             </div>
           </div>
 
-          <canvas :ref="chartId" />
+          <canvas
+            :ref="chartId"
+            role="img"
+            :aria-labelledby="'title-' + databoxId"
+          />
 
           <div class="chart_legend fr-mb-0 fr-mt-4v">
             <div
@@ -42,7 +29,7 @@
               class="flex fr-mt-3v fr-mb-1v"
             >
               <span
-                class="legende_dot"
+                class="legend_dot"
                 :style="{ 'background-color': colorParse[index] }"
               />
               <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
@@ -50,17 +37,18 @@
               </p>
             </div>
           </div>
+
           <div
             v-for="(item, index) in hlineNameParse"
             :key="index"
             class="flex fr-mt-3v"
           >
             <span
-              class="legende_dash_line"
+              class="legend_dash_line"
               :style="{ 'background-color': hlineColorParse[index] }"
             />
             <span
-              class="legende_dash_line legende_dash_line_end"
+              class="legend_dash_line legend_dash_line_end"
               :style="{ 'background-color': hlineColorParse[index] }"
             />
             <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
@@ -73,17 +61,18 @@
             class="flex fr-mt-3v fr-mb-1v"
           >
             <span
-              class="legende_dash_line"
+              class="legend_dash_line"
               :style="{ 'background-color': vlineColorParse[index] }"
             />
             <span
-              class="legende_dash_line legende_dash_line_end"
+              class="legend_dash_line legend_dash_line_end"
               :style="{ 'background-color': vlineColorParse[index] }"
             />
             <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
               {{ capitalize(item) }}
             </p>
           </div>
+
           <div
             v-if="date"
             class="flex fr-mt-1w"
@@ -182,10 +171,6 @@ export default {
       type: [Number, String],
       default: 2,
     },
-    formatDate: {
-      type: [Boolean, String],
-      default: false,
-    },
     selectedPalette: {
       type: String,
       default: '',
@@ -203,8 +188,8 @@ export default {
       chartId: '',
       display: '',
       datasets: [],
-      xAxisType: 'category',
       labels: [],
+      xAxisType: '',
       xparse: [],
       yparse: [],
       nameParse: [],
@@ -237,8 +222,8 @@ export default {
   },
   created() {
     configureChartDefaults();
-    this.chartId = 'dsfr-chart-' + Math.floor(Math.random() * 1000);
-    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
+    this.chartId = `dsfr-chart-${Math.floor(Math.random() * 1000)}`;
+    this.widgetId = `dsfr-widget-${Math.floor(Math.random() * 1000)}`;
   },
   mounted() {
     this.resetData();
@@ -259,8 +244,8 @@ export default {
       }
       this.display = '';
       this.datasets = [];
-      this.xAxisType = '';
       this.labels = [];
+      this.xAxisType = '';
       this.xparse = [];
       this.yparse = [];
       this.nameParse = [];
@@ -295,11 +280,12 @@ export default {
         }
       }
 
+      this.nameParse = [];
       for (let i = 0; i < this.yparse.length; i++) {
         if (tmpNameParse[i]) {
           this.nameParse.push(tmpNameParse[i]);
         } else {
-          this.nameParse.push('Série ' + (i + 1));
+          this.nameParse.push(`Série ${i + 1}`);
         }
       }
 
@@ -318,7 +304,7 @@ export default {
           if (tmpVlineNameParse[i]) {
             this.vlineNameParse.push(tmpVlineNameParse[i]);
           } else {
-            this.vlineNameParse.push('V' + (i + 1));
+            this.vlineNameParse.push(`V${i + 1}`);
           }
         }
       }
@@ -338,45 +324,23 @@ export default {
           if (tmpHlineNameParse[i]) {
             this.hlineNameParse.push(tmpHlineNameParse[i]);
           } else {
-            this.hlineNameParse.push('H' + (i + 1));
+            this.hlineNameParse.push(`H${i + 1}`);
           }
         }
       }
 
-      // Formatage des données
-      let data = [];
-      // Cas où x est numérique
-      if (typeof this.xparse[0][0] === 'number') {
-        const allX = [];
-        this.xparse.forEach((x, i) => {
-          const dj = [];
-          const xsort = x.map((a) => a).sort((a, b) => a - b);
-          xsort.forEach((k) => {
-            const index = x.findIndex((element) => element === k);
-            dj.push({
-              x: k,
-              y: this.yparse[i][index],
-            });
-            if (!allX.includes(k)) {
-              allX.push(k);
-            }
-          });
-          data.push(dj);
-        });
-        this.labels = [];
-        this.xAxisType = 'linear';
-      } else {
-        // Cas où x est non numérique
-        data = this.yparse;
-        this.labels = this.xparse[0];
-        this.xAxisType = 'category';
-      }
+      // Assignation des labels
+      this.labels = this.xparse[0];
+
+      // Détection du type d'axe X
+      this.xAxisType = parseFloat(this.labels[0]) == this.labels[0] ? 'linear' : 'category';
 
       // Chargement des couleurs
       this.loadColors();
 
       // Préparation des datasets
-      this.datasets = data.map((dataSet, index) => ({
+      this.datasets = this.yparse.map((dataSet, index) => ({
+        label: this.nameParse[index],
         data: dataSet,
         fill: false,
         borderColor: this.colorParse[index],
@@ -451,7 +415,9 @@ export default {
       this.chart.update('none');
     },
     createChart() {
-      if (this.chart) this.chart.destroy();
+      if (this.chart) {
+        this.chart.destroy();
+      }
 
       this.getData();
 
@@ -465,11 +431,45 @@ export default {
         },
         plugins: [
           {
+            afterDatasetDraw: (chart) => {
+              if (this.vlineParse) {
+                this.vlineParse.forEach((line, i) => {
+                  const { ctx } = chart;
+                  const x = chart.scales.x.getPixelForValue(line);
+
+                  ctx.save();
+                  ctx.beginPath();
+                  ctx.moveTo(x, chart.scales.y.bottom);
+                  ctx.strokeStyle = this.vlineColorParse[i];
+                  ctx.lineWidth = 3;
+                  ctx.setLineDash([10, 5]);
+                  ctx.lineTo(x, chart.scales.y.top);
+                  ctx.stroke();
+                  ctx.restore();
+                });
+              }
+              if (this.hlineParse) {
+                this.hlineParse.forEach((line, i) => {
+                  const { ctx } = chart;
+                  const y = chart.scales.y.getPixelForValue(line);
+
+                  ctx.save();
+                  ctx.beginPath();
+                  ctx.moveTo(chart.scales.x.left, y);
+                  ctx.strokeStyle = this.hlineColorParse[i];
+                  ctx.lineWidth = 3;
+                  ctx.setLineDash([10, 5]);
+                  ctx.lineTo(chart.scales.x.right, y);
+                  ctx.stroke();
+                  ctx.restore();
+                });
+              }
+            },
             afterDraw: (chart) => {
               if (chart.tooltip?._active && chart.tooltip?._active.length) {
                 const { ctx } = chart;
-                const x = chart.tooltip.getActiveElements()[0].element.tooltipPosition().x;
-                const index = chart.tooltip._active[0].index;
+                const { x } = chart.tooltip.getActiveElements()[0].element.tooltipPosition();
+                const { index } = chart.tooltip._active[0];
 
                 ctx.save();
                 ctx.beginPath();
@@ -482,7 +482,7 @@ export default {
                 ctx.restore();
 
                 this.yparse.forEach((i) => {
-                  let y = chart.scales.y.getPixelForValue(i[index]);
+                  const y = chart.scales.y.getPixelForValue(i[index]);
                   ctx.save();
                   ctx.beginPath();
                   ctx.moveTo(chart.scales.x.left, y);
@@ -508,6 +508,8 @@ export default {
               },
               ticks: {
                 padding: 10,
+                // Ticks were formatted as numerical values, we prefer original value
+                callback: (value) => this.xAxisType === 'category' ? this.labels[value] : value
               },
               ...(this.xMin ? { suggestedMin: this.xMin } : {}),
               ...(this.xMax ? { suggestedMax: this.xMax } : {}),
@@ -520,15 +522,16 @@ export default {
                 dash: [3],
               },
               ticks: {
+                autoSkip: false,
                 padding: 5,
                 maxTicksLimit: 5,
                 callback: (value) => {
-                  if (value >= 1000000000 || value <= -1000000000) {
-                    return value / 1e9 + 'B';
-                  } else if (value >= 1000000 || value <= -1000000) {
-                    return value / 1e6 + 'M';
-                  } else if (value >= 1000 || value <= -1000) {
-                    return value / 1e3 + 'K';
+                  if (Math.abs(value) >= 1000000000) {
+                    return `${value / 1e9}B`;
+                  } else if (Math.abs(value) >= 1000000) {
+                    return `${value / 1e6}M`;
+                  } else if (Math.abs(value) >= 1000) {
+                    return `${value / 1e3}K`;
                   }
                   return value;
                 },
@@ -546,36 +549,21 @@ export default {
               displayColors: false,
               backgroundColor: '#6b6b6b',
               callbacks: {
-                label: (tooltipItems) => {
-                  const label = [];
-                  this.datasets.forEach((set, i) => {
-                    if (this.xAxisType === 'linear') {
-                      const index = this.xparse[i].indexOf(tooltipItems.parsed.x);
-                      if (index !== -1) {
-                        label.push(this.yparse[i][index]);
-                      }
-                    } else {
-                      label.push(set.data[tooltipItems.dataIndex]);
-                    }
-                  });
-                  return label;
-                },
-                title: (tooltipItems) => {
-                  return tooltipItems[0].label;
-                },
-                labelTextColor: () => {
-                  return this.colorParse;
-                },
+                label: (tooltipItems) => this.datasets.map((set) => this.formatNumber(set.data[tooltipItems.dataIndex])),
+                title: (tooltipItems) => tooltipItems[0].label,
+                labelTextColor: () => this.colorParse,
               },
               external: (context) => {
                 // Tooltip Element
-                const dom = document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) || this.$el.nextElementSibling;
+                const dom = document.getElementById(`${this.databoxId}-${this.databoxType}-${this.databoxSource}`) || this.$el.nextElementSibling;
 
                 const tooltipEl = dom.querySelector('.tooltip');
 
                 const tooltipModel = context.tooltip;
 
-                if (!tooltipEl) return;
+                if (!tooltipEl) {
+                  return;
+                }
 
                 // Hide if no tooltip
                 if (!tooltipModel || tooltipModel.opacity === 0) {
@@ -591,14 +579,12 @@ export default {
                   tooltipEl.classList.add('no-transform');
                 }
 
-                // Set Text
+                // Set tooltip content
                 if (tooltipModel.body) {
                   const titleLines = tooltipModel.title || [];
-                  const bodyLines = tooltipModel.body.map((bodyItem) => {
-                    return bodyItem.lines;
-                  });
+                  const bodyLines = tooltipModel.body.map((bodyItem) => bodyItem.lines);
 
-                  // Set the tooltip header
+                  // Set the title in the tooltip header
                   const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                   divDate.innerHTML = titleLines[0];
 
@@ -608,8 +594,9 @@ export default {
 
                   // Iterate over bodyLines to set the color and value in the tooltip
                   bodyLines[0].forEach((line, i) => {
-                    const displayValue = `${line}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
-                    if (line) {
+                    if (line && line !== 'NaN') {
+                      const displayValue = `${line}${this.unitTooltip ? ` ${this.unitTooltip}` : ''}`;
+
                       divValue.innerHTML += `
                         <div class="tooltip_value-content">
                           <span class="tooltip_dot" style="background-color:${this.colorParse[i]};"></span>
@@ -640,10 +627,10 @@ export default {
                 }
 
                 tooltipEl.style.position = 'absolute';
-                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+                tooltipEl.style.padding = `${tooltipModel.padding}px ${tooltipModel.padding}px`;
                 tooltipEl.style.pointerEvents = 'none';
-                tooltipEl.style.left = tooltipX + 'px';
-                tooltipEl.style.top = tooltipY + 'px';
+                tooltipEl.style.left = `${tooltipX}px`;
+                tooltipEl.style.top = `${tooltipY}px`;
                 tooltipEl.style.opacity = 1;
               },
             },
@@ -654,7 +641,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-
-</style>

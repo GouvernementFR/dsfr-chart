@@ -2,24 +2,18 @@
   <div class="map_info fr-col-12 fr-col-lg-3">
     <div v-if="data['valueNat'] || data['valueReg']">
       <p
-        class="fr-text--xs fr-mb-1v"
-        :style="{ color: data['textMention'] }"
-      >
-        Mise à jour : {{ data['date'] }}
-      </p>
-      <p
         class="fr-text--xs fr-text--bold fr-mb-1v"
         :style="{ color: data['textMention'] }"
       >
-        {{ data['names'] }}, en France
+        {{ data['names'] }}, {{ data['level'] }}
       </p>
-      <div class="sep fr-mb-2w" />
       <p
         class="fr-text--xs fr-text--bold fr-mb-2w"
         :style="{ color: data['textMention'] }"
       >
         {{ formatNumber(data['value']) }}
       </p>
+      <div class="sep fr-mb-2w" />
     </div>
     <div>
       <p
@@ -32,6 +26,7 @@
         <span>{{ data['localisation'] }}</span>
       </p>
       <p
+        v-if="data['date']"
         class="fr-text--xs fr-mb-1v"
         :style="{ color: data['textMention'] }"
       >
@@ -75,9 +70,7 @@ const props = defineProps({
   },
 });
 
-const gradient = computed(() => {
-  return 'linear-gradient(90deg,' + props.data['colorMin'] + ' 0%,' + props.data['colorMax'] + ' 100%)';
-});
+const gradient = computed(() => `linear-gradient(90deg,${props.data.colorMin} 0%,${props.data.colorMax} 100%)`);
 </script>
 
 <style scoped lang="scss">

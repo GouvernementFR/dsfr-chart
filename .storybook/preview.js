@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-/** @type { import('@storybook/web-components').Preview } */
+/** @type { import('@storybook/web-components-vite').Preview } */
 export default {
   parameters: {
     controls: {

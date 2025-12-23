@@ -147,7 +147,7 @@ export function generateScatterChartColors({
 
 function getThemeColors() {
   const currentTheme = document.documentElement.getAttribute('data-fr-theme') || 'light';
-  return colors[currentTheme] || colors['light'];
+  return colors[currentTheme] || colors.light;
 }
 
 export function getCategoricalPalette() {

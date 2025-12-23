@@ -12,13 +12,15 @@
           <div class="tooltip">
             <div class="tooltip_header fr-text--sm fr-mb-0" />
             <div class="tooltip_body">
-              <div class="tooltip_value">
-                <span class="tooltip_dot" />
-              </div>
+              <div class="tooltip_value" />
             </div>
           </div>
 
-          <canvas :ref="chartId" />
+          <canvas
+            :ref="chartId"
+            role="img"
+            :aria-labelledby="'title-' + databoxId"
+          />
 
           <div class="chart_legend fr-mb-0 fr-mt-4v">
             <div
@@ -27,7 +29,7 @@
               class="flex fr-mt-3v fr-mb-1v"
             >
               <span
-                class="legende_dot"
+                class="legend_dot"
                 :style="{ 'background-color': colorParse[index] }"
               />
               <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
@@ -135,8 +137,8 @@ export default {
   },
   created() {
     configureChartDefaults();
-    this.chartId = 'dsfr-chart-' + Math.floor(Math.random() * 1000);
-    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
+    this.chartId = `dsfr-chart-${Math.floor(Math.random() * 1000)}`;
+    this.widgetId = `dsfr-widget-${Math.floor(Math.random() * 1000)}`;
   },
   mounted() {
     this.resetData();
@@ -184,11 +186,12 @@ export default {
         }
       }
 
+      this.nameParse = [];
       for (let i = 0; i < this.yparse.length; i++) {
         if (tmpNameParse[i]) {
           this.nameParse.push(tmpNameParse[i]);
         } else {
-          this.nameParse.push('Série ' + (i + 1));
+          this.nameParse.push(`Série ${i + 1}`);
         }
       }
 
@@ -245,7 +248,9 @@ export default {
       this.chart.update('none');
     },
     createChart() {
-      if (this.chart) this.chart.destroy();
+      if (this.chart) {
+        this.chart.destroy();
+      }
 
       this.getData();
 
@@ -283,29 +288,21 @@ export default {
               displayColors: false,
               backgroundColor: '#6b6b6b',
               callbacks: {
-                label: (tooltipItems) => {
-                  const label = [];
-                  this.datasets.forEach((set) => {
-                    label.push(set.data[tooltipItems.dataIndex]);
-                  });
-                  return label;
-                },
-                title: (tooltipItems) => {
-                  return tooltipItems[0].label;
-                },
-                labelTextColor: () => {
-                  return this.colorParse;
-                },
+                label: (tooltipItems) => this.datasets.map((set) => this.formatNumber(set.data[tooltipItems.dataIndex])),
+                title: (tooltipItems) => tooltipItems[0].label,
+                labelTextColor: () => this.colorParse,
               },
               external: (context) => {
                 // Tooltip Element
-                const dom = document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) || this.$el.nextElementSibling;
+                const dom = document.getElementById(`${this.databoxId}-${this.databoxType}-${this.databoxSource}`) || this.$el.nextElementSibling;
 
                 const tooltipEl = dom.querySelector('.tooltip');
 
                 const tooltipModel = context.tooltip;
 
-                if (!tooltipEl) return;
+                if (!tooltipEl) {
+                  return;
+                }
 
                 // Hide if no tooltip
                 if (!tooltipModel || tooltipModel.opacity === 0) {
@@ -321,35 +318,27 @@ export default {
                   tooltipEl.classList.add('no-transform');
                 }
 
-                // Set Text
+                // Set tooltip content
                 if (tooltipModel.body) {
                   const titleLines = [this.xparse[0][tooltipModel.dataPoints[0].dataIndex]];
-                  const bodyLines = tooltipModel.body.map((bodyItem) => {
-                    return bodyItem.lines;
-                  });
+                  const bodyLines = tooltipModel.body.map((bodyItem) => bodyItem.lines);
 
                   // Set the title in the tooltip header
                   const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
                   divDate.innerHTML = titleLines[0];
 
+                  // Clear the existing tooltip content
                   const divValue = tooltipEl.querySelector('.tooltip_value');
                   divValue.innerHTML = '';
 
                   // Iterate over bodyLines to set the color and value in the tooltip
                   bodyLines[0].forEach((line, i) => {
-                    if (line && tooltipModel.dataPoints[i]) {
-                      const dataPoint = tooltipModel.dataPoints[i];
-                      const datasetIndex = dataPoint.datasetIndex;
-
-                      // Ensure that colorParse and datasetIndex are valid
-                      const color = this.colorParse[datasetIndex] ? this.colorParse[datasetIndex] : '#000';
-
-                      // Include unitTooltip if provided
-                      const displayValue = `${line}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
+                    if (line && line !== 'NaN') {
+                      const displayValue = `${line}${this.unitTooltip ? ` ${this.unitTooltip}` : ''}`;
 
                       divValue.innerHTML += `
                         <div class="tooltip_value-content">
-                          <span class="tooltip_dot" style="background-color:${color};"></span>
+                          <span class="tooltip_dot" style="background-color:${this.colorParse[i]};"></span>
                           <p class="tooltip_place fr-mb-0">${displayValue}</p>
                         </div>
                       `;
@@ -377,10 +366,10 @@ export default {
                 }
 
                 tooltipEl.style.position = 'absolute';
-                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+                tooltipEl.style.padding = `${tooltipModel.padding}px ${tooltipModel.padding}px`;
                 tooltipEl.style.pointerEvents = 'none';
-                tooltipEl.style.left = tooltipX + 'px';
-                tooltipEl.style.top = tooltipY + 'px';
+                tooltipEl.style.left = `${tooltipX}px`;
+                tooltipEl.style.top = `${tooltipY}px`;
                 tooltipEl.style.opacity = 1;
               },
             },
@@ -391,7 +380,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-
-</style>

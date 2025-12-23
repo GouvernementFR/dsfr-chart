@@ -10,15 +10,12 @@
       <div
         :ref="tableId"
         class="fr-table"
-        :style="{ maxHeight: '25rem', overflow: 'auto' }"
+        :style="{ maxHeight: '30rem', overflow: 'auto' }"
       >
         <div class="fr-table__wrapper">
           <div class="fr-table__container">
             <div class="fr-table__content">
-              <table>
-                <caption>
-                  {{ tableName }}
-                </caption>
+              <table :aria-labelledby="'title-' + databoxId">
                 <thead>
                   <tr>
                     <th
@@ -102,6 +99,14 @@ export default {
       type: String,
       default: '',
     },
+    subX: {
+      type: String,
+      default: null,
+    },
+    subY: {
+      type: String,
+      default: null,
+    },
     line: {
       type: String,
       default: '',
@@ -121,14 +126,16 @@ export default {
       tableId: '',
       xparse: [],
       yparse: [],
+      subXParse: [],
+      subYParse: [],
       lineParse: [],
       nameParse: [],
+      selectedIndex: -1,
     };
   },
   watch: {
     $props: {
       handler() {
-        // Check if the chart is already created to prevent useless re-renders
         if (this.tableId) {
           this.resetData();
           this.getData();
@@ -139,12 +146,16 @@ export default {
     },
   },
   created() {
-    this.tableId = 'dsfr-table-' + Math.floor(Math.random() * 1000);
-    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
+    this.tableId = `dsfr-table-${Math.floor(Math.random() * 1000)}`;
+    this.widgetId = `dsfr-widget-${Math.floor(Math.random() * 1000)}`;
   },
   mounted() {
     this.resetData();
     this.getData();
+    // Wait for next tick to get chart element
+    this.$nextTick(() => {
+      this.observeRelatedChart();
+    });
   },
   methods: {
     resetData() {
@@ -159,6 +170,8 @@ export default {
         try {
           this.xparse = JSON.parse(this.x ?? '[]');
           this.yparse = JSON.parse(this.y ?? '[]');
+          this.subXParse = JSON.parse(this.subX);
+          this.subYParse = JSON.parse(this.subY);
         } catch (error) {
           console.error('Erreur lors du parsing des données x ou y:', error);
           return;
@@ -183,11 +196,12 @@ export default {
         }
       }
 
+      this.nameParse = [];
       for (let i = 0; i < this.yparse.length; i++) {
         if (tmpNameParse[i]) {
           this.nameParse.push(tmpNameParse[i]);
         } else {
-          this.nameParse.push('Série ' + (i + 1));
+          this.nameParse.push(`Série ${i + 1}`);
         }
       }
 
@@ -195,27 +209,57 @@ export default {
         if (tmpNameParse[i]) {
           this.nameParse.push(tmpNameParse[i]);
         } else {
-          this.nameParse.push('Série ' + (i + 1));
+          this.nameParse.push(`Série ${i + 1}`);
         }
       }
     },
     getClass(value) {
       let classes = '';
       if (typeof value === 'string' && value.replace(/<[^>]*>/g, '').length > 132) {
-        classes += 'text-overflow ';
+        classes += 'cell-overflow ';
       }
       if (typeof value === 'number') {
-        classes += 'text-right ';
+        classes += 'cell-number ';
       } else {
-        classes += 'text-left ';
+        classes += 'cell-text ';
       }
 
       return classes;
+    },
+    observeRelatedChart() {
+      const databoxSource = this.databoxSource === 'global' ? 'default' : `${this.databoxSource}`;
+      const target = document.querySelector(`#${this.databoxId}-chart-${databoxSource} .widget_container`);
+      const options = {
+        attributes: true, // Listens for attribute changes.
+        subtree: false, // Prevents observing descendants of the target element.
+        childList: false, // Ignores additions or removals of child elements.
+      };
+      if (target) {
+        const observer = new MutationObserver((mutationList) => {
+          for (const mutation of mutationList) {
+            if (mutation.attributeName === 'data-index') {
+              this.selectedIndex = parseInt(mutation.target.getAttribute('data-index'));
+
+              if (this.selectedIndex === -1) {
+                this.xparse = JSON.parse(this.x);
+                this.yparse = JSON.parse(this.y);
+              } else {
+                this.xparse = this.subXParse[this.selectedIndex];
+                this.yparse = [this.subYParse[this.selectedIndex]];
+              }
+            }
+          }
+        });
+
+        observer.observe(target, options);
+      }
     },
   },
 };
 </script>
 
-<style scoped lang="scss">
-@import '@/styles/TableChart.scss';
+<style scoped>
+* {
+  --table-offset: 0px;
+}
 </style>

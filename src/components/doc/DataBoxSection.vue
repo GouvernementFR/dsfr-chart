@@ -9,7 +9,7 @@
 
     <div class="fr-my-6w">
       <h3 id="Databox-simple">
-        Exemple de databox simple
+        Databox simple
       </h3>
       <data-box v-bind="chartData.dataBox.simple" />
       <pie-chart
@@ -37,7 +37,7 @@
 
     <div class="fr-my-6w">
       <h3 id="Databox-complète-multi-source">
-        Exemple de databox complète et multi-source
+        Databox complète et multi-source
       </h3>
       <data-box v-bind="chartData.dataBox.complete" />
       <scatter-chart
@@ -85,8 +85,43 @@
           {dataBoxId: 'complete', dataBoxType: 'chart', dataBoxSource: 'insee', ...chartData.scatterChart.linked, y: defaultScatterData },
           {dataBoxId: 'complete', dataBoxType: 'chart', dataBoxSource: 'pole-emploi', ...chartData.scatterChart.linked, y: sortedScatterData },
           {dataBoxId: 'complete', dataBoxType: 'chart', dataBoxSource: 'autre', ...chartData.scatterChart.linked, y: reversedScatterData },
-          {dataBoxId: 'complete', dataBoxType: 'table', x: tableParse(chartData.scatterChart.linked.x), y: defaultScatterData, name: chartData.scatterChart.linked.name, tableName: 'Années INSEE'},
-          {dataBoxId: 'complete', dataBoxType: 'table', x: tableParse(chartData.scatterChart.linked.x), y: reversedScatterData, name: chartData.scatterChart.linked.name, tableName: 'Années'},
+          {dataBoxId: 'complete', dataBoxType: 'table', dataBoxSource: 'insee', x: tableParse(chartData.scatterChart.linked.x), y: defaultScatterData, name: chartData.scatterChart.linked.name, tableName: 'Années INSEE'},
+          {dataBoxId: 'complete', dataBoxType: 'table', dataBoxSource: 'global', x: tableParse(chartData.scatterChart.linked.x), y: reversedScatterData, name: chartData.scatterChart.linked.name, tableName: 'Années'},
+        ]"
+      />
+    </div>
+
+    <div class="chart_container fr-my-6w">
+      <h3 id="Databox-chiffre-clé">
+        Databox chiffre clé
+      </h3>
+      <hr>
+      <data-box
+        v-bind="chartData.dataBox.number"
+      />
+      <CodeBlock
+        :component="[{name: 'data-box'}]"
+        :attributes="[chartData.dataBox.number]"
+      />
+    </div>
+
+    <div class="chart_container fr-my-6w">
+      <h3 id="Databox-tableau">
+        Databox tableau
+      </h3>
+      <hr>
+      <data-box v-bind="chartData.dataBox.table" />
+      <table-chart
+        databox-id="table"
+        databox-type="table"
+        :name="chartData.tableChart.databox.name"
+        :line="chartData.tableChart.databox.line"
+      />
+      <CodeBlock
+        :component="[{name: 'data-box'}, {name: 'table-chart'}]"
+        :attributes="[
+          chartData.dataBox.table,
+          {dataBoxId: 'table', dataBoxType: 'table', name: chartData.tableChart.databox.name, line: chartData.tableChart.databox.line}
         ]"
       />
     </div>
