@@ -341,41 +341,6 @@ export default {
           ymax.push(polygon.y + polygon.height);
         }
       }
-      // Iterate over each department in the region and set colors
-      listDep.forEach((key) => {
-        const className = 'FR-' + key;
-        const elCol = parentWidget.getElementsByClassName(className);
-
-        if (!this.zoomDep) {
-          if (listDep.includes(key)) {
-            const polygon = elCol[0].getBBox();
-            elCol.length !== 0 && elCol[0].setAttribute('fill', colorScale(this.dataParse[key]));
-            this.FranceProps.displayDep[className] = '';
-            xmin.push(polygon.x);
-            ymin.push(polygon.y);
-            xmax.push(polygon.x + polygon.width);
-            ymax.push(polygon.y + polygon.height);
-          }
-        } else {
-          if (this.zoomDep === key) {
-            const polygon = elCol[0].getBBox();
-            elCol.length !== 0 && elCol[0].setAttribute('fill', colorScale(this.dataParse[key]));
-            this.FranceProps.displayDep[className] = '';
-            xmin.push(polygon.x);
-            ymin.push(polygon.y);
-            xmax.push(polygon.x + polygon.width);
-            ymax.push(polygon.y + polygon.height);
-          } else if (listDep.includes(key)) {
-            const polygon = elCol[0].getBBox();
-            elCol.length !== 0 && elCol[0].setAttribute('fill', this.colorLeft + 'B3');
-            this.FranceProps.displayDep[className] = '';
-            xmin.push(polygon.x);
-            ymin.push(polygon.y);
-            xmax.push(polygon.x + polygon.width);
-            ymax.push(polygon.y + polygon.height);
-          }
-        }
-      });
 
       // Calculate viewBox to focus on the selected region
       if (xmin.length && ymin.length && xmax.length && ymax.length) {

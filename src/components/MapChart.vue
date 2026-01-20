@@ -278,9 +278,6 @@ export default {
         displayPath: {},
         colorStroke: '#FFFFFF',
       },
-      DromProps: {
-        colorStroke: '#FFFFFF',
-      },
       tooltip: {
         top: '0px',
         left: '0px',

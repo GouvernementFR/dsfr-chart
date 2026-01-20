@@ -120,8 +120,8 @@ _Note : il reste conseiller d'analyser les différences à la main pour vérifie
 
 La publication du package sur npm nécessite les actions suivantes au niveau du fichier `package.json` :
 
--   renseigner le nom dans la partie **name** et la **version**. La combinaison de ces deux paramètres doit être inédite pour être publiée (On ne peut pas publier une version existante)
--   choisir l'ensemble des dossiers / fichiers à intégrer au package et qui seront disponibles lors de l'installation par un utilisateur. Cette liste doit être renseignée au niveau de la partie **files** du `package.json`. Elle doit contenir, a minima, le dossier comprenant le distribuable de tous les graphiques (`dist/DSFRChart`), les dossiers de distribuables unitaires de chaque graphiques (ex : `dist/BarChart`) et la documentation (`README.md` et `CONTRIBUTING.md`).
+- renseigner le nom dans la partie **name** et la **version**. La combinaison de ces deux paramètres doit être inédite pour être publiée (On ne peut pas publier une version existante)
+- choisir l'ensemble des dossiers / fichiers à intégrer au package et qui seront disponibles lors de l'installation par un utilisateur. Cette liste doit être renseignée au niveau de la partie **files** du `package.json`. Elle doit contenir, a minima, le dossier comprenant le distribuable de tous les graphiques (`dist/DSFRChart`), les dossiers de distribuables unitaires de chaque graphiques (ex : `dist/BarChart`) et la documentation (`README.md` et `CONTRIBUTING.md`).
 
 Le fichier `package.json` permet aussi de définir une description (**description**), un auteur (**author**) et de lier le package au repo GitHub du projet (**repository**).
 
