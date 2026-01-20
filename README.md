@@ -1,6 +1,6 @@
 # DSFR Chart
 
-DSFR Chart est un module complémentaire au Système de design de l’État (DSFR) pour la visualisation de données. Il s’agit d'une bibliothèque de composants [Vue.js](https://vuejs.org/), sous la forme de web-components, à destination des développeurs ayant besoin de graphiques pour représenter des données.
+DSFR Chart est un module complémentaire au Système de design de l’État (DSFR) pour la visualisation de données. Il s’agit d'une bibliothèque de web-components, implementés sous [Vue.js](https://vuejs.org/), à destination des développeurs ayant besoin de graphiques pour représenter des données.
 
 ## Demo
 
