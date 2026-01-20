@@ -245,11 +245,8 @@ export const chartData = {
     simple: {
       id: 'simple',
       name: 'Statut des emplois en France en 2018',
-      tooltipTitle: 'Statut des emplois en France',
-      tooltipContent: 'Pour l’année 2018. France hors Mayotte, population des ménages, personnes en emploi.',
       source: 'Insee, enquête Emploi',
       date: '04/11/2024',
-      trend: '-15%',
     },
     modal: {
       id: 'modal',

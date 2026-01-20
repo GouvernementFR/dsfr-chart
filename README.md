@@ -99,7 +99,7 @@ import '@gouvfr/dsfr-chart/BarChart';
 import '@gouvfr/dsfr-chart/BarChart.css'; // Ou '@gouvfr/dsfr-chart/BarChart/css'
 ```
 
-#### ⚠️ Important : Si vous importez plus que deux composants, il est préférable d'importer toute la librairie pour éviter de charger plusieurs fois le runtime de Vue.js.
+#### ⚠️ Important : Si vous importez plus que deux composants, il est préférable d'importer toute la librairie `dsfr-chart` pour éviter de charger plusieurs fois les moteurs de rendu de Vue.js & Chart.js, etc.
 
 # Graphiques disponibles
 
