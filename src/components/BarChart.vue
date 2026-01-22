@@ -21,7 +21,7 @@
           <div
             v-if="isSubChart"
             :class="isSubLevel ? '' : 'fr-mt-6v'"
-            :style="{ textAlign: 'center' }"
+            :style="{ textAlign: 'center', position: 'relative' }"
           >
             <button
               v-if="isSubLevel"
@@ -474,6 +474,10 @@ export default {
             if (activePoints.length > 0) {
               const { index } = activePoints[0];
               const clickedLabel = this.chart.data.labels[index];
+
+              if (!this.subYParse[index]) {
+                return;
+              }
 
               if (!this.subTitle) {
                 // Update title for 2nd level

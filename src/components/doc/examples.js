@@ -79,4 +79,13 @@ export const chartExamples = [
     desc: 'La jauge permet d’afficher des valeurs numériques ou des mesures dans une plage, pour visualiser l’avancement d’un objectif par exemple.',
     graphs: [{ component: GaugeChart, noPalette: true, props: chartData.gaugeChart.default }],
   },
+  // Drilldown
+  {
+    title: 'Drilldown',
+    desc: 'Le drilldown permet d’explorer les données en profondeur en cliquant sur un élément du graphique pour afficher des informations plus détaillées. Il existe sur les types de graphiques suivants : diagramme en barres et diagramme circulaire.',
+    graphs: [
+      { component: BarChart, heading: 'Diagramme en barres avec drilldown', title: 'Répartition des visites par systèmes d’exploitation sur les sites gouvernementaux', desc: 'Pour l’année 2025. Monde entier. Audience, Eulerian, 01/01/2026', props: chartData.barChart.drilldown },
+      { component: PieChart, heading: 'Diagramme circulaire avec drilldown', title: 'Répartition des visites par fournisseur et par type d’appareil sur le site info.gouv.fr', desc: 'Pour l’année 2025. Monde entier. Eulerian, 01/01/2026', props: chartData.pieChart.drilldown },
+    ],
+  },
 ];

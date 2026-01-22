@@ -59,14 +59,13 @@ export const chartData = {
       selectedPalette: 'divergentDescending',
       unitTooltip: '%',
     },
-    subSeries: {
-      x: '[["Chômage et retour à l’emploi", "Croissance", "Droit au travail", "Consommation", "Industrie", "Retraites", "Fiscalité", "Attractivité", "Souveraineté", "Égalité professionnelle", "Entrepreneuriat", "Formation"]]',
-      y: '[[51, 47.1, 36.1, 33.1, 32.8, 31.1, 27.9, 27.2, 19.1, 15.1, 9.1, 3.6]]',
-      subX: '[["Droit au travail", "Solidarité", "Droit du travail", "Jeunesse", "Industrie", "Retraites", "Fiscalité", "Égalité professionnelle", "Seniors", "Corps intermédiaire", "Entrepreneuriat", "Formation"], ["Croissance 1", "Croissance 2"], ["Droit au travail 1", "Droit au travail 2"], ["Consommation 1", "Consommation 2"], ["Industrie 1", "Industrie 2"], ["Retraites 1", "Retraites 2"], ["Fiscalité 1", "Fiscalité 2"], ["Attractivité 1", "Attractivité 2"], ["Souveraineté 1", "Souveraineté 2"], ["Égalité professionnelle 1", "Égalité professionnelle 2"], ["Entrepreneuriat 1", "Entrepreneuriat 2"], ["Formation 1", "Formation 2"]]',
-      subY: '[[37, 36, 34, 34, 25, 24, 22, 21, 14, 11, 9, 5], [15, 20], [5, 20], [12, 22], [23, 40], [44, 100], [6, 10], [16, 88], [21, 35], [29, 34], [100, 145], [88, 99]]',
-      name: '["Thématiques les plus visibles"]',
+    drilldown: {
+      x: '[["Microsoft Windows", "Google Android", "Apple iOS", "Apple macOS", "GNU/Linux", "Autres"]]',
+      y: '[[976893775, 664570028, 617495389, 202646017, 33638190, 22702809]]',
+      subX: '[["Microsoft Windows 10", "Microsoft Windows 7", "Microsoft Windows 8.1", "Microsoft Windows 8", "Microsoft Windows XP", "Microsoft Windows autre"], ["Google Android 10", "Google Android 14", "Google Android 15", "Google Android 13", "Google Android 16", "Google Android 12", "Google Android 11", "Google Android autre"], ["Apple iOS 18.5", "Apple iOS 18.6", "Apple iOS 18.3", "Apple iOS 18.1", "Apple iOS 18.4", "Apple iOS 18.7", "Apple iOS autre"], ["Apple macOS 10.15", "Apple macOS 10.13", "Apple macOS 10.14", "Apple macOS 10.12", "Apple macOS 10.11", "Apple macOS 10.10", "Apple macOS autre"], ["GNU/Linux", "GNU/Linux autre"], ["Google Chrome OS", "iPadOS", "Ubuntu", "Fedora"]]',
+      subY: '[[960789640, 13613878, 2056241, 420357, 144576, 154491], [571495855, 29641371, 27976705, 16465229, 6029509, 5680689, 4850441, 2430229], [129601242, 106240037, 99548482, 56781656, 42944096, 41580914, 140798962], [196379391, 2166616, 1573043, 1487392, 432417, 188611, 418547], [33638155, 35], [9514019, 8714213, 3720685, 297047]]',
+      name: '["Systèmes d’exploitation"]',
       horizontal: true,
-      unitTooltip: '%',
     },
   },
   barLineChart: {
@@ -123,13 +122,12 @@ export const chartData = {
       fill: true,
       unitTooltip: '%',
     },
-    subSeries: {
-      x: '[["Part 1", "Part 2", "Part 3", "Part 4", "Part 5"]]',
-      y: '[[11.7, 74.8, 9.3, 1.6, 2.6]]',
-      subX: '[["Part 1.1", "Part 1.2","Part 1.3", "Part 1.4", "Part 1.5"], ["Part 2.1","Part 2.2", "Part 2.3", "Part 2.4", "Part 2.5"], ["Part 3.1","Part 3.2", "Part 3.3", "Part 3.4", "Part 3.5"], ["Part 4.1","Part 4.2", "Part 4.3", "Part 4.4", "Part 4.5"], ["Part 5.1","Part 5.2", "Part 5.3", "Part 5.4", "Part 5.5"]]',
-      subY: '[[25.3, 11, 42.6, 5.4, 15.7], [23.1, 37.4, 6.8, 29.7, 3], [6.5, 3.5, 2.6, 1.2, 86.2], [18.6, 9.5, 22,7, 29.5, 19.7], [12.4, 24.3, 17.5, 30.3, 15.5]]',
-      name: '["Part 1", "Part 2", "Part 3", "Part 4", "Part 5"]',
-      unitTooltip: '%',
+    drilldown: {
+      x: '[["Google", "Apple", "Mozilla", "Microsoft", "Opera"]]',
+      y: '[[10771923, 4532935, 2165000, 1589736, 124722]]',
+      subX: '[["SmartPhone", "Desktop", "Tablet", "SmallScreen", "Tv"], ["SmartPhone", "Desktop", "SmallScreen"], ["Desktop", "SmartPhone"], ["Desktop", "SmartPhone", "Tablet"], ["Desktop", "SmartPhone", "Tablet"]]',
+      subY: '[[6805604, 3806491, 158982, 740, 106], [3737323, 795533, 77], [2112000, 52999], [1544972, 44312, 432], [79527, 43698, 1490]]',
+      name: '["Google", "Apple", "Mozilla", "Microsoft", "Opera"]',
     },
   },
   radarChart: {
@@ -232,7 +230,7 @@ export const chartData = {
       line: '[[2014, 559293], [2015, 593680], [2016, 593865], [2017, 606274], [2018, 609648], [2019, 613243], [2020, 668922], [2021, 661585], [2022, 675122], [2023, 639269], [2024, 646000]]',
     },
     chart: {
-      x: '["A","B","C","D","E","F","G","H","I","J"]',
+      x: '["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]',
       y: '[[40, 50, 40, 39, 49, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49], [30, 150, 340, 379, 439, 40, 50, 40, 39, 49]]',
       tableName: 'Indicateur',
     },

@@ -21,7 +21,7 @@
           <div
             v-if="isSubChart"
             :class="isSubLevel ? '' : 'fr-mt-6v'"
-            :style="{ textAlign: 'center' }"
+            :style="{ textAlign: 'center', position: 'relative' }"
           >
             <button
               v-if="isSubLevel"
@@ -394,9 +394,15 @@ export default {
               const { index } = activePoints[0];
               const clickedLabel = this.chart.data.labels[index];
 
+              if (!this.subYParse[index]) {
+                return;
+              }
+
               if (!this.subTitle) {
                 // Update title for 2nd level
                 this.subTitle = clickedLabel;
+                // Update nameParse for legend
+                this.nameParse = this.subXParse[index];
               }
 
               // Check if the category is the main category
@@ -458,6 +464,25 @@ export default {
     resetSub() {
       this.isSubLevel = false;
       this.subTitle = null;
+
+      let tmpNameParse = [];
+      if (this.name) {
+        try {
+          tmpNameParse = JSON.parse(this.name);
+        } catch (error) {
+          console.error('Erreur lors du parsing de name:', error);
+        }
+      }
+
+      this.nameParse = [];
+      for (let i = 0; i < this.yparse[0].length; i++) {
+        if (tmpNameParse[i]) {
+          this.nameParse.push(tmpNameParse[i]);
+        } else {
+          this.nameParse.push(`Série ${i + 1}`);
+        }
+      }
+
       this.chart.data.labels = this.xparse[0];
       this.chart.data.datasets[0].data = this.yparse[0];
       this.chart.update();
