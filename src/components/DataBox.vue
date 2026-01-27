@@ -530,7 +530,7 @@ const downloadCSV = () => {
     return;
   }
 
-  const filename = props.title.replace(/[/|\\:*?"<>]/g, ' ').trim();
+  const filename = props.name.replace(/[/|\\:*?"<>]/g, ' ').trim();
   const blob = new Blob(csv, { type: 'text/csv' });
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -564,9 +564,11 @@ const screenshotChart = () => {
   // Transform databox to canvas to screenshot it
   toPng(databox)
     .then((dataUrl) => {
+      const filename = props.name.replace(/[/|\\:*?"<>]/g, ' ').trim();
       const a = document.createElement('a');
       a.href = dataUrl;
-      a.download = 'chart.png';
+      a.download = (filename ?? `chart-${props.id}-${currentSource.value}`) + '.png';
+      a.style.display = 'none';
       a.click();
     })
     .catch((error) => {
