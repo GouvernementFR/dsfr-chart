@@ -36,9 +36,8 @@ export const formatNumber = (value) => {
   // Format as integer or decimal number
   if (Number.isInteger(value)) {
     return parseInt(value).toLocaleString('fr-FR');
-  } 
-    return parseFloat(value).toLocaleString('fr-FR', { maximumFractionDigits: 2 });
-  
+  }
+  return parseFloat(value).toLocaleString('fr-FR', { maximumFractionDigits: 2 });
 };
 
 /**
@@ -78,7 +77,6 @@ export const getReg = (code) => FRANCE.find((item) => item.region_value === code
  * @returns {object} The academy object
  */
 export const getAca = (code) => FRANCE.find((item) => item.academy_value === code);
-
 
 /**
  * Retrieve the country object from its code
@@ -139,7 +137,7 @@ export const getDepsFromAca = (code) => {
 export const getCountriesFromContinent = (code) => {
   const items = WORLD.filter((item) => item.continent_value === code);
   return items.map((item) => item.country_value);
-}
+};
 
 /**
  * Configure the default values for chart.js

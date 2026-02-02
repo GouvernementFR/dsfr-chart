@@ -111,6 +111,10 @@ export default {
       type: String,
       default: '',
     },
+    maxOverflow: {
+      type: [Number, String],
+      default: 128,
+    },
     name: {
       type: String,
       default: '',
@@ -215,7 +219,7 @@ export default {
     },
     getClass(value) {
       let classes = '';
-      if (typeof value === 'string' && value.replace(/<[^>]*>/g, '').length > 132) {
+      if (typeof value === 'string' && value.replace(/<[^>]*>/g, '').length > parseInt(this.maxOverflow)) {
         classes += 'cell-overflow ';
       }
       if (typeof value === 'number') {
