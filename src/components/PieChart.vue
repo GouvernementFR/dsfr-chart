@@ -329,7 +329,7 @@ export default {
 
                   // Set the title in the tooltip header
                   const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
-                  divDate.innerHTML = titleLines[0];
+                  divDate.innerText = titleLines[0];
 
                   // Clear the existing tooltip content
                   const divValue = tooltipEl.querySelector('.tooltip_value');
