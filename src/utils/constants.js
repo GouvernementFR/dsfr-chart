@@ -1060,7 +1060,7 @@ export const WORLD = [
     continent_value: 'EU',
   },
   {
-    country: 'dominicaine',
+    country: 'République dominicaine',
     country_value: 'DO',
     continent: 'Amérique du Nord',
     continent_value: 'NA',

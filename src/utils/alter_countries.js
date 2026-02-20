@@ -34,6 +34,7 @@ const continents = {
 };
 const countryOverrides = {
   MD: 'Moldavie',
+  DO: 'République dominicaine',
 };
 
 const FRENCH_WORLD = [];
