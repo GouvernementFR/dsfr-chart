@@ -320,7 +320,7 @@ export default {
           const polygon = elCol[0].getBBox();
           // Highlight the selected path with a stroke
           elCol[0].setAttribute('fill', colorScale(this.dataParse[key]));
-          elCol[0].setAttribute('stroke', '#EFB900');
+          elCol[0].setAttribute('stroke', '#1212FF');
           elCol[0].setAttribute('stroke-width', 2);
           // Teleport to end of SVG to be on top for stroke
           elCol[0].parentNode.appendChild(elCol[0]);
