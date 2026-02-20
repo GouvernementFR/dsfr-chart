@@ -1582,6 +1582,12 @@ export const WORLD = [
     continent_value: 'NA',
   },
   {
+    country: 'Palestine',
+    country_value: 'PS',
+    continent: 'Asie',
+    continent_value: 'AS',
+  },
+  {
     country: 'Portugal',
     country_value: 'PT',
     continent: 'Europe',
@@ -1783,6 +1789,12 @@ export const WORLD = [
     continent_value: 'AS',
   },
   {
+    country: 'Tanzanie',
+    country_value: 'TZ',
+    continent: 'Afrique',
+    continent_value: 'AF',
+  },
+  {
     country: 'Ukraine',
     country_value: 'UA',
     continent: 'Europe',
@@ -1829,6 +1841,12 @@ export const WORLD = [
     country_value: 'VU',
     continent: 'Océanie',
     continent_value: 'OC',
+  },
+  {
+    country: 'Kosovo',
+    country_value: 'XK',
+    continent: 'Europe',
+    continent_value: 'EU',
   },
   {
     country: 'Yémen',

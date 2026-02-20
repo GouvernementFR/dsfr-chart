@@ -11,7 +11,22 @@ function parseCsv(content) {
   if (lines.length === 0) return [];
   const headers = lines[0].split(',');
   return lines.slice(1).map((line) => {
-    const cols = line.split(',');
+    // Handle quoted values with commas inside
+    const cols = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        cols.push(current);
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    cols.push(current);
     const row = {};
     headers.forEach((h, i) => {
       row[h] = cols[i] || '';
@@ -35,6 +50,7 @@ const continents = {
 const countryOverrides = {
   MD: 'Moldavie',
   DO: 'République dominicaine',
+  PS: 'Palestine',
 };
 
 const FRENCH_WORLD = [];
@@ -44,6 +60,14 @@ WORLD.forEach((country) => {
   if (match) {
     FRENCH_WORLD.push({
       country: countryOverrides[country.country_value] || match['French short name'].split(' (')[0].replace("'", '’'),
+      country_value: country.country_value,
+      continent: continents[country.continent] || country.continent,
+      continent_value: country.continent_value,
+    });
+  } else {
+    console.warn(`No match found for country ${country.country} (${country.country_value})`);
+    FRENCH_WORLD.push({
+      country: country.country,
       country_value: country.country_value,
       continent: continents[country.continent] || country.continent,
       continent_value: country.continent_value,
