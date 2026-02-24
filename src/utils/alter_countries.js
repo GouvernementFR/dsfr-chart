@@ -51,6 +51,16 @@ const countryOverrides = {
   MD: 'Moldavie',
   DO: 'République dominicaine',
   PS: 'Palestine',
+  BY: 'Biélorussie',
+  UK: 'Royaume-Uni',
+  TR: 'Turquie',
+  CD: 'République démocratique du Congo',
+  CG: 'République du Congo',
+  LA: 'Laos',
+  VN: 'Vietnam',
+  KR: 'Corée du Sud',
+  KP: 'Corée du Nord',
+  SB: 'Îles Salomon',
 };
 
 const FRENCH_WORLD = [];

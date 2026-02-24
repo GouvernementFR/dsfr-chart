@@ -946,7 +946,7 @@ export const WORLD = [
     continent_value: 'AF',
   },
   {
-    country: 'Bélarus',
+    country: 'Biélorussie',
     country_value: 'BY',
     continent: 'Europe',
     continent_value: 'EU',
@@ -964,7 +964,7 @@ export const WORLD = [
     continent_value: 'NA',
   },
   {
-    country: 'Congo',
+    country: 'République démocratique du Congo',
     country_value: 'CD',
     continent: 'Afrique',
     continent_value: 'AF',
@@ -976,7 +976,7 @@ export const WORLD = [
     continent_value: 'AF',
   },
   {
-    country: 'Congo',
+    country: 'République du Congo',
     country_value: 'CG',
     continent: 'Afrique',
     continent_value: 'AF',
@@ -1150,8 +1150,8 @@ export const WORLD = [
     continent_value: 'EU',
   },
   {
-    country: 'Grenade',
-    country_value: 'GD',
+    country: 'Groenland',
+    country_value: 'GL',
     continent: 'Amérique du Nord',
     continent_value: 'NA',
   },
@@ -1324,13 +1324,13 @@ export const WORLD = [
     continent_value: 'AS',
   },
   {
-    country: 'Corée',
+    country: 'Corée du Nord',
     country_value: 'KP',
     continent: 'Asie',
     continent_value: 'AS',
   },
   {
-    country: 'Corée',
+    country: 'Corée du Sud',
     country_value: 'KR',
     continent: 'Asie',
     continent_value: 'AS',
@@ -1348,7 +1348,7 @@ export const WORLD = [
     continent_value: 'AS',
   },
   {
-    country: 'Lao',
+    country: 'Laos',
     country_value: 'LA',
     continent: 'Asie',
     continent_value: 'AS',
@@ -1639,7 +1639,7 @@ export const WORLD = [
     continent_value: 'AS',
   },
   {
-    country: 'Salomon',
+    country: 'Îles Salomon',
     country_value: 'SB',
     continent: 'Océanie',
     continent_value: 'OC',
@@ -1771,7 +1771,7 @@ export const WORLD = [
     continent_value: 'AF',
   },
   {
-    country: 'Türkiye',
+    country: 'Turquie',
     country_value: 'TR',
     continent: 'Asie',
     continent_value: 'AS',
@@ -1831,7 +1831,7 @@ export const WORLD = [
     continent_value: 'SA',
   },
   {
-    country: 'Viet Nam',
+    country: 'Vietnam',
     country_value: 'VN',
     continent: 'Asie',
     continent_value: 'AS',
