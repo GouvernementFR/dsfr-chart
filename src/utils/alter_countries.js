@@ -52,7 +52,7 @@ const countryOverrides = {
   DO: 'République dominicaine',
   PS: 'Palestine',
   BY: 'Biélorussie',
-  UK: 'Royaume-Uni',
+  GB: 'Royaume-Uni',
   TR: 'Turquie',
   CD: 'République démocratique du Congo',
   CG: 'République du Congo',

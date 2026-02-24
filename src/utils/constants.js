@@ -1144,7 +1144,7 @@ export const WORLD = [
     continent_value: 'AF',
   },
   {
-    country: 'Royaume-Uni de Grande-Bretagne et d’Irlande du Nord',
+    country: 'Royaume-Uni',
     country_value: 'GB',
     continent: 'Europe',
     continent_value: 'EU',
