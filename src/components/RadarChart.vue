@@ -81,6 +81,10 @@ export default {
       type: String,
       required: true,
     },
+	maxValue: {
+      type: Number,
+      required: false,
+	},
     name: {
       type: String,
       default: '',
@@ -271,6 +275,7 @@ export default {
               grid: {
                 color: '#6b6b6b',
               },
+              suggestedMax: this.maxValue
             },
           },
           plugins: {
