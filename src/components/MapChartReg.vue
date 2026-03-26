@@ -27,7 +27,7 @@
             <div class="tooltip_body">
               <div class="tooltip_value-content">
                 <div class="tooltip_value">
-                  {{ tooltip.value }}
+                  {{ tooltip.value ?? 'Donnée non disponible' }}
                 </div>
               </div>
             </div>
