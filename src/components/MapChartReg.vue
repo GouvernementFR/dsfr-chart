@@ -268,7 +268,7 @@ export default {
         this.FranceProps.viewBox = `${xminValue} ${yminValue} ${size} ${size}`;
       }
 
-      this.InfoProps.localisation = this.getReg(this.region).department;
+      this.InfoProps.localisation = this.zoomDep ? this.getDep(this.zoomDep).department : this.getReg(this.region).region;
       this.InfoProps.value = this.value;
       this.InfoProps.valueReg = this.dataParse[this.zoomDep];
       this.InfoProps.min = this.scaleMin;
