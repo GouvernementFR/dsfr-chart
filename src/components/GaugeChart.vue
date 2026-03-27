@@ -132,14 +132,7 @@ export default {
   data() {
     return {
       widgetId: '',
-      display: '',
       percentage: 0,
-      styleRectangleOver: '',
-      styleRectangleUnder: '',
-      styleLegendOver: '',
-      styleLegendUnder: '',
-      colorOver: '',
-      colorUnder: '',
       width: '',
     };
   },
@@ -160,8 +153,6 @@ export default {
   },
   mounted() {
     this.createChart();
-
-    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
   },
   methods: {
     createChart() {

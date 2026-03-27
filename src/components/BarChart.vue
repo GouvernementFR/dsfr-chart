@@ -177,7 +177,6 @@ export default {
     return {
       widgetId: '',
       chartId: '',
-      display: '',
       selectedIndex: -1,
       datasets: [],
       labels: [],
@@ -218,7 +217,6 @@ export default {
     this.resetData();
     this.createChart();
 
-    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
     const element = document.documentElement;
     element.addEventListener('dsfr.theme', (e) => {
       if (this.chartId !== '') {
@@ -231,7 +229,6 @@ export default {
       if (this.chart) {
         this.chart.destroy();
       }
-      this.display = '';
       this.datasets = [];
       this.labels = [];
       this.xparse = [];
