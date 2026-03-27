@@ -83,6 +83,14 @@ export default {
       type: String,
       required: true,
     },
+    scaleMin: {
+      type: [Number, String],
+      default: null,
+    },
+    scaleMax: {
+      type: [Number, String],
+      default: null,
+    },
     name: {
       type: String,
       default: '',
@@ -273,6 +281,8 @@ export default {
               grid: {
                 color: '#6b6b6b',
               },
+              suggestedMin: this.scaleMin,
+              suggestedMax: this.scaleMax,
             },
           },
           plugins: {
