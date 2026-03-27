@@ -42,7 +42,7 @@
             </p>
           </div>
           <div
-            v-if="legend"
+            v-if="[true, 'true', ''].includes(legend)"
             class="flex"
           >
             <span class="legend_dot target_legend" />
@@ -51,7 +51,7 @@
             </p>
           </div>
           <div
-            v-if="legend"
+            v-if="[true, 'true', ''].includes(legend)"
             class="flex fr-mt-3v fr-mb-1v"
           >
             <span class="legend_dot actual_legend" />
