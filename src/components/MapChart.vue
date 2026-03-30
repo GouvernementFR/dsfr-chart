@@ -348,9 +348,16 @@ export default {
         }
       }
 
+      const filteredValues = values.filter((v) => {
+        return !isNaN(v);
+      });
+      if (filteredValues.length === 0) {
+        filteredValues.push(0);
+      }
+
       // Calcul des min et max pour l'échelle
-      this.scaleMin = Math.min(...values);
-      this.scaleMax = Math.max(...values);
+      this.scaleMin = Math.min(...filteredValues);
+      this.scaleMax = Math.max(...filteredValues);
 
       // Define color scale based on regional values
       const colorScale = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colorLeft, this.colorRight]);
