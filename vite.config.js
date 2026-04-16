@@ -10,8 +10,11 @@ export default {
   },
   server: {
     watch: {
-      usePolling: true
+      usePolling: true,
     },
+  },
+  define: {
+    'process.env.NODE_ENV': JSON.stringify('production'),
   },
   base: './',
   build: {

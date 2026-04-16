@@ -617,5 +617,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/MapChart.scss';
+@use '@/styles/MapChart.scss';
 </style>

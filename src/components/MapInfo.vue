@@ -74,5 +74,5 @@ const gradient = computed(() => `linear-gradient(90deg,${props.data.colorMin} 0%
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/MapInfo.scss';
+@use '@/styles/MapInfo.scss';
 </style>

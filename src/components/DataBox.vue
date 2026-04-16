@@ -591,5 +591,5 @@ const screenshotChart = () => {
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/DataBox.scss';
+@use '@/styles/DataBox.scss';
 </style>

@@ -168,5 +168,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/GaugeChart.scss';
+@use '@/styles/GaugeChart.scss';
 </style>
