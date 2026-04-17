@@ -125,7 +125,11 @@ La publication du package sur npm nécessite les actions suivantes au niveau du 
 
 Le fichier `package.json` permet aussi de définir une description (**description**), un auteur (**author**) et de lier le package au repo GitHub du projet (**repository**).
 
-On peut ensuite lancer la publication sur npmjs :
+Il faut impérativement rebuild la librairie entière **ET** les graphiques séparés :
+
+`npm run build && npm run build:components`
+
+On peut ensuite lancer la publication sur [npm](https://www.npmjs.com/) :
 
 `npm publish`
 
