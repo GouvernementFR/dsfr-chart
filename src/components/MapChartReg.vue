@@ -465,7 +465,7 @@ export default {
       elCol[0].style.opacity = 1;
     },
     changeGeoLevel(e) {
-      this.zoomDep = e.target.className.baseVal.replace('FR-', '');
+      this.zoomDep = e.target.className.baseVal.replace('FR-', '').split(' ')[0];
       this.createChart();
     },
     resetGeoFilters() {
