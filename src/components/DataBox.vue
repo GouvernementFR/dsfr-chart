@@ -265,7 +265,7 @@
               type="radio"
               checked
               :name="'segmented-' + id"
-              @change="changeView('chart')"
+              @change="selectedView = 'chart'"
             >
             <label
               class="fr-label"
@@ -284,7 +284,7 @@
               value="2"
               type="radio"
               :name="'segmented-' + id"
-              @change="changeView('table')"
+              @change="selectedView = 'table'"
             >
             <label
               class="fr-label"
@@ -349,7 +349,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, nextTick, onMounted, ref } from 'vue';
 import { toPng } from '@jpinsonneau/html-to-image';
 import { slugify } from '@/utils/global.js';
 import DialogModal from '@/components/DialogModal.vue';
@@ -441,12 +441,19 @@ const props = defineProps({
 
 const chartSources = ref([]);
 const tableSources = ref([]);
+const currentSource = ref(null);
+const selectedView = ref('chart');
 
-chartSources.value = [...document.querySelectorAll(`[databox-id="${props.id}"][databox-type="chart"]`)].map((el) => el.getAttribute('databox-source') || 'default');
+onMounted(async () => {
+  await nextTick();
+  chartSources.value = [...document.querySelectorAll(`[databox-id="${props.id}"][databox-type="chart"]`)].map((el) => el.getAttribute('databox-source') || 'default');
 
-tableSources.value = [...document.querySelectorAll(`[databox-id="${props.id}"][databox-type="table"]`)].map((el) => el.getAttribute('databox-source') || 'global');
+  tableSources.value = [...document.querySelectorAll(`[databox-id="${props.id}"][databox-type="table"]`)].map((el) => el.getAttribute('databox-source') || 'global');
 
-const currentSource = ref(chartSources.value.includes(props.defaultSource) ? props.defaultSource : chartSources.value[0] || tableSources.value[0]);
+  currentSource.value = chartSources.value.includes(props.defaultSource) ? props.defaultSource : chartSources.value[0] || tableSources.value[0];
+
+  selectedView.value = chartSources.value.length > 0 ? 'chart' : 'table';
+});
 
 const generateOptions = (source) =>
   source.map((option) => ({
@@ -463,17 +470,11 @@ const screenshot = computed(() => [true, 'true', ''].includes(props.screenshot))
 const download = computed(() => [true, 'true', ''].includes(props.download));
 const actions = computed(() => (typeof props.actions === 'string' ? JSON.parse(props.actions) : props.actions));
 
-const selectedView = ref(chartSources.value.length > 0 ? 'chart' : 'table');
-
-const changeView = (view) => {
-  selectedView.value = view;
-};
-
 const downloadCSV = () => {
+  let type;
   let dom;
   const csv = [];
 
-  let type;
   // By default, always download the table version of the data
   if (document.querySelector(`[databox-id="${props.id}"][databox-type="table"]`)) {
     type = 'table';

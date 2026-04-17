@@ -1,7 +1,8 @@
 <template>
   <Teleport
-    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
+    v-if="!databoxId || targetReady"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
+    :disabled="!databoxId"
   >
     <div
       :ref="widgetId"
@@ -235,6 +236,7 @@ export default {
       colorBarParse: [],
       colorHover: [],
       colorBarHover: [],
+      targetReady: false,
     };
   },
   watch: {
@@ -250,6 +252,14 @@ export default {
       deep: true,
       immediate: true,
     },
+    targetReady(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.resetData();
+          this.createChart();
+        });
+      }
+    },
   },
   created() {
     configureChartDefaults();
@@ -257,15 +267,34 @@ export default {
     this.widgetId = `dsfr-widget-${Math.floor(Math.random() * 1000)}`;
   },
   mounted() {
-    this.resetData();
-    this.createChart();
+    if (!this.databoxId || !this.databoxType) {
+      this.resetData();
+      this.createChart();
+    } else {
+      const targetId = `${this.databoxId}-${this.databoxType}-${this.databoxSource}`;
+      if (document.getElementById(targetId)) {
+        this.targetReady = true;
+      } else {
+        this._targetObserver = new MutationObserver(() => {
+          if (document.getElementById(targetId)) {
+            this._targetObserver.disconnect();
+            this.targetReady = true;
+        }
+        });
+        this._targetObserver.observe(document.body, { childList: true, subtree: true });
+      }
+    }
 
-    const element = document.documentElement;
-    element.addEventListener('dsfr.theme', (e) => {
+    document.documentElement.addEventListener('dsfr.theme', (e) => {
       if (this.chartId !== '') {
         this.changeColors(e.detail.theme);
       }
     });
+  },
+  beforeUnmount() {
+    if (this._targetObserver) {
+      this._targetObserver.disconnect();
+    }
   },
   methods: {
     resetData() {

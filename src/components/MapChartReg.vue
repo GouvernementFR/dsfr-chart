@@ -1,7 +1,8 @@
 <template>
   <Teleport
-    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
+    v-if="!databoxId || targetReady"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
+    :disabled="!databoxId"
   >
     <div
       :ref="widgetId"
@@ -211,6 +212,7 @@ export default {
       displayReunion: '',
       displayGuyane: '',
       dromColor: '#6b6b6b',
+      targetReady: false,
     };
   },
   watch: {
@@ -224,19 +226,47 @@ export default {
       deep: true,
       immediate: true,
     },
+    targetReady(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.createChart();
+        });
+      }
+    },
   },
   created() {
     this.widgetId = `dsfr-widget-${Math.floor(Math.random() * 1000)}`;
   },
   mounted() {
-    this.createChart();
-    // The template is not retriggered in maps, force update to process after other elements
-    this.$forceUpdate();
+    if (!this.databoxId || !this.databoxType) {
+      this.createChart();
+      // The template is not retriggered in maps, force update to process after other elements
+      this.$forceUpdate();
+    } else {
+      const targetId = `${this.databoxId}-${this.databoxType}-${this.databoxSource}`;
+      if (document.getElementById(targetId)) {
+        this.targetReady = true;
+      } else {
+        this._targetObserver = new MutationObserver(() => {
+          if (document.getElementById(targetId)) {
+            this._targetObserver.disconnect();
+            this.targetReady = true;
+        }
+        });
+        this._targetObserver.observe(document.body, { childList: true, subtree: true });
+      }
+    }
 
-    const element = document.documentElement;
-    element.addEventListener('dsfr.theme', (e) => {
-      this.changeTheme(e.detail.theme);
+    document.documentElement.addEventListener('dsfr.theme', (e) => {
+      if (this.chartId !== '') {
+        this.changeColors(e.detail.theme);
+      }
     });
+  },
+  beforeUnmount() {
+    if (this._targetObserver) {
+      this._targetObserver.disconnect();
+    }
   },
   methods: {
     createChart() {
@@ -260,13 +290,12 @@ export default {
       this.InfoProps.date = this.date;
       this.InfoProps.names = this.name;
 
-      const values = [];
-      let listDep = [];
+      let values = [];
 
       this.MapProps.displayPath = {};
 
       // Afficher uniquement les départements de la région sélectionnée
-      listDep = this.getDepsFromReg(this.region);
+      let listDep = this.getDepsFromReg(this.region);
       for (const key of listDep) {
         if (this.dataParse[key] !== undefined) {
           values.push(this.dataParse[key]);
@@ -446,7 +475,7 @@ export default {
     choosePalette() {
       return choosePalette(this.selectedPalette);
     },
-    changeTheme(theme) {
+    changeColors(theme) {
       if (theme === 'light') {
         this.dromColor = '#6b6b6b';
         this.MapProps.colorStroke = '#FFFFFF';

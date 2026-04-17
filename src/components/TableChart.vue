@@ -1,7 +1,8 @@
 <template>
   <Teleport
-    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'global')"
+    v-if="!databoxId || targetReady"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
+    :disabled="!databoxId"
   >
     <div
       :ref="widgetId"
@@ -135,6 +136,7 @@ export default {
       lineParse: [],
       nameParse: [],
       selectedIndex: -1,
+      targetReady: false,
     };
   },
   watch: {
@@ -148,18 +150,44 @@ export default {
       deep: true,
       immediate: true,
     },
+    targetReady(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.resetData();
+          this.getData();
+          this.observeRelatedChart();
+        });
+      }
+    },
   },
   created() {
     this.tableId = `dsfr-table-${Math.floor(Math.random() * 1000)}`;
     this.widgetId = `dsfr-widget-${Math.floor(Math.random() * 1000)}`;
   },
   mounted() {
-    this.resetData();
-    this.getData();
-    // Wait for next tick to get chart element
-    this.$nextTick(() => {
+    if (!this.databoxId || !this.databoxType) {
+      this.resetData();
+      this.getData();
       this.observeRelatedChart();
-    });
+    } else {
+      const targetId = `${this.databoxId}-${this.databoxType}-${this.databoxSource}`;
+      if (document.getElementById(targetId)) {
+        this.targetReady = true;
+      } else {
+        this._targetObserver = new MutationObserver(() => {
+          if (document.getElementById(targetId)) {
+            this._targetObserver.disconnect();
+            this.targetReady = true;
+          }
+        });
+        this._targetObserver.observe(document.body, { childList: true, subtree: true });
+      }
+    }
+  },
+  beforeUnmount() {
+    if (this._targetObserver) {
+      this._targetObserver.disconnect();
+    }
   },
   methods: {
     resetData() {

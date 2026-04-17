@@ -35,6 +35,8 @@ function parseCsv(content) {
   });
 }
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
 const csvPath = path.join(__dirname, 'countries.csv');
 const csvData = fs.readFileSync(csvPath, { encoding: 'utf-8' });
 const countries = parseCsv(csvData);
