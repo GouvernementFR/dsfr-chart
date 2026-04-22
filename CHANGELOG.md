@@ -6,6 +6,13 @@ Pour plus d’informations : [Voir la documentation](./README.md)
 
 > ## DSFR-Chart v2
 
+## v2.0.5
+
+### [v2.0.5](https://github.com/GouvernementFR/dsfr-chart/compare/v2.0.4...v2.0.5) - 22 Avril 2026
+
+#### 🔖 chore(*): DSFR-chart v2.0.5 [(#55)](https://github.com/GouvernementFR/dsfr-chart/pull/55)
+- patch de la version 2.0.4 pour remettre à disposition les composants unitairement
+
 ## v2.0.4
 
 ### [v2.0.4](https://github.com/GouvernementFR/dsfr-chart/compare/v2.0.3...v2.0.4) - 19 Mai 2025
