@@ -164,8 +164,8 @@ export default {
       default: '',
     },
     highlightIndex: {
-      type: Array,
-      default: () => [3, 4],
+      type: [Array, String],
+      default: () => [],
     },
     unitTooltip: {
       type: String,
@@ -330,7 +330,7 @@ export default {
       const { colorParse, colorHover, legendColors } = generateColors({
         yparse: this.yparse,
         tmpColorParse: this.tmpColorParse,
-        highlightIndex: this.highlightIndex,
+        highlightIndex: Array.isArray(this.highlightIndex) ? this.highlightIndex : JSON.parse(this.highlightIndex),
         selectedPalette: this.selectedPalette,
         reverseOrder: this.selectedPalette === 'divergentDescending',
       });

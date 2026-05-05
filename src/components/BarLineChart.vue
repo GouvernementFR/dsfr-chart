@@ -202,7 +202,7 @@ export default {
     },
     selectedPalette: {
       type: String,
-      default: 'categorical',
+      default: '',
     },
     unitTooltipBar: {
       type: String,

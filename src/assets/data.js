@@ -35,6 +35,7 @@ export const chartData = {
       name: '["Achat sur internet au cours des 12 derniers mois (%)"]',
       selectedPalette: 'neutral',
       unitTooltip: '%',
+      highlightIndex: '[3, 4]',
     },
     sequential: {
       x: '[["Nouvelle-Aquitaine", "Hauts-de-France", "Bourgogne-Franche-Comté", "Auvergne-Rhône-Alpes", "Normandie", "Bretagne", "Pays de la Loire", "Occitanie", "Grand Est", "Centre-Val de Loire", "Île-de-France", "Provence-Alpes-Côte d’Azur", "Corse"]]',
