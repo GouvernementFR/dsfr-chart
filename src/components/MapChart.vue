@@ -191,7 +191,7 @@
 </template>
 
 <script>
-import * as d3 from 'd3-scale';
+import chroma from 'chroma-js';
 import MapInfo from '@/components/MapInfo.vue';
 import maps from '@/components/maps';
 import { formatNumber, isMobile, mapMixins } from '@/utils/global.js';
@@ -422,7 +422,7 @@ export default {
       this.scaleMax = Math.max(...values);
 
       // Define color scale based on regional values
-      const colorScale = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colorLeft, this.colorRight]);
+      const colorScale = chroma.scale([this.colorLeft, this.colorRight]).domain([this.scaleMin, this.scaleMax]);
 
       const xmin = [],
         xmax = [],
@@ -469,7 +469,7 @@ export default {
               ymax.push(polygon.y + polygon.height);
             } else if (listDep.includes(key)) {
               // Fill with the lighter color for other paths
-              elCol[0].setAttribute('fill', colorScale(this.dataParse[key]).replace(')', ', 0.6)').replace('rgb', 'rgba'));
+              elCol[0].setAttribute('fill', colorScale(this.dataParse[key]).alpha(0.6));
               elCol[0].setAttribute('stroke', this.MapProps.colorStroke);
               elCol[0].setAttribute('stroke-width', '0.2%');
               this.MapProps.displayPath[className] = '';
