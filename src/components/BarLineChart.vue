@@ -381,10 +381,10 @@ export default {
         {
           data: this.ybarparse,
           type: 'bar',
-          borderColor: this.colorBarParse,
-          backgroundColor: this.colorBarParse,
-          hoverBorderColor: this.colorBarHover,
-          hoverBackgroundColor: this.colorBarHover,
+          borderColor: this.colorBarParse[0],
+          backgroundColor: this.colorBarParse[0],
+          hoverBorderColor: this.colorBarHover[0],
+          hoverBackgroundColor: this.colorBarHover[0],
           pointRadius: 5,
           pointHoverRadius: 5,
           barThickness: this.barSize,
@@ -394,12 +394,14 @@ export default {
         {
           data: this.ylineparse,
           type: 'line',
-          borderColor: this.colorParse,
-          backgroundColor: 'rgba(0, 0, 0, 0)',
-          pointBorderColor: this.colorParse,
-          pointBackgroundColor: this.colorParse,
-          pointHoverBorderColor: this.colorHover,
-          pointHoverBackgroundColor: this.colorHover,
+          borderColor: this.colorParse[0],
+          backgroundColor: this.colorParse[0],
+          hoverBorderColor: this.colorHover[0],
+          hoverBackgroundColor: this.colorHover[0],
+          pointBorderColor: this.colorParse[0],
+          pointBackgroundColor: this.colorParse[0],
+          pointHoverBorderColor: this.colorHover[0],
+          pointHoverBackgroundColor: this.colorHover[0],
           pointRadius: 5,
           pointHoverRadius: 5,
           yAxisID: 'yLine',
@@ -691,14 +693,14 @@ export default {
 
       // Mise à jour des couleurs dans le graphique
       this.chart.data.datasets.forEach((dataset) => {
-        dataset.borderColor = this.colorParse;
-        dataset.backgroundColor = this.colorBarParse;
-        dataset.pointBorderColor = this.colorParse;
-        dataset.pointBackgroundColor = this.colorParse;
-        dataset.hoverBorderColor = this.colorHover;
-        dataset.hoverBackgroundColor = this.colorBarHover;
-        dataset.pointHoverBorderColor = this.colorHover;
-        dataset.pointHoverBackgroundColor = this.colorHover;
+        dataset.borderColor = this.colorParse[0];
+        dataset.backgroundColor = this.colorBarParse[0];
+        dataset.hoverBorderColor = this.colorHover[0];
+        dataset.hoverBackgroundColor = this.colorBarHover[0];
+        dataset.pointBorderColor = this.colorParse[0];
+        dataset.pointBackgroundColor = this.colorParse[0];
+        dataset.pointHoverBorderColor = this.colorHover[0];
+        dataset.pointHoverBackgroundColor = this.colorHover[0];
       });
 
       this.chart.options.scales.x.ticks.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;

@@ -311,13 +311,12 @@ export default {
       this.loadColors();
 
       // Préparation des datasets
-      this.datasets = this.yparse.map((dataSet, index) => ({
-        label: this.nameParse[index],
-        data: dataSet,
-        backgroundColor: this.colorParse[index],
-        borderColor: this.colorParse[index],
-        hoverBackgroundColor: this.colorHover[index],
-        hoverBorderColor: this.colorHover[index],
+      this.datasets = this.yparse.map((dataset, i) => ({
+        data: dataset,
+        borderColor: this.colorParse[i],
+        backgroundColor: this.colorParse[i],
+        hoverBorderColor: this.colorHover[i],
+        hoverBackgroundColor: this.colorHover[i],
         barThickness: this.barSize,
         ...(this.maxBarSize ? { maxBarThickness: this.maxBarSize } : {}),
       }));

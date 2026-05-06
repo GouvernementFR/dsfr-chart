@@ -236,16 +236,19 @@ export default {
       this.loadColors();
 
       // Préparation des datasets
-      this.datasets = this.yparse.map((dataSet, index) => ({
+      this.datasets = this.yparse.map((dataset, i) => ({
+        data: dataset,
+        fill: true,
         pointRadius: 5,
         pointHoverRadius: 5,
-        data: dataSet,
-        borderColor: this.colorParse[index],
-        pointBackgroundColor: this.colorParse[index],
-        backgroundColor: chroma(this.colorParse[index]).alpha(0.3).hex(),
-        fill: true,
-        hoverBorderColor: this.colorHover[index],
-        hoverBackgroundColor: this.colorHover[index],
+        borderColor: this.colorParse[i],
+        backgroundColor: chroma(this.colorParse[i]).alpha(0.3).hex(),
+        hoverBorderColor: this.colorHover[i],
+        hoverBackgroundColor: this.colorHover[i],
+        pointBorderColor: this.colorParse[i],
+        pointBackgroundColor: this.colorParse[i],
+        pointHoverBackgroundColor: this.colorHover[i],
+        pointHoverBorderColor: this.colorHover[i],
       }));
     },
     loadColors() {
@@ -269,12 +272,13 @@ export default {
       // Mise à jour des couleurs dans le graphique
       this.chart.data.datasets.forEach((dataset, i) => {
         dataset.borderColor = this.colorParse[i];
-        dataset.pointBorderColor = this.colorParse[i];
-        dataset.pointBackgroundColor = this.colorParse[i];
+        dataset.backgroundColor = chroma(this.colorParse[i]).alpha(0.3).hex();
         dataset.hoverBorderColor = this.colorHover[i];
         dataset.hoverBackgroundColor = this.colorHover[i];
-        dataset.pointHoverBorderColor = this.colorHover[i];
+        dataset.pointBorderColor = this.colorParse[i];
+        dataset.pointBackgroundColor = this.colorParse[i];
         dataset.pointHoverBackgroundColor = this.colorHover[i];
+        dataset.pointHoverBorderColor = this.colorHover[i];
       });
 
       this.chart.options.scales.r.pointLabels.color = theme === 'dark' ? '#cecece' : Chart.defaults.color;

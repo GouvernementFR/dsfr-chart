@@ -276,12 +276,12 @@ export default {
       this.loadColors();
 
       // Préparation des datasets
-      this.datasets = this.yparse.map((dataSet, index) => ({
-        data: dataSet,
-        borderColor: this.colorParse[index],
-        backgroundColor: this.colorParse[index],
-        hoverBorderColor: this.colorHover[index],
-        hoverBackgroundColor: this.colorHover[index],
+      this.datasets = this.yparse.map((dataset, i) => ({
+        data: dataset,
+        borderColor: this.colorParse[i],
+        backgroundColor: this.colorParse[i],
+        hoverBorderColor: this.colorHover[i],
+        hoverBackgroundColor: this.colorHover[i],
       }));
     },
     createChart() {
