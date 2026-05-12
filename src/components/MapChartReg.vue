@@ -251,7 +251,7 @@ export default {
           if (document.getElementById(targetId)) {
             this._targetObserver.disconnect();
             this.targetReady = true;
-        }
+          }
         });
         this._targetObserver.observe(document.body, { childList: true, subtree: true });
       }

@@ -71,6 +71,7 @@ Pour plus d’informations : [Voir la documentation](./README.md)
 Version Ɑ de la librairie de visualisation de données portée par le Système de Design de l’État.
 
 ##### Composants
+
 - Nuage de points (ou ScatterChart)
 - Graphique en ligne (ou LineChart)
 - Diagramme en barres (ou BarChart)
@@ -82,5 +83,6 @@ Version Ɑ de la librairie de visualisation de données portée par le Système
 - Cartes (ou MapChart)
 
 ##### Fondamentaux
+
 - Couleurs
 - Accessibilité

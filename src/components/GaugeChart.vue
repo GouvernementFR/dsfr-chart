@@ -47,26 +47,20 @@
             class="flex"
           >
             <span class="legend_dot target_legend" />
-            <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">
-              Valeur cible
-            </p>
+            <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">Valeur cible</p>
           </div>
           <div
             v-if="[true, 'true', ''].includes(legend)"
             class="flex fr-mt-3v fr-mb-1v"
           >
             <span class="legend_dot actual_legend" />
-            <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">
-              Valeur actuelle
-            </p>
+            <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">Valeur actuelle</p>
           </div>
           <div
             v-if="date"
             class="flex fr-mt-1w"
           >
-            <p class="fr-text--xs">
-              Mise à jour : {{ date }}
-            </p>
+            <p class="fr-text--xs">Mise à jour : {{ date }}</p>
           </div>
         </div>
       </div>
@@ -172,7 +166,7 @@ export default {
           if (document.getElementById(targetId)) {
             this._targetObserver.disconnect();
             this.targetReady = true;
-        }
+          }
         });
         this._targetObserver.observe(document.body, { childList: true, subtree: true });
       }

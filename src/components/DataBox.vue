@@ -182,7 +182,9 @@
             <span
               :class="'fr-pr-1v screenshot-hide-' + id"
               aria-hidden="true"
-            >↘ </span>
+            >
+              ↘
+            </span>
             {{ trend.replace('-', '').trim() }}
           </span>
         </p>
@@ -198,7 +200,9 @@
             <span
               :class="'fr-pr-1v screenshot-hide-' + id"
               aria-hidden="true"
-            >↔ </span>
+            >
+              ↔
+            </span>
             {{ trend.trim() }}
           </span>
         </p>
@@ -214,7 +218,9 @@
             <span
               :class="'fr-pr-1v screenshot-hide-' + id"
               aria-hidden="true"
-            >↗ </span>
+            >
+              ↗
+            </span>
             {{ trend.trim() }}
           </span>
         </p>
@@ -224,9 +230,7 @@
     <!-- Footer -->
     <div class="fr-p-2w databox_footer">
       <div>
-        <p class="fr-text--xs fr-mb-0">
-          {{ source }}, {{ date }}
-        </p>
+        <p class="fr-text--xs fr-mb-0">{{ source }}, {{ date }}</p>
 
         <p
           v-if="textIa"
@@ -254,9 +258,7 @@
         v-if="segmentedControl && chartSources.length > 0"
         :class="'fr-segmented fr-segmented--no-legend fr-segmented--sm screenshot-hide-' + id"
       >
-        <legend class="fr-segmented__legend">
-          Choisir votre vue
-        </legend>
+        <legend class="fr-segmented__legend">Choisir votre vue</legend>
         <div class="fr-segmented__elements">
           <div class="fr-segmented__element">
             <input
@@ -266,7 +268,7 @@
               checked
               :name="'segmented-' + id"
               @change="selectedView = 'chart'"
-            >
+            />
             <label
               class="fr-label"
               :for="'segmented-chart-' + id"
@@ -285,7 +287,7 @@
               type="radio"
               :name="'segmented-' + id"
               @change="selectedView = 'table'"
-            >
+            />
             <label
               class="fr-label"
               :for="'segmented-table-' + id"

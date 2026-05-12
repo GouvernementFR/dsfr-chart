@@ -1,6 +1,7 @@
 import pluginJs from '@eslint/js';
 import pluginVue from 'eslint-plugin-vue';
 import pluginStorybook from 'eslint-plugin-storybook';
+import skipFormatting from '@vue/eslint-config-prettier/skip-formatting';
 import globals from 'globals';
 
 /** @type {import('eslint').Linter.Config[]} */
@@ -49,4 +50,6 @@ export default [
   {
     ignores: ['!.storybook'],
   },
+
+  skipFormatting,
 ];

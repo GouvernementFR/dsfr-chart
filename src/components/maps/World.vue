@@ -532,7 +532,8 @@ defineProps({
         @dblclick="onDblClick()"
         @mouseenter="onEnter($event)"
         @mouseleave="onLeave($event)"
-      />      <path
+      />
+      <path
         id="Finland"
         class="FI"
         :style="{ display: config.displayPath['FI'] }"
@@ -631,7 +632,8 @@ defineProps({
         @dblclick="onDblClick()"
         @mouseenter="onEnter($event)"
         @mouseleave="onLeave($event)"
-      />      <path
+      />
+      <path
         id="Gambia"
         class="GM"
         :style="{ display: config.displayPath['GM'] }"
@@ -900,7 +902,8 @@ defineProps({
         @dblclick="onDblClick()"
         @mouseenter="onEnter($event)"
         @mouseleave="onLeave($event)"
-      />      <path
+      />
+      <path
         id="Kuwait"
         class="KW"
         :style="{ display: config.displayPath['KW'] }"
@@ -1279,7 +1282,8 @@ defineProps({
         @dblclick="onDblClick()"
         @mouseenter="onEnter($event)"
         @mouseleave="onLeave($event)"
-      />      <path
+      />
+      <path
         id="Pakistan"
         class="PK"
         :style="{ display: config.displayPath['PK'] }"

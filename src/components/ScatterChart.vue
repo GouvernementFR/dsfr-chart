@@ -78,9 +78,7 @@
             v-if="date"
             class="flex fr-mt-1w"
           >
-            <p class="fr-text--xs">
-              Mise à jour : {{ date }}
-            </p>
+            <p class="fr-text--xs">Mise à jour : {{ date }}</p>
           </div>
         </div>
       </div>
@@ -250,7 +248,7 @@ export default {
           if (document.getElementById(targetId)) {
             this._targetObserver.disconnect();
             this.targetReady = true;
-        }
+          }
         });
         this._targetObserver.observe(document.body, { childList: true, subtree: true });
       }
@@ -481,7 +479,7 @@ export default {
               ticks: {
                 padding: 10,
                 // Ticks were formatted as numerical values, we prefer original value
-                callback: (value) => this.xAxisType === 'category' ? this.labels[value] : value
+                callback: (value) => (this.xAxisType === 'category' ? this.labels[value] : value),
               },
               ...(this.xMin ? { suggestedMin: this.xMin } : {}),
               ...(this.xMax ? { suggestedMax: this.xMax } : {}),

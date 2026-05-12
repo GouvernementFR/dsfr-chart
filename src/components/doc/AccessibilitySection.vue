@@ -1,12 +1,8 @@
 <template>
   <div class="part_container fr-mb-10w">
-    <h2 id="Accessibilité">
-      Accessibilité
-    </h2>
+    <h2 id="Accessibilité">Accessibilité</h2>
     <div class="fr-alert fr-alert--info fr-mb-5v">
-      <p>
-        Utilisés seuls, les graphiques du DSFR Charts sont inaccessibles aux personnes aveugles, déficientes visuelles et aux personnes handicapées motrices. Il conviendra donc d’apporter une alternative textuelle pertinente à chaque fois qu’un graphique est affiché.
-      </p>
+      <p>Utilisés seuls, les graphiques du DSFR Charts sont inaccessibles aux personnes aveugles, déficientes visuelles et aux personnes handicapées motrices. Il conviendra donc d’apporter une alternative textuelle pertinente à chaque fois qu’un graphique est affiché.</p>
     </div>
 
     <h3>Non-conformités</h3>
@@ -26,9 +22,7 @@
     <h4>Alternative 1 : utiliser un tableau</h4>
     <p>Présenter les résultats sous forme de tableau est sans doute l’option la plus simple, surtout s’il y a beaucoup de données à présenter. On privilégiera dans le cas des contenus les plus complexes la création de plusieurs tableaux simples et non de tableaux avec des cellules fusionnées pour faciliter la lecture.</p>
     <div class="fr-alert fr-alert--info fr-mb-6v">
-      <p>
-        Le composant databox embarque par défaut une alternative sous forme de tableau.
-      </p>
+      <p>Le composant databox embarque par défaut une alternative sous forme de tableau.</p>
     </div>
 
     <h4>Alternative 2 : utiliser un liste simple ou liste titrée</h4>
@@ -73,12 +67,8 @@
       présenté sous le graphique.
     </p>
     <div class="fr-alert fr-alert--info fr-mb-6v">
-      <h4 class="fr-alert__title">
-        Important
-      </h4>
-      <p>
-        Il conviendra de documenter cette approche dans la déclaration d’accessibilité pour que les personnes handicapées concernées sachent qu’une alternative accessible est systématiquement fournie.
-      </p>
+      <h4 class="fr-alert__title">Important</h4>
+      <p>Il conviendra de documenter cette approche dans la déclaration d’accessibilité pour que les personnes handicapées concernées sachent qu’une alternative accessible est systématiquement fournie.</p>
     </div>
 
     <div>
@@ -93,9 +83,7 @@
       :attributes="chartData.tableChart.chart"
     />
 
-    <p>
-      Il est également possible de présenter l’alternative avec une en-tête et des lignes. Les arguments sont donc seulement au nombre de deux.
-    </p>
+    <p>Il est également possible de présenter l’alternative avec une en-tête et des lignes. Les arguments sont donc seulement au nombre de deux.</p>
 
     <div>
       <component

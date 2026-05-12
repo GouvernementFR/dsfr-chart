@@ -7,8 +7,8 @@ export default {
   argTypes: {
     date: {
       control: 'text',
-    }
-  }
+    },
+  },
 };
 
 const scatterData = JSON.parse(chartData.scatterChart.linked.y);
@@ -52,7 +52,7 @@ export const Simple = {
       table-name="Catégories"
     >
     </table-chart>
-  `
+  `,
 };
 
 export const Complete = {
@@ -126,7 +126,7 @@ export const Complete = {
       table-name="Années"
     >
     </table-chart>
-  `
+  `,
 };
 
 export const Number = {
@@ -146,5 +146,5 @@ export const Number = {
       segmented-control="${args.segmentedControl}"
     >
     </data-box>
-  `
+  `,
 };

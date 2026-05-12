@@ -66,9 +66,7 @@
             v-if="date"
             class="flex fr-mt-1w"
           >
-            <p class="fr-text--xs">
-              Mise à jour : {{ date }}
-            </p>
+            <p class="fr-text--xs">Mise à jour : {{ date }}</p>
           </div>
         </div>
       </div>
@@ -236,7 +234,7 @@ export default {
           if (document.getElementById(targetId)) {
             this._targetObserver.disconnect();
             this.targetReady = true;
-        }
+          }
         });
         this._targetObserver.observe(document.body, { childList: true, subtree: true });
       }

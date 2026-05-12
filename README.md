@@ -832,7 +832,6 @@ Les diagrammes en étoile (ou RadarChart) sont accessibles à travers la balise 
 - **name** : _(String)_ Les noms des séries de données sous forme d'une liste entre crochets.
 
 - **selected-palette** : _(String)_ Permet de choisir la palette de couleurs utilisée pour le graphique. Les valeurs possibles sont :
-
   - `'categorical'` : Palette catégorielle par défaut.
   - `'sequentialAscending'` : Palette séquentielle ascendante.
   - `'sequentialDescending'` : Palette séquentielle descendante.
@@ -872,7 +871,6 @@ Les diagrammes en étoile (ou RadarChart) sont accessibles à travers la balise 
 ## Conseils d'utilisation
 
 - **Format des données** : Assurez-vous que les valeurs de `x` et `y` sont des chaînes représentant des listes de listes. Par exemple :
-
   - Pour `x` : `x='[["Label1", "Label2", "Label3"]]'`
   - Pour `y` : `y='[[10, 20, 30], [15, 25, 35]]'`
 
