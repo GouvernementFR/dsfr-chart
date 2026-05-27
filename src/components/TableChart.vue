@@ -9,7 +9,7 @@
     >
       <div
         :ref="tableId"
-        class="fr-table"
+        class="fr-table fr-table--no-caption"
         :style="{ maxHeight: '25rem', overflow: 'auto' }"
       >
         <div class="fr-table__wrapper">
