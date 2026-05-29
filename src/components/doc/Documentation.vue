@@ -183,7 +183,9 @@ const PALETTE_LABELS = {
   default: 'Palette par défaut',
   neutral: 'Palette neutre',
   categorical: 'Palette catégorielle',
+  sequentialAscending: 'Palette séquentielle',
   sequentialDescending: 'Palette séquentielle',
+  divergentAscending: 'Palette séquentielle divergente',
   divergentDescending: 'Palette séquentielle divergente',
 };
 

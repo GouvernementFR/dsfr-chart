@@ -1,17 +1,14 @@
 import chroma from 'chroma-js';
 import colors from '@/assets/colors.json';
 
-export function generateColors({ yparse = [], tmpColorParse = [], highlightIndex = [], selectedPalette = '', reverseOrder = false }) {
+export function generateColors({ yparse = [], tmpColorParse = [], highlightIndex = [], selectedPalette = '' }) {
   const colorParse = [];
   const colorHover = [];
   const palette = choosePalette(selectedPalette);
 
-  // Si nécessaire, inverser l'ordre des données (divergentDescending)
-  const adjustedYparse = reverseOrder ? [...yparse].reverse() : yparse;
-
   // Génération des couleurs pour chaque série de données
-  for (let i = 0; i < adjustedYparse.length; i++) {
-    const dataSet = adjustedYparse[i];
+  for (let i = 0; i < yparse.length; i++) {
+    const dataSet = yparse[i];
     let colors = [];
     let hoverColors = [];
 
@@ -57,7 +54,7 @@ export function generateColors({ yparse = [], tmpColorParse = [], highlightIndex
   }
 
   // Gestion des couleurs de légende
-  const legendColors = reverseOrder ? colorParse.map((c) => c[0]).reverse() : colorParse.map((c) => c[0]);
+  const legendColors = colorParse.map((c) => c[0]);
 
   return {
     colorParse,

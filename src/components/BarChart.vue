@@ -329,7 +329,6 @@ export default {
         tmpColorParse: this.tmpColorParse,
         highlightIndex: Array.isArray(this.highlightIndex) ? this.highlightIndex : JSON.parse(this.highlightIndex),
         selectedPalette: this.selectedPalette,
-        reverseOrder: this.selectedPalette === 'divergentDescending',
       });
 
       this.colorParse = colorParse;
