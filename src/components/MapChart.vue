@@ -271,7 +271,7 @@ export default {
         colorMin: '',
         colorMax: '',
         value: 0,
-        valueNat: undefined,
+        valueNat: null,
         date: '',
       },
       MapProps: {
@@ -283,7 +283,7 @@ export default {
         top: '0px',
         left: '0px',
         visibility: 'hidden',
-        value: undefined,
+        value: null,
         place: '',
       },
       displayFrance: '',
@@ -343,7 +343,7 @@ export default {
     }
 
     document.documentElement.addEventListener('dsfr.theme', (e) => {
-      if (this.chartId !== '') {
+      if (this.widgetId !== '') {
         this.changeColors(e.detail.theme);
       }
     });
@@ -418,8 +418,8 @@ export default {
       // Calcul des min et max pour l'échelle
       values = values.filter((value) => value !== undefined && value !== null);
 
-      this.scaleMin = Math.min(...values);
-      this.scaleMax = Math.max(...values);
+      this.scaleMin = values.length > 0 ? Math.min(...values) : 0;
+      this.scaleMax = values.length > 0 ? Math.max(...values) : 0;
 
       // Define color scale based on regional values
       const colorScale = chroma.scale([this.colorLeft, this.colorRight]).domain([this.scaleMin, this.scaleMax]);
@@ -516,7 +516,7 @@ export default {
             this.InfoProps.localisation = this.getCountry(zoomDep).country;
           }
           this.InfoProps.value = this.value;
-          this.InfoProps.valueNat = typeof this.dataParse[zoomDep] === 'number' ? this.dataParse[zoomDep].toString() : this.dataParse[zoomDep];
+          this.InfoProps.valueNat = this.dataParse[zoomDep];
 
           if (this.isDep) {
             this.displayFrance = 'none';
@@ -552,7 +552,7 @@ export default {
           this.MapProps.viewBox = '0 0 1010 1010';
         }
         this.InfoProps.value = this.value;
-        this.InfoProps.valueNat = undefined;
+        this.InfoProps.valueNat = null;
         this.displayFrance = '';
         this.displayGuadeloupe = '';
         this.displayMartinique = '';
@@ -577,7 +577,7 @@ export default {
 
       const elCol = parentWidget.getElementsByClassName(hoverElement);
       elCol[0].style.opacity = 0.8;
-      this.tooltip.value = undefined;
+      this.tooltip.value = null;
       for (const hoverValue of hoverValues) {
         if (this.dataParse[hoverValue] !== undefined) {
           this.tooltip.value = this.dataParse[hoverValue];

@@ -28,6 +28,11 @@ export const slugify = (string) =>
  * @returns {string} The formatted number
  */
 export const formatNumber = (value) => {
+  // Return empty string if value is null, undefined or empty string
+  if (value === null || value === undefined || value === '') {
+    return '';
+  }
+
   // Return original value if not a valid number
   if (isNaN(value)) {
     return value;

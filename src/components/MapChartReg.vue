@@ -190,7 +190,7 @@ export default {
         colorMin: '',
         colorMax: '',
         value: 0,
-        valueReg: undefined,
+        valueReg: null,
         date: '',
       },
       MapProps: {
@@ -202,7 +202,7 @@ export default {
         top: '0px',
         left: '0px',
         visibility: 'hidden',
-        value: undefined,
+        value: null,
         place: '',
       },
       displayFrance: '',
@@ -258,7 +258,7 @@ export default {
     }
 
     document.documentElement.addEventListener('dsfr.theme', (e) => {
-      if (this.chartId !== '') {
+      if (this.widgetId !== '') {
         this.changeColors(e.detail.theme);
       }
     });
@@ -303,8 +303,10 @@ export default {
       }
 
       // Calcul des min et max pour l'échelle
-      this.scaleMin = Math.min(...values);
-      this.scaleMax = Math.max(...values);
+      values = values.filter((value) => value !== undefined && value !== null);
+
+      this.scaleMin = values.length > 0 ? Math.min(...values) : 0;
+      this.scaleMax = values.length > 0 ? Math.max(...values) : 0;
 
       // Define color scale based on regional values
       const colorScale = chroma.scale([this.colorLeft, this.colorRight]).domain([this.scaleMin, this.scaleMax]);
@@ -318,6 +320,11 @@ export default {
       for (const key of this.getAllDep()) {
         const className = `FR-${key}`;
         const elCol = parentWidget.getElementsByClassName(className);
+
+        if (elCol.length === 0) {
+          console.warn(`L'élément de la carte n'existe pas pour la valeur ${className}, veuillez le supprimer de vos données.`);
+          continue;
+        }
 
         elCol[0].setAttribute('fill', 'rgba(255, 255, 255, 0)');
         this.MapProps.displayPath[className] = 'none';
@@ -390,7 +397,7 @@ export default {
         this.InfoProps.localisation = this.getReg(this.region).region;
       }
       this.InfoProps.value = this.value;
-      this.InfoProps.valueReg = typeof this.dataParse[this.zoomDep] === 'number' ? this.dataParse[this.zoomDep].toString() : this.dataParse[this.zoomDep];
+      this.InfoProps.valueReg = this.dataParse[this.zoomDep];
 
       this.displayFrance = 'none';
       this.displayGuadeloupe = 'none';
@@ -426,7 +433,7 @@ export default {
 
       const elCol = parentWidget.getElementsByClassName(hoverElement);
       elCol[0].style.opacity = 0.8;
-      this.tooltip.value = undefined;
+      this.tooltip.value = null;
       for (const hoverValue of hoverValues) {
         if (this.dataParse[hoverValue] !== undefined) {
           this.tooltip.value = this.dataParse[hoverValue];

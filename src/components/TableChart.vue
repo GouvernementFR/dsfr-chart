@@ -16,7 +16,10 @@
         <div class="fr-table__wrapper">
           <div class="fr-table__container">
             <div class="fr-table__content">
-              <table :aria-labelledby="'title-' + databoxId">
+              <table
+                :aria-labelledby="databoxId ? 'title-' + databoxId : null"
+                :aria-label="!databoxId ? 'Tableau de données' : null"
+              >
                 <thead>
                   <tr>
                     <th
@@ -188,6 +191,9 @@ export default {
     if (this._targetObserver) {
       this._targetObserver.disconnect();
     }
+    if (this._indexObserver) {
+      this._indexObserver.disconnect();
+    }
   },
   methods: {
     resetData() {
@@ -267,7 +273,7 @@ export default {
         childList: false, // Ignores additions or removals of child elements.
       };
       if (target) {
-        const observer = new MutationObserver((mutationList) => {
+        this._indexObserver = new MutationObserver((mutationList) => {
           for (const mutation of mutationList) {
             if (mutation.attributeName === 'data-index') {
               this.selectedIndex = parseInt(mutation.target.getAttribute('data-index'));
@@ -282,8 +288,7 @@ export default {
             }
           }
         });
-
-        observer.observe(target, options);
+        this._indexObserver.observe(target, options);
       }
     },
   },

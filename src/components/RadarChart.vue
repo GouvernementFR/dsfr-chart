@@ -20,7 +20,8 @@
           <canvas
             :ref="chartId"
             role="img"
-            :aria-labelledby="'title-' + databoxId"
+            :aria-labelledby="databoxId ? 'title-' + databoxId : null"
+            :aria-label="!databoxId ? 'Diagramme en étoile' : null"
           />
 
           <div class="chart_legend fr-mb-0 fr-mt-4v">

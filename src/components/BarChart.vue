@@ -43,7 +43,8 @@
           <canvas
             :ref="chartId"
             role="img"
-            :aria-labelledby="'title-' + databoxId"
+            :aria-labelledby="databoxId ? 'title-' + databoxId : null"
+            :aria-label="!databoxId ? 'Graphique en barres' : null"
           />
 
           <div class="chart_legend fr-mb-0 fr-mt-4v">
@@ -264,6 +265,7 @@ export default {
       this.subYParse = [];
       this.nameParse = [];
       this.tmpColorParse = [];
+      this.highlightIndexParse = [];
       this.colorParse = [];
       this.colorHover = [];
     },
@@ -324,10 +326,16 @@ export default {
       return choosePalette(this.selectedPalette);
     },
     loadColors() {
+      try {
+        this.highlightIndexParse = Array.isArray(this.highlightIndex) ? this.highlightIndex : JSON.parse(this.highlightIndex);
+      } catch (error) {
+        console.error('Erreur lors du parsing des données highlight-index:', error);
+        this.highlightIndexParse = [];
+      }
       const { colorParse, colorHover, legendColors } = generateColors({
         yparse: this.yparse,
         tmpColorParse: this.tmpColorParse,
-        highlightIndex: Array.isArray(this.highlightIndex) ? this.highlightIndex : JSON.parse(this.highlightIndex),
+        highlightIndex: this.highlightIndexParse,
         selectedPalette: this.selectedPalette,
       });
 

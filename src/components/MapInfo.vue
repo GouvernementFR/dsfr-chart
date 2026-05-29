@@ -1,6 +1,6 @@
 <template>
   <div class="map_info fr-col-12 fr-col-lg-3">
-    <div v-if="data['valueNat'] || data['valueReg']">
+    <div v-if="data['valueNat'] !== null || data['valueReg'] !== null">
       <p
         class="fr-text--xs fr-text--bold fr-mb-1v"
         :style="{ color: data['textMention'] }"
