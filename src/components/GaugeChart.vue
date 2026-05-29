@@ -17,9 +17,9 @@
             >
               <div
                 class="jauge-fill"
-                :style="{ width: width + '%' }"
+                :style="{ width: width + '%', backgroundColor: colorParse }"
               >
-                <span class="jauge-text fr-text fr-text--sm fr-text-title--blue-france fr-pl-1w">{{ percentage }}%</span>
+                <span class="jauge-text fr-text fr-text--sm fr-text-inverted--grey fr-pl-1w">{{ percentage }}%</span>
               </div>
             </div>
           </div>
@@ -53,7 +53,10 @@
             v-if="[true, 'true', ''].includes(legend)"
             class="flex fr-mt-3v fr-mb-1v"
           >
-            <span class="legend_dot actual_legend" />
+            <span
+              class="legend_dot"
+              :style="{ backgroundColor: colorParse }"
+            />
             <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">Valeur actuelle</p>
           </div>
           <div
@@ -70,6 +73,7 @@
 
 <script>
 import { chartMixins } from '@/utils/global.js';
+import { generateColors } from '@/utils/colors.js';
 
 export default {
   name: 'GaugeChart',
@@ -129,6 +133,8 @@ export default {
       widgetId: '',
       percentage: 0,
       width: '',
+      tmpColorParse: [],
+      colorParse: '',
       targetReady: false,
     };
   },
@@ -171,6 +177,12 @@ export default {
         this._targetObserver.observe(document.body, { childList: true, subtree: true });
       }
     }
+
+    document.documentElement.addEventListener('dsfr.theme', (e) => {
+      if (this.widgetId !== '') {
+        this.changeColors(e.detail.theme);
+      }
+    });
   },
   beforeUnmount() {
     if (this._targetObserver) {
@@ -179,12 +191,27 @@ export default {
   },
   methods: {
     createChart() {
+      // Chargement des couleurs
+      this.loadColors();
+
       if (this.percent === null) {
         this.percentage = Math.round((100 * (Number(this.value) - Number(this.init))) / (this.target - this.init));
       } else {
         this.percentage = Math.round(this.percent);
       }
       this.width = Math.min(100, this.percentage);
+    },
+    loadColors() {
+      const { colorParse } = generateColors({
+        yparse: [null],
+        tmpColorParse: this.tmpColorParse,
+        selectedPalette: 'default',
+      });
+
+      this.colorParse = colorParse;
+    },
+    changeColors(theme) {
+      this.loadColors();
     },
   },
 };
