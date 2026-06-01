@@ -7,6 +7,7 @@ Le dépôt est disponible à cette adresse : https://github.com/GouvernementFR/d
 Afin de pouvoir commencer à développer et contribuer au DSFR-chart, assurez-vous tout d'abord de faire un fork du projet depuis votre compte GitHub (https://help.github.com/articles/fork-a-repo/)
 
 Il suffit ensuite de cloner votre fork, en téléchargeant les sources depuis le bouton “clone” de github, ou via un terminal avec commande :
+
 ```shell
 git clone https://github.com/VOTRE_NOM_UTILISATEUR_GITHUB/dsfr-chart
 ```
@@ -16,18 +17,21 @@ La branche **dev** est la principale branche de travail - la branche **main** co
 ## Git
 
 ### Branches
+
 Afin de travailler sur un nouveau package, ou un correctif d'un package existant, il est nécessaire de créer une nouvelle branche à partir de la branche `dev`.
+
 ```shell
 git checkout -b prefixe/ma-branche dev
 ```
 
 #### Nommage des branches <!-- omit in toc -->
+
 Afin d'organiser et d'identifier rapidement la nature du contenu des branches, il est nécessaire de préfixer les branches :
 feature/nom-de-la-branche pour les nouvelles fonctionnalités ou nouveaux composants.
 fix/nom-de-la-branche pour les correctifs apportés sur des fonctionnalités ou composants existants.
 
-
 ### Commits
+
 Nous utilisons des [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) qui doivent donc s'écrire sous la forme suivante :
 
 ```
@@ -39,11 +43,12 @@ Nous utilisons des [conventional commits](https://www.conventionalcommits.org/en
 ```
 
 Les valeurs possibles pour le `type` de commit sont :
-* **fix**: Un commit de type `fix` permet de patcher un bug ([[PATCH]](https://semver.org/#summary))
-* **feat**: Un commit de type `feat` permet d'introduire une nouvelle fonctionnalité ([[MINOR]](https://semver.org/#summary))
-* D'autres types que `feat` et `fix` peuvent être utilisés, nous utilisons [@commitlint/config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional), qui recommande l'utilisation des principaux types suivants : `build`, `chore`, `ci`, `docs`, `style`, `refactor`, `perf`, `test`
 
-* **BREAKING CHANGE**: Un commit avec un footer `BREAKING CHANGE:` introduit un changement important dans le code ([[MAJOR]](https://semver.org/#summary))
+- **fix**: Un commit de type `fix` permet de patcher un bug ([[PATCH]](https://semver.org/#summary))
+- **feat**: Un commit de type `feat` permet d'introduire une nouvelle fonctionnalité ([[MINOR]](https://semver.org/#summary))
+- D'autres types que `feat` et `fix` peuvent être utilisés, nous utilisons [@commitlint/config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional), qui recommande l'utilisation des principaux types suivants : `build`, `chore`, `ci`, `docs`, `style`, `refactor`, `perf`, `test`
+
+- **BREAKING CHANGE**: Un commit avec un footer `BREAKING CHANGE:` introduit un changement important dans le code ([[MAJOR]](https://semver.org/#summary))
 
 Les messages de commits sont écrits en français (exception faite des mots réservés par conventional commit, ainsi que les termes techniques).
 
@@ -53,7 +58,8 @@ Exemple de commit simple :
 feat: ajout du composant BarChart
 ```
 
-Exemple de commit avec `scope`  le nom du composant ou de la fonction, description et `BREAKING CHANGE` footer
+Exemple de commit avec `scope` le nom du composant ou de la fonction, description et `BREAKING CHANGE` footer
+
 ```
 fix(core): maj fonction: ancien-nom devient nouveau-nom
 
@@ -88,6 +94,7 @@ La pull request doit être faite depuis la branche de votre fork vers la branche
 ### Recette
 
 L'ouverture de chaque nouvelle pull request sur le Github du DSFR-chart génère un environnement de recette sur une URL Netlify de type :
+
 ```
 https://deploy-preview-[NUMERO DE LA PULL REQUEST]--dsfr-chart.netlify.app/
 ```

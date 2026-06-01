@@ -1,16 +1,12 @@
 <template>
   <div class="part_container">
-    <h2 id="Databox">
-      Databox
-    </h2>
+    <h2 id="Databox">Databox</h2>
     <h3>Présentation</h3>
     <p>Le composant <strong>DataBox</strong> est un composant permettant d’afficher dans un cadre normé des données sous différentes formes (graphiques, chiffres clés, tableaux, etc). Il est à utiliser pour composer un tableau de bord, ou toute page nécessitant de structurer la visualisation de données.</p>
     <p>Polyvalente, la databox intègre également des fonctionnalités interactives telles que des sélecteurs de sources, des modales, et des menus déroulants permettant la mise à disposition d’actions supplémentaires.</p>
 
     <div class="fr-my-6w">
-      <h3 id="Databox-simple">
-        Exemple de databox simple
-      </h3>
+      <h3 id="Databox-simple">Databox simple</h3>
       <data-box v-bind="chartData.dataBox.simple" />
       <pie-chart
         v-bind="chartData.pieChart.doughnut"
@@ -22,23 +18,17 @@
         databox-type="table"
         :x="tableParse(chartData.pieChart.doughnut.x)"
         :y="chartData.pieChart.doughnut.y"
-        name="[&quot;Pourcentage&quot;]"
+        name='["Pourcentage"]'
         table-name="Catégories"
       />
       <CodeBlock
-        :component="[{name: 'data-box'}, {name: 'pie-chart'}, {name: 'table-chart'}]"
-        :attributes="[
-          chartData.dataBox.simple,
-          {dataBoxId: 'simple', dataBoxType: 'chart', ...chartData.pieChart.doughnut},
-          {dataBoxId: 'simple', dataBoxType: 'table', x: tableParse(chartData.pieChart.doughnut.x), y: chartData.pieChart.doughnut.y, name: '[&quot;Pourcentage&quot;]', tableName: 'Catégories'},
-        ]"
+        :component="[{ name: 'data-box' }, { name: 'pie-chart' }, { name: 'table-chart' }]"
+        :attributes="[chartData.dataBox.simple, { dataBoxId: 'simple', dataBoxType: 'chart', ...chartData.pieChart.doughnut }, { dataBoxId: 'simple', dataBoxType: 'table', x: tableParse(chartData.pieChart.doughnut.x), y: chartData.pieChart.doughnut.y, name: '[&quot;Pourcentage&quot;]', tableName: 'Catégories' }]"
       />
     </div>
 
     <div class="fr-my-6w">
-      <h3 id="Databox-complète-multi-source">
-        Exemple de databox complète et multi-source
-      </h3>
+      <h3 id="Databox-complète-multi-source">Databox complète et multi-source</h3>
       <data-box v-bind="chartData.dataBox.complete" />
       <scatter-chart
         v-bind="chartData.scatterChart.linked"
@@ -79,15 +69,34 @@
         table-name="Années"
       />
       <CodeBlock
-        :component="[{name: 'data-box'}, {name: 'scatter-chart'}, {name: 'scatter-chart'}, {name: 'scatter-chart'}, {name: 'table-chart'}, {name: 'table-chart'}]"
-        :attributes="[
-          chartData.dataBox.complete,
-          {dataBoxId: 'complete', dataBoxType: 'chart', dataBoxSource: 'insee', ...chartData.scatterChart.linked, y: defaultScatterData },
-          {dataBoxId: 'complete', dataBoxType: 'chart', dataBoxSource: 'pole-emploi', ...chartData.scatterChart.linked, y: sortedScatterData },
-          {dataBoxId: 'complete', dataBoxType: 'chart', dataBoxSource: 'autre', ...chartData.scatterChart.linked, y: reversedScatterData },
-          {dataBoxId: 'complete', dataBoxType: 'table', x: tableParse(chartData.scatterChart.linked.x), y: defaultScatterData, name: chartData.scatterChart.linked.name, tableName: 'Années INSEE'},
-          {dataBoxId: 'complete', dataBoxType: 'table', x: tableParse(chartData.scatterChart.linked.x), y: reversedScatterData, name: chartData.scatterChart.linked.name, tableName: 'Années'},
-        ]"
+        :component="[{ name: 'data-box' }, { name: 'scatter-chart' }, { name: 'scatter-chart' }, { name: 'scatter-chart' }, { name: 'table-chart' }, { name: 'table-chart' }]"
+        :attributes="[chartData.dataBox.complete, { dataBoxId: 'complete', dataBoxType: 'chart', dataBoxSource: 'insee', ...chartData.scatterChart.linked, y: defaultScatterData }, { dataBoxId: 'complete', dataBoxType: 'chart', dataBoxSource: 'pole-emploi', ...chartData.scatterChart.linked, y: sortedScatterData }, { dataBoxId: 'complete', dataBoxType: 'chart', dataBoxSource: 'autre', ...chartData.scatterChart.linked, y: reversedScatterData }, { dataBoxId: 'complete', dataBoxType: 'table', dataBoxSource: 'insee', x: tableParse(chartData.scatterChart.linked.x), y: defaultScatterData, name: chartData.scatterChart.linked.name, tableName: 'Années INSEE' }, { dataBoxId: 'complete', dataBoxType: 'table', dataBoxSource: 'global', x: tableParse(chartData.scatterChart.linked.x), y: reversedScatterData, name: chartData.scatterChart.linked.name, tableName: 'Années' }]"
+      />
+    </div>
+
+    <div class="chart_container fr-my-6w">
+      <h3 id="Databox-chiffre-clé">Databox chiffre clé</h3>
+      <hr />
+      <data-box v-bind="chartData.dataBox.number" />
+      <CodeBlock
+        :component="[{ name: 'data-box' }]"
+        :attributes="[chartData.dataBox.number]"
+      />
+    </div>
+
+    <div class="chart_container fr-my-6w">
+      <h3 id="Databox-tableau">Databox tableau</h3>
+      <hr />
+      <data-box v-bind="chartData.dataBox.table" />
+      <table-chart
+        databox-id="table"
+        databox-type="table"
+        :name="chartData.tableChart.databox.name"
+        :line="chartData.tableChart.databox.line"
+      />
+      <CodeBlock
+        :component="[{ name: 'data-box' }, { name: 'table-chart' }]"
+        :attributes="[chartData.dataBox.table, { dataBoxId: 'table', dataBoxType: 'table', name: chartData.tableChart.databox.name, line: chartData.tableChart.databox.line }]"
       />
     </div>
 
@@ -121,7 +130,7 @@
             databox-type="table"
             :x="tableParse(chartData.pieChart.doughnut.x)"
             :y="chartData.pieChart.doughnut.y"
-            name="[&quot;Pourcentage&quot;]"
+            name='["Pourcentage"]'
             table-name="Catégories"
           />
         </div>
@@ -140,7 +149,7 @@
             databox-type="table"
             :x="tableParse(chartData.pieChart.pie.x)"
             :y="chartData.pieChart.pie.y"
-            name="[&quot;Pourcentage&quot;]"
+            name='["Pourcentage"]'
             table-name="Catégories"
           />
         </div>

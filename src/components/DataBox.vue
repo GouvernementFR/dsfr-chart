@@ -4,18 +4,23 @@
     class="fr-card fr-card--shadow databox"
   >
     <!-- Header -->
-    <div class="fr-p-2w databox__header">
-      <h3 class="fr-h6 fr-mb-0">
-        {{ title }}
-      </h3>
+    <div class="fr-p-2w databox_header">
+      <component
+        :is="headingLevel"
+        :id="'title-' + id"
+        class="fr-h6 fr-mb-0"
+      >
+        {{ name }}
+      </component>
 
       <div :class="'flex screenshot-hide-' + id">
         <!-- Tooltip -->
         <button
+          v-if="tooltipTitle || tooltipContent"
           class="fr-btn--tooltip fr-btn"
           type="button"
           :aria-describedby="'tooltip-' + id"
-          title="Informations complémentaires sur le graphique"
+          :title="'Informations complémentaires sur le graphique ' + tooltipTitle"
         >
           Informations complémentaires sur le graphique
         </button>
@@ -42,31 +47,32 @@
         </div>
 
         <!-- Modal -->
-        <button
-          v-if="fullscreen"
-          type="button"
-          class="fr-btn fr-btn--sm fr-icon-fullscreen-line fr-btn--tertiary-no-outline fr-ratio-1x1"
-          data-fr-opened="false"
-          :aria-controls="'modal-' + id"
-          title="Afficher la modale"
-        />
-
-        <Teleport to="body">
-          <dialog-modal
-            :id="id"
-            :modal-title="modalTitle"
-            :modal-content="modalContent"
+        <div v-if="fullscreen && modalTitle">
+          <button
+            type="button"
+            class="fr-btn fr-btn--sm fr-icon-fullscreen-line fr-btn--tertiary-no-outline fr-ratio-1x1"
+            data-fr-opened="false"
+            :aria-controls="'modal-' + id"
+            :title="'Afficher la modale ' + modalTitle"
           />
-        </Teleport>
+
+          <Teleport to="body">
+            <DialogModal
+              :id="id"
+              :modal-title="modalTitle"
+              :modal-content="modalContent"
+            />
+          </Teleport>
+        </div>
 
         <!-- More actions -->
-        <nav
-          v-if="screenshot || download || actions.length"
-          role="navigation"
+        <div
+          v-if="screenshot || download || actions.length > 0"
           class="fr-translate fr-nav more-actions-menu"
         >
           <div class="fr-nav__item fr-nav__item--align-right">
             <button
+              type="button"
               class="fr-btn fr-btn--sm fr-icon-more-line fr-btn--tertiary-no-outline fr-ratio-1x1"
               :aria-controls="'translate-' + id"
               aria-expanded="false"
@@ -79,6 +85,7 @@
               <ul class="fr-menu__list">
                 <li v-if="screenshot">
                   <button
+                    type="button"
                     class="fr-translate__language fr-nav__link"
                     title="Prendre une capture d'écran"
                     @click="screenshotChart()"
@@ -88,9 +95,10 @@
                 </li>
                 <li v-if="download">
                   <button
+                    type="button"
                     class="fr-translate__language fr-nav__link"
                     title="Télécharger les données en CSV"
-                    @click="downloadCSV(selectedView)"
+                    @click="downloadCSV()"
                   >
                     Télécharger en CSV
                   </button>
@@ -100,7 +108,9 @@
                   :key="i"
                 >
                   <button
-                    :id="slugify(action)"
+                    :id="id + '_' + slugify(action)"
+                    :data-action="slugify(action)"
+                    :data-id="id"
                     class="fr-translate__language fr-nav__link"
                     :title="action"
                   >
@@ -110,15 +120,25 @@
               </ul>
             </div>
           </div>
-        </nav>
+        </div>
       </div>
     </div>
 
-    <div class="fr-px-2w databox__data">
+    <!-- eslint-disable vue/no-v-html vue/no-v-text-v-html-on-component -->
+    <component
+      :is="/<\w+>/.test(description) ? 'span' : 'p'"
+      v-if="description"
+      :class="/<\w+>/.test(description) ? '' : 'fr-text--xs fr-mb-0'"
+      class="fr-px-2w"
+      v-html="description"
+    />
+    <!-- eslint-enable vue/no-v-html vue/no-v-text-v-html-on-component -->
+
+    <div class="fr-px-2w databox_data">
       <!-- Source -->
       <div
         v-if="chartSources.length > 1"
-        class="databox__source"
+        class="databox_source"
       >
         <div class="fr-select-group">
           <label
@@ -148,7 +168,7 @@
       <!-- Tendency -->
       <div
         v-if="trend"
-        class="databox__tendency"
+        class="databox_tendency"
       >
         <p
           v-if="trend.includes('-')"
@@ -162,8 +182,28 @@
             <span
               :class="'fr-pr-1v screenshot-hide-' + id"
               aria-hidden="true"
-            >↘ </span>
+            >
+              ↘
+            </span>
             {{ trend.replace('-', '').trim() }}
+          </span>
+        </p>
+        <p
+          v-else-if="trend === '0'"
+          class="fr-text--xs fr-m-0"
+        >
+          Stable
+          <span
+            class="fr-badge fr-badge--info fr-badge--no-icon fr-badge--sm fr-ml-1v"
+            aria-label="Valeur stable"
+          >
+            <span
+              :class="'fr-pr-1v screenshot-hide-' + id"
+              aria-hidden="true"
+            >
+              ↔
+            </span>
+            {{ trend.trim() }}
           </span>
         </p>
         <p
@@ -178,60 +218,47 @@
             <span
               :class="'fr-pr-1v screenshot-hide-' + id"
               aria-hidden="true"
-            >↗ </span>
+            >
+              ↗
+            </span>
             {{ trend.trim() }}
           </span>
         </p>
       </div>
     </div>
 
-    <!-- Content -->
-    <div class="fr-p-2w databox__content">
-      <div
-        :class="selectedView === 'table' ? 'fr-hidden' : 'w-full'"
-        :aria-hidden="selectedView === 'chart'"
-      >
-        <!-- Bulk create all charts source divs for teleport -->
-        <div
-          v-for="(chartSource, i) in chartSources"
-          :id="id + '-chart-' + chartSource"
-          :key="i"
-          :class="currentSource !== chartSource ? 'fr-hidden' : ''"
-        />
-      </div>
-      <div
-        :class="selectedView === 'chart' ? 'fr-hidden' : 'w-full'"
-        :aria-hidden="selectedView === 'table'"
-      >
-        <!-- Bulk create all table source divs for teleport -->
-        <div
-          v-for="(tableSource, i) in tableSources.filter((s) => s !== 'global')"
-          :id="id + '-table-' + tableSource"
-          :key="i"
-          :class="currentSource !== tableSource ? 'fr-hidden' : ''"
-        />
-        <!-- Also create a global chart in case only one table is provided -->
-        <div
-          v-if="tableSources.includes('global')"
-          :id="id + '-table-global'"
-          :class="tableSources.includes(currentSource) ? 'fr-hidden' : ''"
-        />
-      </div>
-    </div>
-
     <!-- Footer -->
-    <div class="fr-p-2w databox__footer">
-      <p class="fr-text--xs fr-mb-0">
-        {{ source }}, {{ date }}
-      </p>
+    <div class="fr-p-2w databox_footer">
+      <div>
+        <p class="fr-text--xs fr-mb-0">{{ source }}, {{ date }}</p>
+
+        <p
+          v-if="textIa"
+          class="fr-text--xs fr-mb-0"
+        >
+          <span
+            class="fr-icon-sparkling-2-line fr-icon--sm"
+            aria-disabled="true"
+          />
+          <a
+            v-if="linkIa"
+            :href="linkIa"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ textIa }}
+          </a>
+          <span v-else>
+            {{ textIa }}
+          </span>
+        </p>
+      </div>
 
       <fieldset
         v-if="segmentedControl && chartSources.length > 0"
         :class="'fr-segmented fr-segmented--no-legend fr-segmented--sm screenshot-hide-' + id"
       >
-        <legend class="fr-segmented__legend">
-          Choisir votre vue
-        </legend>
+        <legend class="fr-segmented__legend">Choisir votre vue</legend>
         <div class="fr-segmented__elements">
           <div class="fr-segmented__element">
             <input
@@ -240,8 +267,8 @@
               type="radio"
               checked
               :name="'segmented-' + id"
-              @change="changeView('chart')"
-            >
+              @change="selectedView = 'chart'"
+            />
             <label
               class="fr-label"
               :for="'segmented-chart-' + id"
@@ -259,8 +286,8 @@
               value="2"
               type="radio"
               :name="'segmented-' + id"
-              @change="changeView('table')"
-            >
+              @change="selectedView = 'table'"
+            />
             <label
               class="fr-label"
               :for="'segmented-table-' + id"
@@ -275,12 +302,57 @@
         </div>
       </fieldset>
     </div>
+
+    <!-- Content -->
+    <div class="fr-p-2w databox_content">
+      <p class="fr-mb-0 text-center">
+        <strong
+          v-if="value"
+          class="fr-display--xs fr-mb-0 databox_value"
+        >
+          {{ value }}
+        </strong>
+      </p>
+
+      <div
+        v-if="!value"
+        :class="selectedView === 'table' ? 'fr-hidden' : 'w-full'"
+        :aria-hidden="selectedView === 'table'"
+      >
+        <!-- Bulk create all charts source divs for teleport -->
+        <div
+          v-for="(chartSource, i) in chartSources"
+          :id="id + '-chart-' + chartSource"
+          :key="i"
+          :class="currentSource !== chartSource ? 'fr-hidden' : ''"
+        />
+      </div>
+      <div
+        v-if="!value"
+        :class="selectedView === 'chart' ? 'fr-hidden' : 'w-full'"
+        :aria-hidden="selectedView === 'chart'"
+      >
+        <!-- Bulk create all table source divs for teleport -->
+        <div
+          v-for="(tableSource, i) in tableSources.filter((s) => s !== 'global')"
+          :id="id + '-table-' + tableSource"
+          :key="i"
+          :class="currentSource !== tableSource ? 'fr-hidden' : ''"
+        />
+        <!-- Also create a global chart in case only one table is provided -->
+        <div
+          v-if="tableSources.includes('global')"
+          :id="id + '-table-global'"
+          :class="tableSources.includes(currentSource) && tableSources.length > 1 ? 'fr-hidden' : ''"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import { toPng } from 'html-to-image';
+import { computed, nextTick, onMounted, ref } from 'vue';
+import { toPng } from '@jpinsonneau/html-to-image';
 import { slugify } from '@/utils/global.js';
 import DialogModal from '@/components/DialogModal.vue';
 
@@ -289,9 +361,18 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  title: {
+  name: {
     type: String,
     required: true,
+  },
+  headingLevel: {
+    type: String,
+    default: 'h3',
+    validator: (value) => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(value),
+  },
+  description: {
+    type: String,
+    default: '',
   },
   tooltipTitle: {
     type: String,
@@ -309,6 +390,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  value: {
+    type: [Number, String],
+    default: '',
+  },
   source: {
     type: String,
     required: true,
@@ -317,12 +402,21 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  linkIa: {
+    type: String,
+    default: '',
+    validator: (value) => value === '' || /^https?:\/\//.test(value),
+  },
+  textIa: {
+    type: String,
+    default: '',
+  },
   defaultSource: {
     type: String,
     default: null,
   },
   trend: {
-    type: String,
+    type: [Number, String],
     default: null,
   },
   segmentedControl: {
@@ -349,55 +443,103 @@ const props = defineProps({
 
 const chartSources = ref([]);
 const tableSources = ref([]);
+const currentSource = ref(null);
+const selectedView = ref('chart');
 
-chartSources.value = [...document.querySelectorAll(`[databox-id="${props.id}"][databox-type="chart"]`)].map((el) => el.getAttribute('databox-source') || 'default');
+onMounted(async () => {
+  await nextTick();
+  chartSources.value = [...document.querySelectorAll(`[databox-id="${props.id}"][databox-type="chart"]`)].map((el) => el.getAttribute('databox-source') || 'default');
 
-tableSources.value = [...document.querySelectorAll(`[databox-id="${props.id}"][databox-type="table"]`)].map((el) => el.getAttribute('databox-source') || 'global');
+  tableSources.value = [...document.querySelectorAll(`[databox-id="${props.id}"][databox-type="table"]`)].map((el) => el.getAttribute('databox-source') || 'global');
 
-const currentSource = ref(chartSources.value.includes(props.defaultSource) ? props.defaultSource : chartSources.value[0]);
+  currentSource.value = chartSources.value.includes(props.defaultSource) ? props.defaultSource : chartSources.value[0] || tableSources.value[0];
 
-const generateOptions = (source) => {
-  return source.map((option) => ({
+  selectedView.value = chartSources.value.length > 0 ? 'chart' : 'table';
+});
+
+const generateOptions = (source) =>
+  source.map((option) => ({
     label: option.charAt(0).toUpperCase() + option.slice(1).replace(/-/g, ' '),
     value: option,
   }));
-};
 
-// Cast props to boolean
+// Cast props to correct type
+const value = computed(() => (typeof props.value === 'number' ? props.value.toString() : props.value));
+const trend = computed(() => (typeof props.trend === 'number' ? props.trend.toString() : props.trend));
 const segmentedControl = computed(() => [true, 'true', ''].includes(props.segmentedControl));
 const fullscreen = computed(() => [true, 'true', ''].includes(props.fullscreen));
 const screenshot = computed(() => [true, 'true', ''].includes(props.screenshot));
 const download = computed(() => [true, 'true', ''].includes(props.download));
 const actions = computed(() => (typeof props.actions === 'string' ? JSON.parse(props.actions) : props.actions));
 
-const selectedView = ref(chartSources.value.length > 0 ? 'chart' : 'table');
+const downloadCSV = () => {
+  let type;
+  let dom;
+  const csv = [];
 
-const changeView = (view) => {
-  selectedView.value = view;
-};
+  // By default, always download the table version of the data
+  if (document.querySelector(`[databox-id="${props.id}"][databox-type="table"]`)) {
+    type = 'table';
+    // Check if source exists to have exact data selected, this is fine if databox source is correctly set or 'default'
+    dom = document.querySelector(`[databox-id="${props.id}"][databox-type="table"][databox-source="${currentSource.value}"]`);
+    if (!dom) {
+      // If not found, try to find the first one
+      dom = document.querySelector(`[databox-id="${props.id}"][databox-type="table"]`);
+    }
+  } else {
+    type = 'chart';
+    // Check if source exists to have exact data selected, this is fine if databox source is correctly set or 'default'
+    dom = document.querySelector(`[databox-id="${props.id}"][databox-type="chart"][databox-source="${currentSource.value}"]`);
+    if (!dom) {
+      // If not found, try to find the first one
+      dom = document.querySelector(`[databox-id="${props.id}"][databox-type="chart"]`);
+    }
+  }
+  if (type === 'chart' && chartSources.value.length > 0) {
+    const x = JSON.parse(dom.getAttribute('x'));
+    const y = JSON.parse(dom.getAttribute('y'));
+    const name = JSON.parse(dom.getAttribute('name'));
 
-const downloadCSV = (mode) => {
-  const dom = document.querySelector(`[databox-id="${props.id}"][databox-type="${mode}"][databox-source="${currentSource.value}"]`);
-  const x = JSON.parse(dom.getAttribute('x'));
-  const y = JSON.parse(dom.getAttribute('y'));
-  const name = JSON.parse(dom.getAttribute('name'));
-  const tableName = dom.getAttribute('table-name') ?? '';
+    csv.push(`Indicateur,${name.join(',')}\n`);
 
-  let csv = [];
+    x[0].forEach((x, i) => {
+      csv.push(`${x},${y.map((y) => y[i]).join(',')}\n`);
+    });
+  } else if (type === 'table' && tableSources.value.length > 0) {
+    // Try x and y attributes for tables first, else fallback to name and line attribute
+    if (dom.getAttribute('x') && dom.getAttribute('y')) {
+      const x = JSON.parse(dom.getAttribute('x'));
+      const y = JSON.parse(dom.getAttribute('y'));
+      const name = JSON.parse(dom.getAttribute('name'));
+      const tableName = dom.getAttribute('table-name') ?? '';
 
-  csv.push(tableName + ',' + name.join(',') + '\n');
+      csv.push(`${tableName},${name.join(',')}\n`);
 
-  const rows = mode === 'chart' ? x[0] : x;
+      x.forEach((x, i) => {
+        csv.push(`${x},${y.map((y) => y[i]).join(',')}\n`);
+      });
+    } else if (dom.getAttribute('line')) {
+      const name = JSON.parse(dom.getAttribute('name'));
+      const line = JSON.parse(dom.getAttribute('line'));
 
-  rows.forEach((x, i) => {
-    csv.push(`${x},${y.map((y) => y[i]).join(',')}\n`);
-  });
+      csv.push(`${name.join(',')}\n`);
 
+      line.forEach((row) => {
+        csv.push(`${row.join(',')}\n`);
+      });
+    }
+  } else {
+    console.warn('No data available to download.');
+    return;
+  }
+
+  const filename = props.name.replace(/[/|\\:*?"<>]/g, ' ').trim();
   const blob = new Blob(csv, { type: 'text/csv' });
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'data.csv';
+  a.download = (filename ?? `data-${props.id}-${currentSource.value}`) + '.csv';
+  a.style.display = 'none';
   a.click();
   window.URL.revokeObjectURL(url);
 };
@@ -405,12 +547,12 @@ const downloadCSV = (mode) => {
 const screenshotChart = () => {
   const databox = document.getElementById(`container-${props.id}`);
 
-  const dom = databox.querySelectorAll('.screenshot-hide-' + props.id);
+  const dom = databox.querySelectorAll(`.screenshot-hide-${props.id}`);
   dom.forEach((item) => (item.style.display = 'none'));
 
-  const data = databox.querySelector('.databox__data');
+  const data = databox.querySelector('.databox_data');
   const select = databox.querySelector(`#select-${props.id}`);
-  const tendency = databox.querySelector('.databox__tendency');
+  const tendency = databox.querySelector('.databox_tendency');
 
   // Do not remove above lines. Needed for image custom CSS
   data.style.display = 'block';
@@ -418,18 +560,22 @@ const screenshotChart = () => {
     select.style.boxShadow = 'none';
     select.style.appearance = 'none';
   }
-  tendency.style.marginTop = '20px';
+  if (tendency) {
+    tendency.style.marginTop = '20px';
+  }
 
   // Transform databox to canvas to screenshot it
   toPng(databox)
     .then((dataUrl) => {
+      const filename = props.name.replace(/[/|\\:*?"<>]/g, ' ').trim();
       const a = document.createElement('a');
       a.href = dataUrl;
-      a.download = 'chart.png';
+      a.download = (filename ?? `chart-${props.id}-${currentSource.value}`) + '.png';
+      a.style.display = 'none';
       a.click();
     })
     .catch((error) => {
-      console.error('Error while taking screenshot', error);
+      console.error("Erreur lors de la capture d'écran", error);
     })
     .finally(() => {
       dom.forEach((item) => item.style.removeProperty('display'));
@@ -440,11 +586,13 @@ const screenshotChart = () => {
         select.style.removeProperty('box-shadow');
         select.style.removeProperty('appearance');
       }
-      tendency.style.removeProperty('margin-top');
+      if (tendency) {
+        tendency.style.removeProperty('margin-top');
+      }
     });
 };
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/DataBox.scss';
+@use '@/styles/DataBox.scss';
 </style>

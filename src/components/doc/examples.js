@@ -49,11 +49,13 @@ export const chartExamples = [
   // Cartes
   {
     title: 'Cartes',
-    desc: 'Les cartes permettent d’afficher une série de données réparties par département ou région. Les cartes sont actuellement disponibles aux niveaux départemental et régional, et il est également possible d’isoler une région pour en afficher les départements.',
+    desc: 'Les cartes permettent d’afficher une série de données réparties géographiquement. Les cartes sont actuellement disponibles aux niveaux départemental, régional, académique et mondial. Il est également possible d’isoler une région pour en afficher les départements.',
     graphs: [
-      { component: MapChart, noPalette: true, heading: 'Découpage départemental', props: chartData.mapChart.departments },
-      { component: MapChart, noPalette: true, heading: 'Découpage régional', props: chartData.mapChart.regions },
-      { component: MapChartReg, noPalette: true, heading: 'Région', props: chartData.mapChartReg.region },
+      { component: MapChart, noPalette: true, heading: 'Niveau départemental', props: chartData.mapChart.departments },
+      { component: MapChart, noPalette: true, heading: 'Niveau régional', props: chartData.mapChart.regions },
+      { component: MapChart, noPalette: true, heading: 'Niveau académique', props: chartData.mapChart.academies },
+      { component: MapChartReg, noPalette: true, heading: 'Niveau départemental isolé par la région', props: chartData.mapChartReg.region },
+      { component: MapChart, noPalette: true, heading: 'Niveau mondial', props: chartData.mapChart.world },
     ],
   },
   // Nuage de points
@@ -62,7 +64,7 @@ export const chartExamples = [
     desc: 'Le nuage de points est largement utilisée pour présenter plusieurs séries de données. C’est une représentation graphique qui est particulièrement utile lorsque les valeurs des données sur l’axe Y dépendent des valeurs d’un autre axe X.',
     graphs: [
       { component: ScatterChart, heading: 'Nuage de points simple', title: 'Évolution du taux moyen d’émissions de CO₂ en France', desc: 'Véhicules particuliers neufs vendus en France. Ademe, 04/11/2024', props: chartData.scatterChart.default },
-      { component: ScatterChart, heading: 'Nuage de points reliés', title: 'Carrières complètes selon le sexe et la génération en 2016', desc: 'Retraités ayant perçu un droit direct au cours de l’année, résidant en France, vivants au 31 décembre 2016 ; tous régimes confondus. Insee, 09/09/2011', props: chartData.scatterChart.linked },
+      { component: ScatterChart, heading: 'Nuage de points reliés', title: 'Carrières complètes selon le sexe et la génération en 2020', desc: 'Retraités ayant perçu un droit direct au cours de l’année, résidant en France, vivants au 31 décembre 2020 ; tous régimes confondus. Insee, 09/12/2024', props: chartData.scatterChart.linked },
     ],
   },
   // Diagramme en étoile
@@ -76,5 +78,14 @@ export const chartExamples = [
     title: 'Jauge',
     desc: 'La jauge permet d’afficher des valeurs numériques ou des mesures dans une plage, pour visualiser l’avancement d’un objectif par exemple.',
     graphs: [{ component: GaugeChart, noPalette: true, props: chartData.gaugeChart.default }],
+  },
+  // Drilldown
+  {
+    title: 'Drilldown',
+    desc: 'Le drilldown permet d’explorer les données en profondeur en cliquant sur un élément du graphique pour afficher des informations plus détaillées. Il existe sur les types de graphiques suivants : diagramme en barres et diagramme circulaire.',
+    graphs: [
+      { component: BarChart, heading: 'Diagramme en barres avec drilldown', title: 'Répartition des visites par systèmes d’exploitation sur les sites gouvernementaux', desc: 'Pour l’année 2025. Monde entier. Audience, Eulerian, 01/01/2026', props: chartData.barChart.drilldown },
+      { component: PieChart, heading: 'Diagramme circulaire avec drilldown', title: 'Répartition des visites par fournisseur et par type d’appareil sur le site info.gouv.fr', desc: 'Pour l’année 2025. Monde entier. Eulerian, 01/01/2026', props: chartData.pieChart.drilldown },
+    ],
   },
 ];

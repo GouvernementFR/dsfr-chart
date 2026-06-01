@@ -1,15 +1,26 @@
-<script>
-import { svgMixins } from '@/utils/global.js';
-
-export default {
-  mixins: [svgMixins],
-  props: {
-    config: {
-      type: Object,
-      required: true,
-    },
+<script setup>
+defineProps({
+  config: {
+    type: Object,
+    required: true,
   },
-};
+  onClick: {
+    type: Function,
+    required: true,
+  },
+  onDblClick: {
+    type: Function,
+    required: true,
+  },
+  onEnter: {
+    type: Function,
+    required: true,
+  },
+  onLeave: {
+    type: Function,
+    required: true,
+  },
+});
 </script>
 
 <template>
@@ -23,12 +34,12 @@ export default {
       stroke-width="0.2%"
     >
       <path
-        class="FR-971"
+        class="FR-971 GUADELOUPE"
         d="m22.8 0-.2.2-2 1.2-.7.5-.3.4-1 1.3-.7 1v.6l.4.7.4 2.5.5.1.6.3.4.3.3.3V11l-.2.3-1.3.3-.6.7-1.1 3.8-.3 1v1l.3.8.7.9.9.7 1.1.7 1.4.5 1.4.3 1.2-.2 2.3-1 12-2.8 1 .3.6.2 2 .5h.5l.7-.6-.3-.4-1.3-.4-3.7-2.6-.7-.3-.4-.3-1.5-1.3-.7-.4-.8-.1h-1.3l-.7-.4-.5.5-1-.5-.8-.6-.7-.8-.7-1-.5-1.1-.1-.7.1-1.9-.3-1.8-.8-1.5-1.2-1.2L23 .1zm-6 16.2-.5-.5-.8.2-.7.5-.3.8-.7-.8-.3-.2-.2.2H13l-.5-.2 1-.5-1.2-1.4L10 13l-2.5-1-1.7-.3-.6-.3-.5-.6-.6-.4-1.3.3-1 .9-1.1 2-.7.6.3.9-.3 2.2v1.2l.4.8.5.8.4.8-.4 1 1 2.6v5.6l1 2.5.5.4.3.7.2.8.5.8.8.7.7.5.6.5.5 1-.5.5.4 1 .1.4 3.5-1.5 3.1-1.9 2.2-2.6.5-3.7-.4-3.9L15 24l-.1-3.3.4-.7 1.2-.3.5-.1-.5-1.4.4-1.6zm-2.4-4.6.6-.2-.2-.2-.3-.1h-.3l-.3.5.2.3zm40.6.2-1.7-.5-1.7.7-2.7 2.3-.9.5 1.6.2 2-.9zm-8 11.8v.2l.2-.2zm-.7.7h.5l.2-.4h-1.4l.5.4zm-5.2 17-.3-1-.5-.6-.5-.4-.8-2-1.3-1.2-1.7-.3-1.5.8-1.2 1.4-.5.8-.2 1-.6 1-.3.4.2.3.3.2.2.4.2.6v.5l1 1.8 2 .4 2.3-.6 1.7-.9.8-.6.4-.5.2-.7zM15.7 45v-.2l-.5-.1-.4.2-.3.7-.4.2-.3.3.2.3.7-.2.8-.5.3-.4zm-1.6-.1h-.4l.2.2h.3zm-2.3.6-.7.4-.3 1 .8.4.6-.4.2-.6-.4-.5zm2.6 2.5v-.3l-.3-.2v.2zm-1.5-.3.2.1h.1v-.1z"
-        @click="onclick($event)"
-        @dblclick="ondblclick()"
-        @mouseenter="onenter($event)"
-        @mouseleave="onleave($event)"
+        @click="onClick($event)"
+        @dblclick="onDblClick()"
+        @mouseenter="onEnter($event)"
+        @mouseleave="onLeave($event)"
       />
     </g>
   </svg>

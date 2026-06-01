@@ -17,7 +17,7 @@ export default defineConfig({
   },
   webServer: [
     {
-      command: 'BROWSER=false storybook dev -p 6006',
+      command: 'storybook dev --no-open -p 6006',
       url: 'http://localhost:6006',
       reuseExistingServer: true,
     },
