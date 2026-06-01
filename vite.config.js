@@ -1,17 +1,21 @@
+import { URL, fileURLToPath } from 'node:url';
+
 import vue from '@vitejs/plugin-vue';
-import path from 'path';
 
 /** @type {import('vite').UserConfig} */
 export default {
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   server: {
     watch: {
-      usePolling: true
+      usePolling: true,
     },
+  },
+  define: {
+    'process.env.NODE_ENV': JSON.stringify('production'),
   },
   base: './',
   build: {
@@ -35,7 +39,20 @@ export default {
     vue({
       template: {
         compilerOptions: {
-          isCustomElement: (tag) => ['data-box', 'bar-chart', 'bar-line-chart', 'gauge-chart', 'line-chart', 'map-chart', 'map-chart-reg', 'pie-chart', 'radar-chart', 'scatter-chart', 'table-chart'].includes(tag),
+          isCustomElement: (tag) =>
+            [
+              'data-box',
+              'bar-chart',
+              'bar-line-chart',
+              'gauge-chart',
+              'line-chart',
+              'map-chart',
+              'map-chart-reg',
+              'pie-chart',
+              'radar-chart',
+              'scatter-chart',
+              'table-chart',
+            ].includes(tag),
         },
       },
     }),

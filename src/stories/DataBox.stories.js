@@ -7,8 +7,8 @@ export default {
   argTypes: {
     date: {
       control: 'text',
-    }
-  }
+    },
+  },
 };
 
 const scatterData = JSON.parse(chartData.scatterChart.linked.y);
@@ -24,7 +24,7 @@ export const Simple = {
   render: (args) => html`
     <data-box
       id="${args.id}"
-      title="${args.title}"
+      name="${args.name}"
       tooltip-title="${args.tooltipTitle}"
       tooltip-content="${args.tooltipContent}"
       modal-title="${args.modalTitle}"
@@ -52,7 +52,7 @@ export const Simple = {
       table-name="Catégories"
     >
     </table-chart>
-  `
+  `,
 };
 
 export const Complete = {
@@ -60,7 +60,7 @@ export const Complete = {
   render: (args) => html`
     <data-box
       id="${args.id}"
-      title="${args.title}"
+      name="${args.name}"
       tooltip-title="${args.tooltipTitle}"
       tooltip-content="${args.tooltipContent}"
       modal-title="${args.modalTitle}"
@@ -126,5 +126,25 @@ export const Complete = {
       table-name="Années"
     >
     </table-chart>
-  `
+  `,
+};
+
+export const Number = {
+  args: chartData.dataBox.number,
+  render: (args) => html`
+    <data-box
+      id="${args.id}"
+      name="${args.name}"
+      tooltip-title="${args.tooltipTitle}"
+      tooltip-content="${args.tooltipContent}"
+      modal-title="${args.modalTitle}"
+      modal-content="${args.modalContent}"
+      value="${args.value}"
+      source="${args.source}"
+      date="${args.date}"
+      trend="${args.trend}"
+      segmented-control="${args.segmentedControl}"
+    >
+    </data-box>
+  `,
 };

@@ -1,11 +1,14 @@
 <template>
   <Teleport
-    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
+    v-if="!databoxId || targetReady"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
+    :disabled="!databoxId"
   >
     <div
       :ref="widgetId"
       class="widget_container fr-grid-row"
+      :data-index="selectedIndex"
+      :data-sub-chart="isSubChart"
     >
       <div class="fr-col-12">
         <div class="chart">
@@ -16,7 +19,33 @@
             </div>
           </div>
 
-          <canvas :ref="chartId" />
+          <div
+            v-if="isSubChart"
+            :class="isSubLevel ? '' : 'fr-mt-6v'"
+            :style="{ textAlign: 'center', position: 'relative' }"
+          >
+            <button
+              v-if="isSubLevel"
+              class="fr-btn fr-btn--sm fr-icon-arrow-go-back-fill fr-btn--icon-left fr-btn--tertiary-no-outline fr-ml-4w"
+              :style="{ position: 'absolute', left: 0 }"
+              @click="resetSub"
+            >
+              Retour
+            </button>
+            <p
+              v-if="subTitle"
+              class="fr-mb-0"
+            >
+              {{ subTitle }}
+            </p>
+          </div>
+
+          <canvas
+            :ref="chartId"
+            role="img"
+            :aria-labelledby="databoxId ? 'title-' + databoxId : null"
+            :aria-label="!databoxId ? 'Graphique en barres' : null"
+          />
 
           <div class="chart_legend fr-mb-0 fr-mt-4v">
             <div
@@ -25,7 +54,7 @@
               class="flex fr-mt-3v fr-mb-1v"
             >
               <span
-                class="legende_dot"
+                class="legend_dot"
                 :style="{ 'background-color': legendColors[index] }"
               />
               <p class="fr-text--sm fr-text--bold fr-ml-1w fr-mb-0">
@@ -38,9 +67,7 @@
             v-if="date"
             class="flex fr-mt-1w"
           >
-            <p class="fr-text--xs">
-              Mise à jour : {{ date }}
-            </p>
+            <p class="fr-text--xs">Mise à jour : {{ date }}</p>
           </div>
         </div>
       </div>
@@ -78,6 +105,14 @@ export default {
     y: {
       type: String,
       required: true,
+    },
+    subX: {
+      type: String,
+      default: null,
+    },
+    subY: {
+      type: String,
+      default: null,
     },
     xMin: {
       type: [Number, String],
@@ -128,8 +163,8 @@ export default {
       default: '',
     },
     highlightIndex: {
-      type: Array,
-      default: () => [3, 4],
+      type: [Array, String],
+      default: () => [],
     },
     unitTooltip: {
       type: String,
@@ -142,15 +177,22 @@ export default {
     return {
       widgetId: '',
       chartId: '',
+      selectedIndex: -1,
       datasets: [],
       labels: [],
       xparse: [],
       yparse: [],
+      subXParse: [],
+      subYParse: [],
       nameParse: [],
       tmpColorParse: [],
       colorParse: [],
       colorHover: [],
       legendColors: [],
+      isSubChart: false,
+      isSubLevel: false,
+      subTitle: null,
+      targetReady: false,
     };
   },
   watch: {
@@ -166,23 +208,49 @@ export default {
       deep: true,
       immediate: true,
     },
+    targetReady(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.resetData();
+          this.createChart();
+        });
+      }
+    },
   },
   created() {
     configureChartDefaults();
-    this.chartId = 'dsfr-chart-' + Math.floor(Math.random() * 1000);
-    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
+    this.chartId = `dsfr-chart-${Math.floor(Math.random() * 1000)}`;
+    this.widgetId = `dsfr-widget-${Math.floor(Math.random() * 1000)}`;
   },
   mounted() {
-    this.resetData();
-    this.createChart();
+    if (!this.databoxId || !this.databoxType) {
+      this.resetData();
+      this.createChart();
+    } else {
+      const targetId = `${this.databoxId}-${this.databoxType}-${this.databoxSource}`;
+      if (document.getElementById(targetId)) {
+        this.targetReady = true;
+      } else {
+        this._targetObserver = new MutationObserver(() => {
+          if (document.getElementById(targetId)) {
+            this._targetObserver.disconnect();
+            this.targetReady = true;
+          }
+        });
+        this._targetObserver.observe(document.body, { childList: true, subtree: true });
+      }
+    }
 
-    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
-    const element = document.documentElement;
-    element.addEventListener('dsfr.theme', (e) => {
+    document.documentElement.addEventListener('dsfr.theme', (e) => {
       if (this.chartId !== '') {
         this.changeColors(e.detail.theme);
       }
     });
+  },
+  beforeUnmount() {
+    if (this._targetObserver) {
+      this._targetObserver.disconnect();
+    }
   },
   methods: {
     resetData() {
@@ -193,8 +261,11 @@ export default {
       this.labels = [];
       this.xparse = [];
       this.yparse = [];
+      this.subXParse = [];
+      this.subYParse = [];
       this.nameParse = [];
       this.tmpColorParse = [];
+      this.highlightIndexParse = [];
       this.colorParse = [];
       this.colorHover = [];
     },
@@ -203,9 +274,15 @@ export default {
       try {
         this.xparse = JSON.parse(this.x);
         this.yparse = JSON.parse(this.y);
+        this.subXParse = JSON.parse(this.subX);
+        this.subYParse = JSON.parse(this.subY);
       } catch (error) {
         console.error('Erreur lors du parsing des données x ou y:', error);
         return;
+      }
+
+      if (this.subXParse && this.subYParse) {
+        this.isSubChart = true;
       }
 
       let tmpNameParse = [];
@@ -218,11 +295,12 @@ export default {
       }
 
       // Assignation des noms de séries
+      this.nameParse = [];
       for (let i = 0; i < this.yparse.length; i++) {
         if (tmpNameParse[i]) {
           this.nameParse.push(tmpNameParse[i]);
         } else {
-          this.nameParse.push('Série ' + (i + 1));
+          this.nameParse.push(`Série ${i + 1}`);
         }
       }
 
@@ -233,13 +311,12 @@ export default {
       this.loadColors();
 
       // Préparation des datasets
-      this.datasets = this.yparse.map((dataSet, index) => ({
-        label: this.nameParse[index],
-        data: dataSet,
-        backgroundColor: this.colorParse[index],
-        borderColor: this.colorParse[index],
-        hoverBackgroundColor: this.colorHover[index],
-        hoverBorderColor: this.colorHover[index],
+      this.datasets = this.yparse.map((dataset, i) => ({
+        data: dataset,
+        borderColor: this.colorParse[i],
+        backgroundColor: this.colorParse[i],
+        hoverBorderColor: this.colorHover[i],
+        hoverBackgroundColor: this.colorHover[i],
         barThickness: this.barSize,
         ...(this.maxBarSize ? { maxBarThickness: this.maxBarSize } : {}),
       }));
@@ -249,12 +326,17 @@ export default {
       return choosePalette(this.selectedPalette);
     },
     loadColors() {
+      try {
+        this.highlightIndexParse = Array.isArray(this.highlightIndex) ? this.highlightIndex : JSON.parse(this.highlightIndex);
+      } catch (error) {
+        console.error('Erreur lors du parsing des données highlight-index:', error);
+        this.highlightIndexParse = [];
+      }
       const { colorParse, colorHover, legendColors } = generateColors({
         yparse: this.yparse,
         tmpColorParse: this.tmpColorParse,
-        highlightIndex: this.highlightIndex,
+        highlightIndex: this.highlightIndexParse,
         selectedPalette: this.selectedPalette,
-        reverseOrder: this.selectedPalette === 'divergentDescending',
       });
 
       this.colorParse = colorParse;
@@ -262,7 +344,9 @@ export default {
       this.legendColors = legendColors;
     },
     createChart() {
-      if (this.chart) this.chart.destroy();
+      if (this.chart) {
+        this.chart.destroy();
+      }
 
       this.getData();
 
@@ -275,35 +359,34 @@ export default {
           datasets: this.datasets,
         },
         options: {
-          indexAxis: this.horizontal ? 'y' : 'x',
+          indexAxis: [true, 'true', ''].includes(this.horizontal) ? 'y' : 'x',
           aspectRatio: this.aspectRatio,
           scales: {
             x: {
-              offset: !this.horizontal,
-              stacked: this.stacked,
+              offset: ![true, 'true', ''].includes(this.horizontal),
+              stacked: [true, 'true', ''].includes(this.stacked),
               grid: {
                 drawTicks: false,
-                drawOnChartArea: this.horizontal,
+                drawOnChartArea: [true, 'true', ''].includes(this.horizontal),
               },
               ticks: {
-                beginAtZero: true,
-                padding: this.horizontal ? 5 : 15,
+                padding: [true, 'true', ''].includes(this.horizontal) ? 5 : 15,
               },
               ...(this.xMin ? { suggestedMin: this.xMin } : {}),
               ...(this.xMax ? { suggestedMax: this.xMax } : {}),
             },
             y: {
-              stacked: this.stacked,
-              offset: this.horizontal,
+              stacked: [true, 'true', ''].includes(this.stacked),
+              offset: [true, 'true', ''].includes(this.horizontal),
               grid: {
                 drawTicks: false,
-                drawOnChartArea: !this.horizontal,
+                drawOnChartArea: ![true, 'true', ''].includes(this.horizontal),
               },
               border: {
                 dash: [3],
               },
               ticks: {
-                beginAtZero: true,
+                autoSkip: false,
                 padding: 5,
               },
               ...(this.yMin ? { suggestedMin: this.yMin } : {}),
@@ -320,26 +403,21 @@ export default {
               displayColors: false,
               backgroundColor: '#6b6b6b',
               callbacks: {
-                label: (tooltipItems) => {
-                  const value = this.datasets[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
-                  return this.formatNumber(value);
-                },
-                title: (tooltipItems) => {
-                  return tooltipItems[0].label;
-                },
-                labelTextColor: (tooltipItems) => {
-                  return this.colorParse[tooltipItems.datasetIndex][tooltipItems.dataIndex];
-                },
+                label: (tooltipItems) => this.datasets.map((set) => this.formatNumber(set.data[tooltipItems.dataIndex])),
+                title: (tooltipItems) => tooltipItems[0].label,
+                labelTextColor: () => this.colorParse,
               },
               external: (context) => {
                 // Tooltip Element
-                const dom = document.getElementById(this.databoxId + '-' + this.databoxType + '-' + this.databoxSource) || this.$el.nextElementSibling;
+                const dom = document.getElementById(`${this.databoxId}-${this.databoxType}-${this.databoxSource}`) || this.$el.nextElementSibling;
 
                 const tooltipEl = dom.querySelector('.tooltip');
 
                 const tooltipModel = context.tooltip;
 
-                if (!tooltipEl) return;
+                if (!tooltipEl) {
+                  return;
+                }
 
                 // Hide if no tooltip
                 if (!tooltipModel || tooltipModel.opacity === 0) {
@@ -355,33 +433,36 @@ export default {
                   tooltipEl.classList.add('no-transform');
                 }
 
-                // Set Text
+                // Set tooltip content
                 if (tooltipModel.body) {
                   const titleLines = tooltipModel.title || [];
+                  const bodyLines = [tooltipModel.body.map((bodyItem) => bodyItem.lines).flat()];
 
+                  // Set the title in the tooltip header
                   const divDate = tooltipEl.querySelector('.tooltip_header.fr-text--sm.fr-mb-0');
-                  divDate.innerHTML = titleLines[0];
+                  divDate.innerText = titleLines[0];
 
+                  // Clear the existing tooltip content
                   const divValue = tooltipEl.querySelector('.tooltip_value');
                   divValue.innerHTML = '';
 
-                  // Iterate over each data point to set the color and value in the tooltip
-                  tooltipModel.dataPoints.forEach((dataPoint) => {
-                    const datasetIndex = dataPoint.datasetIndex;
-                    const index = dataPoint.dataIndex;
+                  // Iterate over bodyLines to set the color and value in the tooltip
+                  bodyLines[0].forEach((line, i) => {
+                    if (line && line !== 'NaN' && tooltipModel.dataPoints[i]) {
+                      const { datasetIndex, dataIndex } = tooltipModel.dataPoints[i];
 
-                    // Ensure the color is correctly referenced
-                    const color = this.colorParse[datasetIndex] ? this.colorParse[datasetIndex][index] : '#000';
+                      // Ensure the color is correctly referenced
+                      const color = this.colorParse[datasetIndex] ? this.colorParse[datasetIndex][dataIndex] : '#000';
 
-                    const value = this.formatNumber(this.datasets[datasetIndex].data[index]);
-                    const displayValue = `${value}${this.unitTooltip ? ' ' + this.unitTooltip : ''}`;
+                      const displayValue = `${line}${this.unitTooltip ? ` ${this.unitTooltip}` : ''}`;
 
-                    divValue.innerHTML += `
-                    <div class="tooltip_value-content">
-                      <span class="tooltip_dot" style="background-color:${color};"></span>
-                      <p class="tooltip_place fr-mb-0">${displayValue}</p>
-                    </div>
-                  `;
+                      divValue.innerHTML += `
+                        <div class="tooltip_value-content">
+                          <span class="tooltip_dot" style="background-color:${color};"></span>
+                          <p class="tooltip_place fr-mb-0">${displayValue}</p>
+                        </div>
+                      `;
+                    }
                   });
                 }
 
@@ -405,13 +486,41 @@ export default {
                 }
 
                 tooltipEl.style.position = 'absolute';
-                tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+                tooltipEl.style.padding = `${tooltipModel.padding}px ${tooltipModel.padding}px`;
                 tooltipEl.style.pointerEvents = 'none';
-                tooltipEl.style.left = tooltipX + 'px';
-                tooltipEl.style.top = tooltipY + 'px';
+                tooltipEl.style.left = `${tooltipX}px`;
+                tooltipEl.style.top = `${tooltipY}px`;
                 tooltipEl.style.opacity = 1;
               },
             },
+          },
+          onClick: (e) => {
+            if (!this.subYParse) {
+              return;
+            }
+
+            const activePoints = this.chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+
+            if (activePoints.length > 0) {
+              const { index } = activePoints[0];
+              const clickedLabel = this.chart.data.labels[index];
+
+              if (!this.subYParse[index]) {
+                return;
+              }
+
+              if (!this.subTitle) {
+                // Update title for 2nd level
+                this.subTitle = clickedLabel;
+              }
+
+              // Check if the category is the main category
+              if (this.subYParse[index] && !this.isSubLevel) {
+                this.updateChart(index);
+                this.isSubLevel = true;
+                this.selectedIndex = index;
+              }
+            }
           },
         },
       });
@@ -432,10 +541,27 @@ export default {
 
       this.chart.update('none');
     },
+    updateChart(category) {
+      const children = this.subYParse[category];
+
+      // If the category doesn't have any children, let's do nothing
+      if (!children || children.length === 0) {
+        return;
+      }
+
+      this.chart.data.labels = this.subXParse[category];
+      this.chart.data.datasets[0].data = this.subYParse[category];
+      this.chart.update();
+    },
+    resetSub() {
+      this.isSubLevel = false;
+      this.subTitle = null;
+      this.chart.data.labels = this.xparse[0];
+      this.chart.data.datasets[0].data = this.yparse[0];
+      this.chart.update();
+
+      this.selectedIndex = -1;
+    },
   },
 };
 </script>
-
-<style scoped lang="scss">
-
-</style>

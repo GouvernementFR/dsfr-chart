@@ -9,8 +9,8 @@ export const Departemental = {
   argTypes: {
     date: {
       control: 'text',
-    }
-  }
+    },
+  },
 };
 
 export const Regional = {
@@ -18,6 +18,6 @@ export const Regional = {
   argTypes: {
     date: {
       control: 'text',
-    }
-  }
+    },
+  },
 };

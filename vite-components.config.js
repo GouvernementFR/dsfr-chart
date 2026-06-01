@@ -1,5 +1,7 @@
+import { URL, fileURLToPath } from 'node:url';
+import process from 'node:process';
+
 import vue from '@vitejs/plugin-vue';
-import path from 'path';
 
 const library = process.env.LIBRARY || 'DSFRChart';
 
@@ -11,13 +13,13 @@ export default {
   appType: 'custom',
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   publicDir: '',
   build: {
     minify: true,
-    outDir: path.resolve('dist/' + library),
+    outDir: fileURLToPath(new URL(`dist/${library}`, import.meta.url)),
     emptyOutDir: true,
     lib: {
       entry: library === 'DSFRChart' ? 'src/charts/main.js' : `src/charts/${library}.js`,

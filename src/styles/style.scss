@@ -1,5 +1,5 @@
-@import 'Tooltip';
-@import 'Legend';
+@use 'Tooltip';
+@use 'Legend';
 
 .chart canvas {
   max-width: 100%;

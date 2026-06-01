@@ -1,23 +1,14 @@
 import chroma from 'chroma-js';
 import colors from '@/assets/colors.json';
 
-export function generateColors({
-  yparse = [],
-  tmpColorParse = [],
-  highlightIndex = [],
-  selectedPalette = '',
-  reverseOrder = false,
-}) {
+export function generateColors({ yparse = [], tmpColorParse = [], highlightIndex = [], selectedPalette = '' }) {
   const colorParse = [];
   const colorHover = [];
   const palette = choosePalette(selectedPalette);
 
-  // Si nécessaire, inverser l'ordre des données (divergentDescending)
-  const adjustedYparse = reverseOrder ? [...yparse].reverse() : yparse;
-
   // Génération des couleurs pour chaque série de données
-  for (let i = 0; i < adjustedYparse.length; i++) {
-    const dataSet = adjustedYparse[i];
+  for (let i = 0; i < yparse.length; i++) {
+    const dataSet = yparse[i];
     let colors = [];
     let hoverColors = [];
 
@@ -63,7 +54,7 @@ export function generateColors({
   }
 
   // Gestion des couleurs de légende
-  const legendColors = reverseOrder ? colorParse.map((c) => c[0]).reverse() : colorParse.map((c) => c[0]);
+  const legendColors = colorParse.map((c) => c[0]);
 
   return {
     colorParse,
@@ -72,24 +63,18 @@ export function generateColors({
   };
 }
 
-export function generateBarLineChartColors({
-  vlineParse = [],
-  hlineParse = [],
-  tmpVlineColorParse = [],
-  tmpHlineColorParse = [],
-  selectedPalette = '',
-}) {
+export function generateBarLineChartColors({ vlineParse = [], hlineParse = [], tmpVlineColorParse = [], tmpHlineColorParse = [], selectedPalette = '' }) {
   const palette = choosePalette(selectedPalette);
 
-  const colorBarParse = getColorsByIndex(0, palette);
-  const colorBarHover = chroma(colorBarParse).darken(0.8).hex();
+  const colorBarParse = [getColorsByIndex(0, palette)];
+  const colorBarHover = [chroma(colorBarParse[0]).darken(0.8).hex()];
 
-  const colorParse = getColorsByIndex(1, palette);
-  const colorHover = chroma(colorParse).darken(0.8).hex();
+  const colorParse = [getColorsByIndex(1, palette)];
+  const colorHover = [chroma(colorParse[0]).darken(0.8).hex()];
 
-  const vlineColorParse = vlineParse.map((_, i) => (tmpVlineColorParse[i] || getNeutralColor()));
+  const vlineColorParse = vlineParse.map((_, i) => tmpVlineColorParse[i] || getNeutralColor());
 
-  const hlineColorParse = hlineParse.map((_, i) => (tmpHlineColorParse[i] || getNeutralColor()));
+  const hlineColorParse = hlineParse.map((_, i) => tmpHlineColorParse[i] || getNeutralColor());
 
   return {
     colorBarParse,
@@ -101,16 +86,7 @@ export function generateBarLineChartColors({
   };
 }
 
-export function generateScatterChartColors({
-  yparse = [],
-  tmpColorParse = [],
-  selectedPalette = '',
-  highlightIndex = -1,
-  vlineParse = [],
-  tmpVlineColorParse = [],
-  hlineParse = [],
-  tmpHlineColorParse = [],
-}) {
+export function generateScatterChartColors({ yparse = [], tmpColorParse = [], selectedPalette = '', highlightIndex = -1, vlineParse = [], tmpVlineColorParse = [], hlineParse = [], tmpHlineColorParse = [] }) {
   const palette = choosePalette(selectedPalette);
 
   // Génération des couleurs pour les séries
@@ -132,10 +108,10 @@ export function generateScatterChartColors({
   }
 
   // Génération des couleurs pour les lignes verticales
-  const vlineColorParse = vlineParse.map((_, i) => (tmpVlineColorParse[i] || getNeutralColor()));
+  const vlineColorParse = vlineParse.map((_, i) => tmpVlineColorParse[i] || getNeutralColor());
 
   // Génération des couleurs pour les lignes horizontales
-  const hlineColorParse = hlineParse.map((_, i) => (tmpHlineColorParse[i] || getNeutralColor()));
+  const hlineColorParse = hlineParse.map((_, i) => tmpHlineColorParse[i] || getNeutralColor());
 
   return {
     colorParse,
@@ -147,56 +123,33 @@ export function generateScatterChartColors({
 
 function getThemeColors() {
   const currentTheme = document.documentElement.getAttribute('data-fr-theme') || 'light';
-  return colors[currentTheme] || colors['light'];
+  return colors[currentTheme] || colors.light;
 }
 
 export function getCategoricalPalette() {
   const themeColors = getThemeColors();
-  return [
-    themeColors['dsfr-chart-colors-01'],
-    themeColors['dsfr-chart-colors-02'],
-    themeColors['dsfr-chart-colors-03'],
-    themeColors['dsfr-chart-colors-04'],
-    themeColors['dsfr-chart-colors-05'],
-    themeColors['dsfr-chart-colors-06'],
-    themeColors['dsfr-chart-colors-07'],
-    themeColors['dsfr-chart-colors-08'],
-  ];
+  return [themeColors['dsfr-chart-colors-01'], themeColors['dsfr-chart-colors-02'], themeColors['dsfr-chart-colors-03'], themeColors['dsfr-chart-colors-04'], themeColors['dsfr-chart-colors-05'], themeColors['dsfr-chart-colors-06'], themeColors['dsfr-chart-colors-07'], themeColors['dsfr-chart-colors-08']];
 }
 
 // Palettes séquentielles
 export function getSequentialAscending() {
   const themeColors = getThemeColors();
-  return chroma.scale([
-    themeColors['dsfr-chart-colors-09'],
-    themeColors['dsfr-chart-colors-10'],
-  ]).colors(10);
+  return chroma.scale([themeColors['dsfr-chart-colors-09'], themeColors['dsfr-chart-colors-10']]).colors(10);
 }
 
 export function getSequentialDescending() {
   const themeColors = getThemeColors();
-  return chroma.scale([
-    themeColors['dsfr-chart-colors-10'],
-    themeColors['dsfr-chart-colors-09'],
-  ]).colors(10);
+  return chroma.scale([themeColors['dsfr-chart-colors-10'], themeColors['dsfr-chart-colors-09']]).colors(10);
 }
 
 export function getDivergentAscending() {
   const themeColors = getThemeColors();
-  return chroma.scale([
-    themeColors['dsfr-chart-colors-11'],
-    themeColors['dsfr-chart-colors-13'],
-    themeColors['dsfr-chart-colors-15'],
-  ]).colors(4);
+  return chroma.scale([themeColors['dsfr-chart-colors-11'], themeColors['dsfr-chart-colors-13'], themeColors['dsfr-chart-colors-15']]).colors(4);
 }
 
 export function getDivergentDescending() {
   const themeColors = getThemeColors();
-  return chroma.scale([
-    themeColors['dsfr-chart-colors-15'],
-    themeColors['dsfr-chart-colors-13'],
-    themeColors['dsfr-chart-colors-11'],
-  ]).colors(4);
+  return chroma.scale([themeColors['dsfr-chart-colors-15'], themeColors['dsfr-chart-colors-13'], themeColors['dsfr-chart-colors-11']]).colors(4);
 }
 
 export function getColorsByIndex(index, palette = getCategoricalPalette()) {

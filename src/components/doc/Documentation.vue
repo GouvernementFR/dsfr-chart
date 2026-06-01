@@ -1,6 +1,16 @@
 <template>
+  <div class="fr-notice fr-notice--warning">
+    <div class="fr-container fr-grid-row fr-grid-row--center">
+      <div class="fr-notice__body fr-col-12 fr-col-md-10">
+        <p>
+          <span class="fr-notice__title">BREAKING CHANGE (v2.1.0) :</span>
+          <span class="fr-notice__desc">L'attribut <b>title</b> de la Databox a été renommé en <b>name</b> pour des raisons d'accessibilité.</span>
+        </p>
+      </div>
+    </div>
+  </div>
   <div class="fr-container">
-    <section class="fr-grid-row fr-grid-row--center fr-mt-4w fr-mt-md-8w">
+    <section class="fr-grid-row fr-grid-row--center">
       <Intro />
 
       <!-- SIDE MENU -->
@@ -97,9 +107,7 @@
       <div class="fr-col-12 fr-col-md-7">
         <h2 class="fr-h1">Graphiques disponibles</h2>
 
-        <p>
-          Ce catalogue présente l'ensemble des graphiques disponibles dans le module complémentaire au Système de design de l'État (DSFR) pour la visualisation de données. Les options de chacun des graphiques sont également présentés dans ce document.
-        </p>
+        <p>Ce catalogue présente l'ensemble des graphiques disponibles dans le module complémentaire au Système de design de l'État (DSFR) pour la visualisation de données. Les options de chacun des graphiques sont également présentés dans ce document.</p>
 
         <div
           v-for="section in chartExamples"
@@ -126,7 +134,7 @@
               v-if="!graph.noPalette"
               class="fr-badge fr-badge--info fr-mt-1w fr-mb-1w"
             >
-              {{ PALETTE_LABELS?.[graph.props.selectedPalette] ?? 'Palette par défaut' }}
+              {{ PALETTE_LABELS?.[graph.props.selectedPalette] ?? PALETTE_LABELS.categorical }}
             </p>
             <h3
               v-if="graph.title"
@@ -173,13 +181,16 @@ import AccessibilitySection from './AccessibilitySection.vue';
 
 const PALETTE_LABELS = {
   default: 'Palette par défaut',
-  neutral: 'Palette unicolore',
+  neutral: 'Palette neutre',
+  categorical: 'Palette catégorielle',
+  sequentialAscending: 'Palette séquentielle',
   sequentialDescending: 'Palette séquentielle',
+  divergentAscending: 'Palette séquentielle divergente',
   divergentDescending: 'Palette séquentielle divergente',
 };
 
 const currentPage = ref(window.location.hash.slice(1));
 window.addEventListener('hashchange', () => {
   currentPage.value = window.location.hash.slice(1);
-})
+});
 </script>

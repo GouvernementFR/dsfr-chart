@@ -1,9 +1,9 @@
-import '../node_modules/@gouvfr/dsfr/dist/dsfr.module.min.js';
-import '../node_modules/@gouvfr/dsfr/dist/dsfr.main.min.css';
-import '../node_modules/@gouvfr/dsfr/dist/utility/utility.main.min.css';
+import '@gouvfr/dsfr/dist/dsfr.module.min.js';
+import '@gouvfr/dsfr/dist/dsfr.main.min.css';
+import '@gouvfr/dsfr/dist/utility/utility.main.min.css';
 
-import '../src/charts/main.js';
-import '../src/styles/style.scss';
+import '@/charts/main.js';
+import '@/styles/style.scss';
 
 import { html } from 'lit';
 
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-/** @type { import('@storybook/web-components').Preview } */
+/** @type { import('@storybook/web-components-vite').Preview } */
 export default {
   parameters: {
     controls: {

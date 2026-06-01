@@ -1,7 +1,8 @@
 <template>
   <Teleport
-    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
+    v-if="!databoxId || targetReady"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
+    :disabled="!databoxId"
   >
     <div
       :ref="widgetId"
@@ -27,72 +28,87 @@
             <div class="tooltip_body">
               <div class="tooltip_value-content">
                 <div class="tooltip_value">
-                  {{ tooltip.value }}
+                  {{ formatNumber(tooltip.value) }}
                 </div>
               </div>
             </div>
           </div>
           <div
             v-if="isDep"
-            class="france_container no_select"
+            class="map_container no_select"
             :style="{ display: displayFrance }"
           >
             <france
-              :config="FranceProps"
-              :onclick="changeGeoLevel"
-              :ondblclick="resetGeoFilters"
-              :onenter="displayTooltip"
-              :onleave="hideTooltip"
+              :config="MapProps"
+              :on-click="changeGeoLevel"
+              :on-dbl-click="resetGeoFilters"
+              :on-enter="displayTooltip"
+              :on-leave="hideTooltip"
             />
           </div>
           <div
             v-if="isReg"
-            class="france_container no_select"
+            class="map_container no_select"
             :style="{ display: displayFrance }"
           >
             <france-reg
-              :config="FranceProps"
-              :onclick="changeGeoLevel"
-              :ondblclick="resetGeoFilters"
-              :onenter="displayTooltip"
-              :onleave="hideTooltip"
+              :config="MapProps"
+              :on-click="changeGeoLevel"
+              :on-dbl-click="resetGeoFilters"
+              :on-enter="displayTooltip"
+              :on-leave="hideTooltip"
             />
           </div>
-          <!-- <div
-            v-if="isAcad"
-            class="france_container no_select"
+          <div
+            v-if="isAca"
+            class="map_container no_select"
             :style="{ display: displayFrance }"
           >
-            <france-acad
-              :config="FranceProps"
-              :onclick="changeGeoLevel"
-              :ondblclick="resetGeoFilters"
-              :onenter="displayTooltip"
-              :onleave="hideTooltip"
+            <france-aca
+              :config="MapProps"
+              :on-click="changeGeoLevel"
+              :on-dbl-click="resetGeoFilters"
+              :on-enter="displayTooltip"
+              :on-leave="hideTooltip"
             />
-          </div> -->
-          <div class="om_container fr-grid-row no_select">
+          </div>
+          <div
+            v-if="isWorld"
+            class="map_container no_select"
+          >
+            <world
+              :config="MapProps"
+              :on-click="changeGeoLevel"
+              :on-dbl-click="resetGeoFilters"
+              :on-enter="displayTooltip"
+              :on-leave="hideTooltip"
+            />
+          </div>
+          <div
+            v-if="!isWorld"
+            class="map_sub_container fr-grid-row no_select"
+          >
             <div
-              class="om fr-col-sm"
+              class="drom fr-col-sm"
               :style="{ display: displayGuadeloupe }"
             >
               <span
-                class="om_title fr-text--xs fr-my-1w"
+                class="fr-text--xs fr-my-1w"
                 :style="{ color: dromColor }"
               >
                 Guadeloupe
               </span>
               <guadeloupe
                 height="50"
-                :config="DromProps"
-                :onclick="changeGeoLevel"
-                :ondblclick="resetGeoFilters"
-                :onenter="displayTooltip"
-                :onleave="hideTooltip"
+                :config="MapProps"
+                :on-click="changeGeoLevel"
+                :on-dbl-click="resetGeoFilters"
+                :on-enter="displayTooltip"
+                :on-leave="hideTooltip"
               />
             </div>
             <div
-              class="om fr-col-sm"
+              class="drom fr-col-sm"
               :style="{ display: displayMartinique }"
             >
               <span
@@ -103,15 +119,15 @@
               </span>
               <martinique
                 height="50"
-                :config="DromProps"
-                :onclick="changeGeoLevel"
-                :ondblclick="resetGeoFilters"
-                :onenter="displayTooltip"
-                :onleave="hideTooltip"
+                :config="MapProps"
+                :on-click="changeGeoLevel"
+                :on-dbl-click="resetGeoFilters"
+                :on-enter="displayTooltip"
+                :on-leave="hideTooltip"
               />
             </div>
             <div
-              class="om fr-col-sm"
+              class="drom fr-col-sm"
               :style="{ display: displayGuyane }"
             >
               <span
@@ -122,15 +138,15 @@
               </span>
               <guyane
                 height="50"
-                :config="DromProps"
-                :onclick="changeGeoLevel"
-                :ondblclick="resetGeoFilters"
-                :onenter="displayTooltip"
-                :onleave="hideTooltip"
+                :config="MapProps"
+                :on-click="changeGeoLevel"
+                :on-dbl-click="resetGeoFilters"
+                :on-enter="displayTooltip"
+                :on-leave="hideTooltip"
               />
             </div>
             <div
-              class="om fr-col-sm"
+              class="drom fr-col-sm"
               :style="{ display: displayReunion }"
             >
               <span
@@ -141,15 +157,15 @@
               </span>
               <reunion
                 height="50"
-                :config="DromProps"
-                :onclick="changeGeoLevel"
-                :ondblclick="resetGeoFilters"
-                :onenter="displayTooltip"
-                :onleave="hideTooltip"
+                :config="MapProps"
+                :on-click="changeGeoLevel"
+                :on-dbl-click="resetGeoFilters"
+                :on-enter="displayTooltip"
+                :on-leave="hideTooltip"
               />
             </div>
             <div
-              class="om fr-col-sm"
+              class="drom fr-col-sm"
               :style="{ display: displayMayotte }"
             >
               <span
@@ -160,11 +176,11 @@
               </span>
               <mayotte
                 height="50"
-                :config="DromProps"
-                :onclick="changeGeoLevel"
-                :ondblclick="resetGeoFilters"
-                :onenter="displayTooltip"
-                :onleave="hideTooltip"
+                :config="MapProps"
+                :on-click="changeGeoLevel"
+                :on-dbl-click="resetGeoFilters"
+                :on-enter="displayTooltip"
+                :on-leave="hideTooltip"
               />
             </div>
           </div>
@@ -175,10 +191,10 @@
 </template>
 
 <script>
-import * as d3 from 'd3-scale';
+import chroma from 'chroma-js';
 import MapInfo from '@/components/MapInfo.vue';
 import maps from '@/components/maps';
-import { mapMixins, isMobile } from '@/utils/global.js';
+import { formatNumber, isMobile, mapMixins } from '@/utils/global.js';
 import { choosePalette } from '@/utils/colors.js';
 
 export default {
@@ -187,7 +203,14 @@ export default {
     MapInfo,
     ...maps,
   },
-  mixins: [mapMixins],
+  mixins: [
+    {
+      methods: {
+        ...mapMixins.methods,
+        formatNumber,
+      },
+    },
+  ],
   props: {
     databoxId: {
       type: String,
@@ -211,7 +234,7 @@ export default {
     },
     date: {
       type: String,
-      required: true,
+      default: '',
     },
     level: {
       type: String,
@@ -219,7 +242,7 @@ export default {
     },
     name: {
       type: String,
-      default: 'Data',
+      default: 'Données',
     },
     selectedPalette: {
       type: String,
@@ -236,32 +259,31 @@ export default {
       colorRight: '',
       isDep: true,
       isReg: false,
-      isAcad: false,
+      isAca: false,
+      isWorld: false,
       zoomDep: '',
       InfoProps: {
         localisation: '',
+        level: '',
         names: [],
         min: 0,
         max: 0,
         colorMin: '',
         colorMax: '',
         value: 0,
-        valueNat: 0,
+        valueNat: null,
         date: '',
       },
-      FranceProps: {
+      MapProps: {
         viewBox: '0 0 1010 1010',
-        displayDep: {},
-        colorStroke: '#FFFFFF',
-      },
-      DromProps: {
+        displayPath: {},
         colorStroke: '#FFFFFF',
       },
       tooltip: {
         top: '0px',
         left: '0px',
         visibility: 'hidden',
-        value: 0,
+        value: null,
         place: '',
       },
       displayFrance: '',
@@ -271,6 +293,7 @@ export default {
       displayReunion: '',
       displayGuyane: '',
       dromColor: '#6b6b6b',
+      targetReady: false,
     };
   },
   watch: {
@@ -284,22 +307,51 @@ export default {
       deep: true,
       immediate: true,
     },
+    targetReady(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.createChart();
+        });
+      }
+    },
   },
   created() {
-    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
+    this.widgetId = `dsfr-widget-${Math.floor(Math.random() * 1000)}`;
     this.isDep = this.level === 'dep';
     this.isReg = this.level === 'reg';
-    this.isAcad = this.level === 'acad';
+    this.isAca = this.level === 'aca';
+    this.isWorld = this.level === 'monde';
   },
   mounted() {
-    this.createChart();
-    // The template is not retriggered in maps, force update to process after other elements
-    this.$forceUpdate();
+    if (!this.databoxId || !this.databoxType) {
+      this.createChart();
+      // The template is not retriggered in maps, force update to process after other elements
+      this.$forceUpdate();
+    } else {
+      const targetId = `${this.databoxId}-${this.databoxType}-${this.databoxSource}`;
+      if (document.getElementById(targetId)) {
+        this.targetReady = true;
+      } else {
+        this._targetObserver = new MutationObserver(() => {
+          if (document.getElementById(targetId)) {
+            this._targetObserver.disconnect();
+            this.targetReady = true;
+          }
+        });
+        this._targetObserver.observe(document.body, { childList: true, subtree: true });
+      }
+    }
 
-    const element = document.documentElement;
-    element.addEventListener('dsfr.theme', (e) => {
-      this.changeTheme(e.detail.theme);
+    document.documentElement.addEventListener('dsfr.theme', (e) => {
+      if (this.widgetId !== '') {
+        this.changeColors(e.detail.theme);
+      }
     });
+  },
+  beforeUnmount() {
+    if (this._targetObserver) {
+      this._targetObserver.disconnect();
+    }
   },
   methods: {
     createChart() {
@@ -323,20 +375,35 @@ export default {
       this.InfoProps.date = this.date;
       this.InfoProps.names = this.name;
 
-      const values = [];
+      let values = [];
       let listDep = [];
 
-      this.FranceProps.displayDep = {};
+      this.MapProps.displayPath = {};
 
-      // Remplir la carte avec les départements/régions
+      // Préparation des valeurs de la carte avec les départements/régions/académies/pays
       if (this.zoomDep) {
-        if (this.isDep) {
-          const region = this.getDep(this.zoomDep).region_value;
-          listDep = this.getDepsFromReg(region);
-        } else if (this.isReg) {
-          listDep = this.getAllReg();
-        } else if (this.isAcad) {
-          listDep = [this.getAcad(this.zoomDep).value];
+        const zoomDepValues = this.zoomDep.split(' ');
+
+        for (const zoomDep of zoomDepValues) {
+          if (this.dataParse[zoomDep] === undefined) {
+            continue;
+          }
+
+          if (this.isDep) {
+            const region = this.getDep(zoomDep).region_value;
+            listDep = this.getDepsFromReg(region);
+            // listDep = this.getAllDep();
+          } else if (this.isReg) {
+            // listDep = [this.getReg(zoomDep).value];
+            listDep = this.getAllReg();
+          } else if (this.isAca) {
+            // listDep = [this.getAca(zoomDep).value];
+            listDep = this.getAllAca();
+          } else if (this.isWorld) {
+            const continent = this.getCountry(zoomDep).continent_value;
+            listDep = this.getCountriesFromContinent(continent);
+            // listDep = this.getAllCountries();
+          }
         }
 
         for (const key of listDep) {
@@ -349,53 +416,85 @@ export default {
       }
 
       // Calcul des min et max pour l'échelle
-      this.scaleMin = Math.min(...values);
-      this.scaleMax = Math.max(...values);
+      values = values.filter((value) => value !== undefined && value !== null);
+
+      this.scaleMin = values.length > 0 ? Math.min(...values) : 0;
+      this.scaleMax = values.length > 0 ? Math.max(...values) : 0;
 
       // Define color scale based on regional values
-      const colorScale = d3.scaleLinear().domain([this.scaleMin, this.scaleMax]).range([this.colorLeft, this.colorRight]);
+      const colorScale = chroma.scale([this.colorLeft, this.colorRight]).domain([this.scaleMin, this.scaleMax]);
 
-      let xmin = [],
+      const xmin = [],
         xmax = [],
         ymin = [],
         ymax = [];
 
-      // Iterate over each department in France and set colors
+      // Iterate over each element in input data and set colors
       for (const key in this.dataParse) {
-        const className = 'FR-' + key;
+        const className = this.isAca || this.isWorld ? key : `FR-${key}`;
         const elCol = parentWidget.getElementsByClassName(className);
 
+        if (elCol.length === 0) {
+          console.warn(`L'élément de la carte n'existe pas pour la valeur ${className}, veuillez le supprimer de vos données.`);
+          continue;
+        }
+
         if (!this.zoomDep) {
-          elCol.length !== 0 && elCol[0].setAttribute('fill', colorScale(this.dataParse[key]));
-          this.FranceProps.displayDep[className] = '';
+          // Reset the fill and stroke for all paths
+          elCol[0].setAttribute('fill', colorScale(this.dataParse[key]));
+          elCol[0].setAttribute('stroke', this.MapProps.colorStroke);
+          elCol[0].setAttribute('stroke-width', '0.2%');
+          this.MapProps.displayPath[className] = '';
         } else {
-          const polygon = document.querySelector('.' + className).getBBox();
-          if (this.zoomDep === key) {
-            elCol.length !== 0 && elCol[0].setAttribute('fill', colorScale(this.dataParse[key]));
-            this.FranceProps.displayDep[className] = '';
-            xmin.push(polygon.x);
-            ymin.push(polygon.y);
-            xmax.push(polygon.x + polygon.width);
-            ymax.push(polygon.y + polygon.height);
-          } else if (listDep.includes(key)) {
-            elCol.length !== 0 && elCol[0].setAttribute('fill', this.colorLeft + 'B3');
-            this.FranceProps.displayDep[className] = '';
-            xmin.push(polygon.x);
-            ymin.push(polygon.y);
-            xmax.push(polygon.x + polygon.width);
-            ymax.push(polygon.y + polygon.height);
-          } else {
-            // Hide other departments outside the selected region
-            elCol.length !== 0 && elCol[0].setAttribute('fill', 'rgba(255, 255, 255, 0)');
-            this.FranceProps.displayDep[className] = 'none';
+          const polygon = elCol[0].getBBox();
+
+          const zoomDepValues = this.zoomDep.split(' ');
+
+          for (const zoomDep of zoomDepValues) {
+            if (this.dataParse[zoomDep] === undefined) {
+              continue;
+            }
+
+            if (zoomDep === key) {
+              // Highlight the selected path with a stroke
+              elCol[0].setAttribute('fill', colorScale(this.dataParse[zoomDep]));
+              elCol[0].setAttribute('stroke', '#1212FF');
+              elCol[0].setAttribute('stroke-width', 2);
+              // Teleport to end of SVG to be on top for stroke
+              elCol[0].parentNode.appendChild(elCol[0]);
+              this.MapProps.displayPath[className] = '';
+              xmin.push(polygon.x);
+              ymin.push(polygon.y);
+              xmax.push(polygon.x + polygon.width);
+              ymax.push(polygon.y + polygon.height);
+            } else if (listDep.includes(key)) {
+              // Fill with the lighter color for other paths
+              elCol[0].setAttribute('fill', colorScale(this.dataParse[key]).alpha(0.6));
+              elCol[0].setAttribute('stroke', this.MapProps.colorStroke);
+              elCol[0].setAttribute('stroke-width', '0.2%');
+              this.MapProps.displayPath[className] = '';
+              xmin.push(polygon.x);
+              ymin.push(polygon.y);
+              xmax.push(polygon.x + polygon.width);
+              ymax.push(polygon.y + polygon.height);
+            } else {
+              // Hide other paths outside the selected area
+              elCol[0].setAttribute('fill', 'rgba(255, 255, 255, 0)');
+              this.MapProps.displayPath[className] = 'none';
+            }
           }
         }
       }
 
       if (this.zoomDep) {
-        // Logic for zoom level and dimensions adjustment
-        if (this.isDep) {
-          this.InfoProps.localisation = this.getDep(this.zoomDep).department;
+        const zoomDepValues = this.zoomDep.split(' ');
+
+        for (const zoomDep of zoomDepValues) {
+          if (this.dataParse[zoomDep] === undefined) {
+            continue;
+          }
+
+          // Logic for zoom level and dimensions adjustment
           const xminValue = Math.min(...xmin);
           const yminValue = Math.min(...ymin);
           const xmaxValue = Math.max(...xmax);
@@ -403,42 +502,57 @@ export default {
           const width = xmaxValue - xminValue;
           const height = ymaxValue - yminValue;
           const size = Math.max(width, height);
-          this.FranceProps.viewBox = `${xminValue} ${yminValue} ${size} ${size}`;
-        } else if (this.isReg) {
-          this.InfoProps.localisation = this.getReg(this.zoomDep).region;
-        } else if (this.isAcad) {
-          this.InfoProps.localisation = this.getAcad(this.zoomDep).academy;
-        }
-        this.InfoProps.value = this.value;
-        this.InfoProps.valueNat = this.dataParse[this.zoomDep];
+          this.MapProps.viewBox = `${xminValue} ${yminValue} ${size} ${size}`;
 
-        if (this.isDep) {
-          this.displayFrance = 'none';
-          this.displayGuadeloupe = 'none';
-          this.displayMartinique = 'none';
-          this.displayMayotte = 'none';
-          this.displayReunion = 'none';
-          this.displayGuyane = 'none';
-          // Setting visibility for DOM regions
-          if ((this.zoomDep === '971' && this.level === 'dep') || (this.zoomDep === '01' && this.level === 'reg')) {
-            this.displayGuadeloupe = '';
-          } else if ((this.zoomDep === '972' && this.level === 'dep') || (this.zoomDep === '02' && this.level === 'reg')) {
-            this.displayMartinique = '';
-          } else if ((this.zoomDep === '973' && this.level === 'dep') || (this.zoomDep === '03' && this.level === 'reg')) {
-            this.displayGuyane = '';
-          } else if ((this.zoomDep === '974' && this.level === 'dep') || (this.zoomDep === '04' && this.level === 'reg')) {
-            this.displayReunion = '';
-          } else if ((this.zoomDep === '976' && this.level === 'dep') || (this.zoomDep === '06' && this.level === 'reg')) {
-            this.displayMayotte = '';
-          } else {
-            this.displayFrance = '';
+          this.InfoProps.level = 'en France';
+          if (this.isDep) {
+            this.InfoProps.localisation = this.getDep(zoomDep).department;
+          } else if (this.isReg) {
+            this.InfoProps.localisation = this.getReg(zoomDep).region;
+          } else if (this.isAca) {
+            this.InfoProps.localisation = this.getAca(zoomDep).academy;
+          } else if (this.isWorld) {
+            this.InfoProps.level = 'dans le monde';
+            this.InfoProps.localisation = this.getCountry(zoomDep).country;
+          }
+          this.InfoProps.value = this.value;
+          this.InfoProps.valueNat = this.dataParse[zoomDep];
+
+          if (this.isDep) {
+            this.displayFrance = 'none';
+            this.displayGuadeloupe = 'none';
+            this.displayMartinique = 'none';
+            this.displayMayotte = 'none';
+            this.displayReunion = 'none';
+            this.displayGuyane = 'none';
+            // Setting visibility for DROM regions
+            if (zoomDep === '971') {
+              this.displayGuadeloupe = '';
+            } else if (zoomDep === '972') {
+              this.displayMartinique = '';
+            } else if (zoomDep === '973') {
+              this.displayGuyane = '';
+            } else if (zoomDep === '974') {
+              this.displayReunion = '';
+            } else if (zoomDep === '976') {
+              this.displayMayotte = '';
+            } else {
+              this.displayFrance = '';
+            }
           }
         }
       } else {
-        this.InfoProps.localisation = 'France';
+        if (this.isWorld) {
+          this.InfoProps.localisation = 'Monde';
+          this.InfoProps.level = 'dans le monde';
+          this.MapProps.viewBox = '0 0 1010 710';
+        } else {
+          this.InfoProps.localisation = 'France';
+          this.InfoProps.level = 'en France';
+          this.MapProps.viewBox = '0 0 1010 1010';
+        }
         this.InfoProps.value = this.value;
-        this.InfoProps.valueNat = 0;
-        this.FranceProps.viewBox = '0 0 1010 1010';
+        this.InfoProps.valueNat = null;
         this.displayFrance = '';
         this.displayGuadeloupe = '';
         this.displayMartinique = '';
@@ -454,41 +568,52 @@ export default {
       this.InfoProps.colorMax = this.colorRight;
     },
     displayTooltip(e) {
-      if (isMobile()) return;
+      if (isMobile()) {
+        return;
+      }
       const parentWidget = this.$refs[this.widgetId];
       const hoverElement = e.target.className.baseVal;
-      const hoverValue = hoverElement.replace('FR-', '');
+      const hoverValues = hoverElement.replace('FR-', '').split(' ');
 
       const elCol = parentWidget.getElementsByClassName(hoverElement);
       elCol[0].style.opacity = 0.8;
-      this.tooltip.value = this.dataParse[hoverValue];
-      if (this.isDep) {
-        this.tooltip.place = this.getDep(hoverValue).department;
-      } else if (this.isReg) {
-        this.tooltip.place = this.getReg(hoverValue).region;
-      } else if (this.isAcad) {
-        this.tooltip.place = this.getAcad(hoverValue).academy;
+      this.tooltip.value = null;
+      for (const hoverValue of hoverValues) {
+        if (this.dataParse[hoverValue] !== undefined) {
+          this.tooltip.value = this.dataParse[hoverValue];
+        }
+        if (this.isDep && this.getDep(hoverValue)) {
+          this.tooltip.place = this.getDep(hoverValue).department;
+        } else if (this.isReg && this.getReg(hoverValue)) {
+          this.tooltip.place = this.getReg(hoverValue).region;
+        } else if (this.isAca && this.getAca(hoverValue)) {
+          this.tooltip.place = this.getAca(hoverValue).academy;
+        } else if (this.isWorld && this.getCountry(hoverValue)) {
+          this.tooltip.place = this.getCountry(hoverValue).country;
+        }
       }
 
-      const franceRect = parentWidget.querySelector('.france_container').getBoundingClientRect();
+      const franceRect = parentWidget.querySelector('.map_container').getBoundingClientRect();
       const tooltipRect = parentWidget.querySelector('.map_tooltip').getBoundingClientRect();
       const containerRect = e.target.getBoundingClientRect();
 
       const adjust = window.innerWidth > 1000 ? window.innerWidth / 30 : window.innerWidth / 15;
 
       let tooltipX = containerRect.x - franceRect.x + tooltipRect.width - adjust;
-      let tooltipY = containerRect.y - franceRect.y;
+      const tooltipY = containerRect.y - franceRect.y;
 
       if (tooltipX + tooltipRect.width + adjust > franceRect.x) {
         tooltipX = containerRect.x / 2 - franceRect.x + tooltipRect.width + adjust / 2;
       }
 
-      this.tooltip.top = tooltipY + 'px';
-      this.tooltip.left = tooltipX + 'px';
+      this.tooltip.top = `${tooltipY}px`;
+      this.tooltip.left = `${tooltipX}px`;
       this.tooltip.visibility = 'visible';
     },
     hideTooltip(e) {
-      if (isMobile()) return;
+      if (isMobile()) {
+        return;
+      }
       this.tooltip.visibility = 'hidden';
       const parentWidget = this.$refs[this.widgetId];
       const hoverElement = e.target.className.baseVal;
@@ -497,9 +622,7 @@ export default {
       elCol[0].style.opacity = 1;
     },
     changeGeoLevel(e) {
-      // Get clicked department value
-      const hoverValue = e.target.className.baseVal.replace('FR-', '');
-      this.zoomDep = hoverValue;
+      this.zoomDep = e.target.className.baseVal.replace('FR-', '');
       this.createChart();
     },
     resetGeoFilters() {
@@ -507,18 +630,15 @@ export default {
       this.createChart();
     },
     choosePalette() {
-      // Using the refactored choosePalette function from utils
       return choosePalette(this.selectedPalette);
     },
-    changeTheme(theme) {
+    changeColors(theme) {
       if (theme === 'light') {
         this.dromColor = '#6b6b6b';
-        this.FranceProps.colorStroke = '#FFFFFF';
-        this.DromProps.colorStroke = '#FFFFFF';
+        this.MapProps.colorStroke = '#FFFFFF';
       } else {
         this.dromColor = '#cecece';
-        this.FranceProps.colorStroke = '#161616';
-        this.DromProps.colorStroke = '#161616';
+        this.MapProps.colorStroke = '#161616';
       }
       this.createChart();
     },
@@ -527,5 +647,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/MapChart.scss';
+@use '@/styles/MapChart.scss';
 </style>

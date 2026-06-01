@@ -9,6 +9,6 @@ export const Default = {
   argTypes: {
     date: {
       control: 'text',
-    }
-  }
+    },
+  },
 };

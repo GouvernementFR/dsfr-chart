@@ -1,8 +1,6 @@
 <template>
-  <div class="fr-col-12 fr-col-md-10 fr-mb-4w">
-    <h1 class="fr-pt-2w">
-      DSFR Chart
-    </h1>
+  <div class="fr-col-12 fr-col-md-10 fr-my-4w">
+    <h1>DSFR Chart</h1>
     <p>
       Cette page a pour objectif de présenter l'ensemble des graphiques proposés par la librairie
       <a
@@ -11,8 +9,9 @@
         target="_blank"
       >
         DSFR Chart
-      </a>.
-      <br>
+      </a>
+      .
+      <br />
       Tous les graphiques proposés sont disponibles dans le thème clair et dans le thème sombre. Il est possible de changer le thème affiché par l'intermédiaire du bouton en bas à droite.
     </p>
   </div>

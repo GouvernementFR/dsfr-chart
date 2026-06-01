@@ -1,7 +1,8 @@
 <template>
   <Teleport
-    :disabled="!$el?.ownerDocument.getElementById(databoxId) || (!databoxId && !databoxType && databoxSource === 'default')"
+    v-if="!databoxId || targetReady"
     :to="'#' + databoxId + '-' + databoxType + '-' + databoxSource"
+    :disabled="!databoxId"
   >
     <div
       :ref="widgetId"
@@ -16,9 +17,9 @@
             >
               <div
                 class="jauge-fill"
-                :style="{ width: width + '%' }"
+                :style="{ width: width + '%', backgroundColor: colorParse }"
               >
-                <span class="jauge-text fr-text fr-text--sm fr-text-title--blue-france fr-pl-1w">{{ percentage }}%</span>
+                <span class="jauge-text fr-text fr-text--sm fr-text-inverted--grey fr-pl-1w">{{ percentage }}%</span>
               </div>
             </div>
           </div>
@@ -42,30 +43,27 @@
             </p>
           </div>
           <div
-            v-if="legend"
+            v-if="[true, 'true', ''].includes(legend)"
             class="flex"
           >
-            <span class="legende_dot target_legend" />
-            <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">
-              Valeur cible
-            </p>
+            <span class="legend_dot target_legend" />
+            <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">Valeur cible</p>
           </div>
           <div
-            v-if="legend"
+            v-if="[true, 'true', ''].includes(legend)"
             class="flex fr-mt-3v fr-mb-1v"
           >
-            <span class="legende_dot actual_legend" />
-            <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">
-              Valeur actuelle
-            </p>
+            <span
+              class="legend_dot"
+              :style="{ backgroundColor: colorParse }"
+            />
+            <p class="fr-text--sm fr-text--bold fr-ml-2v fr-mb-0">Valeur actuelle</p>
           </div>
           <div
             v-if="date"
             class="flex fr-mt-1w"
           >
-            <p class="fr-text--xs">
-              Mise à jour : {{ date }}
-            </p>
+            <p class="fr-text--xs">Mise à jour : {{ date }}</p>
           </div>
         </div>
       </div>
@@ -75,6 +73,7 @@
 
 <script>
 import { chartMixins } from '@/utils/global.js';
+import { generateColors } from '@/utils/colors.js';
 
 export default {
   name: 'GaugeChart',
@@ -94,11 +93,11 @@ export default {
     },
     value: {
       type: [Number, String],
-      default: '',
+      default: 0,
     },
     percent: {
       type: [Number, String],
-      default: '',
+      default: null,
     },
     init: {
       type: [Number, String],
@@ -133,13 +132,10 @@ export default {
     return {
       widgetId: '',
       percentage: 0,
-      styleRectangleOver: '',
-      styleRectangleUnder: '',
-      styleLegendOver: '',
-      styleLegendUnder: '',
-      colorOver: '',
-      colorUnder: '',
       width: '',
+      tmpColorParse: [],
+      colorParse: '',
+      targetReady: false,
     };
   },
   watch: {
@@ -153,28 +149,74 @@ export default {
       deep: true,
       immediate: true,
     },
+    targetReady(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.createChart();
+        });
+      }
+    },
   },
   created() {
-    this.widgetId = 'dsfr-widget-' + Math.floor(Math.random() * 1000);
+    this.widgetId = `dsfr-widget-${Math.floor(Math.random() * 1000)}`;
   },
   mounted() {
-    this.createChart();
+    if (!this.databoxId || !this.databoxType) {
+      this.createChart();
+    } else {
+      const targetId = `${this.databoxId}-${this.databoxType}-${this.databoxSource}`;
+      if (document.getElementById(targetId)) {
+        this.targetReady = true;
+      } else {
+        this._targetObserver = new MutationObserver(() => {
+          if (document.getElementById(targetId)) {
+            this._targetObserver.disconnect();
+            this.targetReady = true;
+          }
+        });
+        this._targetObserver.observe(document.body, { childList: true, subtree: true });
+      }
+    }
 
-    this.display = this.$refs[this.widgetId].offsetWidth > 486 ? 'big' : 'small';
+    document.documentElement.addEventListener('dsfr.theme', (e) => {
+      if (this.widgetId !== '') {
+        this.changeColors(e.detail.theme);
+      }
+    });
+  },
+  beforeUnmount() {
+    if (this._targetObserver) {
+      this._targetObserver.disconnect();
+    }
   },
   methods: {
     createChart() {
-      if (!this.percent) {
-        this.percentage = Math.round((100 * (this.value - this.init)) / (this.target - this.init));
+      // Chargement des couleurs
+      this.loadColors();
+
+      if (this.percent === null) {
+        this.percentage = Math.round((100 * (Number(this.value) - Number(this.init))) / (this.target - this.init));
       } else {
         this.percentage = Math.round(this.percent);
       }
       this.width = Math.min(100, this.percentage);
+    },
+    loadColors() {
+      const { colorParse } = generateColors({
+        yparse: [null],
+        tmpColorParse: this.tmpColorParse,
+        selectedPalette: 'default',
+      });
+
+      this.colorParse = colorParse;
+    },
+    changeColors(theme) {
+      this.loadColors();
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/GaugeChart.scss';
+@use '@/styles/GaugeChart.scss';
 </style>
