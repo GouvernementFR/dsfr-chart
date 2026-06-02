@@ -75,7 +75,7 @@
     "build:storybook": "storybook build",
     "test": "playwright test",
     "test:update-snapshots": "playwright test --update-snapshots --reporter=line",
-    "publish": "npm run build && npm run build:components && npm publish"
+    "release": "npm run build:components && npm publish"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
