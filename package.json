@@ -1,6 +1,6 @@
 {
   "name": "@gouvfr/dsfr-chart",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Système de Design de l'État - Visualisation graphique",
   "license": "MIT",
   "author": "Service d'Information du Gouvernement <missak.keloglanian@pm.gouv.fr>",
@@ -11,8 +11,12 @@
   "files": [
     "dist/*",
     "README.md",
-    "CONTRIBUTING.md"
+    "CONTRIBUTING.md",
+    "CHANGELOG.md"
   ],
+  "engines": {
+    "node": "^20.19.0 || ^22.12.0 || >=24.0.0"
+  },
   "type": "module",
   "main": "./dist/DSFRChart/DSFRChart.umd.cjs",
   "module": "./dist/DSFRChart/DSFRChart.js",
@@ -53,7 +57,7 @@
     "serve": "vite preview",
     "lint": "eslint --fix src/",
     "format": "prettier --write src/",
-    "build:docs": "vite build",
+    "build:docs": "vite build --config=vite-docs.config.js",
     "build": "vite build --config=vite-components.config.js",
     "build-bar": "LIBRARY=BarChart vite build --config=vite-components.config.js",
     "build-bar-line": "LIBRARY=BarLineChart vite build --config=vite-components.config.js",
@@ -70,22 +74,23 @@
     "storybook": "NODE_OPTIONS=--max_old_space_size=4096 storybook dev -p 6006",
     "build:storybook": "storybook build",
     "test": "playwright test",
-    "test:update-snapshots": "playwright test --update-snapshots --reporter=line"
+    "test:update-snapshots": "playwright test --update-snapshots --reporter=line",
+    "publish": "npm run build && npm run build:components && npm publish"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@gouvfr/dsfr": "^1.14.4",
     "@jpinsonneau/html-to-image": "1.11.13",
     "@playwright/test": "^1.60.0",
-    "@storybook/web-components-vite": "^10.4.1",
+    "@storybook/web-components-vite": "^10.4.2",
     "@types/node": "^25.9.1",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vue/eslint-config-prettier": "^10.2.0",
     "chart.js": "^4.5.1",
     "chroma-js": "^3.2.0",
-    "concurrently": "^10.0.0",
-    "eslint": "^10.4.0",
-    "eslint-plugin-storybook": "^10.4.1",
+    "concurrently": "^10.0.3",
+    "eslint": "^10.4.1",
+    "eslint-plugin-storybook": "^10.4.2",
     "eslint-plugin-vue": "^10.9.1",
     "eslint-plugin-vue-scoped-css": "^3.1.1",
     "globals": "^17.6.0",
@@ -93,8 +98,8 @@
     "prettier": "^3.8.3",
     "sass": "^1.100.0",
     "standard": "^17.1.2",
-    "storybook": "^10.4.1",
-    "vite": "^8.0.14",
+    "storybook": "^10.4.2",
+    "vite": "^8.0.16",
     "vue": "^3.5.35"
   }
 }
