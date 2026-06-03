@@ -6,6 +6,18 @@ Pour plus d’informations : [Voir la documentation](./README.md)
 
 > ## DSFR-Chart v2
 
+## v2.1.1
+
+### [v2.1.1](https://github.com/GouvernementFR/dsfr-chart/compare/v2.1.0...v2.1.1) - 03 Juin 2026
+
+#### 🔖 chore(\*): DSFR-chart v2.1.1 [(#71)](https://github.com/GouvernementFR/dsfr-chart/pull/71)
+
+- correction de l'import de `process.env` sur les imports statiques
+- mise à jour des dépendances
+- suppression des styles en ligne pour les couleurs des info-bulles
+- renommage de la configuration de la documentation Vite pour une meilleure compréhension
+- ajout du champ `engines` et de l'alias de publication
+
 ## v2.1.0
 
 ### [v2.1.0](https://github.com/GouvernementFR/dsfr-chart/compare/v2.0.5...v2.1.0) - 01 Juin 2026
