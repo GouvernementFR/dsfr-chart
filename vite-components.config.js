@@ -7,14 +7,14 @@ const library = process.env.LIBRARY || 'DSFRChart';
 
 /** @type {import('vite').UserConfig} */
 export default {
-  define: {
-    'process.env': {},
-  },
   appType: 'custom',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
+  },
+  define: {
+    'process.env.NODE_ENV': JSON.stringify('production'),
   },
   publicDir: '',
   build: {

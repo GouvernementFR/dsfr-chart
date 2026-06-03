@@ -372,10 +372,14 @@ export default {
 
                       divValue.innerHTML += `
                         <div class="tooltip_value-content">
-                          <span class="tooltip_dot" style="background-color:${color};"></span>
+                          <span class="tooltip_dot" data-color="${color}"></span>
                           <p class="tooltip_place fr-mb-0">${displayValue}</p>
                         </div>
                       `;
+
+                      divValue.querySelectorAll('.tooltip_dot').forEach((dot) => {
+                        dot.style.backgroundColor = dot.getAttribute('data-color');
+                      });
                     }
                   });
                 }
