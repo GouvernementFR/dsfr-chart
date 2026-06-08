@@ -53,8 +53,8 @@
     "./dist/*/*.css": "./dist/*/*.css"
   },
   "scripts": {
-    "dev": "vite",
-    "serve": "vite preview",
+    "dev": "vite --config=vite-docs.config.js",
+    "serve": "vite preview --config=vite-docs.config.js",
     "lint": "eslint --fix src/",
     "format": "prettier --write src/",
     "build:docs": "vite build --config=vite-docs.config.js",
